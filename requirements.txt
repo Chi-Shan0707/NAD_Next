@@ -1,0 +1,49 @@
+# NAD Next (Neuron Activation Distribution) Requirements
+# Python >= 3.9 required
+
+# ========================================
+# Core Dependencies (Required)
+# ========================================
+# Numerical computing and array operations
+numpy>=1.20.0
+
+# Roaring Bitmap for optimized Jaccard distance computation
+pyroaring>=0.4.5
+
+# ========================================
+# Visualization & Web Interface
+# ========================================
+# Web framework for visualization server and cache browser
+Flask>=2.0.0
+
+# Interactive plotting library
+plotly>=5.0.0
+
+# Hidden Markov Model (used by visualization server)
+hmmlearn
+
+# ========================================
+# Tokenization Support
+# ========================================
+# Token ID → text decoding in visualization server
+transformers>=4.20.0
+tokenizers>=0.13.0
+
+# ========================================
+# Optional but Recommended
+# ========================================
+# System and process utilities for memory monitoring
+psutil>=5.8.0
+
+# Progress bars for long-running operations
+tqdm>=4.50.0
+
+# ========================================
+# Development Dependencies (Optional)
+# ========================================
+# Uncomment for development and testing
+# pytest>=7.0.0
+# pytest-cov>=3.0.0
+# black>=22.0.0
+# flake8>=4.0.0
+# mypy>=0.950

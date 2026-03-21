@@ -1,0 +1,10 @@
+
+[project]
+name = "nad-minimal"
+version = "0.1.0"
+description = "Minimal refactor skeleton for flexible cache + low-memory analysis"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.20.0",
+  "pyroaring>=0.4.5"
+]

@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Token Activation Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .status-bar {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-group label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .option-group input[type="number"] {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            width: 100px;
+        }
+
+        .option-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .visualization {
+            padding: 30px;
+            min-height: 700px;
+        }
+
+        #plot-container {
+            width: 100%;
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .token-info-box {
+            background: #f0f4ff;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .token-info-box h4 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .token-info {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .token-text {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            border: 1px solid #e0e0e0;
+            min-height: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0 0 10px 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .plot-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .plot-info ul {
+            margin: 10px 0 0 20px;
+        }
+
+        /* === Two-column two-row grid layout === */
+        .info-columns {
+            display: grid;
+            grid-template-columns: minmax(320px, 1fr) 2fr;
+            grid-template-rows: auto auto;
+            gap: 16px;
+            align-items: start;
+        }
+
+        /* Explicit grid positioning */
+        #interactive-features {
+            grid-column: 1;
+            grid-row: 1;
+        }
+        #token-info-box {
+            grid-column: 1;
+            grid-row: 2;
+        }
+        .response-box {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            /* 设置最大高度，避免撑满整个屏幕 */
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .response-text {
+            flex: 1;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Courier New', monospace;
+        }
+
+        .response-text .token-highlight {
+            background: #fff3cd;
+            border-bottom: 2px solid #ffd666;
+            border-radius: 3px;
+            padding: 0 1px;
+        }
+
+        .question-box {
+            background: white;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+            margin: 12px 0 4px 0;
+        }
+
+        /* === Cache selector dropdowns (multi-cache mode) === */
+        #cache-selector {
+            padding: 16px 30px;
+            background: #eef1f7;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .dropdown-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .dropdown-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 180px;
+        }
+
+        .dropdown-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #495057;
+        }
+
+        .dropdown-group select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .dropdown-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .dropdown-group select:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
+            color: #6c757d;
+        }
+
+        #load-cache-btn {
+            padding: 8px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 38px;
+        }
+
+        #load-cache-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        #load-cache-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        #cache-loading-status {
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            font-size: 13px;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #cache-loading-status .mini-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #dee2e6;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @media (max-width: 980px) {
+            .info-columns {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            .response-box {
+                grid-column: 1;
+                grid-row: 3;
+                height: auto;
+            }
+        }
+
+    </style>
+    <script>
+        // Base URL for API calls — handles JupyterHub reverse proxy prefix
+        const BASE_URL = "{{ base_url }}";
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Interactive Token Activation Visualization</h1>
+            <div class="status-bar">
+                <span id="status">Initializing...</span>
+            </div>
+        </div>
+
+        <div id="cache-selector" style="display:none;">
+            <div class="dropdown-row">
+                <div class="dropdown-group">
+                    <label for="model-select">Model:</label>
+                    <select id="model-select">
+                        <option value="">-- Select Model --</option>
+                    </select>
+                </div>
+                <div class="dropdown-group">
+                    <label for="dataset-select">Dataset:</label>
+                    <select id="dataset-select" disabled>
+                        <option value="">-- Select Dataset --</option>
+                    </select>
+                </div>
+                <div class="dropdown-group">
+                    <label for="cache-select">Cache:</label>
+                    <select id="cache-select" disabled>
+                        <option value="">-- Select Cache --</option>
+                    </select>
+                </div>
+                <button id="load-cache-btn" disabled>Load</button>
+            </div>
+            <div id="cache-loading-status" style="display:none;">
+                <div class="mini-spinner"></div>
+                <span id="cache-loading-text">Loading...</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-container">
+                <div style="position: relative; flex: 1;">
+                    <input type="text" id="problem-id" class="search-input"
+                           placeholder="Enter Problem ID (e.g., HumanEval/0)">
+                    <div id="suggestions" class="suggestions"></div>
+                </div>
+                <button id="visualize-btn" class="btn btn-primary">Visualize</button>
+                <button id="random-btn" class="btn btn-secondary">Random</button>
+            </div>
+
+            <div class="options">
+                <div class="option-group">
+                    <label>Max Runs per Type:</label>
+                    <input type="number" id="max-runs" value="50" min="1" max="200">
+                </div>
+                <div class="option-group">
+                    <input type="checkbox" id="show-correct" checked>
+                    <label for="show-correct">Show Correct</label>
+                </div>
+                <div class="option-group">
+                    <input type="checkbox" id="show-incorrect" checked>
+                    <label for="show-incorrect">Show Incorrect</label>
+                </div>
+                <div class="option-group">
+                    <input type="checkbox" id="show-markers" checked>
+                    <label for="show-markers">Show End Markers</label>
+                </div>
+                <div class="option-group">
+                    <input type="checkbox" id="show-entropy">
+                    <label for="show-entropy">Show Entropy Curve</label>
+                    <div class="option-hint">Cumulative token entropy (right axis)</div>
+                </div>
+                <div class="option-group">
+                    <input type="checkbox" id="show-pareto">
+                    <label for="show-pareto">Show 80/20 Entropy (Pareto)</label>
+                    <span style="font-size:12px;color:#6c757d;display:block;margin-left:20px;">
+                        Marks chunks with high-entropy tokens (red ▲)
+                    </span>
+                </div>
+                <div class="option-group" style="margin-left:20px;">
+                    <label for="pareto-method">Method:</label>
+                    <select id="pareto-method" style="margin-left:5px;">
+                        <option value="chunk-topk" selected>Top 20% by chunk sum</option>
+                        <option value="token-any">Any token ≥ 80th pct</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <input type="checkbox" id="show-hmm">
+                    <label for="show-hmm">Show HMM Segmentation</label>
+                    <span style="font-size:12px;color:#6c757d;display:block;margin-left:20px;">
+                        Explore/Exploit phases (&#9670; = Explore)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="visualization">
+            <div id="question-box" class="question-box" style="display:none;">
+                <h4>🧩 当前 Query / 问题</h4>
+                <div id="questionText">-</div>
+            </div>
+
+            <div class="info-columns">
+                <div id="interactive-features" class="plot-info">
+                    <strong>Interactive Features:</strong>
+                    <ul>
+                        <li>🖱️ Hover over any point to see details (Sample ID, Token Position, Neuron Count)</li>
+                        <li>📊 Click and drag to zoom into specific regions</li>
+                        <li>🔄 Double-click to reset zoom</li>
+                        <li>📍 Click on legend items to show/hide traces</li>
+                        <li>💾 Use the camera icon in toolbar to save as PNG</li>
+                    </ul>
+                </div>
+
+                <div id="token-info-box" class="token-info-box">
+                    <h4>🔤 Current Token Information</h4>
+                        <div class="token-info">
+                            <strong>Sample ID:</strong> <span id="tokenSampleId">-</span>
+                        </div>
+                        <div class="token-info">
+                            <strong>Token Position:</strong> <span id="tokenPosition">-</span>
+                        </div>
+                        <div class="token-info">
+                            <strong>Neuron Count:</strong> <span id="tokenNeuronCount">-</span>
+                        </div>
+                        <div class="token-info">
+                            <strong>Token IDs:</strong> <span id="tokenId">-</span>
+                        </div>
+                        <div class="token-info">
+                            <strong>Chunk Entropy Sum:</strong> <span id="chunkEntropySum">-</span>
+                        </div>
+                        <div class="token-info" style="margin-top:6px;">
+                            <strong>Top 5 High-Entropy Tokens:</strong>
+                        </div>
+                        <div class="token-text" style="padding:0;">
+                            <ul id="topTokensList" style="margin:0;padding:10px 16px;list-style:disc;">
+                                <!-- dynamically filled -->
+                            </ul>
+                        </div>
+                        <div class="token-text" id="tokenText">Use arrow keys (←/→) or click on curve to move the pearl marker</div>
+                    </div>
+
+                    <div class="response-box">
+                        <h4>🧾 模型回复（完整）</h4>
+                        <div id="responseText" class="response-text"></div>
+                    </div>
+                </div> <!-- end .info-columns -->
+<div id="loading-indicator" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Generating interactive visualization...</p>
+            </div>
+
+            <div id="plot-container"></div>
+
+            <div id="stats-panel" class="stats-panel" style="display: none;">
+                <h3>Problem Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-correct">-</div>
+                        <div class="stat-label">Correct Runs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-incorrect">-</div>
+                        <div class="stat-label">Incorrect Runs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total">-</div>
+                        <div class="stat-label">Total Runs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-accuracy">-</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="message-container"></div>
+        </div>
+    </div>
+
+    <script>
+        let problemIds = [];
+        let currentProblemId = null;
+        let cacheTree = {};
+        let isMultiCacheMode = false;
+        let cacheLoadPending = false;
+
+        // Check status on page load
+        window.addEventListener('load', () => {
+            initCacheSelector();
+            checkStatus();
+            setInterval(checkStatus, 2000);
+        });
+
+        // === Multi-cache dropdown logic ===
+
+        function initCacheSelector() {
+            fetch(BASE_URL + '/api/cache_tree')
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.multi_cache_mode) return;
+                    isMultiCacheMode = true;
+                    cacheTree = data.tree || {};
+                    document.getElementById('cache-selector').style.display = 'block';
+
+                    const modelSelect = document.getElementById('model-select');
+                    // Populate models
+                    const models = Object.keys(cacheTree).sort();
+                    models.forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = m;
+                        opt.textContent = m;
+                        modelSelect.appendChild(opt);
+                    });
+
+                    // Restore current selection if any
+                    const cur = data.current || {};
+                    if (cur.model && cacheTree[cur.model]) {
+                        modelSelect.value = cur.model;
+                        populateDatasets(cur.model);
+                        if (cur.dataset) {
+                            document.getElementById('dataset-select').value = cur.dataset;
+                            populateCaches(cur.model, cur.dataset);
+                            if (cur.cache) {
+                                document.getElementById('cache-select').value = cur.cache;
+                                document.getElementById('load-cache-btn').disabled = false;
+                            }
+                        }
+                    }
+                })
+                .catch(err => console.error('Failed to load cache tree:', err));
+        }
+
+        function populateDatasets(model) {
+            const dsSelect = document.getElementById('dataset-select');
+            const cacheSelect = document.getElementById('cache-select');
+            dsSelect.innerHTML = '<option value="">-- Select Dataset --</option>';
+            cacheSelect.innerHTML = '<option value="">-- Select Cache --</option>';
+            cacheSelect.disabled = true;
+            document.getElementById('load-cache-btn').disabled = true;
+
+            if (!model || !cacheTree[model]) {
+                dsSelect.disabled = true;
+                return;
+            }
+
+            const datasets = Object.keys(cacheTree[model]).sort();
+            datasets.forEach(ds => {
+                const opt = document.createElement('option');
+                opt.value = ds;
+                opt.textContent = ds;
+                dsSelect.appendChild(opt);
+            });
+            dsSelect.disabled = false;
+
+            // Auto-select if only one dataset
+            if (datasets.length === 1) {
+                dsSelect.value = datasets[0];
+                populateCaches(model, datasets[0]);
+            }
+        }
+
+        function populateCaches(model, dataset) {
+            const cacheSelect = document.getElementById('cache-select');
+            cacheSelect.innerHTML = '<option value="">-- Select Cache --</option>';
+            document.getElementById('load-cache-btn').disabled = true;
+
+            if (!model || !dataset || !cacheTree[model] || !cacheTree[model][dataset]) {
+                cacheSelect.disabled = true;
+                return;
+            }
+
+            const caches = cacheTree[model][dataset];
+            caches.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                cacheSelect.appendChild(opt);
+            });
+            cacheSelect.disabled = false;
+
+            // Auto-select if only one cache
+            if (caches.length === 1) {
+                cacheSelect.value = caches[0];
+                document.getElementById('load-cache-btn').disabled = false;
+            }
+        }
+
+        // Event listeners for cascading dropdowns
+        document.getElementById('model-select').addEventListener('change', (e) => {
+            populateDatasets(e.target.value);
+        });
+
+        document.getElementById('dataset-select').addEventListener('change', (e) => {
+            const model = document.getElementById('model-select').value;
+            populateCaches(model, e.target.value);
+        });
+
+        document.getElementById('cache-select').addEventListener('change', (e) => {
+            document.getElementById('load-cache-btn').disabled = !e.target.value;
+        });
+
+        document.getElementById('load-cache-btn').addEventListener('click', () => {
+            const model = document.getElementById('model-select').value;
+            const dataset = document.getElementById('dataset-select').value;
+            const cache = document.getElementById('cache-select').value;
+            if (!model || !dataset || !cache) return;
+
+            const btn = document.getElementById('load-cache-btn');
+            btn.disabled = true;
+            cacheLoadPending = true;
+
+            // Show loading indicator
+            const loadingDiv = document.getElementById('cache-loading-status');
+            const loadingText = document.getElementById('cache-loading-text');
+            loadingDiv.style.display = 'flex';
+            loadingText.textContent = `Loading ${model}/${dataset}/${cache}...`;
+
+            // Clear current visualization
+            Plotly.purge('plot-container');
+            document.getElementById('stats-panel').style.display = 'none';
+            problemIds = [];
+
+            fetch(BASE_URL + '/api/switch_cache', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ model, dataset, cache })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (!data.success) {
+                    loadingText.textContent = 'Error: ' + (data.error || 'Unknown error');
+                    btn.disabled = false;
+                    cacheLoadPending = false;
+                    setTimeout(() => { loadingDiv.style.display = 'none'; }, 3000);
+                } else if (data.status === 'already_loaded') {
+                    loadingDiv.style.display = 'none';
+                    btn.disabled = false;
+                    cacheLoadPending = false;
+                }
+                // If status === 'loading', checkStatus() will handle the rest
+            })
+            .catch(err => {
+                loadingText.textContent = 'Error: ' + err.message;
+                btn.disabled = false;
+                cacheLoadPending = false;
+                setTimeout(() => { loadingDiv.style.display = 'none'; }, 3000);
+            });
+        });
+
+        function checkStatus() {
+            fetch(BASE_URL + '/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').textContent = data.status;
+                    if (data.loaded) {
+                        problemIds = data.problem_ids;
+                        document.getElementById('visualize-btn').disabled = false;
+                        document.getElementById('random-btn').disabled = false;
+
+                        // Handle multi-cache loading completion
+                        if (isMultiCacheMode && cacheLoadPending) {
+                            cacheLoadPending = false;
+                            document.getElementById('cache-loading-status').style.display = 'none';
+                            document.getElementById('load-cache-btn').disabled = false;
+                        }
+                    } else {
+                        // Still loading — disable viz controls
+                        document.getElementById('visualize-btn').disabled = true;
+                        document.getElementById('random-btn').disabled = true;
+
+                        // Update loading text in multi-cache mode
+                        if (isMultiCacheMode && cacheLoadPending) {
+                            document.getElementById('cache-loading-text').textContent = data.status;
+                        }
+                    }
+                });
+        }
+
+        // Problem ID input with suggestions
+        document.getElementById('problem-id').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 1) {
+                document.getElementById('suggestions').style.display = 'none';
+                return;
+            }
+
+            fetch(`${BASE_URL}/api/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const suggestionsDiv = document.getElementById('suggestions');
+                    if (data.length > 0) {
+                        suggestionsDiv.innerHTML = data.map(pid =>
+                            `<div class="suggestion-item" onclick="selectProblem('${pid}')">${pid}</div>`
+                        ).join('');
+                        suggestionsDiv.style.display = 'block';
+                    } else {
+                        suggestionsDiv.style.display = 'none';
+                    }
+                });
+        });
+
+        function selectProblem(problemId) {
+            document.getElementById('problem-id').value = problemId;
+            document.getElementById('suggestions').style.display = 'none';
+            visualizeProblem();
+        }
+
+        // Visualize button
+        document.getElementById('visualize-btn').addEventListener('click', visualizeProblem);
+
+        function visualizeProblem() {
+            const problemId = document.getElementById('problem-id').value;
+            if (!problemId) {
+                showMessage('Please enter a Problem ID', 'error');
+                return;
+            }
+
+            const maxRuns = document.getElementById('max-runs').value;
+            const showCorrect = document.getElementById('show-correct').checked;
+            const showIncorrect = document.getElementById('show-incorrect').checked;
+            const showMarkers = document.getElementById('show-markers').checked;
+            const showPareto = document.getElementById('show-pareto').checked;
+            const paretoMethod = document.getElementById('pareto-method').value;
+            const showHMM = document.getElementById('show-hmm').checked;
+            const showEntropy = document.getElementById('show-entropy').checked;
+
+            document.getElementById('loading-indicator').style.display = 'block';
+            document.getElementById('plot-container').style.display = 'none';
+            document.getElementById('stats-panel').style.display = 'none';
+
+            fetch(`${BASE_URL}/api/plotly_data/${encodeURIComponent(problemId)}?max_runs=${maxRuns}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading-indicator').style.display = 'none';
+                    document.getElementById('plot-container').style.display = 'block';
+
+                    if (data.success) {
+                        // Store data globally for hover events
+                        window.plotData = data;
+                        createInteractivePlot(data, showCorrect, showIncorrect, showMarkers, showPareto, paretoMethod, showHMM, showEntropy);
+                        // Load question/prompt if available and reset response viewer
+                        loadQuestion(problemId);
+                        document.getElementById('responseText').textContent = 'Loading response text...';
+                        // Prepare full response for initial run and highlight slice 0 (异步执行，不阻塞图表显示)
+                        if (currentRunData) {
+                            // 延迟100ms开始解码，让图表先显示
+                            setTimeout(() => {
+                                renderFullResponse(currentRunData, 0);
+                            }, 100);
+                        }
+
+                        currentProblemId = problemId;
+                        loadStatistics(problemId);
+                    } else {
+                        showMessage(data.error || 'Failed to generate plot', 'error');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loading-indicator').style.display = 'none';
+                    showMessage(`Error: ${error.message}`, 'error');
+                });
+        }
+
+        // Global variables for pearl marker control
+        let pearlPosition = 0;
+        let currentRunData = null;
+        let pearlTrace = null;
+        let pearlKeyHandler = null;  // Store the handler reference
+        let top5AbortController = null; // abort previous /api/decode_tokens requests
+
+        function escapeHtml(s){
+            return String(s).replace(/[&<>"']/g, c => (
+                {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[c]
+            ));
+        }
+
+
+        // === New helpers for full-response viewer & highlighting ===
+
+        // Compute flattened token id list and per-slice start indices for a run
+        function _prepareSliceStarts(run) {
+            if (!run || !run.token_ids) return;
+            if (run._sliceStarts) return;
+            run._sliceStarts = new Array(run.token_ids.length).fill(0);
+            let acc = 0;
+            for (let i = 0; i < run.token_ids.length; i++) {
+                run._sliceStarts[i] = acc;
+                const arr = Array.isArray(run.token_ids[i]) ? run.token_ids[i] : [];
+                acc += arr.length;
+            }
+            run._totalTokenCount = acc;
+        }
+
+        // Ensure we have decoded full text tokens for a run (lazy)
+        function ensureRunDecoded(run) {
+            return new Promise((resolve) => {
+                if (!run || !run.token_ids) { resolve(null); return; }
+                _prepareSliceStarts(run);
+                if (run._fullText && run._charOffsets) { resolve(run); return; }
+
+                // Flatten all token ids
+                const allIds = [];
+                for (const arr of run.token_ids || []) {
+                    for (const id of (arr || [])) allIds.push(id);
+                }
+                if (allIds.length === 0) {
+                    run._fullText = '';
+                    run._charOffsets = [];
+                    resolve(run);
+                    return;
+                }
+
+                fetch(BASE_URL + '/api/decode_tokens', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ token_ids: allIds })
+                })
+                .then(r => r.json())
+                .then(d => {
+                    console.log('[DEBUG ensureRunDecoded] Response:', d);
+                    if (d && d.success) {
+                        run._fullText = typeof d.text === 'string' ? d.text : '';
+                        run._charOffsets = Array.isArray(d.char_offsets) ? d.char_offsets : [];
+                        console.log('[DEBUG ensureRunDecoded] Full text length:', run._fullText.length);
+                        console.log('[DEBUG ensureRunDecoded] Full text preview:', run._fullText.substring(0, 100));
+                        resolve(run);
+                    } else {
+                        console.log('[DEBUG ensureRunDecoded] Decode failed, using empty text');
+                        run._fullText = '';
+                        run._charOffsets = [];
+                        resolve(run);
+                    }
+                })
+                .catch((err) => {
+                    console.error('[DEBUG ensureRunDecoded] Fetch error:', err);
+                    resolve(run);
+                });
+            });
+        }
+
+        // Render full response text and highlight current slice
+        function renderFullResponse(run, sliceIndex) {
+            console.log('[DEBUG renderFullResponse] Called with sliceIndex:', sliceIndex);
+            const box = document.getElementById('responseText');
+            if (!box) {
+                console.log('[DEBUG renderFullResponse] No responseText element found');
+                return;
+            }
+            if (!run) {
+                console.log('[DEBUG renderFullResponse] No run data provided');
+                box.textContent = '';
+                return;
+            }
+
+            // 准备slice起始位置
+            _prepareSliceStarts(run);
+            const startTok = run._sliceStarts[Math.max(0, Math.min(sliceIndex || 0, run._sliceStarts.length - 1))] || 0;
+            const sliceLen = (run.token_ids && run.token_ids[sliceIndex]) ? run.token_ids[sliceIndex].length : 0;
+            const endTok = startTok + sliceLen;  // 注意：这是exclusive end（不包含）
+
+            // 获取所有token IDs（扁平化）
+            const allTokenIds = [];
+            for (const slice of (run.token_ids || [])) {
+                for (const tid of (slice || [])) {
+                    allTokenIds.push(tid);
+                }
+            }
+
+            if (allTokenIds.length === 0) {
+                box.textContent = '';
+                return;
+            }
+
+            // 分三部分解码：前、中（高亮）、后
+            const tokensBefore = allTokenIds.slice(0, startTok);
+            const tokensHighlight = allTokenIds.slice(startTok, endTok);
+            const tokensAfter = allTokenIds.slice(endTok);
+
+            console.log('[DEBUG renderFullResponse] Token ranges:', {
+                before: [0, startTok],
+                highlight: [startTok, endTok],
+                after: [endTok, allTokenIds.length],
+                totalTokens: allTokenIds.length
+            });
+
+            // 批量解码三部分
+            Promise.all([
+                tokensBefore.length > 0 ?
+                    fetch(BASE_URL + '/api/decode_tokens', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ token_ids: tokensBefore, skip_offsets: true })
+                    }).then(r => r.json()) :
+                    Promise.resolve({ text: '' }),
+
+                tokensHighlight.length > 0 ?
+                    fetch(BASE_URL + '/api/decode_tokens', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ token_ids: tokensHighlight, skip_offsets: true })
+                    }).then(r => r.json()) :
+                    Promise.resolve({ text: '' }),
+
+                tokensAfter.length > 0 ?
+                    fetch(BASE_URL + '/api/decode_tokens', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ token_ids: tokensAfter, skip_offsets: true })
+                    }).then(r => r.json()) :
+                    Promise.resolve({ text: '' })
+            ]).then(([beforeResp, highlightResp, afterResp]) => {
+                const beforeText = escapeHtml(beforeResp.text || '');
+                const highlightText = escapeHtml(highlightResp.text || '');
+                const afterText = escapeHtml(afterResp.text || '');
+
+                // 拼接HTML，中间部分加高亮
+                box.innerHTML = `${beforeText}<span class="token-highlight">${highlightText}</span>${afterText}`;
+
+                // 滚动到高亮区域
+                const hl = box.querySelector('.token-highlight');
+                if (hl) {
+                    hl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+                }
+            }).catch(err => {
+                console.error('[DEBUG renderFullResponse] Decode error:', err);
+                box.textContent = 'Error decoding text';
+            });
+        }
+
+        // Load and display the problem question/prompt if available
+        function loadQuestion(problemId) {
+            const qb = document.getElementById('question-box');
+            const qt = document.getElementById('questionText');
+            if (!qb || !qt) return;
+
+            fetch(`${BASE_URL}/api/problem_text/${encodeURIComponent(problemId)}`)
+                .then(r => r.json())
+                .then(d => {
+                    if (d && d.success && d.text) {
+                        qt.textContent = d.text;
+                        qb.style.display = 'block';
+                    } else {
+                        qb.style.display = 'none';
+                        qt.textContent = '';
+                    }
+                })
+                .catch(() => { qb.style.display = 'none'; });
+        }
+
+        function cumulativeSum(arr) {
+            let result = [], sum = 0;
+            for (let v of arr) { sum += v; result.push(sum); }
+            return result;
+        }
+
+        function createInteractivePlot(data, showCorrect, showIncorrect, showMarkers, showPareto, paretoMethod, showHMM, showEntropy) {
+            const traces = [];
+
+            // Store the first available run for pearl navigation
+            if (data.correct_runs && data.correct_runs.length > 0) {
+                currentRunData = data.correct_runs[0];
+            } else if (data.incorrect_runs && data.incorrect_runs.length > 0) {
+                currentRunData = data.incorrect_runs[0];
+            }
+
+            // Add incorrect runs
+            if (showIncorrect && data.incorrect_runs) {
+                data.incorrect_runs.forEach((run, idx) => {
+                    traces.push({
+                        x: run.tokens,
+                        y: run.neuron_counts,
+                        mode: 'lines',
+                        name: `Incorrect ${idx + 1} (Sample ${run.sample_id})`,
+                        line: { color: 'rgba(255, 0, 0, 0.3)', width: 1.5 },
+                        hovertemplate:
+                            '<b>Incorrect Run</b><br>' +
+                            'Sample ID: %{text}<br>' +
+                            'Token Position: %{x}<br>' +
+                            'Cumulative Neurons: %{y}<br>' +
+                            '<extra></extra>',
+                        text: Array(run.tokens.length).fill(run.sample_id),
+                        showlegend: idx === 0,
+                        legendgroup: 'incorrect',
+                        customdata: run  // Store run data for pearl navigation
+                    });
+
+                    // Add cumulative entropy trace on y2
+                    if (showEntropy && run.slice_entropy_sums) {
+                        traces.push({
+                            x: run.tokens,
+                            y: cumulativeSum(run.slice_entropy_sums),
+                            yaxis: 'y2',
+                            mode: 'lines',
+                            name: `Entropy Incorrect ${idx + 1}`,
+                            line: { color: 'rgba(255, 0, 0, 0.2)', width: 1.5, dash: 'dot' },
+                            showlegend: idx === 0,
+                            legendgroup: 'entropy-incorrect',
+                            hovertemplate: '<b>Incorrect Run (Entropy)</b><br>Token: %{x}<br>Cum. Entropy: %{y:.2f}<extra></extra>',
+                        });
+                    }
+
+                    // Add end marker
+                    if (showMarkers && run.tokens.length > 0) {
+                        traces.push({
+                            x: [run.tokens[run.tokens.length - 1]],
+                            y: [run.neuron_counts[run.neuron_counts.length - 1]],
+                            mode: 'markers',
+                            marker: {
+                                symbol: 'x',
+                                size: 10,
+                                color: 'rgba(255, 0, 0, 0.6)'
+                            },
+                            name: 'End (Incorrect)',
+                            showlegend: idx === 0,
+                            legendgroup: 'incorrect-end',
+                            hovertemplate:
+                                '<b>End of Incorrect Run</b><br>' +
+                                'Sample ID: ' + run.sample_id + '<br>' +
+                                'Final Token: %{x}<br>' +
+                                'Total Neurons: %{y}<br>' +
+                                '<extra></extra>'
+                        });
+                    }
+
+                    // === Pareto overlay (entropy) for incorrect runs ===
+                    const flagArr_inc = paretoMethod === 'chunk-topk'
+                        ? run.is_topk_entropy_slice
+                        : run.has_high_entropy_any_token;
+                    if (showPareto && flagArr_inc && run.slice_entropy_sums) {
+                        // ① Small red triangles for chunks with high-entropy tokens
+                        const xs = [];
+                        const ys = [];
+                        for (let i = 0; i < run.tokens.length; i++) {
+                            if (flagArr_inc[i]) {
+                                xs.push(run.tokens[i]);
+                                ys.push(run.neuron_counts[i]);
+                            }
+                        }
+                        if (xs.length > 0) {
+                            traces.push({
+                                x: xs,
+                                y: ys,
+                                mode: 'markers',
+                                name: 'High-entropy chunk (Incorrect)',
+                                marker: { symbol: 'triangle-up', size: 10, color: 'rgba(255, 0, 0, 0.8)' },
+                                hovertemplate:
+                                    '<b>High-entropy chunk</b><br>' +
+                                    'Token Position: %{x}<br>' +
+                                    'Cumulative Neurons: %{y}<br>' +
+                                    '<extra></extra>',
+                                showlegend: (idx === 0),
+                                legendgroup: 'high-entropy-incorrect'
+                            });
+                        }
+                        // ② Large red triangle for chunk with highest total entropy
+                        if (typeof run.max_entropy_slice_index === 'number' &&
+                            run.max_entropy_slice_index >= 0 &&
+                            run.max_entropy_slice_index < run.tokens.length) {
+                            const mx = run.tokens[run.max_entropy_slice_index];
+                            const my = run.neuron_counts[run.max_entropy_slice_index];
+                            traces.push({
+                                x: [mx],
+                                y: [my],
+                                mode: 'markers',
+                                name: 'Max-entropy chunk (Incorrect)',
+                                marker: {
+                                    symbol: 'triangle-up',
+                                    size: 14,
+                                    color: 'rgba(255, 0, 0, 1)',
+                                    line: { color: 'black', width: 1.5 }
+                                },
+                                hovertemplate: '<b>Max-entropy chunk</b><br>Token Position: %{x}<br>Neurons: %{y}<extra></extra>',
+                                showlegend: (idx === 0),
+                                legendgroup: 'max-entropy-incorrect'
+                            });
+                        }
+                    }
+                });
+            }
+
+            // Add correct runs
+            if (showCorrect && data.correct_runs) {
+                data.correct_runs.forEach((run, idx) => {
+                    traces.push({
+                        x: run.tokens,
+                        y: run.neuron_counts,
+                        mode: 'lines',
+                        name: `Correct ${idx + 1} (Sample ${run.sample_id})`,
+                        line: { color: 'rgba(0, 0, 255, 0.3)', width: 1.5 },
+                        hovertemplate:
+                            '<b>Correct Run</b><br>' +
+                            'Sample ID: %{text}<br>' +
+                            'Token Position: %{x}<br>' +
+                            'Cumulative Neurons: %{y}<br>' +
+                            '<extra></extra>',
+                        text: Array(run.tokens.length).fill(run.sample_id),
+                        showlegend: idx === 0,
+                        legendgroup: 'correct',
+                        customdata: run  // Store run data for pearl navigation
+                    });
+
+                    // Add cumulative entropy trace on y2
+                    if (showEntropy && run.slice_entropy_sums) {
+                        traces.push({
+                            x: run.tokens,
+                            y: cumulativeSum(run.slice_entropy_sums),
+                            yaxis: 'y2',
+                            mode: 'lines',
+                            name: `Entropy Correct ${idx + 1}`,
+                            line: { color: 'rgba(0, 0, 255, 0.2)', width: 1.5, dash: 'dot' },
+                            showlegend: idx === 0,
+                            legendgroup: 'entropy-correct',
+                            hovertemplate: '<b>Correct Run (Entropy)</b><br>Token: %{x}<br>Cum. Entropy: %{y:.2f}<extra></extra>',
+                        });
+                    }
+
+                    // Add end marker
+                    if (showMarkers && run.tokens.length > 0) {
+                        traces.push({
+                            x: [run.tokens[run.tokens.length - 1]],
+                            y: [run.neuron_counts[run.neuron_counts.length - 1]],
+                            mode: 'markers',
+                            marker: {
+                                symbol: 'x',
+                                size: 10,
+                                color: 'rgba(0, 0, 255, 0.6)'
+                            },
+                            name: 'End (Correct)',
+                            showlegend: idx === 0,
+                            legendgroup: 'correct-end',
+                            hovertemplate:
+                                '<b>End of Correct Run</b><br>' +
+                                'Sample ID: ' + run.sample_id + '<br>' +
+                                'Final Token: %{x}<br>' +
+                                'Total Neurons: %{y}<br>' +
+                                '<extra></extra>'
+                        });
+                    }
+
+                    // === Pareto overlay (entropy) for correct runs ===
+                    const flagArr_cor = paretoMethod === 'chunk-topk'
+                        ? run.is_topk_entropy_slice
+                        : run.has_high_entropy_any_token;
+                    if (showPareto && flagArr_cor && run.slice_entropy_sums) {
+                        // ① Small blue triangles for chunks with high-entropy tokens
+                        const xs = [];
+                        const ys = [];
+                        for (let i = 0; i < run.tokens.length; i++) {
+                            if (flagArr_cor[i]) {
+                                xs.push(run.tokens[i]);
+                                ys.push(run.neuron_counts[i]);
+                            }
+                        }
+                        if (xs.length > 0) {
+                            traces.push({
+                                x: xs,
+                                y: ys,
+                                mode: 'markers',
+                                name: 'High-entropy chunk (Correct)',
+                                marker: { symbol: 'triangle-up', size: 10, color: 'rgba(0, 0, 255, 0.8)' },
+                                hovertemplate:
+                                    '<b>High-entropy chunk</b><br>' +
+                                    'Token Position: %{x}<br>' +
+                                    'Cumulative Neurons: %{y}<br>' +
+                                    '<extra></extra>',
+                                showlegend: (idx === 0),
+                                legendgroup: 'high-entropy-correct'
+                            });
+                        }
+                        // ② Large blue triangle for chunk with highest total entropy
+                        if (typeof run.max_entropy_slice_index === 'number' &&
+                            run.max_entropy_slice_index >= 0 &&
+                            run.max_entropy_slice_index < run.tokens.length) {
+                            const mx = run.tokens[run.max_entropy_slice_index];
+                            const my = run.neuron_counts[run.max_entropy_slice_index];
+                            traces.push({
+                                x: [mx],
+                                y: [my],
+                                mode: 'markers',
+                                name: 'Max-entropy chunk (Correct)',
+                                marker: {
+                                    symbol: 'triangle-up',
+                                    size: 14,
+                                    color: 'rgba(0, 0, 255, 1)',
+                                    line: { color: 'black', width: 1.5 }
+                                },
+                                hovertemplate: '<b>Max-entropy chunk</b><br>Token Position: %{x}<br>Neurons: %{y}<extra></extra>',
+                                showlegend: (idx === 0),
+                                legendgroup: 'max-entropy-correct'
+                            });
+                        }
+                    }
+                });
+            }
+
+            // === HMM Segmentation Overlay ===
+            if (showHMM) {
+                const collections = {
+                    nc: { x: [], y: [] },  // neuron explore - correct
+                    ni: { x: [], y: [] },  // neuron explore - incorrect
+                    ec: { x: [], y: [] },  // entropy explore - correct
+                    ei: { x: [], y: [] },  // entropy explore - incorrect
+                };
+
+                function collectHMM(runs, correct) {
+                    if (!runs) return;
+                    const nk = correct ? 'nc' : 'ni';
+                    const ek = correct ? 'ec' : 'ei';
+                    runs.forEach(run => {
+                        if (run.hmm_neuron_explore) {
+                            for (let i = 0; i < run.tokens.length; i++) {
+                                if (run.hmm_neuron_explore[i]) {
+                                    collections[nk].x.push(run.tokens[i]);
+                                    collections[nk].y.push(run.neuron_counts[i]);
+                                }
+                            }
+                        }
+                        if (run.hmm_entropy_explore && run.slice_entropy_sums) {
+                            const cumEnt = cumulativeSum(run.slice_entropy_sums);
+                            for (let i = 0; i < run.tokens.length; i++) {
+                                if (run.hmm_entropy_explore[i]) {
+                                    collections[ek].x.push(run.tokens[i]);
+                                    collections[ek].y.push(cumEnt[i]);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if (showCorrect) collectHMM(data.correct_runs, true);
+                if (showIncorrect) collectHMM(data.incorrect_runs, false);
+
+                const hmmConfigs = [
+                    { key: 'nc', name: 'HMM Explore: Neuron (Correct)',  color: 'rgba(255, 165, 0, 0.7)',  group: 'hmm-neuron-correct' },
+                    { key: 'ni', name: 'HMM Explore: Neuron (Incorrect)', color: 'rgba(255, 80, 80, 0.7)',  group: 'hmm-neuron-incorrect' },
+                    { key: 'ec', name: 'HMM Explore: Entropy (Correct)',  color: 'rgba(138, 43, 226, 0.7)', group: 'hmm-entropy-correct',  yaxis: 'y2' },
+                    { key: 'ei', name: 'HMM Explore: Entropy (Incorrect)', color: 'rgba(219, 112, 147, 0.7)', group: 'hmm-entropy-incorrect', yaxis: 'y2' },
+                ];
+
+                hmmConfigs.forEach(cfg => {
+                    const d = collections[cfg.key];
+                    if (d.x.length > 0) {
+                        const t = {
+                            x: d.x,
+                            y: d.y,
+                            mode: 'markers',
+                            name: cfg.name,
+                            marker: { symbol: 'diamond', size: 5, color: cfg.color, line: { width: 0 } },
+                            legendgroup: cfg.group,
+                            showlegend: true,
+                            hovertemplate: `<b>${cfg.name}</b><br>Token: %{x}<br>Value: %{y:.1f}<extra></extra>`,
+                        };
+                        if (cfg.yaxis) t.yaxis = cfg.yaxis;
+                        traces.push(t);
+                    }
+                });
+            }
+
+            // Add pearl marker (initially at position 0)
+            if (currentRunData && currentRunData.tokens.length > 0) {
+                pearlPosition = 0;
+                pearlTrace = {
+                    x: [currentRunData.tokens[pearlPosition]],
+                    y: [currentRunData.neuron_counts[pearlPosition]],
+                    mode: 'markers',
+                    name: 'Pearl',
+                    marker: {
+                        symbol: 'circle',
+                        size: 12,
+                        color: 'gold',
+                        line: {
+                            color: 'black',
+                            width: 2
+                        }
+                    },
+                    showlegend: false,
+                    hovertemplate: '<b>Pearl Position</b><br>Token: %{x}<br>Neurons: %{y}<extra></extra>'
+                };
+                traces.push(pearlTrace);
+
+                // Update token info for initial pearl position
+                updateTokenInfoForPearl();
+            }
+
+            const layout = {
+                title: {
+                    text: `Token-wise Neuron Activation: ${data.problem_id}`,
+                    font: { size: 20 }
+                },
+                xaxis: {
+                    title: 'Token Position (Slice ID)',
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)'
+                },
+                yaxis: {
+                    title: 'Cumulative Unique Neurons',
+                    showgrid: true,
+                    gridcolor: 'rgba(0, 0, 0, 0.1)'
+                },
+                yaxis2: {
+                    title: showEntropy ? 'Cumulative Entropy' : '',
+                    visible: showEntropy,
+                    overlaying: 'y',
+                    side: 'right',
+                    showgrid: false,
+                    titlefont: { color: '#888' },
+                    tickfont: { color: '#888' },
+                },
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {
+                    x: 1,
+                    y: 1,
+                    xanchor: 'right',
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    bordercolor: 'rgba(0, 0, 0, 0.3)',
+                    borderwidth: 1
+                },
+                height: 700,
+                margin: { t: 50, r: 80, b: 50, l: 70 }
+            };
+
+            const config = {
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['select2d', 'lasso2d'],
+                toImageButtonOptions: {
+                    format: 'png',
+                    filename: `activation_${data.problem_id}`,
+                    height: 1400,
+                    width: 1920,
+                    scale: 2
+                }
+            };
+
+            Plotly.newPlot('plot-container', traces, layout, config);
+
+            const plotDiv = document.getElementById('plot-container');
+
+            // Function to update token info based on pearl position
+            function updateTokenInfoForPearl() {
+                if (!currentRunData || pearlPosition >= currentRunData.tokens.length) return;
+
+                const sampleId = currentRunData.sample_id;
+                const tokenIdx = pearlPosition;
+                const neuronCount = currentRunData.neuron_counts[tokenIdx];
+
+                // Get token IDs for this position
+                let tokenIds = [];
+                if (currentRunData.token_ids && currentRunData.token_ids[tokenIdx]) {
+                    tokenIds = currentRunData.token_ids[tokenIdx];
+                }
+
+                // Update token display
+                document.getElementById('tokenSampleId').textContent = sampleId;
+                document.getElementById('tokenPosition').textContent = tokenIdx;
+                document.getElementById('tokenNeuronCount').textContent = neuronCount;
+                document.getElementById('tokenId').textContent = tokenIds.length > 0 ? tokenIds.join(', ') : 'N/A';
+
+                // === Update chunk entropy sum ===
+                if (currentRunData.slice_entropy_sums && currentRunData.slice_entropy_sums.length > tokenIdx) {
+                    const entSum = currentRunData.slice_entropy_sums[tokenIdx];
+                    document.getElementById('chunkEntropySum').textContent = entSum != null ? entSum.toFixed(4) : '-';
+                } else {
+                    document.getElementById('chunkEntropySum').textContent = '-';
+                }
+
+                // === Update top-5 high-entropy tokens ===
+                (function updateTop5() {
+                    const listEl = document.getElementById('topTokensList');
+                    listEl.innerHTML = '';
+                    if (!currentRunData.token_ids || !currentRunData.token_entropies) {
+                        listEl.innerHTML = '<li style="color:#999;">No entropy data available</li>';
+                        return;
+                    }
+                    const tids = (currentRunData.token_ids[tokenIdx] || []);
+                    const ents = (currentRunData.token_entropies[tokenIdx] || []);
+                    if (tids.length === 0 || ents.length === 0) {
+                        listEl.innerHTML = '<li style="color:#999;">No tokens in this chunk</li>';
+                        return;
+                    }
+
+                    // Create pairs and sort by entropy
+                    const pairs = tids.map((t, i) => ({ id: t, ent: ents[i] || 0 }));
+                    pairs.sort((a, b) => b.ent - a.ent);
+                    const top = pairs.slice(0, Math.min(5, pairs.length));
+
+                    // Cancel previous request to avoid duplicates
+                    if (top5AbortController) {
+                        try { top5AbortController.abort(); } catch(e){}
+                    }
+                    top5AbortController = new AbortController();
+
+                    // Decode top tokens
+                    if (top.length > 0) {
+                        fetch(BASE_URL + '/api/decode_tokens', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({token_ids: top.map(x => x.id)}),
+                            signal: top5AbortController.signal
+                        })
+                        .then(r => r.json())
+                        .then(resp => {
+                            listEl.innerHTML = ''; // Clear before adding new items
+                            if (resp && resp.success) {
+                                const tokens = resp.tokens || [];
+                                for (let i = 0; i < top.length; i++) {
+                                    const li = document.createElement('li');
+                                    const text = escapeHtml(tokens[i] || '');
+                                    li.innerHTML =
+                                        `<span style="font-family:monospace">[${top[i].id}]</span>` +
+                                        ` ⇒ <code>${text === '' ? '∅' : text}</code>` +
+                                        ` — entropy=${top[i].ent.toFixed(4)}`;
+                                    listEl.appendChild(li);
+                                }
+                            } else {
+                                // Fallback: just show IDs
+                                top.forEach(p => {
+                                    const li = document.createElement('li');
+                                    li.innerHTML = `Token [${p.id}] — entropy=${p.ent.toFixed(4)}`;
+                                    listEl.appendChild(li);
+                                });
+                            }
+                        })
+                        .catch(err => {
+                            if (err.name !== 'AbortError') {
+                                listEl.innerHTML = '';
+                                top.forEach(p => {
+                                    const li = document.createElement('li');
+                                    li.innerHTML = `Token [${p.id}] — entropy=${p.ent.toFixed(4)}`;
+                                    listEl.appendChild(li);
+                                });
+                            }
+                        });
+                    }
+                })();
+
+                // Show token IDs and decode them
+                if (tokenIds.length > 0) {
+                    document.getElementById('tokenText').textContent = `Token IDs: [${tokenIds.join(', ')}]`;
+
+                    // Call API to decode tokens
+                    fetch(BASE_URL + '/api/decode_tokens', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({token_ids: tokenIds})
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success && data.text) {
+                            document.getElementById('tokenText').innerHTML =
+                                `<div><strong>Text:</strong> ${data.text}</div>` +
+                                `<div style="margin-top: 5px; font-size: 12px; color: #666;">Token IDs: [${tokenIds.join(', ')}]</div>`;
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Failed to decode tokens:', err);
+                    });
+                } else {
+                    document.getElementById('tokenText').textContent = 'No token data available';
+                }
+            
+                // Also update full response panel with highlight
+                renderFullResponse(currentRunData, tokenIdx);
+}
+
+            // Function to update pearl position on the plot
+            function updatePearlPosition() {
+                if (!currentRunData || pearlPosition >= currentRunData.tokens.length) return;
+
+                const update = {
+                    x: [[currentRunData.tokens[pearlPosition]]],
+                    y: [[currentRunData.neuron_counts[pearlPosition]]]
+                };
+
+                // Find pearl trace index
+                const pearlTraceIndex = traces.length - 1; // Pearl is the last trace
+                Plotly.restyle('plot-container', update, [pearlTraceIndex]);
+
+                // Update token info
+                updateTokenInfoForPearl();
+            }
+
+            // Add click event handler to position pearl
+            plotDiv.on('plotly_click', function(eventData) {
+                const point = eventData.points[0];
+
+                // Check if this is a line trace (not a marker or the pearl itself)
+                if (point.data.mode === 'lines' && point.data.customdata) {
+                    // Switch to the clicked run
+                    currentRunData = point.data.customdata;
+                    pearlPosition = point.pointNumber;
+
+                    // Ensure position is within bounds
+                    if (pearlPosition >= currentRunData.tokens.length) {
+                        pearlPosition = currentRunData.tokens.length - 1;
+                    }
+
+                    updatePearlPosition();
+                    // Prepare full response for this run and highlight current slice
+                    renderFullResponse(currentRunData, pearlPosition);
+
+                }
+            });
+
+            // Remove any existing pearl keyboard handler
+            if (pearlKeyHandler) {
+                document.removeEventListener('keydown', pearlKeyHandler);
+            }
+
+            // Create new keyboard handler for pearl navigation
+            pearlKeyHandler = function(e) {
+                if (!currentRunData || currentRunData.tokens.length === 0) return;
+
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    if (pearlPosition > 0) {
+                        pearlPosition--;
+                        updatePearlPosition();
+                        console.log(`Pearl moved left: position ${pearlPosition}/${currentRunData.tokens.length - 1}, Token: ${currentRunData.tokens[pearlPosition]}`);
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    if (pearlPosition < currentRunData.tokens.length - 1) {
+                        pearlPosition++;
+                        updatePearlPosition();
+                        console.log(`Pearl moved right: position ${pearlPosition}/${currentRunData.tokens.length - 1}, Token: ${currentRunData.tokens[pearlPosition]}`);
+                    } else {
+                        console.log(`Pearl at end: position ${pearlPosition}/${currentRunData.tokens.length - 1}`);
+                    }
+                }
+            };
+
+            // Add the new handler
+            document.addEventListener('keydown', pearlKeyHandler);
+
+            // Remove hover event handlers since we're using pearl for token display
+            // (No hover updates to token info)
+        }
+
+        function loadStatistics(problemId) {
+            fetch(`${BASE_URL}/api/problem_stats/${encodeURIComponent(problemId)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.error) {
+                        document.getElementById('stat-correct').textContent = data.correct_runs;
+                        document.getElementById('stat-incorrect').textContent = data.incorrect_runs;
+                        document.getElementById('stat-total').textContent = data.total_runs;
+                        document.getElementById('stat-accuracy').textContent =
+                            `${(data.accuracy * 100).toFixed(1)}%`;
+                        document.getElementById('stats-panel').style.display = 'block';
+                    }
+                });
+        }
+
+        // Random problem button
+        document.getElementById('random-btn').addEventListener('click', () => {
+            if (problemIds.length > 0) {
+                const randomId = problemIds[Math.floor(Math.random() * problemIds.length)];
+                document.getElementById('problem-id').value = randomId;
+                visualizeProblem();
+            }
+        });
+
+        // Option changes trigger re-render
+        ['show-correct', 'show-incorrect', 'show-markers', 'show-pareto', 'pareto-method', 'show-hmm', 'show-entropy'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => {
+                if (currentProblemId) {
+                    visualizeProblem();
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.activeElement.id === 'problem-id') {
+                visualizeProblem();
+            } else if (e.key === 'Escape') {
+                document.getElementById('suggestions').style.display = 'none';
+            }
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                document.getElementById('suggestions').style.display = 'none';
+            }
+        });
+
+        function showMessage(message, type) {
+            const container = document.getElementById('message-container');
+            const className = type === 'error' ? 'error-message' : 'success-message';
+            container.innerHTML = `<div class="${className}">${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
