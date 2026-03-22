@@ -212,6 +212,18 @@ def analyze(cache_root: str,
             group_topk_policy: str = "none",   # "none" | "min" | "max" | "legacy-min" | "fixed:<K>"
             emit_index: bool = False,          # Output both index and run_id for debugging
             pos_window: Optional[str] = None,  # "lo-hi" in position units, or "all" for full sweep (NEW v4.1)
+            # ╔══════════════════════════════════════════════════════════════════╗
+            # ║  【改动点 A】 固定窗口粒度 —— 想换成 64 或 128 就改这里的默认值      ║
+            # ║                                                                  ║
+            # ║  当前语义：pos_window="0-2" 且 pos_size=32                       ║
+            # ║    → 实际覆盖 token [0, 64)                                      ║
+            # ║  若 pos_size=64：pos_window="0-2" → token [0, 128)              ║
+            # ║  若 pos_size=128：pos_window="0-1" → token [0, 128)             ║
+            # ║                                                                  ║
+            # ║  【自适应改法】：不传固定值，而是在调用 analyze() 前               ║
+            # ║  按每条链的实际长度动态计算 pos_size，再传入本函数。               ║
+            # ║  例：pos_size = 32 if chain_length < 500 else 64                ║
+            # ╚══════════════════════════════════════════════════════════════════╝
             pos_size: int = 32,                 # tokens per position (NEW v4.1)
             pos_max: Optional[int] = None,     # Optional: limit max position for "all" mode
             out_json: str = None,
@@ -264,6 +276,33 @@ def analyze(cache_root: str,
                 f"  路径: {meta_json_path}\n"
                 f"  提示: meta.json 格式可能不正确"
             )
+
+        # ┌──────────────────────────────────────────────────────────────────────┐
+        # │ 【查看 Chain-of-Thought 自然语言文本】                                 │
+        # │                                                                        │
+        # │ token_id → 自然语言文本，需要用 tokenizer 解码。步骤：                   │
+        # │                                                                        │
+        # │  # Step 1：加载 tokenizer（模型目录在 nad_config.json 里）              │
+        # │  from transformers import AutoTokenizer                                │
+        # │  tok = AutoTokenizer.from_pretrained(                                  │
+        # │      "/home/jovyan/public-ro/model/DeepSeek-R1-0528-Qwen3-8B"         │
+        # │  )                                                                     │
+        # │                                                                        │
+        # │  # Step 2：读 token_ids（某条推理链，sample_id = run_id）               │
+        # │  from nad.core.views.reader import CacheReader                         │
+        # │  reader = CacheReader(cache_root)                                      │
+        # │  tv = reader.get_token_view(run_id=0)   # 第0条推理链                  │
+        # │  token_ids = tv.token_ids               # int32 数组                  │
+        # │                                                                        │
+        # │  # Step 3：解码为文字                                                  │
+        # │  text = tok.decode(token_ids, skip_special_tokens=False)              │
+        # │  print(text)   # ← 完整的 chain-of-thought 文本                       │
+        # │                                                                        │
+        # │  # 也可以逐 token 查看置信度：                                          │
+        # │  for i, (tid, conf) in enumerate(zip(tv.token_ids, tv.tok_conf)):     │
+        # │      word = tok.decode([tid])                                          │
+        # │      print(f"[{i:4d}] {word!r:20s}  conf={conf:.4f}")                │
+        # └──────────────────────────────────────────────────────────────────────┘
 
         # 按 problem_id 分组，收集 sample_id (run_ids)
         groups: Dict[str, List[int]] = {}
@@ -375,6 +414,34 @@ def analyze(cache_root: str,
                     else:
                         vsp = vspec_default
 
+                    # ┌──────────────────────────────────────────────────────────────────┐
+                    # │ 【改动点 B】 实际窗口查询 —— 自适应 pos_size 在这里生效           │
+                    # │                                                                    │
+                    # │ get_window_view 内部换算：                                         │
+                    # │   tok_lo = pos_lo * pos_size                                      │
+                    # │   tok_hi = pos_hi * pos_size                                      │
+                    # │ 然后从 rows/ bank 找所有与 [tok_lo, tok_hi) 重叠的行。             │
+                    # │                                                                    │
+                    # │ 若要自适应，可在此处将 pos_size 替换为 per-run 的动态值，例如：     │
+                    # │   token_count = int(reader.rows_token_row_ptr[...])               │
+                    # │   adaptive_ps = 32 if token_count < 500 else 64                  │
+                    # │   v = reader.get_window_view(rid, pos_lo, pos_hi, adaptive_ps...) │
+                    # │                                                                    │
+                    # │ 【查看激活神经元】────────────────────────────────────────────     │
+                    # │   v = reader.get_window_view(...)   ← RunView 对象               │
+                    # │   v.keys    : uint32 数组，每个值 = (layer<<16)|neuron_id         │
+                    # │   v.weights : float 数组，对应激活强度                            │
+                    # │                                                                    │
+                    # │   解码方式（一行）：                                               │
+                    # │     layer_ids  = v.keys >> 16          # 哪一层 Transformer       │
+                    # │     neuron_ids = v.keys & 0xFFFF        # 该层第几个神经元         │
+                    # │                                                                    │
+                    # │   示例（打印 top-10 激活）：                                       │
+                    # │     top10 = np.argsort(v.weights)[-10:][::-1]                    │
+                    # │     for i in top10:                                               │
+                    # │         print(f"L{v.keys[i]>>16} N{v.keys[i]&0xFFFF}",           │
+                    # │               f"w={v.weights[i]:.3f}")                           │
+                    # └──────────────────────────────────────────────────────────────────┘
                     # Use window query if pos_window is specified
                     if pos_window is not None:
                         v = reader.get_window_view(rid, pos_lo, pos_hi, pos_size, vsp,

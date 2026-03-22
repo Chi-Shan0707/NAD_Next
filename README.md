@@ -1,5 +1,117 @@
 # NAD Next — Neuron Activation Distribution
 
+[English](#english) | [中文](#中文)
+
+---
+
+## 中文
+
+神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 10 种选择算法为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
+
+### 快速开始
+
+```bash
+bash cookbook/00_setup/install.sh                          # 安装依赖
+bash cookbook/00_setup/verify.sh                            # 所有检查应显示绿色
+bash cookbook/01_cache_browser/cache_browser.sh --background  # 在 :5003 浏览缓存
+bash cookbook/02_visualization/visualization.sh \
+  MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime24/cache_neuron_output_1_act_no_rms_20250902_025610 \
+  --background                                             # 在 :5002 探索单个缓存
+bash cookbook/03_batch_analyze/batch_analyze.sh -y          # 分析所有缓存
+bash cookbook/05_deepconf_analysis/deepconf_analysis.sh standard --compare-all  # deepconf 分析
+```
+
+### 实验手册（Cookbook）
+
+所有脚本位于 [`cookbook/`](cookbook/)，需从**仓库根目录**运行。
+
+| 章节 | 说明 |
+|------|------|
+| [00 — 环境配置](cookbook/00_setup/README.md) | 安装 Python 依赖，验证环境（Python 3.9+、包、MUI_HUB 软链接） |
+| [01 — 缓存浏览器](cookbook/01_cache_browser/README.md) | Web UI，端口 5003，展示所有缓存的数据集名、样本数、准确率、温度、构建日期 |
+| [02 — 可视化](cookbook/02_visualization/README.md) | 交互式单缓存探索器，端口 5002（Flask + Plotly），浏览激活模式、token 置信度、选择器表现 |
+| [03 — 批量分析](cookbook/03_batch_analyze/README.md) | 对 `MUI_HUB/cache/` 下所有缓存并行分析，生成各选择器的精度结果 |
+| [04 — 位置消融](cookbook/04_position_ablation/README.md) | 跨 6 个位置窗口（0-1、0-2、0-8、0-32、0-128、0-512）消融分析 |
+| [05 — DeepConf 分析](cookbook/05_deepconf_analysis/README.md) | 基于 `tok_conf` 和 `tok_neg_entropy` 的 token 置信度选择器，四种模式 |
+
+### CoT 查看器 — 思维链浏览器
+
+轻量级 Web UI，端口 5002，用于阅读解码后的推理链，查看每个 token 的置信度、熵、Gini 系数、自我确定性和对数概率。
+
+```bash
+/home/jovyan/work/NAD_Next/.venv/bin/python /home/jovyan/work/NAD_Next/cot_viewer/app.py
+```
+
+无需参数，自动发现 `MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/` 下的所有数据集。
+
+### 架构
+
+**数据流水线：**
+
+```
+NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
+                                       |
+                                  nad.cli analyze --> 选择结果 JSON
+                                       |
+                                  nad.cli accuracy --> 精度报告
+                                       |
+                                  rank_selectors.py --> 跨任务排名
+```
+
+### 选择器
+
+内置 10 种选择器算法，从每个题目组中挑选最具代表性的样本：
+
+| 选择器 | 说明 |
+|--------|------|
+| `min-activation` | 总神经元激活数最少 |
+| `max-activation` | 总神经元激活数最多 |
+| `medoid` | 组的几何中心（Jaccard 距离） |
+| `knn-medoid` | 限于 K 个最近邻的 medoid |
+| `dbscan-medoid` | 最密 DBSCAN 簇的 medoid |
+| `consensus-min` | 共识投票分数的最小值 |
+| `consensus-max` | 共识投票分数的最大值 |
+| `deepconf` | 基于 token 置信度（需要 `token_data/`） |
+| `con64@` | 前 64 个运行的共识（仅完整序列） |
+| `avg64@` | 前 64 个运行的平均分（仅完整序列） |
+
+### CLI 参考
+
+```bash
+# 分析
+python3 -m nad.cli analyze \
+  --cache-root <cache_path> \
+  --distance ja --selectors all \
+  --distance-threads 16 \
+  --out result.json
+
+# 精度评估
+python3 -m nad.cli accuracy \
+  --selection result.json \
+  --cache-root <cache_path> \
+  --out accuracy.json
+
+# 跨任务排名
+python3 scripts/rank_selectors.py \
+  --results-dir ./result/all_model_TIMESTAMP \
+  --no-bootstrap --csv --json
+```
+
+### 常见问题
+
+| 问题 | 解决方法 |
+|------|---------|
+| 找不到 `meta.json`（回退 n=100） | 确保每个缓存中存在 `meta.json` |
+| 距离计算慢 | 对大集合使用 `roaring` 后端 |
+| 缺少 Row-CSR Bank | 用 `--row-bank` 重建缓存 |
+| DeepConf 指标未找到（ValueError） | 检查 `token_data/` 是否存在；使用与可用键匹配的 `--metric` |
+| 端口 5002 已占用 | `bash cookbook/02_visualization/visualization.sh --kill` |
+| 端口 5003 已占用 | `bash cookbook/01_cache_browser/cache_browser.sh --kill` |
+
+---
+
+## English
+
 A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies 10 selection algorithms to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 
 ---
@@ -106,6 +218,18 @@ bash cookbook/05_deepconf_analysis/deepconf_analysis.sh custom \
 
 > [Chapter README](cookbook/05_deepconf_analysis/README.md) for metric semantics and all options.
 
+### CoT Viewer — Chain-of-Thought Browser
+
+Lightweight web UI at **port 5002** for reading decoded reasoning chains and inspecting per-token metrics (confidence, entropy, Gini, self-certainty, log-probability). Browse all datasets, select a problem and run, read the full chain-of-thought, and click on 32-token slices to see token-level details.
+
+```bash
+/home/jovyan/work/NAD_Next/.venv/bin/python /home/jovyan/work/NAD_Next/cot_viewer/app.py
+```
+
+No arguments needed — auto-discovers all datasets under `MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/`.
+
+> [Full documentation](cot_viewer/README.md) for API endpoints and architecture details.
+
 ---
 
 ## Architecture
@@ -131,6 +255,7 @@ NAD_Next/
   scripts/                     # rank_selectors.py, plot_*.py
   plugins/                     # kink_selector.py (reference custom selector)
   tools/                       # Ground truth generation, cache browser server
+  cot_viewer/                  # Chain-of-thought browser (Flask, port 5002)
   minimal_visualization_next/  # Flask + Plotly visualization server
 ```
 
