@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoT Viewer</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; color: #222; }
+#controls {
+  display: flex; gap: 12px; padding: 12px 16px;
+  background: #fff; border-bottom: 1px solid #ddd; align-items: center; flex-wrap: wrap;
+}
+#controls label { font-size: 13px; font-weight: 600; color: #555; }
+#controls select {
+  padding: 4px 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;
+  max-width: 340px;
+}
+.ctrl-group { display: flex; align-items: center; gap: 4px; }
+#status { font-size: 12px; color: #888; margin-left: auto; }
+
+#cot-panel {
+  margin: 12px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+  max-height: 55vh; overflow-y: auto; padding: 16px;
+  font-family: 'SF Mono', 'Consolas', 'Menlo', monospace; font-size: 13px;
+  line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+}
+#cot-panel .slice {
+  cursor: pointer; border-bottom: 1px dashed #ccc; transition: background 0.15s;
+}
+#cot-panel .slice:hover { background: #e8f4fd; }
+#cot-panel .slice.active { background: #cce5ff; }
+
+#detail-panel {
+  margin: 0 16px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+  max-height: 35vh; overflow-y: auto;
+}
+#detail-header {
+  padding: 10px 16px; font-weight: 600; font-size: 14px;
+  border-bottom: 1px solid #eee; background: #fafafa; border-radius: 6px 6px 0 0;
+  position: sticky; top: 0;
+}
+#detail-panel table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+#detail-panel th {
+  text-align: left; padding: 6px 10px; border-bottom: 2px solid #ddd;
+  background: #fafafa; position: sticky; top: 0; font-size: 12px; color: #555;
+}
+#detail-panel td {
+  padding: 5px 10px; border-bottom: 1px solid #f0f0f0;
+  font-family: 'SF Mono', 'Consolas', monospace; font-size: 12px;
+}
+#detail-panel tr:hover td { background: #f8f8f8; }
+.tok-text { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ent-lo { background: #d4edda; }
+.ent-hi { background: #f8d7da; }
+.empty-msg { padding: 24px; text-align: center; color: #aaa; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <div class="ctrl-group">
+    <label>Dataset</label>
+    <select id="sel-dataset"><option>Loading...</option></select>
+  </div>
+  <div class="ctrl-group">
+    <label>Problem</label>
+    <select id="sel-problem"><option>--</option></select>
+  </div>
+  <div class="ctrl-group">
+    <label>Run</label>
+    <select id="sel-run"><option>--</option></select>
+  </div>
+  <span id="status"></span>
+</div>
+
+<div id="cot-panel"><div class="empty-msg">Select a dataset, problem, and run to view the chain-of-thought.</div></div>
+
+<div id="detail-panel">
+  <div id="detail-header">Token Detail</div>
+  <div id="detail-body"><div class="empty-msg">Click a slice above to inspect per-token metrics.</div></div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const selDS = $('#sel-dataset'), selProb = $('#sel-problem'), selRun = $('#sel-run');
+const cotPanel = $('#cot-panel'), detailBody = $('#detail-body'), detailHeader = $('#detail-header');
+const status = $('#status');
+
+let currentCache = null;
+let currentSampleId = null;
+
+// Derive base URL to support WebVPN proxies: absolute paths like /api/... break
+// because the browser resolves them against the WebVPN origin, not the proxied app.
+// Using BASE ensures the proxy prefix is preserved in all API requests.
+const BASE = (function() {
+  const href = window.location.href.split('?')[0];
+  return href.endsWith('/') ? href : href + '/';
+})();
+
+async function api(path) {
+  // Strip leading '/' so the path is relative, then prepend BASE
+  const rel = path.replace(/^\//, '');
+  const sep = rel.includes('?') ? '&' : '?';
+  const url = currentCache ? BASE + rel + sep + 'cache=' + encodeURIComponent(currentCache) : BASE + rel;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+  return r.json();
+}
+
+function setStatus(msg) { status.textContent = msg; }
+
+// -- Datasets ----------------------------------------------------------------
+async function loadDatasets() {
+  const ds = await api('/api/datasets');
+  selDS.innerHTML = '';
+  for (const [name, path] of Object.entries(ds).sort()) {
+    const o = document.createElement('option');
+    o.value = path; o.textContent = name;
+    selDS.appendChild(o);
+  }
+  if (selDS.options.length) {
+    currentCache = selDS.value;
+    loadProblems();
+  }
+}
+
+// -- Problems ----------------------------------------------------------------
+async function loadProblems() {
+  currentCache = selDS.value;
+  setStatus('Loading problems...');
+  const probs = await api('/api/problems');
+  selProb.innerHTML = '';
+  for (const p of probs) {
+    const o = document.createElement('option');
+    o.value = p.problem_id;
+    o.textContent = `#${p.problem_id}  (${p.num_runs} runs, ${p.accuracy}%)`;
+    selProb.appendChild(o);
+  }
+  setStatus(`${probs.length} problems`);
+  if (selProb.options.length) loadRuns();
+}
+
+// -- Runs --------------------------------------------------------------------
+async function loadRuns() {
+  const pid = selProb.value;
+  setStatus('Loading runs...');
+  const runs = await api('/api/runs/' + encodeURIComponent(pid));
+  selRun.innerHTML = '';
+  for (const r of runs) {
+    const o = document.createElement('option');
+    o.value = r.sample_id;
+    const mark = r.is_correct === true ? ' \u2713' : r.is_correct === false ? ' \u2717' : '';
+    o.textContent = `Run ${r.run_index}${mark}`;
+    selRun.appendChild(o);
+  }
+  setStatus(`${runs.length} runs`);
+  if (selRun.options.length) loadChain();
+}
+
+// -- Chain -------------------------------------------------------------------
+async function loadChain() {
+  currentSampleId = parseInt(selRun.value, 10);
+  setStatus('Loading chain...');
+  cotPanel.innerHTML = '';
+  detailBody.innerHTML = '<div class="empty-msg">Click a slice above to inspect per-token metrics.</div>';
+  detailHeader.textContent = 'Token Detail';
+
+  const data = await api('/api/chain/' + currentSampleId);
+  if (!data.slices || data.slices.length === 0) {
+    cotPanel.innerHTML = '<div class="empty-msg">No chain data available.</div>';
+    setStatus('No data');
+    return;
+  }
+
+  for (const s of data.slices) {
+    const span = document.createElement('span');
+    span.className = 'slice';
+    span.dataset.idx = s.idx;
+    span.textContent = s.text;
+    span.title = `Slice ${s.idx} (tokens ${s.tok_start}\u2013${s.tok_end - 1})`;
+    span.addEventListener('click', () => onSliceClick(span, s.idx));
+    cotPanel.appendChild(span);
+  }
+  setStatus(`${data.num_slices} slices`);
+}
+
+// -- Slice detail ------------------------------------------------------------
+async function onSliceClick(el, idx) {
+  cotPanel.querySelectorAll('.slice.active').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  detailHeader.textContent = `Slice ${idx} Detail`;
+  detailBody.innerHTML = '<div class="empty-msg">Loading...</div>';
+
+  const data = await api('/api/slice/' + currentSampleId + '/' + idx);
+  if (!data.tokens || data.tokens.length === 0) {
+    detailBody.innerHTML = '<div class="empty-msg">No token data.</div>';
+    return;
+  }
+
+  let html = '<table><thead><tr>';
+  html += '<th>Pos</th><th>ID</th><th>Token</th><th>Conf</th><th>Entropy</th><th>Gini</th><th>SelfCert</th><th>LogProb</th>';
+  html += '</tr></thead><tbody>';
+  for (const t of data.tokens) {
+    const ent = t.entropy;
+    let entCls = '';
+    if (ent !== null && ent < 0.3) entCls = 'ent-lo';
+    else if (ent !== null && ent > 2.0) entCls = 'ent-hi';
+    const esc = t.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    html += '<tr>';
+    html += `<td>${t.pos}</td>`;
+    html += `<td>${t.token_id}</td>`;
+    html += `<td class="tok-text" title="${esc}">${esc}</td>`;
+    html += `<td>${fmt(t.conf)}</td>`;
+    html += `<td class="${entCls}">${fmt(ent)}</td>`;
+    html += `<td>${fmt(t.gini)}</td>`;
+    html += `<td>${fmt(t.selfcert)}</td>`;
+    html += `<td>${fmt(t.logprob)}</td>`;
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  detailBody.innerHTML = html;
+}
+
+function fmt(v) {
+  if (v === null || v === undefined) return '\u2014';
+  return Number(v).toFixed(4);
+}
+
+// -- Events ------------------------------------------------------------------
+selDS.addEventListener('change', loadProblems);
+selProb.addEventListener('change', loadRuns);
+selRun.addEventListener('change', loadChain);
+
+loadDatasets();
+</script>
+</body>
+</html>
