@@ -271,6 +271,81 @@ class CacheReader:
             tok_logprob=maybe_slice(self.tok_logprob)
         )
 
+    def get_smart_slice_grouping(
+        self,
+        run_id: int,
+        boundary_token_ids: np.ndarray,
+        allowed_group_sizes: tuple = (1, 2, 3, 4),
+    ) -> np.ndarray:
+        """
+        Compute an optimal grouping of slices for a run by aligning group
+        boundaries to natural language boundary tokens.
+
+        Uses a DP algorithm that merges consecutive 32-token slices into
+        super-slices of 1–4 slices (32–128 tokens) so that group start
+        boundaries fall as close as possible to boundary tokens such as
+        newlines, sentence-ending punctuation, etc.
+
+        Args:
+            run_id: The run/sample ID.
+            boundary_token_ids: 1-D int32 array of token IDs that count as
+                natural-language boundaries (e.g. the IDs for \\n, ., ?, :).
+            allowed_group_sizes: Tuple of allowed sizes (in slices) for a
+                single group.  Defaults to (1, 2, 3, 4).
+
+        Returns:
+            int32 array of shape (S,) where S is the number of slices for
+            this run.  group_ids[i] is the 0-indexed group number for slice i.
+
+        Raises:
+            ValueError: If the rows/ bank or token data are unavailable, or
+                if the DP cannot tile S with the given group sizes.
+        """
+        from nad.ops.smart_slice import smart_slice_grouping  # lazy import
+
+        rows_srp = self.rows_sample_row_ptr
+        rows_trp = self.rows_token_row_ptr
+        if rows_srp is None or rows_trp is None:
+            raise ValueError(
+                "rows/ bank data (rows_sample_row_ptr / rows_token_row_ptr) "
+                "is not available in this cache.  The cache must be built "
+                "with v4.1+ schema to use get_smart_slice_grouping()."
+            )
+
+        token_ids_arr = self.token_ids
+        token_rp = self.token_row_ptr
+        if token_ids_arr is None or token_rp is None:
+            raise ValueError(
+                "Token data (token_ids / token_row_ptr) is not available "
+                "in this cache."
+            )
+
+        if run_id < 0 or run_id >= len(rows_srp) - 1:
+            raise ValueError(
+                f"run_id {run_id} out of range [0, {len(rows_srp) - 2}]"
+            )
+
+        row_start = int(rows_srp[run_id])
+        row_end = int(rows_srp[run_id + 1])
+        base = int(rows_trp[row_start])
+        # Local (0-based) token CSR pointer for this run's slices; shape (S+1,)
+        slice_token_row_ptr = (
+            np.asarray(rows_trp[row_start : row_end + 1], dtype=np.int64) - base
+        )
+
+        tok_a = int(token_rp[run_id])
+        tok_b = int(token_rp[run_id + 1])
+        # Force a copy out of the mmap so isin() works correctly
+        run_token_ids = np.asarray(token_ids_arr[tok_a:tok_b], dtype=np.int32)
+
+        boundary_token_ids = np.asarray(boundary_token_ids, dtype=np.int32)
+        return smart_slice_grouping(
+            run_token_ids,
+            slice_token_row_ptr,
+            boundary_token_ids,
+            allowed_group_sizes,
+        )
+
     # -- Row-CSR Bank properties (optional, v4.1+)
     @property
     def rows_sample_row_ptr(self) -> Optional[np.ndarray]:
