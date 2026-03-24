@@ -13,8 +13,9 @@ from typing import Dict
 from .core.views.reader import CacheReader
 from .ops.accuracy import load_correctness_map
 from .ops.uniques import extract_tokenwise_counts
+from .ops.smart_slice import smart_slice_grouping
 
-__all__ = ['open_cache', 'load_correctness_map', 'extract_tokenwise_counts']
+__all__ = ['open_cache', 'load_correctness_map', 'extract_tokenwise_counts', 'smart_slice_grouping']
 
 def open_cache(cache_root: str) -> CacheReader:
     """

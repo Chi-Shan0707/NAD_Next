@@ -29,6 +29,7 @@ READERS: dict[str, CacheReader] = {}
 EVAL_REPORTS: dict[str, dict] = {}
 META_CACHE: dict[str, dict] = {}
 TOKENIZER = None
+BOUNDARY_IDS: np.ndarray = None    # token IDs for \n . ? : — set at startup
 
 
 def _scan_datasets():
@@ -79,6 +80,59 @@ def _require_cache() -> str:
     if not cache or cache not in DATASETS.values():
         return None
     return cache
+
+
+def _compute_boundary_ids(tokenizer) -> np.ndarray:
+    """Encode boundary characters and return the union of their token IDs."""
+    ids: set[int] = set()
+    for ch in ['\n', '.', '?', ':']:
+        ids.update(tokenizer.encode(ch, add_special_tokens=False))
+    return np.array(sorted(ids), dtype=np.int32)
+
+
+# ---------------------------------------------------------------------------
+# Slice-building helpers
+# ---------------------------------------------------------------------------
+
+def _build_fixed_slices(offsets: list[int], token_ids) -> list[dict]:
+    """One output slice per raw row (original fixed-32-token behaviour)."""
+    slices = []
+    for i in range(len(offsets) - 1):
+        tok_start = offsets[i]
+        tok_end = offsets[i + 1]
+        if tok_start >= len(token_ids):
+            break
+        text = TOKENIZER.decode(token_ids[tok_start:tok_end].tolist(), skip_special_tokens=False)
+        slices.append({"idx": i, "text": text, "tok_start": tok_start, "tok_end": tok_end})
+    return slices
+
+
+def _build_smart_slices(offsets: list[int], token_ids) -> list[dict]:
+    """Merge raw rows into smart super-slices aligned to language boundaries."""
+    from nad.ops.smart_slice import smart_slice_grouping
+
+    offs_arr = np.array(offsets, dtype=np.int64)
+    tok_arr = np.asarray(token_ids, dtype=np.int32)
+    grouping = smart_slice_grouping(tok_arr, offs_arr, BOUNDARY_IDS)
+
+    # Collapse consecutive raw rows that share the same group ID
+    group_ranges: dict[int, dict] = {}
+    for raw_i, gid in enumerate(grouping.tolist()):
+        if gid not in group_ranges:
+            group_ranges[gid] = {"tok_start": offsets[raw_i], "tok_end": offsets[raw_i + 1]}
+        else:
+            group_ranges[gid]["tok_end"] = offsets[raw_i + 1]
+
+    slices = []
+    for out_idx, gid in enumerate(sorted(group_ranges)):
+        g = group_ranges[gid]
+        tok_start = g["tok_start"]
+        tok_end = min(g["tok_end"], len(token_ids))
+        if tok_start >= len(token_ids):
+            break
+        text = TOKENIZER.decode(token_ids[tok_start:tok_end].tolist(), skip_special_tokens=False)
+        slices.append({"idx": out_idx, "text": text, "tok_start": tok_start, "tok_end": tok_end})
+    return slices
 
 
 # ---------------------------------------------------------------------------
@@ -168,6 +222,8 @@ def api_chain(sample_id: int):
     if not cache:
         return jsonify({"error": "invalid cache"}), 400
 
+    mode = request.args.get("mode", "fixed")  # "fixed" | "smart"
+
     reader = _get_reader(cache)
     loader = _get_loader(cache)
 
@@ -177,38 +233,23 @@ def api_chain(sample_id: int):
 
     token_ids = tv.token_ids
 
-    # Compute slice boundaries from rows_token_row_ptr.
-    # Row 0 is the prompt row (skipped by get_token_view), so response
-    # slices start at row_lo+1.
+    # Compute per-row token boundaries (response rows only)
     row_lo, row_hi = loader.get_row_range_for_sample(sample_id)
     rows_trp = reader.rows_token_row_ptr
     if rows_trp is not None:
-        # base = start of response tokens in global array
         base = int(rows_trp[row_lo + 1])
-        # Slice boundaries: rows row_lo+1 .. row_hi (inclusive)
-        offsets = []
-        for r in range(row_lo + 1, row_hi + 2):
-            offsets.append(int(rows_trp[r]) - base)
-        # Clamp to actual token count
-        offsets = [min(o, len(token_ids)) for o in offsets]
+        offsets = [min(int(rows_trp[r]) - base, len(token_ids))
+                   for r in range(row_lo + 1, row_hi + 2)]
     else:
-        # Fallback: treat entire response as one slice
         offsets = [0, len(token_ids)]
 
-    slices = []
-    for i in range(len(offsets) - 1):
-        tok_start = offsets[i]
-        tok_end = offsets[i + 1]
-        if tok_start >= len(token_ids):
-            break
-        ids = token_ids[tok_start:tok_end].tolist()
-        text = TOKENIZER.decode(ids, skip_special_tokens=False)
-        slices.append({
-            "idx": i,
-            "text": text,
-            "tok_start": tok_start,
-            "tok_end": tok_end,
-        })
+    if mode == "smart" and BOUNDARY_IDS is not None and rows_trp is not None and len(offsets) > 1:
+        try:
+            slices = _build_smart_slices(offsets, token_ids)
+        except Exception:
+            slices = _build_fixed_slices(offsets, token_ids)
+    else:
+        slices = _build_fixed_slices(offsets, token_ids)
 
     return jsonify({"num_slices": len(slices), "slices": slices})
 
@@ -226,21 +267,27 @@ def api_slice(sample_id: int, slice_idx: int):
     if tv.token_ids is None:
         return jsonify({"error": "no token data"}), 404
 
-    # Recompute slice boundaries (same logic as /api/chain)
-    row_lo, row_hi = loader.get_row_range_for_sample(sample_id)
-    rows_trp = reader.rows_token_row_ptr
-    if rows_trp is None:
-        return jsonify({"error": "no row data"}), 404
+    # Optional direct token-range override (used by smart mode super-slices)
+    tok_start_param = request.args.get("tok_start")
+    tok_end_param = request.args.get("tok_end")
+    if tok_start_param is not None and tok_end_param is not None:
+        tok_start = int(tok_start_param)
+        tok_end = min(int(tok_end_param), len(tv.token_ids))
+    else:
+        # Row-based lookup for fixed mode
+        rows_trp = reader.rows_token_row_ptr
+        if rows_trp is None:
+            return jsonify({"error": "no row data"}), 404
 
-    base = int(rows_trp[row_lo + 1])
-    num_slices = row_hi - row_lo  # excluding prompt row
-    if slice_idx < 0 or slice_idx >= num_slices:
-        return jsonify({"error": "slice_idx out of range"}), 400
+        row_lo, row_hi = loader.get_row_range_for_sample(sample_id)
+        base = int(rows_trp[row_lo + 1])
+        num_slices = row_hi - row_lo
+        if slice_idx < 0 or slice_idx >= num_slices:
+            return jsonify({"error": "slice_idx out of range"}), 400
 
-    row = row_lo + 1 + slice_idx
-    tok_start = int(rows_trp[row]) - base
-    tok_end = int(rows_trp[row + 1]) - base
-    tok_end = min(tok_end, len(tv.token_ids))
+        row = row_lo + 1 + slice_idx
+        tok_start = int(rows_trp[row]) - base
+        tok_end = min(int(rows_trp[row + 1]) - base, len(tv.token_ids))
 
     tokens = []
     for pos in range(tok_start, tok_end):
@@ -283,5 +330,8 @@ if __name__ == "__main__":
     print("Loading tokenizer...")
     TOKENIZER = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
     print("Tokenizer loaded.")
+
+    BOUNDARY_IDS = _compute_boundary_ids(TOKENIZER)
+    print(f"Boundary token IDs: {BOUNDARY_IDS.tolist()}")
 
     app.run(host="0.0.0.0", port=5002, debug=False)
