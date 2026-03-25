@@ -315,3 +315,177 @@ smoothed_labels = median_filter(raw_labels, size=3)
 | **噪声分离** | SLDS 观测模型 | **不借。** 激活数据无测量噪声，不需要这层 |
 
 > 第三点是关键的"不借"——激活数据是精确的，不存在关键点抖动问题。MoSeq 的整个观测层是为了解决一个我们没有的问题。**知道什么不该借，和知道什么该借一样重要。**
+
+---
+
+## 20260325 — 神经元激活的"微分"与 Evaluate 方法设计
+
+### 五、神经元激活集合的动态特征（"微分"怎么算？）
+
+Entropy、confidence 是标量，差分自然有意义。但神经元激活是**稀疏集合**——集合不能相减。解决方式：把集合动态翻译成标量动态。
+
+#### 5.1 集合的"导数"：变化率指标
+
+```python
+A = activated_neurons[t-1]   # 前一个 slice 的激活神经元集合
+B = activated_neurons[t]     # 当前 slice
+
+# --- 激活模式的"导数" ---
+
+# 1. 整体变化幅度 = Jaccard 距离（已有 DistanceEngine）
+change_magnitude = 1 - |A ∩ B| / |A ∪ B|     # 0=没变，1=完全换了一批
+
+# 2. 方向性：新增 vs 消失
+neurons_gained = |B \ A| / |B|   # 新出现的占比（"探索新区域"）
+neurons_lost   = |A \ B| / |A|   # 消失的占比（"放弃旧区域"）
+
+# 3. 规模变化
+size_delta = |B| - |A|           # 激活规模在扩张还是收缩
+```
+
+**关键洞见**：`change_magnitude`（Jaccard 距离）就是激活空间里的"速度"。连续 slice 串起来就是速度曲线：
+
+```
+slice:   1     2     3     4     5     6     7     8
+Δ_ja:   ---  0.8   0.7   0.6   0.2   0.1   0.1   0.3
+         exploration（剧烈变化）→ exploitation（稳定）→ 又开始变
+```
+
+#### 5.2 二阶动态：加速度
+
+对速度曲线再求差分：
+
+```python
+velocity_t     = jaccard_dist(slice[t-1], slice[t])
+acceleration_t = velocity_t - velocity_{t-1}
+
+# acceleration > 0：变化在加剧（发散/探索加深）
+# acceleration < 0：变化在减缓（收敛/锁定方向）
+# acceleration ≈ 0：匀速状态（稳定探索或稳定执行）
+```
+
+#### 5.3 完整特征向量
+
+每个 slice 的特征：
+
+```python
+feature_t = [
+    # --- 静态（快照）---
+    mean_conf_t, mean_neg_entropy_t, mean_gini_t,  # token 统计量
+    num_active_t,                                    # 激活规模
+
+    # --- 一阶动态（速度）---
+    Δ_conf, Δ_entropy, Δ_gini,      # 标量差分
+    velocity_t,                       # Jaccard 距离 = 激活集合变化幅度
+    neurons_gained_t,                 # 新增占比
+    neurons_lost_t,                   # 消失占比
+    size_delta_t,                     # 规模变化
+
+    # --- 二阶动态（加速度，可选）---
+    acceleration_t,                   # 速度的变化率
+]
+```
+
+> **不是忽略激活，而是把集合动态翻译成标量动态**——Jaccard 距离就是这个翻译器，恰好是整个 NAD 框架最擅长的东西。
+
+---
+
+### 六、Evaluate 方法设计：从阶段序列到质量分数
+
+#### 核心前提：不需要训练观测模型
+
+MoSeq 训练观测模型是为了从带噪观测反推真实姿态——我们不需要（"不借第三点"）。
+
+我们有 MoSeq 没有的巨大优势：**ground truth**（`evaluation_report_compact.json` 有每个 run 的正确性标签）。MoSeq 纯无监督，我们可以**有监督验证**。
+
+#### 6.1 第一层：手工规则（零训练，立即可用）
+
+阶段序列 → 标量特征 → 打分：
+
+```python
+def phase_score(phase_labels, velocities):
+    """phase_labels: list of 'E','R','X' per slice"""
+    n = len(phase_labels)
+
+    # 特征 1：Exploitation 比例
+    exploit_ratio = phase_labels.count('X') / n
+
+    # 特征 2：首次进入 Exploitation 的位置（越早越好）
+    first_X = next((i for i, p in enumerate(phase_labels) if p == 'X'), n)
+    early_lock = 1 - first_X / n   # 1=一开始就锁定，0=从未锁定
+
+    # 特征 3：结尾状态
+    tail = phase_labels[-3:]
+    confident_ending = tail.count('X') / len(tail)
+
+    # 特征 4：收敛性（速度曲线斜率）
+    if len(velocities) >= 2:
+        convergence = velocities[0] - velocities[-1]  # 正=在收敛
+    else:
+        convergence = 0
+
+    # 加权组合
+    return 0.3 * exploit_ratio + 0.3 * early_lock \
+         + 0.2 * confident_ending + 0.2 * convergence
+```
+
+这就是一个**新 selector**，可直接插入 `nad/core/selectors/` 插件体系。
+
+#### 6.2 第二层：数据驱动权重（轻量训练）
+
+手工权重是猜的，用 ground truth 学：
+
+```python
+from sklearn.linear_model import LogisticRegression
+
+# 对所有 problem group 的所有 run 提取阶段特征
+X = np.array([
+    [exploit_ratio, early_lock, confident_ending, convergence, ...]
+    for run in all_runs
+])
+y = np.array([is_correct for run in all_runs])  # 来自 ground truth
+
+clf = LogisticRegression().fit(X, y)
+print(clf.coef_)  # → 哪个特征真正和正确性相关
+```
+
+这不是"训练模型来部署"，而是**用数据验证直觉**：如果 `exploit_ratio` 系数确实为正，说明"Exploitation 多 = 更好"假设成立。否则需重新审视三阶段定义。
+
+#### 6.3 第三层：阶段转移模式编码（最丰富）
+
+直接把阶段序列的 transition 结构编码为特征：
+
+```python
+transitions = {
+    'E→E': 0, 'E→R': 0, 'E→X': 0,
+    'R→E': 0, 'R→R': 0, 'R→X': 0,
+    'X→E': 0, 'X→R': 0, 'X→X': 0,
+}
+for i in range(len(labels) - 1):
+    transitions[f"{labels[i]}→{labels[i+1]}"] += 1
+
+# 归一化后作为 9 维特征向量
+```
+
+这 9 维捕捉的是**推理的结构模式**：
+- `R→X` 比例高 = "反思后执行" → 高质量信号
+- `X→E` 比例高 = "执行中途回到探索" → 可能卡住了
+
+#### 6.4 与现有 selector 体系的关系
+
+不替换现有 selector，而是**加一个正交维度**：
+
+```
+现有 selector：基于 Jaccard 距离矩阵 → 选"和群体最相似的 run"
+新 selector：  基于阶段序列特征     → 选"推理模式最健康的 run"
+```
+
+最终在 `rank_selectors.py` 用 Copeland/regret 评估它和现有 10 个 selector 的对比，或做 ensemble。
+
+#### 6.5 总结
+
+| 问题 | 答案 |
+|---|---|
+| 激活的微分怎么算？ | **Jaccard 距离 = 集合空间的速度**，再差分得加速度。不忽略，而是翻译成标量 |
+| 需要训练观测模型吗？ | **不需要。** 有 ground truth，直接验证特征与正确性的相关性 |
+| evaluate 怎么设计？ | 三层递进：手工规则快速验证 → 逻辑回归学权重 → transition 特征做序列编码 |
