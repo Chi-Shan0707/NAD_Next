@@ -1,0 +1,7573 @@
+{
+  "selector_accuracy": {
+    "min-activation": 56.88622754491018,
+    "max-activation": 59.880239520958085,
+    "medoid": 58.08383233532934,
+    "knn-medoid": 59.880239520958085,
+    "dbscan-medoid": 58.08383233532934,
+    "consensus-min": 59.2814371257485,
+    "consensus-max": 58.68263473053892,
+    "deepconf": 58.68263473053892,
+    "avg64@": 58.68862275449102,
+    "con64@": 58.08383233532934
+  },
+  "selector_counts": {
+    "min-activation": {
+      "correct": 95,
+      "total": 167
+    },
+    "max-activation": {
+      "correct": 100,
+      "total": 167
+    },
+    "medoid": {
+      "correct": 97,
+      "total": 167
+    },
+    "knn-medoid": {
+      "correct": 100,
+      "total": 167
+    },
+    "dbscan-medoid": {
+      "correct": 97,
+      "total": 167
+    },
+    "consensus-min": {
+      "correct": 99,
+      "total": 167
+    },
+    "consensus-max": {
+      "correct": 98,
+      "total": 167
+    },
+    "deepconf": {
+      "correct": 98,
+      "total": 167
+    },
+    "avg64@": {
+      "correct": 9801,
+      "total": 16700
+    },
+    "con64@": {
+      "correct": 97,
+      "total": 167
+    }
+  },
+  "per_problem": {
+    "livecodebench_v5-0": {
+      "problem_id": "livecodebench_v5-0",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 53,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 32,
+          "sample_id": 31,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 19,
+          "sample_id": 18,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 62,
+          "sample_id": 61,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 19,
+          "sample_id": 18,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 62,
+          "sample_id": 61,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 19,
+          "sample_id": 18,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 4,
+          "sample_id": 3,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-1": {
+      "problem_id": "livecodebench_v5-1",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 82,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 15,
+          "sample_id": 78,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 48,
+          "sample_id": 111,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 51,
+          "sample_id": 114,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 48,
+          "sample_id": 111,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 51,
+          "sample_id": 114,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 111,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 41,
+          "sample_id": 104,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-2": {
+      "problem_id": "livecodebench_v5-2",
+      "selectors": {
+        "min-activation": {
+          "run_index": 40,
+          "sample_id": 167,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 53,
+          "sample_id": 180,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 50,
+          "sample_id": 177,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 43,
+          "sample_id": 170,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 50,
+          "sample_id": 177,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 43,
+          "sample_id": 170,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 50,
+          "sample_id": 177,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 24,
+          "sample_id": 151,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-3": {
+      "problem_id": "livecodebench_v5-3",
+      "selectors": {
+        "min-activation": {
+          "run_index": 5,
+          "sample_id": 196,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 53,
+          "sample_id": 244,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 36,
+          "sample_id": 227,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 43,
+          "sample_id": 234,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 36,
+          "sample_id": 227,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 43,
+          "sample_id": 234,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 36,
+          "sample_id": 227,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 59,
+          "sample_id": 250,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-4": {
+      "problem_id": "livecodebench_v5-4",
+      "selectors": {
+        "min-activation": {
+          "run_index": 28,
+          "sample_id": 283,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 57,
+          "sample_id": 312,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 60,
+          "sample_id": 315,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 34,
+          "sample_id": 289,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 60,
+          "sample_id": 315,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 34,
+          "sample_id": 289,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 60,
+          "sample_id": 315,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 50,
+          "sample_id": 305,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-5": {
+      "problem_id": "livecodebench_v5-5",
+      "selectors": {
+        "min-activation": {
+          "run_index": 21,
+          "sample_id": 340,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 49,
+          "sample_id": 368,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 19,
+          "sample_id": 338,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 3,
+          "sample_id": 322,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 19,
+          "sample_id": 338,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 19,
+          "sample_id": 338,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 3,
+          "sample_id": 322,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 49,
+          "sample_id": 368,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-6": {
+      "problem_id": "livecodebench_v5-6",
+      "selectors": {
+        "min-activation": {
+          "run_index": 41,
+          "sample_id": 424,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 36,
+          "sample_id": 419,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 30,
+          "sample_id": 413,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 17,
+          "sample_id": 400,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 30,
+          "sample_id": 413,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 17,
+          "sample_id": 400,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 30,
+          "sample_id": 413,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 33,
+          "sample_id": 416,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-7": {
+      "problem_id": "livecodebench_v5-7",
+      "selectors": {
+        "min-activation": {
+          "run_index": 29,
+          "sample_id": 476,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 505,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 45,
+          "sample_id": 492,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 5,
+          "sample_id": 452,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 45,
+          "sample_id": 492,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 5,
+          "sample_id": 452,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 45,
+          "sample_id": 492,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 49,
+          "sample_id": 496,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-8": {
+      "problem_id": "livecodebench_v5-8",
+      "selectors": {
+        "min-activation": {
+          "run_index": 39,
+          "sample_id": 550,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 50,
+          "sample_id": 561,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 62,
+          "sample_id": 573,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 28,
+          "sample_id": 539,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 62,
+          "sample_id": 573,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 28,
+          "sample_id": 539,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 62,
+          "sample_id": 573,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 7,
+          "sample_id": 518,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-9": {
+      "problem_id": "livecodebench_v5-9",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 594,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 57,
+          "sample_id": 632,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 2,
+          "sample_id": 577,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 19,
+          "sample_id": 594,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 2,
+          "sample_id": 577,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 19,
+          "sample_id": 594,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 2,
+          "sample_id": 577,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 50,
+          "sample_id": 625,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-10": {
+      "problem_id": "livecodebench_v5-10",
+      "selectors": {
+        "min-activation": {
+          "run_index": 40,
+          "sample_id": 679,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 3,
+          "sample_id": 642,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 10,
+          "sample_id": 649,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 22,
+          "sample_id": 661,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 10,
+          "sample_id": 649,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 22,
+          "sample_id": 661,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 10,
+          "sample_id": 649,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 33,
+          "sample_id": 672,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-11": {
+      "problem_id": "livecodebench_v5-11",
+      "selectors": {
+        "min-activation": {
+          "run_index": 9,
+          "sample_id": 712,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 61,
+          "sample_id": 764,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 738,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 5,
+          "sample_id": 708,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 738,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 5,
+          "sample_id": 708,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 35,
+          "sample_id": 738,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 60,
+          "sample_id": 763,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-12": {
+      "problem_id": "livecodebench_v5-12",
+      "selectors": {
+        "min-activation": {
+          "run_index": 26,
+          "sample_id": 793,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 34,
+          "sample_id": 801,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 28,
+          "sample_id": 795,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 2,
+          "sample_id": 769,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 28,
+          "sample_id": 795,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 2,
+          "sample_id": 769,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 28,
+          "sample_id": 795,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 19,
+          "sample_id": 786,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-13": {
+      "problem_id": "livecodebench_v5-13",
+      "selectors": {
+        "min-activation": {
+          "run_index": 32,
+          "sample_id": 863,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 19,
+          "sample_id": 850,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 54,
+          "sample_id": 885,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 59,
+          "sample_id": 890,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 54,
+          "sample_id": 885,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 59,
+          "sample_id": 890,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 54,
+          "sample_id": 885,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 19,
+          "sample_id": 850,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-14": {
+      "problem_id": "livecodebench_v5-14",
+      "selectors": {
+        "min-activation": {
+          "run_index": 22,
+          "sample_id": 917,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 2,
+          "sample_id": 897,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 1,
+          "sample_id": 896,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 47,
+          "sample_id": 942,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 29,
+          "sample_id": 924,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 47,
+          "sample_id": 942,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 29,
+          "sample_id": 924,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 897,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-15": {
+      "problem_id": "livecodebench_v5-15",
+      "selectors": {
+        "min-activation": {
+          "run_index": 9,
+          "sample_id": 968,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 22,
+          "sample_id": 981,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 39,
+          "sample_id": 998,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 50,
+          "sample_id": 1009,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 39,
+          "sample_id": 998,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 50,
+          "sample_id": 1009,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 39,
+          "sample_id": 998,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 40,
+          "sample_id": 999,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-16": {
+      "problem_id": "livecodebench_v5-16",
+      "selectors": {
+        "min-activation": {
+          "run_index": 20,
+          "sample_id": 1043,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 9,
+          "sample_id": 1032,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 17,
+          "sample_id": 1040,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 33,
+          "sample_id": 1056,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 17,
+          "sample_id": 1040,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 17,
+          "sample_id": 1040,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 1056,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 13,
+          "sample_id": 1036,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-17": {
+      "problem_id": "livecodebench_v5-17",
+      "selectors": {
+        "min-activation": {
+          "run_index": 32,
+          "sample_id": 1119,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 6,
+          "sample_id": 1093,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 18,
+          "sample_id": 1105,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 41,
+          "sample_id": 1128,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 18,
+          "sample_id": 1105,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 41,
+          "sample_id": 1128,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 18,
+          "sample_id": 1105,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 1149,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-18": {
+      "problem_id": "livecodebench_v5-18",
+      "selectors": {
+        "min-activation": {
+          "run_index": 25,
+          "sample_id": 1176,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 40,
+          "sample_id": 1191,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 58,
+          "sample_id": 1209,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 41,
+          "sample_id": 1192,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 58,
+          "sample_id": 1209,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 41,
+          "sample_id": 1192,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 58,
+          "sample_id": 1209,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 14,
+          "sample_id": 1165,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-19": {
+      "problem_id": "livecodebench_v5-19",
+      "selectors": {
+        "min-activation": {
+          "run_index": 27,
+          "sample_id": 1242,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 2,
+          "sample_id": 1217,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 1250,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 30,
+          "sample_id": 1245,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 1250,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 35,
+          "sample_id": 1250,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 30,
+          "sample_id": 1245,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 14,
+          "sample_id": 1229,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-20": {
+      "problem_id": "livecodebench_v5-20",
+      "selectors": {
+        "min-activation": {
+          "run_index": 1,
+          "sample_id": 1280,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 18,
+          "sample_id": 1297,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 32,
+          "sample_id": 1311,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 7,
+          "sample_id": 1286,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 32,
+          "sample_id": 1311,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 7,
+          "sample_id": 1286,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 32,
+          "sample_id": 1311,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 14,
+          "sample_id": 1293,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-21": {
+      "problem_id": "livecodebench_v5-21",
+      "selectors": {
+        "min-activation": {
+          "run_index": 61,
+          "sample_id": 1404,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 53,
+          "sample_id": 1396,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 23,
+          "sample_id": 1366,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 27,
+          "sample_id": 1370,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 23,
+          "sample_id": 1366,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 27,
+          "sample_id": 1370,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 23,
+          "sample_id": 1366,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 53,
+          "sample_id": 1396,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-22": {
+      "problem_id": "livecodebench_v5-22",
+      "selectors": {
+        "min-activation": {
+          "run_index": 9,
+          "sample_id": 1416,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 34,
+          "sample_id": 1441,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 50,
+          "sample_id": 1457,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 15,
+          "sample_id": 1422,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 50,
+          "sample_id": 1457,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 15,
+          "sample_id": 1422,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 50,
+          "sample_id": 1457,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 64,
+          "sample_id": 1471,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-23": {
+      "problem_id": "livecodebench_v5-23",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 1490,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 64,
+          "sample_id": 1535,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 14,
+          "sample_id": 1485,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 24,
+          "sample_id": 1495,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 14,
+          "sample_id": 1485,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 24,
+          "sample_id": 1495,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 14,
+          "sample_id": 1485,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 1473,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-24": {
+      "problem_id": "livecodebench_v5-24",
+      "selectors": {
+        "min-activation": {
+          "run_index": 12,
+          "sample_id": 1547,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 47,
+          "sample_id": 1582,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 4,
+          "sample_id": 1539,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 25,
+          "sample_id": 1560,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 4,
+          "sample_id": 1539,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 25,
+          "sample_id": 1560,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 4,
+          "sample_id": 1539,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 24,
+          "sample_id": 1559,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-25": {
+      "problem_id": "livecodebench_v5-25",
+      "selectors": {
+        "min-activation": {
+          "run_index": 14,
+          "sample_id": 1613,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 34,
+          "sample_id": 1633,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 25,
+          "sample_id": 1624,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 50,
+          "sample_id": 1649,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 25,
+          "sample_id": 1624,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 50,
+          "sample_id": 1649,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 25,
+          "sample_id": 1624,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 26,
+          "sample_id": 1625,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-26": {
+      "problem_id": "livecodebench_v5-26",
+      "selectors": {
+        "min-activation": {
+          "run_index": 21,
+          "sample_id": 1684,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 4,
+          "sample_id": 1667,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 12,
+          "sample_id": 1675,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 9,
+          "sample_id": 1672,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 12,
+          "sample_id": 1675,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 9,
+          "sample_id": 1672,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 12,
+          "sample_id": 1675,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 4,
+          "sample_id": 1667,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-27": {
+      "problem_id": "livecodebench_v5-27",
+      "selectors": {
+        "min-activation": {
+          "run_index": 15,
+          "sample_id": 1742,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 24,
+          "sample_id": 1751,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 33,
+          "sample_id": 1760,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 26,
+          "sample_id": 1753,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 33,
+          "sample_id": 1760,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 26,
+          "sample_id": 1753,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 1760,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 1729,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-28": {
+      "problem_id": "livecodebench_v5-28",
+      "selectors": {
+        "min-activation": {
+          "run_index": 51,
+          "sample_id": 1842,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 17,
+          "sample_id": 1808,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 39,
+          "sample_id": 1830,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 57,
+          "sample_id": 1848,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 39,
+          "sample_id": 1830,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 57,
+          "sample_id": 1848,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 39,
+          "sample_id": 1830,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 1793,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-29": {
+      "problem_id": "livecodebench_v5-29",
+      "selectors": {
+        "min-activation": {
+          "run_index": 44,
+          "sample_id": 1899,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 5,
+          "sample_id": 1860,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 1890,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 18,
+          "sample_id": 1873,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 55,
+          "sample_id": 1910,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 18,
+          "sample_id": 1873,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 35,
+          "sample_id": 1890,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 27,
+          "sample_id": 1882,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-30": {
+      "problem_id": "livecodebench_v5-30",
+      "selectors": {
+        "min-activation": {
+          "run_index": 63,
+          "sample_id": 1982,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 42,
+          "sample_id": 1961,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 49,
+          "sample_id": 1968,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 64,
+          "sample_id": 1983,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 28,
+          "sample_id": 1947,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 64,
+          "sample_id": 1983,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 49,
+          "sample_id": 1968,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 14,
+          "sample_id": 1933,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-31": {
+      "problem_id": "livecodebench_v5-31",
+      "selectors": {
+        "min-activation": {
+          "run_index": 32,
+          "sample_id": 2015,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 7,
+          "sample_id": 1990,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 52,
+          "sample_id": 2035,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 50,
+          "sample_id": 2033,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 52,
+          "sample_id": 2035,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 50,
+          "sample_id": 2033,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 52,
+          "sample_id": 2035,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 47,
+          "sample_id": 2030,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-32": {
+      "problem_id": "livecodebench_v5-32",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 2101,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 20,
+          "sample_id": 2067,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 46,
+          "sample_id": 2093,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 53,
+          "sample_id": 2100,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 46,
+          "sample_id": 2093,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 53,
+          "sample_id": 2100,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 46,
+          "sample_id": 2093,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 9,
+          "sample_id": 2056,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-33": {
+      "problem_id": "livecodebench_v5-33",
+      "selectors": {
+        "min-activation": {
+          "run_index": 10,
+          "sample_id": 2121,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 44,
+          "sample_id": 2155,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 58,
+          "sample_id": 2169,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 53,
+          "sample_id": 2164,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 8,
+          "sample_id": 2119,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 8,
+          "sample_id": 2119,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 58,
+          "sample_id": 2169,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 26,
+          "sample_id": 2137,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-34": {
+      "problem_id": "livecodebench_v5-34",
+      "selectors": {
+        "min-activation": {
+          "run_index": 41,
+          "sample_id": 2216,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 48,
+          "sample_id": 2223,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 24,
+          "sample_id": 2199,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 20,
+          "sample_id": 2195,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 24,
+          "sample_id": 2199,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 20,
+          "sample_id": 2195,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 24,
+          "sample_id": 2199,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 19,
+          "sample_id": 2194,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-35": {
+      "problem_id": "livecodebench_v5-35",
+      "selectors": {
+        "min-activation": {
+          "run_index": 56,
+          "sample_id": 2295,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 26,
+          "sample_id": 2265,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 40,
+          "sample_id": 2279,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 19,
+          "sample_id": 2258,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 40,
+          "sample_id": 2279,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 19,
+          "sample_id": 2258,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 40,
+          "sample_id": 2279,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 2301,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-36": {
+      "problem_id": "livecodebench_v5-36",
+      "selectors": {
+        "min-activation": {
+          "run_index": 57,
+          "sample_id": 2360,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 35,
+          "sample_id": 2338,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 59,
+          "sample_id": 2362,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 1,
+          "sample_id": 2304,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 59,
+          "sample_id": 2362,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 1,
+          "sample_id": 2304,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 59,
+          "sample_id": 2362,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 45,
+          "sample_id": 2348,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-37": {
+      "problem_id": "livecodebench_v5-37",
+      "selectors": {
+        "min-activation": {
+          "run_index": 18,
+          "sample_id": 2385,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 16,
+          "sample_id": 2383,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 20,
+          "sample_id": 2387,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 60,
+          "sample_id": 2427,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 20,
+          "sample_id": 2387,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 60,
+          "sample_id": 2427,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 20,
+          "sample_id": 2387,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 32,
+          "sample_id": 2399,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-38": {
+      "problem_id": "livecodebench_v5-38",
+      "selectors": {
+        "min-activation": {
+          "run_index": 37,
+          "sample_id": 2468,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 53,
+          "sample_id": 2484,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 6,
+          "sample_id": 2437,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 31,
+          "sample_id": 2462,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 38,
+          "sample_id": 2469,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 31,
+          "sample_id": 2462,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 38,
+          "sample_id": 2469,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 29,
+          "sample_id": 2460,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-39": {
+      "problem_id": "livecodebench_v5-39",
+      "selectors": {
+        "min-activation": {
+          "run_index": 48,
+          "sample_id": 2543,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 2553,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 20,
+          "sample_id": 2515,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 47,
+          "sample_id": 2542,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 20,
+          "sample_id": 2515,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 47,
+          "sample_id": 2542,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 20,
+          "sample_id": 2515,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 14,
+          "sample_id": 2509,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-40": {
+      "problem_id": "livecodebench_v5-40",
+      "selectors": {
+        "min-activation": {
+          "run_index": 33,
+          "sample_id": 2592,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 28,
+          "sample_id": 2587,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 15,
+          "sample_id": 2574,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 26,
+          "sample_id": 2585,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 15,
+          "sample_id": 2574,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 26,
+          "sample_id": 2585,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 15,
+          "sample_id": 2574,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 49,
+          "sample_id": 2608,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-41": {
+      "problem_id": "livecodebench_v5-41",
+      "selectors": {
+        "min-activation": {
+          "run_index": 34,
+          "sample_id": 2657,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 18,
+          "sample_id": 2641,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 28,
+          "sample_id": 2651,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 47,
+          "sample_id": 2670,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 28,
+          "sample_id": 2651,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 47,
+          "sample_id": 2670,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 28,
+          "sample_id": 2651,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 18,
+          "sample_id": 2641,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-42": {
+      "problem_id": "livecodebench_v5-42",
+      "selectors": {
+        "min-activation": {
+          "run_index": 15,
+          "sample_id": 2702,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 19,
+          "sample_id": 2706,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 33,
+          "sample_id": 2720,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 58,
+          "sample_id": 2745,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 33,
+          "sample_id": 2720,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 58,
+          "sample_id": 2745,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 2720,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 20,
+          "sample_id": 2707,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-43": {
+      "problem_id": "livecodebench_v5-43",
+      "selectors": {
+        "min-activation": {
+          "run_index": 37,
+          "sample_id": 2788,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 44,
+          "sample_id": 2795,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 61,
+          "sample_id": 2812,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 37,
+          "sample_id": 2788,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 61,
+          "sample_id": 2812,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 37,
+          "sample_id": 2788,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 61,
+          "sample_id": 2812,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 11,
+          "sample_id": 2762,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-44": {
+      "problem_id": "livecodebench_v5-44",
+      "selectors": {
+        "min-activation": {
+          "run_index": 63,
+          "sample_id": 2878,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 43,
+          "sample_id": 2858,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 5,
+          "sample_id": 2820,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 5,
+          "sample_id": 2820,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 5,
+          "sample_id": 2820,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 5,
+          "sample_id": 2820,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 5,
+          "sample_id": 2820,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 1,
+          "sample_id": 2816,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-45": {
+      "problem_id": "livecodebench_v5-45",
+      "selectors": {
+        "min-activation": {
+          "run_index": 31,
+          "sample_id": 2910,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 62,
+          "sample_id": 2941,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 34,
+          "sample_id": 2913,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 32,
+          "sample_id": 2911,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 34,
+          "sample_id": 2913,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 32,
+          "sample_id": 2911,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 34,
+          "sample_id": 2913,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 63,
+          "sample_id": 2942,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-46": {
+      "problem_id": "livecodebench_v5-46",
+      "selectors": {
+        "min-activation": {
+          "run_index": 39,
+          "sample_id": 2982,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 33,
+          "sample_id": 2976,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 56,
+          "sample_id": 2999,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 6,
+          "sample_id": 2949,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 58,
+          "sample_id": 3001,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 6,
+          "sample_id": 2949,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 56,
+          "sample_id": 2999,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 24,
+          "sample_id": 2967,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-47": {
+      "problem_id": "livecodebench_v5-47",
+      "selectors": {
+        "min-activation": {
+          "run_index": 53,
+          "sample_id": 3060,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 23,
+          "sample_id": 3030,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 34,
+          "sample_id": 3041,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 36,
+          "sample_id": 3043,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 34,
+          "sample_id": 3041,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 36,
+          "sample_id": 3043,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 34,
+          "sample_id": 3041,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 49,
+          "sample_id": 3056,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-48": {
+      "problem_id": "livecodebench_v5-48",
+      "selectors": {
+        "min-activation": {
+          "run_index": 31,
+          "sample_id": 3102,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 3096,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 40,
+          "sample_id": 3111,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 40,
+          "sample_id": 3111,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 40,
+          "sample_id": 3111,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 40,
+          "sample_id": 3111,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 40,
+          "sample_id": 3111,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 47,
+          "sample_id": 3118,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-49": {
+      "problem_id": "livecodebench_v5-49",
+      "selectors": {
+        "min-activation": {
+          "run_index": 58,
+          "sample_id": 3193,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 15,
+          "sample_id": 3150,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 48,
+          "sample_id": 3183,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 49,
+          "sample_id": 3184,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 43,
+          "sample_id": 3178,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 49,
+          "sample_id": 3184,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 3183,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 39,
+          "sample_id": 3174,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-50": {
+      "problem_id": "livecodebench_v5-50",
+      "selectors": {
+        "min-activation": {
+          "run_index": 17,
+          "sample_id": 3216,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 28,
+          "sample_id": 3227,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 32,
+          "sample_id": 3231,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 44,
+          "sample_id": 3243,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 44,
+          "sample_id": 3243,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 44,
+          "sample_id": 3243,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 32,
+          "sample_id": 3231,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 52,
+          "sample_id": 3251,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-51": {
+      "problem_id": "livecodebench_v5-51",
+      "selectors": {
+        "min-activation": {
+          "run_index": 48,
+          "sample_id": 3311,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 46,
+          "sample_id": 3309,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 15,
+          "sample_id": 3278,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 5,
+          "sample_id": 3268,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 15,
+          "sample_id": 3278,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 5,
+          "sample_id": 3268,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 15,
+          "sample_id": 3278,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 31,
+          "sample_id": 3294,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-52": {
+      "problem_id": "livecodebench_v5-52",
+      "selectors": {
+        "min-activation": {
+          "run_index": 27,
+          "sample_id": 3354,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 3,
+          "sample_id": 3330,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 9,
+          "sample_id": 3336,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 43,
+          "sample_id": 3370,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 9,
+          "sample_id": 3336,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 43,
+          "sample_id": 3370,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 9,
+          "sample_id": 3336,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 43,
+          "sample_id": 3370,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-53": {
+      "problem_id": "livecodebench_v5-53",
+      "selectors": {
+        "min-activation": {
+          "run_index": 10,
+          "sample_id": 3401,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 9,
+          "sample_id": 3400,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 3426,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 3,
+          "sample_id": 3394,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 3426,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 3,
+          "sample_id": 3394,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 35,
+          "sample_id": 3426,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 53,
+          "sample_id": 3444,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-54": {
+      "problem_id": "livecodebench_v5-54",
+      "selectors": {
+        "min-activation": {
+          "run_index": 51,
+          "sample_id": 3506,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 3513,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 33,
+          "sample_id": 3488,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 64,
+          "sample_id": 3519,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 33,
+          "sample_id": 3488,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 64,
+          "sample_id": 3519,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 3488,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 58,
+          "sample_id": 3513,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-55": {
+      "problem_id": "livecodebench_v5-55",
+      "selectors": {
+        "min-activation": {
+          "run_index": 24,
+          "sample_id": 3543,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 59,
+          "sample_id": 3578,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 16,
+          "sample_id": 3535,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 63,
+          "sample_id": 3582,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 55,
+          "sample_id": 3574,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 63,
+          "sample_id": 3582,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 16,
+          "sample_id": 3535,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 38,
+          "sample_id": 3557,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-56": {
+      "problem_id": "livecodebench_v5-56",
+      "selectors": {
+        "min-activation": {
+          "run_index": 1,
+          "sample_id": 3584,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 55,
+          "sample_id": 3638,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 50,
+          "sample_id": 3633,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 24,
+          "sample_id": 3607,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 50,
+          "sample_id": 3633,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 24,
+          "sample_id": 3607,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 50,
+          "sample_id": 3633,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 23,
+          "sample_id": 3606,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-57": {
+      "problem_id": "livecodebench_v5-57",
+      "selectors": {
+        "min-activation": {
+          "run_index": 8,
+          "sample_id": 3655,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 59,
+          "sample_id": 3706,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 55,
+          "sample_id": 3702,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 36,
+          "sample_id": 3683,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 55,
+          "sample_id": 3702,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 36,
+          "sample_id": 3683,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 55,
+          "sample_id": 3702,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 58,
+          "sample_id": 3705,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-58": {
+      "problem_id": "livecodebench_v5-58",
+      "selectors": {
+        "min-activation": {
+          "run_index": 3,
+          "sample_id": 3714,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 59,
+          "sample_id": 3770,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 21,
+          "sample_id": 3732,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 29,
+          "sample_id": 3740,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 21,
+          "sample_id": 3732,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 29,
+          "sample_id": 3740,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 21,
+          "sample_id": 3732,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 30,
+          "sample_id": 3741,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-59": {
+      "problem_id": "livecodebench_v5-59",
+      "selectors": {
+        "min-activation": {
+          "run_index": 27,
+          "sample_id": 3802,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 30,
+          "sample_id": 3805,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 64,
+          "sample_id": 3839,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 52,
+          "sample_id": 3827,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 64,
+          "sample_id": 3839,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 52,
+          "sample_id": 3827,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 64,
+          "sample_id": 3839,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 33,
+          "sample_id": 3808,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-60": {
+      "problem_id": "livecodebench_v5-60",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 3893,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 7,
+          "sample_id": 3846,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 15,
+          "sample_id": 3854,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 52,
+          "sample_id": 3891,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 26,
+          "sample_id": 3865,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 52,
+          "sample_id": 3891,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 15,
+          "sample_id": 3854,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 7,
+          "sample_id": 3846,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-61": {
+      "problem_id": "livecodebench_v5-61",
+      "selectors": {
+        "min-activation": {
+          "run_index": 27,
+          "sample_id": 3930,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 21,
+          "sample_id": 3924,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 37,
+          "sample_id": 3940,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 26,
+          "sample_id": 3929,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 37,
+          "sample_id": 3940,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 26,
+          "sample_id": 3929,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 37,
+          "sample_id": 3940,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 64,
+          "sample_id": 3967,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-62": {
+      "problem_id": "livecodebench_v5-62",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 3986,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 7,
+          "sample_id": 3974,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 23,
+          "sample_id": 3990,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 47,
+          "sample_id": 4014,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 23,
+          "sample_id": 3990,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 47,
+          "sample_id": 4014,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 23,
+          "sample_id": 3990,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 38,
+          "sample_id": 4005,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-63": {
+      "problem_id": "livecodebench_v5-63",
+      "selectors": {
+        "min-activation": {
+          "run_index": 64,
+          "sample_id": 4095,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 10,
+          "sample_id": 4041,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 3,
+          "sample_id": 4034,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 64,
+          "sample_id": 4095,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 3,
+          "sample_id": 4034,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 64,
+          "sample_id": 4095,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 3,
+          "sample_id": 4034,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 21,
+          "sample_id": 4052,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-64": {
+      "problem_id": "livecodebench_v5-64",
+      "selectors": {
+        "min-activation": {
+          "run_index": 8,
+          "sample_id": 4103,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 26,
+          "sample_id": 4121,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 48,
+          "sample_id": 4143,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 2,
+          "sample_id": 4097,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 48,
+          "sample_id": 4143,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 2,
+          "sample_id": 4097,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 4143,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 42,
+          "sample_id": 4137,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-65": {
+      "problem_id": "livecodebench_v5-65",
+      "selectors": {
+        "min-activation": {
+          "run_index": 44,
+          "sample_id": 4203,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 8,
+          "sample_id": 4167,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 38,
+          "sample_id": 4197,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 38,
+          "sample_id": 4197,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 38,
+          "sample_id": 4197,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 38,
+          "sample_id": 4197,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 38,
+          "sample_id": 4197,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 12,
+          "sample_id": 4171,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-66": {
+      "problem_id": "livecodebench_v5-66",
+      "selectors": {
+        "min-activation": {
+          "run_index": 43,
+          "sample_id": 4266,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 6,
+          "sample_id": 4229,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 1,
+          "sample_id": 4224,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 53,
+          "sample_id": 4276,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 1,
+          "sample_id": 4224,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 53,
+          "sample_id": 4276,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 1,
+          "sample_id": 4224,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 24,
+          "sample_id": 4247,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-67": {
+      "problem_id": "livecodebench_v5-67",
+      "selectors": {
+        "min-activation": {
+          "run_index": 18,
+          "sample_id": 4305,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 14,
+          "sample_id": 4301,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 47,
+          "sample_id": 4334,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 37,
+          "sample_id": 4324,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 41,
+          "sample_id": 4328,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 37,
+          "sample_id": 4324,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 47,
+          "sample_id": 4334,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 40,
+          "sample_id": 4327,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-68": {
+      "problem_id": "livecodebench_v5-68",
+      "selectors": {
+        "min-activation": {
+          "run_index": 12,
+          "sample_id": 4363,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 39,
+          "sample_id": 4390,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 19,
+          "sample_id": 4370,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 30,
+          "sample_id": 4381,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 19,
+          "sample_id": 4370,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 30,
+          "sample_id": 4381,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 19,
+          "sample_id": 4370,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 42,
+          "sample_id": 4393,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-69": {
+      "problem_id": "livecodebench_v5-69",
+      "selectors": {
+        "min-activation": {
+          "run_index": 64,
+          "sample_id": 4479,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 56,
+          "sample_id": 4471,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 42,
+          "sample_id": 4457,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 3,
+          "sample_id": 4418,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 42,
+          "sample_id": 4457,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 3,
+          "sample_id": 4418,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 42,
+          "sample_id": 4457,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 25,
+          "sample_id": 4440,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-70": {
+      "problem_id": "livecodebench_v5-70",
+      "selectors": {
+        "min-activation": {
+          "run_index": 20,
+          "sample_id": 4499,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 36,
+          "sample_id": 4515,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 10,
+          "sample_id": 4489,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 34,
+          "sample_id": 4513,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 10,
+          "sample_id": 4489,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 34,
+          "sample_id": 4513,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 10,
+          "sample_id": 4489,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 4,
+          "sample_id": 4483,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-71": {
+      "problem_id": "livecodebench_v5-71",
+      "selectors": {
+        "min-activation": {
+          "run_index": 16,
+          "sample_id": 4559,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 57,
+          "sample_id": 4600,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 44,
+          "sample_id": 4587,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 7,
+          "sample_id": 4550,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 44,
+          "sample_id": 4587,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 7,
+          "sample_id": 4550,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 44,
+          "sample_id": 4587,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 19,
+          "sample_id": 4562,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-72": {
+      "problem_id": "livecodebench_v5-72",
+      "selectors": {
+        "min-activation": {
+          "run_index": 33,
+          "sample_id": 4640,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 5,
+          "sample_id": 4612,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 41,
+          "sample_id": 4648,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 18,
+          "sample_id": 4625,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 41,
+          "sample_id": 4648,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 18,
+          "sample_id": 4625,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 41,
+          "sample_id": 4648,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 16,
+          "sample_id": 4623,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-73": {
+      "problem_id": "livecodebench_v5-73",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 4690,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 15,
+          "sample_id": 4686,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 20,
+          "sample_id": 4691,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 24,
+          "sample_id": 4695,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 20,
+          "sample_id": 4691,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 24,
+          "sample_id": 4695,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 20,
+          "sample_id": 4691,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 50,
+          "sample_id": 4721,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-74": {
+      "problem_id": "livecodebench_v5-74",
+      "selectors": {
+        "min-activation": {
+          "run_index": 50,
+          "sample_id": 4785,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 34,
+          "sample_id": 4769,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 48,
+          "sample_id": 4783,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 14,
+          "sample_id": 4749,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 48,
+          "sample_id": 4783,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 14,
+          "sample_id": 4749,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 4783,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 23,
+          "sample_id": 4758,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-75": {
+      "problem_id": "livecodebench_v5-75",
+      "selectors": {
+        "min-activation": {
+          "run_index": 20,
+          "sample_id": 4819,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 2,
+          "sample_id": 4801,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 24,
+          "sample_id": 4823,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 14,
+          "sample_id": 4813,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 48,
+          "sample_id": 4847,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 14,
+          "sample_id": 4813,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 4847,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 46,
+          "sample_id": 4845,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-76": {
+      "problem_id": "livecodebench_v5-76",
+      "selectors": {
+        "min-activation": {
+          "run_index": 64,
+          "sample_id": 4927,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 38,
+          "sample_id": 4901,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 29,
+          "sample_id": 4892,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 21,
+          "sample_id": 4884,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 29,
+          "sample_id": 4892,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 21,
+          "sample_id": 4884,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 29,
+          "sample_id": 4892,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 9,
+          "sample_id": 4872,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-77": {
+      "problem_id": "livecodebench_v5-77",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 4981,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 50,
+          "sample_id": 4977,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 20,
+          "sample_id": 4947,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 45,
+          "sample_id": 4972,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 20,
+          "sample_id": 4947,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 45,
+          "sample_id": 4972,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 20,
+          "sample_id": 4947,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 6,
+          "sample_id": 4933,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-78": {
+      "problem_id": "livecodebench_v5-78",
+      "selectors": {
+        "min-activation": {
+          "run_index": 14,
+          "sample_id": 5005,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 39,
+          "sample_id": 5030,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 41,
+          "sample_id": 5032,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 21,
+          "sample_id": 5012,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 41,
+          "sample_id": 5032,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 21,
+          "sample_id": 5012,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 41,
+          "sample_id": 5032,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 45,
+          "sample_id": 5036,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-79": {
+      "problem_id": "livecodebench_v5-79",
+      "selectors": {
+        "min-activation": {
+          "run_index": 63,
+          "sample_id": 5118,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 44,
+          "sample_id": 5099,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 14,
+          "sample_id": 5069,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 7,
+          "sample_id": 5062,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 14,
+          "sample_id": 5069,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 7,
+          "sample_id": 5062,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 14,
+          "sample_id": 5069,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 34,
+          "sample_id": 5089,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-80": {
+      "problem_id": "livecodebench_v5-80",
+      "selectors": {
+        "min-activation": {
+          "run_index": 44,
+          "sample_id": 5163,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 5177,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 61,
+          "sample_id": 5180,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 20,
+          "sample_id": 5139,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 61,
+          "sample_id": 5180,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 20,
+          "sample_id": 5139,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 61,
+          "sample_id": 5180,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 43,
+          "sample_id": 5162,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-81": {
+      "problem_id": "livecodebench_v5-81",
+      "selectors": {
+        "min-activation": {
+          "run_index": 57,
+          "sample_id": 5240,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 6,
+          "sample_id": 5189,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 30,
+          "sample_id": 5213,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 54,
+          "sample_id": 5237,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 30,
+          "sample_id": 5213,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 54,
+          "sample_id": 5237,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 30,
+          "sample_id": 5213,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 5245,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-82": {
+      "problem_id": "livecodebench_v5-82",
+      "selectors": {
+        "min-activation": {
+          "run_index": 53,
+          "sample_id": 5300,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 5272,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 55,
+          "sample_id": 5302,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 9,
+          "sample_id": 5256,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 55,
+          "sample_id": 5302,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 9,
+          "sample_id": 5256,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 55,
+          "sample_id": 5302,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 3,
+          "sample_id": 5250,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-83": {
+      "problem_id": "livecodebench_v5-83",
+      "selectors": {
+        "min-activation": {
+          "run_index": 41,
+          "sample_id": 5352,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 42,
+          "sample_id": 5353,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 48,
+          "sample_id": 5359,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 5,
+          "sample_id": 5316,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 48,
+          "sample_id": 5359,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 5,
+          "sample_id": 5316,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 5359,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 35,
+          "sample_id": 5346,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-84": {
+      "problem_id": "livecodebench_v5-84",
+      "selectors": {
+        "min-activation": {
+          "run_index": 51,
+          "sample_id": 5426,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 5,
+          "sample_id": 5380,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 59,
+          "sample_id": 5434,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 59,
+          "sample_id": 5434,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 59,
+          "sample_id": 5434,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 59,
+          "sample_id": 5434,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 59,
+          "sample_id": 5434,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 42,
+          "sample_id": 5417,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-85": {
+      "problem_id": "livecodebench_v5-85",
+      "selectors": {
+        "min-activation": {
+          "run_index": 61,
+          "sample_id": 5500,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 55,
+          "sample_id": 5494,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 51,
+          "sample_id": 5490,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 20,
+          "sample_id": 5459,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 51,
+          "sample_id": 5490,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 20,
+          "sample_id": 5459,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 51,
+          "sample_id": 5490,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 34,
+          "sample_id": 5473,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-86": {
+      "problem_id": "livecodebench_v5-86",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 5557,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 62,
+          "sample_id": 5565,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 13,
+          "sample_id": 5516,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 35,
+          "sample_id": 5538,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 8,
+          "sample_id": 5511,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 35,
+          "sample_id": 5538,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 8,
+          "sample_id": 5511,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 13,
+          "sample_id": 5516,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-87": {
+      "problem_id": "livecodebench_v5-87",
+      "selectors": {
+        "min-activation": {
+          "run_index": 7,
+          "sample_id": 5574,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 5625,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 41,
+          "sample_id": 5608,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 4,
+          "sample_id": 5571,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 41,
+          "sample_id": 5608,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 4,
+          "sample_id": 5571,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 41,
+          "sample_id": 5608,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 56,
+          "sample_id": 5623,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-88": {
+      "problem_id": "livecodebench_v5-88",
+      "selectors": {
+        "min-activation": {
+          "run_index": 24,
+          "sample_id": 5655,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 14,
+          "sample_id": 5645,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 33,
+          "sample_id": 5664,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 62,
+          "sample_id": 5693,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 33,
+          "sample_id": 5664,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 62,
+          "sample_id": 5693,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 5664,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 64,
+          "sample_id": 5695,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-89": {
+      "problem_id": "livecodebench_v5-89",
+      "selectors": {
+        "min-activation": {
+          "run_index": 38,
+          "sample_id": 5733,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 56,
+          "sample_id": 5751,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 44,
+          "sample_id": 5739,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 54,
+          "sample_id": 5749,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 44,
+          "sample_id": 5739,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 54,
+          "sample_id": 5749,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 44,
+          "sample_id": 5739,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 56,
+          "sample_id": 5751,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-90": {
+      "problem_id": "livecodebench_v5-90",
+      "selectors": {
+        "min-activation": {
+          "run_index": 47,
+          "sample_id": 5806,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 49,
+          "sample_id": 5808,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 9,
+          "sample_id": 5768,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 9,
+          "sample_id": 5768,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 9,
+          "sample_id": 5768,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 9,
+          "sample_id": 5768,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 9,
+          "sample_id": 5768,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 29,
+          "sample_id": 5788,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-91": {
+      "problem_id": "livecodebench_v5-91",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 5842,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 33,
+          "sample_id": 5856,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 60,
+          "sample_id": 5883,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 60,
+          "sample_id": 5883,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 60,
+          "sample_id": 5883,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 60,
+          "sample_id": 5883,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 60,
+          "sample_id": 5883,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 33,
+          "sample_id": 5856,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-92": {
+      "problem_id": "livecodebench_v5-92",
+      "selectors": {
+        "min-activation": {
+          "run_index": 47,
+          "sample_id": 5934,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 9,
+          "sample_id": 5896,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 20,
+          "sample_id": 5907,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 49,
+          "sample_id": 5936,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 20,
+          "sample_id": 5907,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 49,
+          "sample_id": 5936,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 20,
+          "sample_id": 5907,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 5,
+          "sample_id": 5892,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-93": {
+      "problem_id": "livecodebench_v5-93",
+      "selectors": {
+        "min-activation": {
+          "run_index": 63,
+          "sample_id": 6014,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 31,
+          "sample_id": 5982,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 17,
+          "sample_id": 5968,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 48,
+          "sample_id": 5999,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 17,
+          "sample_id": 5968,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 17,
+          "sample_id": 5968,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 48,
+          "sample_id": 5999,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 10,
+          "sample_id": 5961,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-94": {
+      "problem_id": "livecodebench_v5-94",
+      "selectors": {
+        "min-activation": {
+          "run_index": 61,
+          "sample_id": 6076,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 10,
+          "sample_id": 6025,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 4,
+          "sample_id": 6019,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 49,
+          "sample_id": 6064,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 4,
+          "sample_id": 6019,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 49,
+          "sample_id": 6064,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 4,
+          "sample_id": 6019,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 6077,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-95": {
+      "problem_id": "livecodebench_v5-95",
+      "selectors": {
+        "min-activation": {
+          "run_index": 36,
+          "sample_id": 6115,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 5,
+          "sample_id": 6084,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 19,
+          "sample_id": 6098,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 3,
+          "sample_id": 6082,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 19,
+          "sample_id": 6098,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 3,
+          "sample_id": 6082,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 19,
+          "sample_id": 6098,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 33,
+          "sample_id": 6112,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-96": {
+      "problem_id": "livecodebench_v5-96",
+      "selectors": {
+        "min-activation": {
+          "run_index": 30,
+          "sample_id": 6173,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 16,
+          "sample_id": 6159,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 58,
+          "sample_id": 6201,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 54,
+          "sample_id": 6197,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 58,
+          "sample_id": 6201,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 54,
+          "sample_id": 6197,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 58,
+          "sample_id": 6201,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 8,
+          "sample_id": 6151,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-97": {
+      "problem_id": "livecodebench_v5-97",
+      "selectors": {
+        "min-activation": {
+          "run_index": 64,
+          "sample_id": 6271,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 13,
+          "sample_id": 6220,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 5,
+          "sample_id": 6212,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 26,
+          "sample_id": 6233,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 5,
+          "sample_id": 6212,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 26,
+          "sample_id": 6233,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 5,
+          "sample_id": 6212,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 11,
+          "sample_id": 6218,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-98": {
+      "problem_id": "livecodebench_v5-98",
+      "selectors": {
+        "min-activation": {
+          "run_index": 57,
+          "sample_id": 6328,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 26,
+          "sample_id": 6297,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 6,
+          "sample_id": 6277,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 9,
+          "sample_id": 6280,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 6,
+          "sample_id": 6277,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 9,
+          "sample_id": 6280,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 6,
+          "sample_id": 6277,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 40,
+          "sample_id": 6311,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-99": {
+      "problem_id": "livecodebench_v5-99",
+      "selectors": {
+        "min-activation": {
+          "run_index": 33,
+          "sample_id": 6368,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 52,
+          "sample_id": 6387,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 58,
+          "sample_id": 6393,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 31,
+          "sample_id": 6366,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 58,
+          "sample_id": 6393,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 31,
+          "sample_id": 6366,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 58,
+          "sample_id": 6393,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 38,
+          "sample_id": 6373,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-100": {
+      "problem_id": "livecodebench_v5-100",
+      "selectors": {
+        "min-activation": {
+          "run_index": 50,
+          "sample_id": 6449,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 21,
+          "sample_id": 6420,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 11,
+          "sample_id": 6410,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 14,
+          "sample_id": 6413,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 11,
+          "sample_id": 6410,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 14,
+          "sample_id": 6413,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 11,
+          "sample_id": 6410,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 39,
+          "sample_id": 6438,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-101": {
+      "problem_id": "livecodebench_v5-101",
+      "selectors": {
+        "min-activation": {
+          "run_index": 33,
+          "sample_id": 6496,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 26,
+          "sample_id": 6489,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 31,
+          "sample_id": 6494,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 35,
+          "sample_id": 6498,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 31,
+          "sample_id": 6494,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 35,
+          "sample_id": 6498,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 31,
+          "sample_id": 6494,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 6465,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-102": {
+      "problem_id": "livecodebench_v5-102",
+      "selectors": {
+        "min-activation": {
+          "run_index": 19,
+          "sample_id": 6546,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 5,
+          "sample_id": 6532,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 36,
+          "sample_id": 6563,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 12,
+          "sample_id": 6539,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 36,
+          "sample_id": 6563,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 12,
+          "sample_id": 6539,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 36,
+          "sample_id": 6563,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 60,
+          "sample_id": 6587,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-103": {
+      "problem_id": "livecodebench_v5-103",
+      "selectors": {
+        "min-activation": {
+          "run_index": 20,
+          "sample_id": 6611,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 39,
+          "sample_id": 6630,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 10,
+          "sample_id": 6601,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 31,
+          "sample_id": 6622,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 56,
+          "sample_id": 6647,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 31,
+          "sample_id": 6622,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 56,
+          "sample_id": 6647,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 59,
+          "sample_id": 6650,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-104": {
+      "problem_id": "livecodebench_v5-104",
+      "selectors": {
+        "min-activation": {
+          "run_index": 46,
+          "sample_id": 6701,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 1,
+          "sample_id": 6656,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 39,
+          "sample_id": 6694,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 29,
+          "sample_id": 6684,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 39,
+          "sample_id": 6694,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 39,
+          "sample_id": 6694,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 29,
+          "sample_id": 6684,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 42,
+          "sample_id": 6697,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-105": {
+      "problem_id": "livecodebench_v5-105",
+      "selectors": {
+        "min-activation": {
+          "run_index": 30,
+          "sample_id": 6749,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 45,
+          "sample_id": 6764,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 64,
+          "sample_id": 6783,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 13,
+          "sample_id": 6732,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 64,
+          "sample_id": 6783,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 13,
+          "sample_id": 6732,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 64,
+          "sample_id": 6783,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 24,
+          "sample_id": 6743,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-106": {
+      "problem_id": "livecodebench_v5-106",
+      "selectors": {
+        "min-activation": {
+          "run_index": 27,
+          "sample_id": 6810,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 11,
+          "sample_id": 6794,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 38,
+          "sample_id": 6821,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 36,
+          "sample_id": 6819,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 38,
+          "sample_id": 6821,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 38,
+          "sample_id": 6821,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 36,
+          "sample_id": 6819,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 9,
+          "sample_id": 6792,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-107": {
+      "problem_id": "livecodebench_v5-107",
+      "selectors": {
+        "min-activation": {
+          "run_index": 43,
+          "sample_id": 6890,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 3,
+          "sample_id": 6850,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 52,
+          "sample_id": 6899,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 52,
+          "sample_id": 6899,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 52,
+          "sample_id": 6899,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 52,
+          "sample_id": 6899,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 52,
+          "sample_id": 6899,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 53,
+          "sample_id": 6900,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-108": {
+      "problem_id": "livecodebench_v5-108",
+      "selectors": {
+        "min-activation": {
+          "run_index": 7,
+          "sample_id": 6918,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 52,
+          "sample_id": 6963,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 13,
+          "sample_id": 6924,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 23,
+          "sample_id": 6934,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 13,
+          "sample_id": 6924,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 23,
+          "sample_id": 6934,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 13,
+          "sample_id": 6924,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 6973,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-109": {
+      "problem_id": "livecodebench_v5-109",
+      "selectors": {
+        "min-activation": {
+          "run_index": 1,
+          "sample_id": 6976,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 48,
+          "sample_id": 7023,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 53,
+          "sample_id": 7028,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 57,
+          "sample_id": 7032,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 53,
+          "sample_id": 7028,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 57,
+          "sample_id": 7032,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 53,
+          "sample_id": 7028,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 48,
+          "sample_id": 7023,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-110": {
+      "problem_id": "livecodebench_v5-110",
+      "selectors": {
+        "min-activation": {
+          "run_index": 30,
+          "sample_id": 7069,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 32,
+          "sample_id": 7071,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 56,
+          "sample_id": 7095,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 49,
+          "sample_id": 7088,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 56,
+          "sample_id": 7095,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 49,
+          "sample_id": 7088,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 56,
+          "sample_id": 7095,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 35,
+          "sample_id": 7074,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-111": {
+      "problem_id": "livecodebench_v5-111",
+      "selectors": {
+        "min-activation": {
+          "run_index": 49,
+          "sample_id": 7152,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 56,
+          "sample_id": 7159,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 24,
+          "sample_id": 7127,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 10,
+          "sample_id": 7113,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 7138,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 10,
+          "sample_id": 7113,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 24,
+          "sample_id": 7127,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 64,
+          "sample_id": 7167,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-112": {
+      "problem_id": "livecodebench_v5-112",
+      "selectors": {
+        "min-activation": {
+          "run_index": 63,
+          "sample_id": 7230,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 46,
+          "sample_id": 7213,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 41,
+          "sample_id": 7208,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 27,
+          "sample_id": 7194,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 30,
+          "sample_id": 7197,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 27,
+          "sample_id": 7194,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 41,
+          "sample_id": 7208,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 60,
+          "sample_id": 7227,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-113": {
+      "problem_id": "livecodebench_v5-113",
+      "selectors": {
+        "min-activation": {
+          "run_index": 6,
+          "sample_id": 7237,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 7289,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 20,
+          "sample_id": 7251,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 52,
+          "sample_id": 7283,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 20,
+          "sample_id": 7251,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 52,
+          "sample_id": 7283,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 20,
+          "sample_id": 7251,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 22,
+          "sample_id": 7253,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-114": {
+      "problem_id": "livecodebench_v5-114",
+      "selectors": {
+        "min-activation": {
+          "run_index": 23,
+          "sample_id": 7318,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 12,
+          "sample_id": 7307,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 11,
+          "sample_id": 7306,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 11,
+          "sample_id": 7306,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 11,
+          "sample_id": 7306,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 11,
+          "sample_id": 7306,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 11,
+          "sample_id": 7306,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 36,
+          "sample_id": 7331,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-115": {
+      "problem_id": "livecodebench_v5-115",
+      "selectors": {
+        "min-activation": {
+          "run_index": 50,
+          "sample_id": 7409,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 46,
+          "sample_id": 7405,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 7394,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 60,
+          "sample_id": 7419,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 7394,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 60,
+          "sample_id": 7419,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 35,
+          "sample_id": 7394,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 7,
+          "sample_id": 7366,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-116": {
+      "problem_id": "livecodebench_v5-116",
+      "selectors": {
+        "min-activation": {
+          "run_index": 7,
+          "sample_id": 7430,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 20,
+          "sample_id": 7443,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 44,
+          "sample_id": 7467,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 2,
+          "sample_id": 7425,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 44,
+          "sample_id": 7467,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 2,
+          "sample_id": 7425,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 44,
+          "sample_id": 7467,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 52,
+          "sample_id": 7475,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-117": {
+      "problem_id": "livecodebench_v5-117",
+      "selectors": {
+        "min-activation": {
+          "run_index": 21,
+          "sample_id": 7508,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 61,
+          "sample_id": 7548,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 46,
+          "sample_id": 7533,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 62,
+          "sample_id": 7549,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 46,
+          "sample_id": 7533,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 62,
+          "sample_id": 7549,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 46,
+          "sample_id": 7533,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 61,
+          "sample_id": 7548,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-118": {
+      "problem_id": "livecodebench_v5-118",
+      "selectors": {
+        "min-activation": {
+          "run_index": 47,
+          "sample_id": 7598,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 7576,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 44,
+          "sample_id": 7595,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 45,
+          "sample_id": 7596,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 44,
+          "sample_id": 7595,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 45,
+          "sample_id": 7596,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 44,
+          "sample_id": 7595,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 7613,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-119": {
+      "problem_id": "livecodebench_v5-119",
+      "selectors": {
+        "min-activation": {
+          "run_index": 57,
+          "sample_id": 7672,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 7640,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 11,
+          "sample_id": 7626,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 31,
+          "sample_id": 7646,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 11,
+          "sample_id": 7626,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 31,
+          "sample_id": 7646,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 11,
+          "sample_id": 7626,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 34,
+          "sample_id": 7649,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-120": {
+      "problem_id": "livecodebench_v5-120",
+      "selectors": {
+        "min-activation": {
+          "run_index": 5,
+          "sample_id": 7684,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 55,
+          "sample_id": 7734,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 17,
+          "sample_id": 7696,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 9,
+          "sample_id": 7688,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 17,
+          "sample_id": 7696,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 9,
+          "sample_id": 7688,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 17,
+          "sample_id": 7696,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 25,
+          "sample_id": 7704,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-121": {
+      "problem_id": "livecodebench_v5-121",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 7797,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 38,
+          "sample_id": 7781,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 44,
+          "sample_id": 7787,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 57,
+          "sample_id": 7800,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 44,
+          "sample_id": 7787,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 57,
+          "sample_id": 7800,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 44,
+          "sample_id": 7787,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 15,
+          "sample_id": 7758,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-122": {
+      "problem_id": "livecodebench_v5-122",
+      "selectors": {
+        "min-activation": {
+          "run_index": 13,
+          "sample_id": 7820,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 40,
+          "sample_id": 7847,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 50,
+          "sample_id": 7857,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 33,
+          "sample_id": 7840,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 50,
+          "sample_id": 7857,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 33,
+          "sample_id": 7840,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 50,
+          "sample_id": 7857,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 7869,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-123": {
+      "problem_id": "livecodebench_v5-123",
+      "selectors": {
+        "min-activation": {
+          "run_index": 13,
+          "sample_id": 7884,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 23,
+          "sample_id": 7894,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 33,
+          "sample_id": 7904,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 16,
+          "sample_id": 7887,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 33,
+          "sample_id": 7904,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 16,
+          "sample_id": 7887,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 7904,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 18,
+          "sample_id": 7889,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-124": {
+      "problem_id": "livecodebench_v5-124",
+      "selectors": {
+        "min-activation": {
+          "run_index": 24,
+          "sample_id": 7959,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 47,
+          "sample_id": 7982,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 46,
+          "sample_id": 7981,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 24,
+          "sample_id": 7959,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 46,
+          "sample_id": 7981,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 24,
+          "sample_id": 7959,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 46,
+          "sample_id": 7981,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 7937,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-125": {
+      "problem_id": "livecodebench_v5-125",
+      "selectors": {
+        "min-activation": {
+          "run_index": 37,
+          "sample_id": 8036,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 42,
+          "sample_id": 8041,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 54,
+          "sample_id": 8053,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 37,
+          "sample_id": 8036,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 46,
+          "sample_id": 8045,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 37,
+          "sample_id": 8036,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 54,
+          "sample_id": 8053,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 47,
+          "sample_id": 8046,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-126": {
+      "problem_id": "livecodebench_v5-126",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 8117,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 17,
+          "sample_id": 8080,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 1,
+          "sample_id": 8064,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 2,
+          "sample_id": 8065,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 1,
+          "sample_id": 8064,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 2,
+          "sample_id": 8065,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 1,
+          "sample_id": 8064,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 29,
+          "sample_id": 8092,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-127": {
+      "problem_id": "livecodebench_v5-127",
+      "selectors": {
+        "min-activation": {
+          "run_index": 27,
+          "sample_id": 8154,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 47,
+          "sample_id": 8174,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 6,
+          "sample_id": 8133,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 53,
+          "sample_id": 8180,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 6,
+          "sample_id": 8133,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 53,
+          "sample_id": 8180,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 6,
+          "sample_id": 8133,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 35,
+          "sample_id": 8162,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-128": {
+      "problem_id": "livecodebench_v5-128",
+      "selectors": {
+        "min-activation": {
+          "run_index": 29,
+          "sample_id": 8220,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 64,
+          "sample_id": 8255,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 6,
+          "sample_id": 8197,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 29,
+          "sample_id": 8220,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 6,
+          "sample_id": 8197,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 29,
+          "sample_id": 8220,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 6,
+          "sample_id": 8197,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 7,
+          "sample_id": 8198,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-129": {
+      "problem_id": "livecodebench_v5-129",
+      "selectors": {
+        "min-activation": {
+          "run_index": 28,
+          "sample_id": 8283,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 47,
+          "sample_id": 8302,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 8290,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 23,
+          "sample_id": 8278,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 8290,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 23,
+          "sample_id": 8278,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 35,
+          "sample_id": 8290,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 18,
+          "sample_id": 8273,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-130": {
+      "problem_id": "livecodebench_v5-130",
+      "selectors": {
+        "min-activation": {
+          "run_index": 22,
+          "sample_id": 8341,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 57,
+          "sample_id": 8376,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 21,
+          "sample_id": 8340,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 15,
+          "sample_id": 8334,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 21,
+          "sample_id": 8340,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 15,
+          "sample_id": 8334,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 21,
+          "sample_id": 8340,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 53,
+          "sample_id": 8372,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-131": {
+      "problem_id": "livecodebench_v5-131",
+      "selectors": {
+        "min-activation": {
+          "run_index": 8,
+          "sample_id": 8391,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 50,
+          "sample_id": 8433,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 54,
+          "sample_id": 8437,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 27,
+          "sample_id": 8410,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 54,
+          "sample_id": 8437,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 27,
+          "sample_id": 8410,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 54,
+          "sample_id": 8437,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 32,
+          "sample_id": 8415,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-132": {
+      "problem_id": "livecodebench_v5-132",
+      "selectors": {
+        "min-activation": {
+          "run_index": 15,
+          "sample_id": 8462,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 44,
+          "sample_id": 8491,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 41,
+          "sample_id": 8488,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 49,
+          "sample_id": 8496,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 41,
+          "sample_id": 8488,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 49,
+          "sample_id": 8496,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 41,
+          "sample_id": 8488,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 22,
+          "sample_id": 8469,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-133": {
+      "problem_id": "livecodebench_v5-133",
+      "selectors": {
+        "min-activation": {
+          "run_index": 21,
+          "sample_id": 8532,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 9,
+          "sample_id": 8520,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 37,
+          "sample_id": 8548,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 60,
+          "sample_id": 8571,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 37,
+          "sample_id": 8548,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 60,
+          "sample_id": 8571,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 37,
+          "sample_id": 8548,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 29,
+          "sample_id": 8540,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-134": {
+      "problem_id": "livecodebench_v5-134",
+      "selectors": {
+        "min-activation": {
+          "run_index": 1,
+          "sample_id": 8576,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 62,
+          "sample_id": 8637,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 37,
+          "sample_id": 8612,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 18,
+          "sample_id": 8593,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 37,
+          "sample_id": 8612,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 18,
+          "sample_id": 8593,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 37,
+          "sample_id": 8612,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 6,
+          "sample_id": 8581,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-135": {
+      "problem_id": "livecodebench_v5-135",
+      "selectors": {
+        "min-activation": {
+          "run_index": 43,
+          "sample_id": 8682,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 24,
+          "sample_id": 8663,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 28,
+          "sample_id": 8667,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 30,
+          "sample_id": 8669,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 28,
+          "sample_id": 8667,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 30,
+          "sample_id": 8669,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 28,
+          "sample_id": 8667,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 20,
+          "sample_id": 8659,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-136": {
+      "problem_id": "livecodebench_v5-136",
+      "selectors": {
+        "min-activation": {
+          "run_index": 61,
+          "sample_id": 8764,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 56,
+          "sample_id": 8759,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 36,
+          "sample_id": 8739,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 53,
+          "sample_id": 8756,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 36,
+          "sample_id": 8739,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 53,
+          "sample_id": 8756,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 36,
+          "sample_id": 8739,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 55,
+          "sample_id": 8758,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-137": {
+      "problem_id": "livecodebench_v5-137",
+      "selectors": {
+        "min-activation": {
+          "run_index": 3,
+          "sample_id": 8770,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 6,
+          "sample_id": 8773,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 42,
+          "sample_id": 8809,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 37,
+          "sample_id": 8804,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 42,
+          "sample_id": 8809,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 37,
+          "sample_id": 8804,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 42,
+          "sample_id": 8809,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 29,
+          "sample_id": 8796,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-138": {
+      "problem_id": "livecodebench_v5-138",
+      "selectors": {
+        "min-activation": {
+          "run_index": 60,
+          "sample_id": 8891,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 45,
+          "sample_id": 8876,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 64,
+          "sample_id": 8895,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 33,
+          "sample_id": 8864,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 47,
+          "sample_id": 8878,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 33,
+          "sample_id": 8864,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 64,
+          "sample_id": 8895,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 16,
+          "sample_id": 8847,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-139": {
+      "problem_id": "livecodebench_v5-139",
+      "selectors": {
+        "min-activation": {
+          "run_index": 5,
+          "sample_id": 8900,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 58,
+          "sample_id": 8953,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 57,
+          "sample_id": 8952,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 11,
+          "sample_id": 8906,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 57,
+          "sample_id": 8952,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 11,
+          "sample_id": 8906,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 57,
+          "sample_id": 8952,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 8957,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-140": {
+      "problem_id": "livecodebench_v5-140",
+      "selectors": {
+        "min-activation": {
+          "run_index": 62,
+          "sample_id": 9021,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 55,
+          "sample_id": 9014,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 63,
+          "sample_id": 9022,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 59,
+          "sample_id": 9018,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 63,
+          "sample_id": 9022,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 59,
+          "sample_id": 9018,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 63,
+          "sample_id": 9022,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 12,
+          "sample_id": 8971,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-141": {
+      "problem_id": "livecodebench_v5-141",
+      "selectors": {
+        "min-activation": {
+          "run_index": 33,
+          "sample_id": 9056,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 4,
+          "sample_id": 9027,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 40,
+          "sample_id": 9063,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 53,
+          "sample_id": 9076,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 40,
+          "sample_id": 9063,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 53,
+          "sample_id": 9076,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 40,
+          "sample_id": 9063,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 40,
+          "sample_id": 9063,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-142": {
+      "problem_id": "livecodebench_v5-142",
+      "selectors": {
+        "min-activation": {
+          "run_index": 3,
+          "sample_id": 9090,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 59,
+          "sample_id": 9146,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 32,
+          "sample_id": 9119,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 62,
+          "sample_id": 9149,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 32,
+          "sample_id": 9119,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 62,
+          "sample_id": 9149,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 32,
+          "sample_id": 9119,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 59,
+          "sample_id": 9146,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-143": {
+      "problem_id": "livecodebench_v5-143",
+      "selectors": {
+        "min-activation": {
+          "run_index": 45,
+          "sample_id": 9196,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 60,
+          "sample_id": 9211,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 24,
+          "sample_id": 9175,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 62,
+          "sample_id": 9213,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 24,
+          "sample_id": 9175,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 62,
+          "sample_id": 9213,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 24,
+          "sample_id": 9175,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 60,
+          "sample_id": 9211,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-144": {
+      "problem_id": "livecodebench_v5-144",
+      "selectors": {
+        "min-activation": {
+          "run_index": 15,
+          "sample_id": 9230,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 17,
+          "sample_id": 9232,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 5,
+          "sample_id": 9220,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 48,
+          "sample_id": 9263,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 5,
+          "sample_id": 9220,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 48,
+          "sample_id": 9263,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 5,
+          "sample_id": 9220,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 43,
+          "sample_id": 9258,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-145": {
+      "problem_id": "livecodebench_v5-145",
+      "selectors": {
+        "min-activation": {
+          "run_index": 49,
+          "sample_id": 9328,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 52,
+          "sample_id": 9331,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 50,
+          "sample_id": 9329,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 50,
+          "sample_id": 9329,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 50,
+          "sample_id": 9329,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 50,
+          "sample_id": 9329,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 50,
+          "sample_id": 9329,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 21,
+          "sample_id": 9300,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-146": {
+      "problem_id": "livecodebench_v5-146",
+      "selectors": {
+        "min-activation": {
+          "run_index": 57,
+          "sample_id": 9400,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 63,
+          "sample_id": 9406,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 61,
+          "sample_id": 9404,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 8,
+          "sample_id": 9351,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 61,
+          "sample_id": 9404,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 8,
+          "sample_id": 9351,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 61,
+          "sample_id": 9404,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 46,
+          "sample_id": 9389,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-147": {
+      "problem_id": "livecodebench_v5-147",
+      "selectors": {
+        "min-activation": {
+          "run_index": 54,
+          "sample_id": 9461,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 1,
+          "sample_id": 9408,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 26,
+          "sample_id": 9433,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 29,
+          "sample_id": 9436,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 26,
+          "sample_id": 9433,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 26,
+          "sample_id": 9433,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 29,
+          "sample_id": 9436,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 42,
+          "sample_id": 9449,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-148": {
+      "problem_id": "livecodebench_v5-148",
+      "selectors": {
+        "min-activation": {
+          "run_index": 53,
+          "sample_id": 9524,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 17,
+          "sample_id": 9488,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 43,
+          "sample_id": 9514,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 49,
+          "sample_id": 9520,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 43,
+          "sample_id": 9514,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 43,
+          "sample_id": 9514,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 49,
+          "sample_id": 9520,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 41,
+          "sample_id": 9512,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-149": {
+      "problem_id": "livecodebench_v5-149",
+      "selectors": {
+        "min-activation": {
+          "run_index": 36,
+          "sample_id": 9571,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 17,
+          "sample_id": 9552,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 60,
+          "sample_id": 9595,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 39,
+          "sample_id": 9574,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 60,
+          "sample_id": 9595,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 39,
+          "sample_id": 9574,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 60,
+          "sample_id": 9595,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 17,
+          "sample_id": 9552,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-150": {
+      "problem_id": "livecodebench_v5-150",
+      "selectors": {
+        "min-activation": {
+          "run_index": 5,
+          "sample_id": 9604,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 36,
+          "sample_id": 9635,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 33,
+          "sample_id": 9632,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 23,
+          "sample_id": 9622,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 33,
+          "sample_id": 9632,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 23,
+          "sample_id": 9622,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 33,
+          "sample_id": 9632,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 2,
+          "sample_id": 9601,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-151": {
+      "problem_id": "livecodebench_v5-151",
+      "selectors": {
+        "min-activation": {
+          "run_index": 51,
+          "sample_id": 9714,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 31,
+          "sample_id": 9694,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 63,
+          "sample_id": 9726,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 41,
+          "sample_id": 9704,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 63,
+          "sample_id": 9726,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 41,
+          "sample_id": 9704,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 63,
+          "sample_id": 9726,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 24,
+          "sample_id": 9687,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-152": {
+      "problem_id": "livecodebench_v5-152",
+      "selectors": {
+        "min-activation": {
+          "run_index": 22,
+          "sample_id": 9749,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 62,
+          "sample_id": 9789,
+          "is_correct": true
+        },
+        "medoid": {
+          "run_index": 31,
+          "sample_id": 9758,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 55,
+          "sample_id": 9782,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 31,
+          "sample_id": 9758,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 31,
+          "sample_id": 9758,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 55,
+          "sample_id": 9782,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 9789,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-153": {
+      "problem_id": "livecodebench_v5-153",
+      "selectors": {
+        "min-activation": {
+          "run_index": 31,
+          "sample_id": 9822,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 40,
+          "sample_id": 9831,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 9,
+          "sample_id": 9800,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 31,
+          "sample_id": 9822,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 9,
+          "sample_id": 9800,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 31,
+          "sample_id": 9822,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 9,
+          "sample_id": 9800,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 39,
+          "sample_id": 9830,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-154": {
+      "problem_id": "livecodebench_v5-154",
+      "selectors": {
+        "min-activation": {
+          "run_index": 1,
+          "sample_id": 9856,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 34,
+          "sample_id": 9889,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 59,
+          "sample_id": 9914,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 23,
+          "sample_id": 9878,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 8,
+          "sample_id": 9863,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 23,
+          "sample_id": 9878,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 59,
+          "sample_id": 9914,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 34,
+          "sample_id": 9889,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-155": {
+      "problem_id": "livecodebench_v5-155",
+      "selectors": {
+        "min-activation": {
+          "run_index": 63,
+          "sample_id": 9982,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 9944,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 15,
+          "sample_id": 9934,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 48,
+          "sample_id": 9967,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 15,
+          "sample_id": 9934,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 48,
+          "sample_id": 9967,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 15,
+          "sample_id": 9934,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 28,
+          "sample_id": 9947,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-156": {
+      "problem_id": "livecodebench_v5-156",
+      "selectors": {
+        "min-activation": {
+          "run_index": 4,
+          "sample_id": 9987,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 63,
+          "sample_id": 10046,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 27,
+          "sample_id": 10010,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 7,
+          "sample_id": 9990,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 27,
+          "sample_id": 10010,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 7,
+          "sample_id": 9990,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 27,
+          "sample_id": 10010,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 62,
+          "sample_id": 10045,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-157": {
+      "problem_id": "livecodebench_v5-157",
+      "selectors": {
+        "min-activation": {
+          "run_index": 59,
+          "sample_id": 10106,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 54,
+          "sample_id": 10101,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 51,
+          "sample_id": 10098,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 63,
+          "sample_id": 10110,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 30,
+          "sample_id": 10077,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 63,
+          "sample_id": 10110,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 51,
+          "sample_id": 10098,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 36,
+          "sample_id": 10083,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-158": {
+      "problem_id": "livecodebench_v5-158",
+      "selectors": {
+        "min-activation": {
+          "run_index": 21,
+          "sample_id": 10132,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 9,
+          "sample_id": 10120,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 8,
+          "sample_id": 10119,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 50,
+          "sample_id": 10161,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 8,
+          "sample_id": 10119,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 50,
+          "sample_id": 10161,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 8,
+          "sample_id": 10119,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 27,
+          "sample_id": 10138,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-159": {
+      "problem_id": "livecodebench_v5-159",
+      "selectors": {
+        "min-activation": {
+          "run_index": 1,
+          "sample_id": 10176,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 28,
+          "sample_id": 10203,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 22,
+          "sample_id": 10197,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 36,
+          "sample_id": 10211,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 22,
+          "sample_id": 10197,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 36,
+          "sample_id": 10211,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 22,
+          "sample_id": 10197,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 23,
+          "sample_id": 10198,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-160": {
+      "problem_id": "livecodebench_v5-160",
+      "selectors": {
+        "min-activation": {
+          "run_index": 60,
+          "sample_id": 10299,
+          "is_correct": true
+        },
+        "max-activation": {
+          "run_index": 10,
+          "sample_id": 10249,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 34,
+          "sample_id": 10273,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 64,
+          "sample_id": 10303,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 34,
+          "sample_id": 10273,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 64,
+          "sample_id": 10303,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 34,
+          "sample_id": 10273,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 4,
+          "sample_id": 10243,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-161": {
+      "problem_id": "livecodebench_v5-161",
+      "selectors": {
+        "min-activation": {
+          "run_index": 17,
+          "sample_id": 10320,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 64,
+          "sample_id": 10367,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 2,
+          "sample_id": 10305,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 2,
+          "sample_id": 10305,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 2,
+          "sample_id": 10305,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 2,
+          "sample_id": 10305,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 2,
+          "sample_id": 10305,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 60,
+          "sample_id": 10363,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-162": {
+      "problem_id": "livecodebench_v5-162",
+      "selectors": {
+        "min-activation": {
+          "run_index": 48,
+          "sample_id": 10415,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 10392,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 8,
+          "sample_id": 10375,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 58,
+          "sample_id": 10425,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 8,
+          "sample_id": 10375,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 58,
+          "sample_id": 10425,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 8,
+          "sample_id": 10375,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 26,
+          "sample_id": 10393,
+          "is_correct": true
+        }
+      }
+    },
+    "livecodebench_v5-163": {
+      "problem_id": "livecodebench_v5-163",
+      "selectors": {
+        "min-activation": {
+          "run_index": 6,
+          "sample_id": 10437,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 59,
+          "sample_id": 10490,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 64,
+          "sample_id": 10495,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 57,
+          "sample_id": 10488,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 64,
+          "sample_id": 10495,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 64,
+          "sample_id": 10495,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 57,
+          "sample_id": 10488,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 30,
+          "sample_id": 10461,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-164": {
+      "problem_id": "livecodebench_v5-164",
+      "selectors": {
+        "min-activation": {
+          "run_index": 45,
+          "sample_id": 10540,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 15,
+          "sample_id": 10510,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 35,
+          "sample_id": 10530,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 28,
+          "sample_id": 10523,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 35,
+          "sample_id": 10530,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 28,
+          "sample_id": 10523,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 35,
+          "sample_id": 10530,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 58,
+          "sample_id": 10553,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-165": {
+      "problem_id": "livecodebench_v5-165",
+      "selectors": {
+        "min-activation": {
+          "run_index": 45,
+          "sample_id": 10604,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 25,
+          "sample_id": 10584,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 50,
+          "sample_id": 10609,
+          "is_correct": true
+        },
+        "knn-medoid": {
+          "run_index": 8,
+          "sample_id": 10567,
+          "is_correct": false
+        },
+        "dbscan-medoid": {
+          "run_index": 50,
+          "sample_id": 10609,
+          "is_correct": true
+        },
+        "consensus-min": {
+          "run_index": 8,
+          "sample_id": 10567,
+          "is_correct": false
+        },
+        "consensus-max": {
+          "run_index": 50,
+          "sample_id": 10609,
+          "is_correct": true
+        },
+        "deepconf": {
+          "run_index": 31,
+          "sample_id": 10590,
+          "is_correct": false
+        }
+      }
+    },
+    "livecodebench_v5-166": {
+      "problem_id": "livecodebench_v5-166",
+      "selectors": {
+        "min-activation": {
+          "run_index": 31,
+          "sample_id": 10654,
+          "is_correct": false
+        },
+        "max-activation": {
+          "run_index": 63,
+          "sample_id": 10686,
+          "is_correct": false
+        },
+        "medoid": {
+          "run_index": 47,
+          "sample_id": 10670,
+          "is_correct": false
+        },
+        "knn-medoid": {
+          "run_index": 2,
+          "sample_id": 10625,
+          "is_correct": true
+        },
+        "dbscan-medoid": {
+          "run_index": 47,
+          "sample_id": 10670,
+          "is_correct": false
+        },
+        "consensus-min": {
+          "run_index": 2,
+          "sample_id": 10625,
+          "is_correct": true
+        },
+        "consensus-max": {
+          "run_index": 47,
+          "sample_id": 10670,
+          "is_correct": false
+        },
+        "deepconf": {
+          "run_index": 8,
+          "sample_id": 10631,
+          "is_correct": false
+        }
+      }
+    }
+  }
+}

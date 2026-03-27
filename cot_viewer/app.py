@@ -216,20 +216,14 @@ def api_runs(problem_id: str):
     return jsonify(runs)
 
 
-@app.route("/api/chain/<int:sample_id>")
-def api_chain(sample_id: int):
-    cache = _require_cache()
-    if not cache:
-        return jsonify({"error": "invalid cache"}), 400
-
-    mode = request.args.get("mode", "fixed")  # "fixed" | "smart"
-
+def _get_slices(sample_id: int, mode: str, cache: str):
+    """Shared helper: build slices and return (slices_list, token_view)."""
     reader = _get_reader(cache)
     loader = _get_loader(cache)
 
     tv = reader.get_token_view(sample_id)
     if tv.token_ids is None or len(tv.token_ids) == 0:
-        return jsonify({"num_slices": 0, "slices": []})
+        return [], tv
 
     token_ids = tv.token_ids
 
@@ -251,7 +245,87 @@ def api_chain(sample_id: int):
     else:
         slices = _build_fixed_slices(offsets, token_ids)
 
+    return slices, tv
+
+
+def _slice_averages(tv, slices):
+    """Compute per-slice nanmean for each metric. Returns {metric: [mean_per_slice]}."""
+    metric_sources = {
+        "entropy": tv.tok_neg_entropy,
+        "conf": tv.tok_conf,
+        "gini": tv.tok_gini,
+        "selfcert": tv.tok_selfcert,
+        "logprob": tv.tok_logprob,
+    }
+    result = {m: [] for m in metric_sources}
+    for s in slices:
+        ts, te = s["tok_start"], s["tok_end"]
+        for name, arr in metric_sources.items():
+            if arr is None or ts >= len(arr):
+                result[name].append(None)
+                continue
+            vals = np.array(arr[ts:min(te, len(arr))], dtype=np.float64)
+            if name == "entropy":
+                vals = -vals  # neg_entropy → entropy
+            if len(vals) == 0 or np.all(np.isnan(vals)):
+                result[name].append(None)
+            else:
+                result[name].append(round(float(np.nanmean(vals)), 6))
+    return result
+
+
+@app.route("/api/chain/<int:sample_id>")
+def api_chain(sample_id: int):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"error": "invalid cache"}), 400
+
+    mode = request.args.get("mode", "fixed")  # "fixed" | "smart"
+    slices, tv = _get_slices(sample_id, mode, cache)
+
+    if not slices:
+        return jsonify({"num_slices": 0, "slices": []})
+
     return jsonify({"num_slices": len(slices), "slices": slices})
+
+
+@app.route("/api/derivatives/<int:sample_id>")
+def api_derivatives(sample_id: int):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"error": "invalid cache"}), 400
+
+    mode = request.args.get("mode", "fixed")
+    slices, tv = _get_slices(sample_id, mode, cache)
+
+    if not slices:
+        return jsonify({"num_slices": 0, "metrics": [], "averages": {}, "d1": {}, "d2": {}, "d3": {}})
+
+    metrics = ["entropy", "conf", "gini", "selfcert", "logprob"]
+    averages = _slice_averages(tv, slices)
+
+    def _diff(values):
+        """np.diff with None→NaN handling, returns list with None for NaN."""
+        arr = np.array([v if v is not None else np.nan for v in values], dtype=np.float64)
+        if len(arr) < 2:
+            return []
+        d = np.diff(arr)
+        return [None if np.isnan(v) else round(float(v), 6) for v in d]
+
+    d1, d2, d3 = {}, {}, {}
+    for m in metrics:
+        d1[m] = _diff(averages[m])
+        d2[m] = _diff(d1[m])
+        d3[m] = _diff(d2[m])
+
+    return jsonify({
+        "num_slices": len(slices),
+        "metrics": metrics,
+        "averages": averages,
+        "d1": d1,
+        "d2": d2,
+        "d3": d3,
+    })
 
 
 @app.route("/api/slice/<int:sample_id>/<int:slice_idx>")

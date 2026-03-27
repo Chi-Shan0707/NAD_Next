@@ -69,6 +69,37 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 .ent-lo { background: #d4edda; }
 .ent-hi { background: #f8d7da; }
 .empty-msg { padding: 24px; text-align: center; color: #aaa; font-size: 14px; }
+
+/* Derivative panel */
+#deriv-panel {
+  margin: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+}
+#deriv-panel.collapsed #deriv-chart-area, #deriv-panel.collapsed #deriv-controls { display: none; }
+#deriv-header {
+  padding: 8px 16px; font-weight: 600; font-size: 13px; cursor: pointer;
+  background: #fafafa; border-bottom: 1px solid #eee; user-select: none;
+  display: flex; align-items: center; gap: 8px;
+}
+#deriv-header .toggle-arrow { font-size: 10px; color: #888; }
+#deriv-controls {
+  padding: 8px 16px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #f0f0f0; font-size: 12px;
+}
+#deriv-controls label { cursor: pointer; display: flex; align-items: center; gap: 3px; }
+#deriv-controls .ctrl-section { display: flex; gap: 8px; align-items: center; }
+#deriv-controls .ctrl-label { font-weight: 600; color: #555; margin-right: 4px; }
+.deriv-cb-entropy { color: #d32f2f; }
+.deriv-cb-conf { color: #1565c0; }
+.deriv-cb-gini { color: #2e7d32; }
+.deriv-cb-selfcert { color: #e65100; }
+.deriv-cb-logprob { color: #6a1b9a; }
+#deriv-chart-area { padding: 8px 0 12px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+#deriv-chart-area svg { display: block; min-width: 100%; }
+#deriv-chart-area .ref-line { stroke: #ccc; stroke-width: 0.5; stroke-dasharray: 4 2; }
+#deriv-chart-area .axis-label { font-size: 9px; fill: #999; }
+#deriv-chart-area polyline { fill: none; stroke-width: 1.5; }
+#deriv-chart-area circle { cursor: pointer; }
+#deriv-chart-area circle:hover { r: 4; }
 </style>
 </head>
 <body>
@@ -98,6 +129,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 </div>
 
 <div id="cot-panel"><div class="empty-msg">Select a dataset, problem, and run to view the chain-of-thought.</div></div>
+
+<div id="deriv-panel" class="collapsed">
+  <div id="deriv-header"><span class="toggle-arrow">&#9654;</span> Derivatives</div>
+  <div id="deriv-controls"></div>
+  <div id="deriv-chart-area"></div>
+</div>
 
 <div id="detail-panel">
   <div id="detail-header">Token Detail</div>
@@ -219,6 +256,7 @@ async function loadChain() {
     cotPanel.appendChild(span);
   }
   setStatus(`${data.num_slices} ${isSmart ? 'smart ' : ''}slices`);
+  loadDerivatives();
 }
 
 // -- Slice detail ------------------------------------------------------------
@@ -268,6 +306,155 @@ async function onSliceClick(el, idx, tokStart, tokEnd) {
 function fmt(v) {
   if (v === null || v === undefined) return '\u2014';
   return Number(v).toFixed(4);
+}
+
+// -- Derivatives chart -------------------------------------------------------
+const derivPanel = $('#deriv-panel'), derivHeader = $('#deriv-header');
+const derivControls = $('#deriv-controls'), derivChartArea = $('#deriv-chart-area');
+
+const DERIV_COLORS = { entropy: '#d32f2f', conf: '#1565c0', gini: '#2e7d32', selfcert: '#e65100', logprob: '#6a1b9a' };
+const DERIV_DASH = { averages: '', d1: '6 3', d2: '2 3', d3: '6 2 2 2' };
+let derivData = null;
+
+derivHeader.addEventListener('click', () => {
+  derivPanel.classList.toggle('collapsed');
+  derivHeader.querySelector('.toggle-arrow').innerHTML = derivPanel.classList.contains('collapsed') ? '&#9654;' : '&#9660;';
+});
+
+function buildDerivControls(numSlices) {
+  let html = '<div class="ctrl-section"><span class="ctrl-label">Metrics</span>';
+  for (const m of ['entropy','conf','gini','selfcert','logprob']) {
+    const chk = (m === 'entropy' || m === 'conf') ? ' checked' : '';
+    html += `<label class="deriv-cb-${m}"><input type="checkbox" data-metric="${m}"${chk}> ${m}</label>`;
+  }
+  html += '</div><div class="ctrl-section"><span class="ctrl-label">Order</span>';
+  const orders = [['averages','avg'],['d1','d1'],['d2','d2'],['d3','d3']];
+  for (const [key, label] of orders) {
+    if (key === 'd3' && numSlices < 4) continue;
+    if (key === 'd2' && numSlices < 3) continue;
+    const chk = (key === 'averages' || key === 'd1') ? ' checked' : '';
+    html += `<label><input type="checkbox" data-order="${key}"${chk}> ${label}</label>`;
+  }
+  html += '</div>';
+  derivControls.innerHTML = html;
+  derivControls.querySelectorAll('input').forEach(inp => inp.addEventListener('change', renderDerivChart));
+}
+
+function renderDerivChart() {
+  if (!derivData) { derivChartArea.innerHTML = ''; return; }
+
+  const selMetrics = [...derivControls.querySelectorAll('input[data-metric]:checked')].map(e => e.dataset.metric);
+  const selOrders = [...derivControls.querySelectorAll('input[data-order]:checked')].map(e => e.dataset.order);
+  if (!selMetrics.length || !selOrders.length) { derivChartArea.innerHTML = '<div class="empty-msg">Select metrics and orders.</div>'; return; }
+
+  const MIN_PX_PER_POINT = 60;  // minimum horizontal pixels between data points
+  const H = 220, PAD_L = 50, PAD_R = 20, PAD_T = 14, PAD_B = 24;
+  const maxLen = derivData.num_slices;
+  const containerW = derivChartArea.clientWidth || 800;
+  const neededW = PAD_L + PAD_R + Math.max(maxLen - 1, 1) * MIN_PX_PER_POINT;
+  const W = Math.max(containerW, neededW);
+  const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+  // Collect all values for Y-axis scaling
+  let allVals = [];
+  for (const order of selOrders) {
+    const src = derivData[order];
+    for (const m of selMetrics) {
+      if (src[m]) src[m].forEach(v => { if (v !== null) allVals.push(v); });
+    }
+  }
+  if (!allVals.length) { derivChartArea.innerHTML = '<div class="empty-msg">No data.</div>'; return; }
+
+  let yMin = Math.min(...allVals), yMax = Math.max(...allVals);
+  if (yMin === yMax) { yMin -= 0.5; yMax += 0.5; }
+  const yPad = (yMax - yMin) * 0.08;
+  yMin -= yPad; yMax += yPad;
+
+  const xScale = i => PAD_L + (i / Math.max(maxLen - 1, 1)) * plotW;
+  const yScale = v => PAD_T + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+
+  let svg = `<svg width="${W}px" height="${H}px" style="min-width:${W}px" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Y=0 reference line (for derivatives)
+  if (yMin < 0 && yMax > 0) {
+    const y0 = yScale(0);
+    svg += `<line x1="${PAD_L}" y1="${y0}" x2="${W - PAD_R}" y2="${y0}" class="ref-line"/>`;
+    svg += `<text x="${PAD_L - 4}" y="${y0 + 3}" text-anchor="end" class="axis-label">0</text>`;
+  }
+
+  // Y-axis labels
+  svg += `<text x="${PAD_L - 4}" y="${PAD_T + 4}" text-anchor="end" class="axis-label">${yMax.toFixed(2)}</text>`;
+  svg += `<text x="${PAD_L - 4}" y="${H - PAD_B + 4}" text-anchor="end" class="axis-label">${yMin.toFixed(2)}</text>`;
+
+  // X-axis slice labels — show every Nth to avoid overlap
+  const pxPerPt = plotW / Math.max(maxLen - 1, 1);
+  const step = pxPerPt >= 30 ? 1 : pxPerPt >= 15 ? 2 : Math.max(1, Math.ceil(30 / pxPerPt));
+  for (let i = 0; i < maxLen; i += step) {
+    svg += `<text x="${xScale(i)}" y="${H - 2}" text-anchor="middle" class="axis-label">${i}</text>`;
+  }
+
+  // Draw lines
+  for (const order of selOrders) {
+    const src = derivData[order];
+    for (const m of selMetrics) {
+      const vals = src[m];
+      if (!vals) continue;
+      // Offset: averages align to slice index, d1 starts at 0.5, d2 at 1, d3 at 1.5
+      const offsetMap = { averages: 0, d1: 0.5, d2: 1, d3: 1.5 };
+      const xOff = offsetMap[order] || 0;
+
+      // Build polyline segments (break on null)
+      let segments = [], current = [];
+      for (let i = 0; i < vals.length; i++) {
+        if (vals[i] === null) {
+          if (current.length) { segments.push(current); current = []; }
+        } else {
+          current.push({ i: i + xOff, v: vals[i], sliceIdx: i });
+        }
+      }
+      if (current.length) segments.push(current);
+
+      const color = DERIV_COLORS[m];
+      const dash = DERIV_DASH[order];
+      for (const seg of segments) {
+        const pts = seg.map(p => `${xScale(p.i)},${yScale(p.v)}`).join(' ');
+        svg += `<polyline points="${pts}" stroke="${color}" stroke-dasharray="${dash}"/>`;
+        for (const p of seg) {
+          svg += `<circle cx="${xScale(p.i)}" cy="${yScale(p.v)}" r="2.5" fill="${color}" data-slice="${p.sliceIdx}" data-metric="${m}" data-order="${order}" data-val="${p.v}"/>`;
+        }
+      }
+    }
+  }
+
+  svg += '</svg>';
+  derivChartArea.innerHTML = svg;
+
+  // Click on data point → highlight slice
+  derivChartArea.querySelectorAll('circle').forEach(c => {
+    c.addEventListener('click', () => {
+      const si = parseInt(c.dataset.slice, 10);
+      const span = cotPanel.querySelector(`.slice[data-idx="${si}"]`);
+      if (span) { span.scrollIntoView({ block: 'nearest' }); span.click(); }
+    });
+  });
+}
+
+async function loadDerivatives() {
+  if (currentSampleId === null) return;
+  const mode = selMode.value;
+  try {
+    derivData = await api('/api/derivatives/' + currentSampleId + '?mode=' + mode);
+    buildDerivControls(derivData.num_slices);
+    if (!derivPanel.classList.contains('collapsed')) renderDerivChart();
+    // Auto-expand on first load
+    if (derivPanel.classList.contains('collapsed') && derivData.num_slices > 0) {
+      derivPanel.classList.remove('collapsed');
+      derivHeader.querySelector('.toggle-arrow').innerHTML = '&#9660;';
+      renderDerivChart();
+    }
+  } catch (e) {
+    derivChartArea.innerHTML = '<div class="empty-msg">Failed to load derivatives.</div>';
+  }
 }
 
 // -- Events ------------------------------------------------------------------
