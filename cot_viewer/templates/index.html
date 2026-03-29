@@ -161,6 +161,27 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 /* Legend inside deriv chart */
 .deriv-legend { font-size: 10px; fill: #555; }
 .deriv-legend rect { rx: 3; ry: 3; }
+
+/* Neuron Activation panel */
+#neuron-panel {
+  margin: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+}
+#neuron-panel.collapsed #neuron-chart-area, #neuron-panel.collapsed #neuron-controls { display: none; }
+#neuron-header {
+  padding: 8px 16px; font-weight: 600; font-size: 13px; cursor: pointer;
+  background: #fafafa; border-bottom: 1px solid #eee; user-select: none;
+  display: flex; align-items: center; gap: 8px;
+}
+#neuron-header .toggle-arrow { font-size: 10px; color: #888; }
+#neuron-controls {
+  padding: 8px 16px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #f0f0f0; font-size: 12px;
+}
+#neuron-controls label { cursor: pointer; display: flex; align-items: center; gap: 3px; }
+#neuron-controls .ctrl-section { display: flex; gap: 8px; align-items: center; }
+#neuron-controls .ctrl-label { font-weight: 600; color: #555; margin-right: 4px; }
+#neuron-chart-area { padding: 8px 0 12px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+#neuron-chart-area svg { display: block; min-width: 100%; }
 </style>
 </head>
 <body>
@@ -200,6 +221,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
   <div id="deriv-chart-area"></div>
 </div>
 
+<div id="neuron-panel" class="collapsed">
+  <div id="neuron-header"><span class="toggle-arrow">&#9654;</span> Neuron Activation</div>
+  <div id="neuron-controls"></div>
+  <div id="neuron-chart-area"></div>
+</div>
+
 <div id="detail-panel">
   <div id="detail-header">Token Detail</div>
   <div id="detail-body"><div class="empty-msg">Click a slice above to inspect per-token metrics.</div></div>
@@ -219,7 +246,10 @@ let currentCache = null;
 let allRuns = [];              // [{sample_id, run_index, is_correct}, ...]
 let selectedRuns = [];         // ordered array; first = primary
 let allDerivData = {};         // {sample_id: derivData}
+let allNeuronData = {};        // {sample_id: neuronHeatmapData}
 let derivLayout = 'overlay';   // 'overlay' | 'split'
+let neuronLayout = 'sidebyside'; // 'sidebyside' | 'difference'
+let neuronMetric = 'count';    // 'count' | 'w_sum_total' | 'w_max_max'
 
 // Derive base URL to support WebVPN proxies
 const BASE = (function() {
@@ -285,6 +315,7 @@ async function loadRuns() {
   // Reset multi-run state
   selectedRuns = [];
   allDerivData = {};
+  allNeuronData = {};
 
   renderChips();
 
@@ -347,6 +378,7 @@ function toggleRunSelection(run) {
     if (selectedRuns.length === 1) return;
     selectedRuns.splice(idx, 1);
     delete allDerivData[run.sample_id];
+    delete allNeuronData[run.sample_id];
   } else {
     selectedRuns.push(run);
   }
@@ -409,6 +441,7 @@ async function loadAllPanels() {
 
   setStatus(`${selectedRuns.length} run${selectedRuns.length > 1 ? 's' : ''} selected`);
   loadAllDerivatives();
+  loadAllNeuronData();
 }
 
 function renderSlices(container, slices, isSmart, sampleId) {
@@ -815,9 +848,394 @@ function attachDerivClickHandlers() {
   });
 }
 
+// -- Neuron Activation heatmap ------------------------------------------------
+const neuronPanel = $('#neuron-panel'), neuronHeader = $('#neuron-header');
+const neuronControls = $('#neuron-controls'), neuronChartArea = $('#neuron-chart-area');
+
+neuronHeader.addEventListener('click', () => {
+  neuronPanel.classList.toggle('collapsed');
+  neuronHeader.querySelector('.toggle-arrow').innerHTML = neuronPanel.classList.contains('collapsed') ? '&#9654;' : '&#9660;';
+  if (!neuronPanel.classList.contains('collapsed')) renderNeuronChart();
+});
+
+function heatColor(t) {
+  // 3-stop: white(0) → steelblue(0.5) → dark navy(1)
+  t = Math.max(0, Math.min(1, t));
+  let r, g, b;
+  if (t < 0.5) {
+    const s = t / 0.5;
+    r = Math.round(255 + (70 - 255) * s);
+    g = Math.round(255 + (130 - 255) * s);
+    b = Math.round(255 + (180 - 255) * s);
+  } else {
+    const s = (t - 0.5) / 0.5;
+    r = Math.round(70 + (8 - 70) * s);
+    g = Math.round(130 + (24 - 130) * s);
+    b = Math.round(180 + (68 - 180) * s);
+  }
+  return `rgb(${r},${g},${b})`;
+}
+
+function divColor(t) {
+  // Diverging: blue(-1) → white(0) → red(+1)
+  t = Math.max(-1, Math.min(1, t));
+  let r, g, b;
+  if (t < 0) {
+    const s = -t;
+    r = Math.round(255 - 200 * s);
+    g = Math.round(255 - 200 * s);
+    b = 255;
+  } else {
+    const s = t;
+    r = 255;
+    g = Math.round(255 - 200 * s);
+    b = Math.round(255 - 200 * s);
+  }
+  return `rgb(${r},${g},${b})`;
+}
+
+function buildNeuronControls() {
+  let html = '<div class="ctrl-section"><span class="ctrl-label">Metric</span>';
+  for (const [val, label] of [['count','Count'],['w_sum_total','w_sum'],['w_max_max','w_max']]) {
+    const chk = val === neuronMetric ? ' checked' : '';
+    html += `<label><input type="radio" name="neuron-metric" value="${val}"${chk}> ${label}</label>`;
+  }
+  html += '</div>';
+
+  html += '<div class="ctrl-section"><span class="ctrl-label">Curves</span>';
+  html += '<label style="color:#d32f2f"><input type="checkbox" data-ncurve="entropy" checked> entropy</label>';
+  html += '<label style="color:#1565c0"><input type="checkbox" data-ncurve="conf" checked> conf</label>';
+  html += '</div>';
+
+  if (selectedRuns.length > 1) {
+    html += '<div class="ctrl-section"><span class="ctrl-label">Layout</span>';
+    html += '<span class="layout-toggle">';
+    html += `<button data-nlayout="sidebyside" class="${neuronLayout === 'sidebyside' ? 'active' : ''}">Side-by-side</button>`;
+    html += `<button data-nlayout="difference" class="${neuronLayout === 'difference' ? 'active' : ''}">Difference</button>`;
+    html += '</span></div>';
+  }
+
+  neuronControls.innerHTML = html;
+  neuronControls.querySelectorAll('input[name="neuron-metric"]').forEach(inp => {
+    inp.addEventListener('change', () => { neuronMetric = inp.value; renderNeuronChart(); });
+  });
+  neuronControls.querySelectorAll('input[data-ncurve]').forEach(inp => inp.addEventListener('change', renderNeuronChart));
+  neuronControls.querySelectorAll('.layout-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      neuronLayout = btn.dataset.nlayout;
+      neuronControls.querySelectorAll('.layout-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderNeuronChart();
+    });
+  });
+}
+
+async function loadAllNeuronData() {
+  if (selectedRuns.length === 0) return;
+  const mode = selMode.value;
+
+  const promises = selectedRuns.map(async (run) => {
+    if (allNeuronData[run.sample_id]) return;
+    try {
+      const data = await api('/api/neuron_heatmap/' + run.sample_id + '?mode=' + mode);
+      allNeuronData[run.sample_id] = data;
+    } catch (e) { /* ignore */ }
+  });
+  await Promise.all(promises);
+
+  buildNeuronControls();
+
+  const hasData = selectedRuns.some(r => allNeuronData[r.sample_id] && allNeuronData[r.sample_id].num_slices > 0);
+  if (neuronPanel.classList.contains('collapsed') && hasData) {
+    neuronPanel.classList.remove('collapsed');
+    neuronHeader.querySelector('.toggle-arrow').innerHTML = '&#9660;';
+  }
+  renderNeuronChart();
+}
+
+function renderNeuronChart() {
+  const runDatas = selectedRuns
+    .filter(r => allNeuronData[r.sample_id] && allNeuronData[r.sample_id].num_slices > 0)
+    .map((r, i) => ({ run: r, data: allNeuronData[r.sample_id], isFirst: i === 0, colorIdx: i }));
+
+  if (!runDatas.length) { neuronChartArea.innerHTML = '<div class="empty-msg">No neuron data.</div>'; return; }
+
+  const showCurves = [...neuronControls.querySelectorAll('input[data-ncurve]:checked')].map(e => e.dataset.ncurve);
+
+  if (neuronLayout === 'difference' && runDatas.length > 1) {
+    renderNeuronDifference(runDatas, showCurves);
+  } else {
+    renderNeuronSideBySide(runDatas, showCurves);
+  }
+}
+
+function renderNeuronSideBySide(runDatas, showCurves) {
+  const HM_H = 240, JAC_H = 60, CURVE_H = showCurves.length > 0 ? 60 : 0;
+  const CHART_H = HM_H + JAC_H + CURVE_H + 30; // 30 for labels/gap
+  const PAD_L = 50, PAD_R = 20, PAD_T = 20, GAP = 16;
+
+  // Use first run for reference dimensions; show all stacked
+  const totalH = runDatas.length * (CHART_H + GAP) - GAP + 10;
+
+  let maxSlices = 0, allLayers = new Set();
+  for (const rd of runDatas) {
+    if (rd.data.num_slices > maxSlices) maxSlices = rd.data.num_slices;
+    rd.data.layers.forEach(l => allLayers.add(l));
+  }
+  const layers = [...allLayers].sort((a, b) => a - b);
+  const nLayers = layers.length;
+
+  const MIN_PX = 4;
+  const containerW = neuronChartArea.clientWidth || 800;
+  const neededW = PAD_L + PAD_R + maxSlices * MIN_PX;
+  const W = Math.max(containerW, neededW);
+  const plotW = W - PAD_L - PAD_R;
+  const cellW = plotW / Math.max(maxSlices, 1);
+  const cellH = HM_H / Math.max(nLayers, 1);
+
+  let svg = `<svg width="${W}px" height="${totalH}px" style="min-width:${W}px" xmlns="http://www.w3.org/2000/svg">`;
+
+  for (let ri = 0; ri < runDatas.length; ri++) {
+    const rd = runDatas[ri];
+    const yOff = ri * (CHART_H + GAP);
+    const hm = rd.data.heatmap[neuronMetric];
+    const thisLayers = rd.data.layers;
+
+    // Run label
+    const mark = rd.run.is_correct === true ? '\u2713' : rd.run.is_correct === false ? '\u2717' : '';
+    const runColor = RUN_HUES[rd.colorIdx % RUN_HUES.length];
+    svg += `<circle cx="12" cy="${yOff + 12}" r="5" fill="${runColor}"/>`;
+    svg += `<text x="22" y="${yOff + 15}" font-size="11" font-weight="600" fill="#333">Run ${rd.run.run_index} ${mark}</text>`;
+
+    // Find global max for color scaling
+    let valMax = 0;
+    if (hm) {
+      for (const row of hm) {
+        for (const v of row) {
+          if (v > valMax) valMax = v;
+        }
+      }
+    }
+
+    // Heatmap
+    const hmY = yOff + PAD_T;
+    if (hm && valMax > 0) {
+      // Map this run's layers to the global layer indices
+      const layerIdx = {};
+      thisLayers.forEach((l, i) => { layerIdx[l] = i; });
+
+      for (let li = 0; li < nLayers; li++) {
+        const lay = layers[li];
+        const srcIdx = layerIdx[lay];
+        const y = hmY + li * cellH;
+        for (let si = 0; si < rd.data.num_slices; si++) {
+          const val = srcIdx !== undefined ? hm[srcIdx][si] : 0;
+          const t = val / valMax;
+          const x = PAD_L + si * cellW;
+          svg += `<rect x="${x}" y="${y}" width="${cellW + 0.5}" height="${cellH + 0.5}" fill="${heatColor(t)}" data-slice="${si}" data-sample="${rd.run.sample_id}"><title>L${lay} S${si}: ${typeof val === 'number' ? val.toFixed ? val.toFixed(2) : val : val}</title></rect>`;
+        }
+      }
+    }
+
+    // Y-axis layer labels
+    const labelStep = nLayers > 20 ? Math.ceil(nLayers / 10) : 1;
+    for (let li = 0; li < nLayers; li += labelStep) {
+      svg += `<text x="${PAD_L - 4}" y="${hmY + li * cellH + cellH / 2 + 3}" text-anchor="end" font-size="9" fill="#999">L${layers[li]}</text>`;
+    }
+
+    // Jaccard curve
+    const jacY = hmY + HM_H + 4;
+    const jacData = rd.data.jaccard;
+    if (jacData && jacData.length > 1) {
+      svg += `<text x="${PAD_L - 4}" y="${jacY + 8}" text-anchor="end" font-size="9" fill="#999">Jacc</text>`;
+      let pts = [];
+      for (let i = 0; i < jacData.length; i++) {
+        if (jacData[i] !== null) {
+          const x = PAD_L + (i + 0.5) * cellW;
+          const y = jacY + JAC_H - jacData[i] * JAC_H;
+          pts.push(`${x},${y}`);
+        }
+      }
+      if (pts.length > 1) {
+        svg += `<polyline points="${pts.join(' ')}" stroke="#00838f" stroke-width="1.5" fill="none" opacity="0.8"/>`;
+      }
+      // Axis lines
+      svg += `<line x1="${PAD_L}" y1="${jacY}" x2="${W - PAD_R}" y2="${jacY}" stroke="#eee" stroke-width="0.5"/>`;
+      svg += `<line x1="${PAD_L}" y1="${jacY + JAC_H}" x2="${W - PAD_R}" y2="${jacY + JAC_H}" stroke="#eee" stroke-width="0.5"/>`;
+      svg += `<text x="${PAD_L - 4}" y="${jacY + JAC_H + 3}" text-anchor="end" font-size="8" fill="#bbb">0</text>`;
+      svg += `<text x="${PAD_L - 4}" y="${jacY + 4}" text-anchor="end" font-size="8" fill="#bbb">1</text>`;
+    }
+
+    // Token metric curves
+    if (showCurves.length > 0 && rd.data.token_metrics) {
+      const curveY = jacY + JAC_H + 4;
+      const curveColors = { entropy: '#d32f2f', conf: '#1565c0' };
+      for (const cm of showCurves) {
+        const vals = rd.data.token_metrics[cm];
+        if (!vals || vals.length === 0) continue;
+        // Find range
+        let vMin = Infinity, vMax = -Infinity;
+        for (const v of vals) { if (v !== null) { if (v < vMin) vMin = v; if (v > vMax) vMax = v; } }
+        if (vMin === Infinity) continue;
+        if (vMin === vMax) { vMin -= 0.5; vMax += 0.5; }
+        let pts = [];
+        for (let i = 0; i < vals.length; i++) {
+          if (vals[i] !== null) {
+            const x = PAD_L + (i + 0.5) * cellW;
+            const y = curveY + CURVE_H - ((vals[i] - vMin) / (vMax - vMin)) * CURVE_H;
+            pts.push(`${x},${y}`);
+          }
+        }
+        if (pts.length > 1) {
+          svg += `<polyline points="${pts.join(' ')}" stroke="${curveColors[cm] || '#888'}" stroke-width="1.2" fill="none" opacity="0.7"/>`;
+        }
+      }
+      if (showCurves.length > 0) {
+        svg += `<text x="${PAD_L - 4}" y="${curveY + CURVE_H / 2 + 3}" text-anchor="end" font-size="9" fill="#999">Metrics</text>`;
+      }
+    }
+
+    // X-axis slice labels (bottom of last chart only)
+    if (ri === runDatas.length - 1) {
+      const xLabelY = yOff + CHART_H + 2;
+      const step = cellW >= 20 ? 1 : cellW >= 8 ? 5 : Math.max(1, Math.ceil(20 / cellW));
+      for (let i = 0; i < maxSlices; i += step) {
+        svg += `<text x="${PAD_L + (i + 0.5) * cellW}" y="${xLabelY}" text-anchor="middle" font-size="8" fill="#999">${i}</text>`;
+      }
+    }
+  }
+
+  svg += '</svg>';
+  neuronChartArea.innerHTML = svg;
+  attachNeuronClickHandlers();
+}
+
+function renderNeuronDifference(runDatas, showCurves) {
+  // Show diff: run[0] - run[i] for i >= 1
+  const ref = runDatas[0];
+  const others = runDatas.slice(1);
+  const HM_H = 240, JAC_H = 60, CURVE_H = showCurves.length > 0 ? 60 : 0;
+  const CHART_H = HM_H + JAC_H + CURVE_H + 30;
+  const PAD_L = 50, PAD_R = 20, PAD_T = 20, GAP = 16;
+
+  let maxSlices = ref.data.num_slices;
+  const layers = ref.data.layers;
+  const nLayers = layers.length;
+
+  for (const rd of others) { if (rd.data.num_slices > maxSlices) maxSlices = rd.data.num_slices; }
+
+  const totalH = others.length * (CHART_H + GAP) - GAP + 10;
+  const containerW = neuronChartArea.clientWidth || 800;
+  const neededW = PAD_L + PAD_R + maxSlices * 4;
+  const W = Math.max(containerW, neededW);
+  const plotW = W - PAD_L - PAD_R;
+  const cellW = plotW / Math.max(maxSlices, 1);
+  const cellH = HM_H / Math.max(nLayers, 1);
+
+  const refHM = ref.data.heatmap[neuronMetric];
+  const refLayers = ref.data.layers;
+  const refLayerIdx = {};
+  refLayers.forEach((l, i) => { refLayerIdx[l] = i; });
+
+  let svg = `<svg width="${W}px" height="${totalH}px" style="min-width:${W}px" xmlns="http://www.w3.org/2000/svg">`;
+
+  for (let oi = 0; oi < others.length; oi++) {
+    const rd = others[oi];
+    const yOff = oi * (CHART_H + GAP);
+    const hmY = yOff + PAD_T;
+    const cmpHM = rd.data.heatmap[neuronMetric];
+    const cmpLayers = rd.data.layers;
+    const cmpLayerIdx = {};
+    cmpLayers.forEach((l, i) => { cmpLayerIdx[l] = i; });
+
+    // Run label
+    const mark0 = ref.run.is_correct === true ? '\u2713' : ref.run.is_correct === false ? '\u2717' : '';
+    const markC = rd.run.is_correct === true ? '\u2713' : rd.run.is_correct === false ? '\u2717' : '';
+    svg += `<text x="12" y="${yOff + 15}" font-size="11" font-weight="600" fill="#333">Run ${ref.run.run_index}${mark0} \u2212 Run ${rd.run.run_index}${markC}</text>`;
+
+    // Compute diff and find max abs for scaling
+    let diffMax = 0;
+    const nSlices = Math.max(ref.data.num_slices, rd.data.num_slices);
+    for (let li = 0; li < nLayers; li++) {
+      const lay = layers[li];
+      const rsi = refLayerIdx[lay];
+      const csi = cmpLayerIdx[lay];
+      for (let si = 0; si < nSlices; si++) {
+        const rv = (rsi !== undefined && refHM && refHM[rsi] && si < refHM[rsi].length) ? refHM[rsi][si] : 0;
+        const cv = (csi !== undefined && cmpHM && cmpHM[csi] && si < cmpHM[csi].length) ? cmpHM[csi][si] : 0;
+        const d = Math.abs(rv - cv);
+        if (d > diffMax) diffMax = d;
+      }
+    }
+    if (diffMax === 0) diffMax = 1;
+
+    for (let li = 0; li < nLayers; li++) {
+      const lay = layers[li];
+      const rsi = refLayerIdx[lay];
+      const csi = cmpLayerIdx[lay];
+      const y = hmY + li * cellH;
+      for (let si = 0; si < nSlices; si++) {
+        const rv = (rsi !== undefined && refHM && refHM[rsi] && si < refHM[rsi].length) ? refHM[rsi][si] : 0;
+        const cv = (csi !== undefined && cmpHM && cmpHM[csi] && si < cmpHM[csi].length) ? cmpHM[csi][si] : 0;
+        const diff = rv - cv;
+        const t = diff / diffMax; // [-1, 1]
+        const x = PAD_L + si * cellW;
+        svg += `<rect x="${x}" y="${y}" width="${cellW + 0.5}" height="${cellH + 0.5}" fill="${divColor(t)}" data-slice="${si}" data-sample="${ref.run.sample_id}"><title>L${lay} S${si}: ${diff.toFixed(2)}</title></rect>`;
+      }
+    }
+
+    // Y-axis
+    const labelStep = nLayers > 20 ? Math.ceil(nLayers / 10) : 1;
+    for (let li = 0; li < nLayers; li += labelStep) {
+      svg += `<text x="${PAD_L - 4}" y="${hmY + li * cellH + cellH / 2 + 3}" text-anchor="end" font-size="9" fill="#999">L${layers[li]}</text>`;
+    }
+
+    // Jaccard diff curve
+    const jacY = hmY + HM_H + 4;
+    const jacRef = ref.data.jaccard || [];
+    const jacCmp = rd.data.jaccard || [];
+    const maxJacLen = Math.max(jacRef.length, jacCmp.length);
+    if (maxJacLen > 1) {
+      svg += `<text x="${PAD_L - 4}" y="${jacY + 8}" text-anchor="end" font-size="9" fill="#999">J.diff</text>`;
+      svg += `<line x1="${PAD_L}" y1="${jacY + JAC_H / 2}" x2="${W - PAD_R}" y2="${jacY + JAC_H / 2}" stroke="#eee" stroke-width="0.5"/>`;
+      let pts = [];
+      for (let i = 0; i < maxJacLen; i++) {
+        const rv = i < jacRef.length && jacRef[i] !== null ? jacRef[i] : 0;
+        const cv = i < jacCmp.length && jacCmp[i] !== null ? jacCmp[i] : 0;
+        const diff = rv - cv; // [-1, 1]
+        const x = PAD_L + (i + 0.5) * cellW;
+        const y = jacY + JAC_H / 2 - diff * (JAC_H / 2);
+        pts.push(`${x},${y}`);
+      }
+      if (pts.length > 1) {
+        svg += `<polyline points="${pts.join(' ')}" stroke="#00838f" stroke-width="1.5" fill="none" opacity="0.8"/>`;
+      }
+    }
+  }
+
+  svg += '</svg>';
+  neuronChartArea.innerHTML = svg;
+  attachNeuronClickHandlers();
+}
+
+function attachNeuronClickHandlers() {
+  neuronChartArea.querySelectorAll('rect[data-slice]').forEach(r => {
+    r.addEventListener('click', () => {
+      const si = parseInt(r.dataset.slice, 10);
+      const sampleId = parseInt(r.dataset.sample, 10);
+      const panel = cotArea.querySelector(`.cot-panel-wrap[data-sample-id="${sampleId}"]`);
+      if (panel) {
+        const span = panel.querySelector(`.slice[data-idx="${si}"]`);
+        if (span) { span.scrollIntoView({ block: 'nearest' }); span.click(); }
+      }
+    });
+  });
+}
+
 // -- Reload on mode change ---------------------------------------------------
 function reloadAll() {
   allDerivData = {};
+  allNeuronData = {};
   loadAllPanels();
 }
 

@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 from flask import Flask, jsonify, render_template, request
 
-from nad.core.views.reader import CacheReader
+from nad.core.views.reader import Agg, CacheReader
 from nad.io.loader import NadNextLoader
 from transformers import AutoTokenizer
 
@@ -390,6 +390,162 @@ def _f(arr, idx):
     if np.isnan(v) or np.isinf(v):
         return None
     return round(v, 6)
+
+
+# ---------------------------------------------------------------------------
+# Neuron heatmap
+# ---------------------------------------------------------------------------
+
+def _build_row_to_slice(num_rows: int, offsets: list[int], token_ids, mode: str):
+    """Map each raw row index (0..num_rows-1) to an output slice index.
+
+    For 'fixed' mode this is identity; for 'smart' mode rows are grouped via
+    smart_slice_grouping and the mapping reflects the merged super-slices.
+    Returns (row_to_slice dict, num_output_slices).
+    """
+    if mode == "smart" and BOUNDARY_IDS is not None and len(offsets) > 1:
+        try:
+            from nad.ops.smart_slice import smart_slice_grouping
+
+            offs_arr = np.array(offsets, dtype=np.int64)
+            tok_arr = np.asarray(token_ids, dtype=np.int32)
+            grouping = smart_slice_grouping(tok_arr, offs_arr, BOUNDARY_IDS)
+            # grouping[i] = group id for raw row i; remap to dense 0..N-1
+            unique_gids = sorted(set(grouping.tolist()))
+            gid_to_slice = {g: idx for idx, g in enumerate(unique_gids)}
+            mapping = {i: gid_to_slice[g] for i, g in enumerate(grouping.tolist())}
+            return mapping, len(unique_gids)
+        except Exception:
+            pass
+    # Fixed: identity mapping
+    return {i: i for i in range(num_rows)}, num_rows
+
+
+@app.route("/api/neuron_heatmap/<int:sample_id>")
+def api_neuron_heatmap(sample_id: int):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"error": "invalid cache"}), 400
+
+    mode = request.args.get("mode", "fixed")
+    reader = _get_reader(cache)
+    loader = _get_loader(cache)
+
+    # Check rows/ bank availability
+    rows_srp = reader.rows_sample_row_ptr
+    rows_rp = reader.rows_row_ptr
+    rows_keys = reader.rows_keys
+    if rows_srp is None or rows_rp is None or rows_keys is None:
+        return jsonify({"error": "no rows/ bank in this cache"}), 404
+
+    rows_w_sum = reader.rows_weights_for(Agg.SUM)
+    rows_w_max = reader.rows_weights_for(Agg.MAX)
+
+    # Row range for sample
+    row_start = int(rows_srp[sample_id])
+    row_end = int(rows_srp[sample_id + 1])
+    num_raw_rows = row_end - row_start
+
+    if num_raw_rows == 0:
+        return jsonify({"num_slices": 0, "layers": [], "heatmap": {}, "jaccard": [], "token_metrics": {}})
+
+    # Token offsets for smart slicing
+    tv = reader.get_token_view(sample_id)
+    token_ids = tv.token_ids if tv.token_ids is not None else np.array([], dtype=np.int32)
+    rows_trp = reader.rows_token_row_ptr
+    if rows_trp is not None and len(token_ids) > 0:
+        row_lo, row_hi = loader.get_row_range_for_sample(sample_id)
+        base = int(rows_trp[row_lo + 1])
+        offsets = [min(int(rows_trp[r]) - base, len(token_ids))
+                   for r in range(row_lo + 1, row_hi + 2)]
+    else:
+        offsets = [0, len(token_ids)] if len(token_ids) > 0 else [0]
+
+    row_to_slice, num_slices = _build_row_to_slice(num_raw_rows, offsets, token_ids, mode)
+
+    # First pass: discover layers and collect per-slice key sets
+    layer_set = set()
+    slice_key_sets = [set() for _ in range(num_slices)]
+
+    # Accumulators: {(layer_idx, slice_idx) -> [count, w_sum_total, w_max_max]}
+    # We'll use dicts first then fill arrays after discovering all layers
+    from collections import defaultdict
+    cell_count = defaultdict(int)
+    cell_wsum = defaultdict(float)
+    cell_wmax = defaultdict(float)
+
+    for raw_i in range(num_raw_rows):
+        row_idx = row_start + raw_i
+        sl = row_to_slice.get(raw_i, raw_i)
+        k_start = int(rows_rp[row_idx])
+        k_end = int(rows_rp[row_idx + 1])
+        if k_start == k_end:
+            continue
+
+        keys = rows_keys[k_start:k_end]
+        layers = (keys >> 16).astype(np.int32)
+
+        # Collect key set for Jaccard
+        slice_key_sets[sl].update(keys.tolist())
+
+        # Per-layer aggregation
+        unique_layers = np.unique(layers)
+        for lay in unique_layers:
+            layer_set.add(int(lay))
+            mask = layers == lay
+            cnt = int(mask.sum())
+            cell_count[(int(lay), sl)] += cnt
+            if rows_w_sum is not None:
+                cell_wsum[(int(lay), sl)] += float(np.sum(rows_w_sum[k_start:k_end][mask]))
+            if rows_w_max is not None:
+                cell_wmax[(int(lay), sl)] = max(cell_wmax[(int(lay), sl)],
+                                                 float(np.max(rows_w_max[k_start:k_end][mask])))
+
+    layers_sorted = sorted(layer_set)
+    layer_to_idx = {l: i for i, l in enumerate(layers_sorted)}
+    n_layers = len(layers_sorted)
+
+    # Build 2D arrays [n_layers][num_slices]
+    hm_count = [[0] * num_slices for _ in range(n_layers)]
+    hm_wsum = [[0.0] * num_slices for _ in range(n_layers)]
+    hm_wmax = [[0.0] * num_slices for _ in range(n_layers)]
+
+    for (lay, sl), cnt in cell_count.items():
+        li = layer_to_idx[lay]
+        hm_count[li][sl] = cnt
+        hm_wsum[li][sl] = round(cell_wsum[(lay, sl)], 4)
+        hm_wmax[li][sl] = round(cell_wmax[(lay, sl)], 4)
+
+    # Inter-slice Jaccard similarity (consecutive slices)
+    jaccard = [None]  # first slice has no predecessor
+    for i in range(1, num_slices):
+        a, b = slice_key_sets[i - 1], slice_key_sets[i]
+        if not a and not b:
+            jaccard.append(None)
+        else:
+            inter = len(a & b)
+            union = len(a | b)
+            jaccard.append(round(inter / union, 4) if union > 0 else None)
+
+    # Token metrics (reuse existing helpers)
+    slices_list, tv2 = _get_slices(sample_id, mode, cache)
+    token_metrics = {}
+    if slices_list:
+        avgs = _slice_averages(tv2, slices_list)
+        token_metrics["entropy"] = avgs.get("entropy", [])
+        token_metrics["conf"] = avgs.get("conf", [])
+
+    return jsonify({
+        "num_slices": num_slices,
+        "layers": layers_sorted,
+        "heatmap": {
+            "count": hm_count,
+            "w_sum_total": hm_wsum,
+            "w_max_max": hm_wmax,
+        },
+        "jaccard": jaccard,
+        "token_metrics": token_metrics,
+    })
 
 
 # ---------------------------------------------------------------------------
