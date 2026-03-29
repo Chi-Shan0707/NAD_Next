@@ -100,6 +100,20 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 | `twostage-medoid` | 16 人一组 → 每组取组内距离前 4 → 16 人决赛 medoid |
 | `twostage-tournament` | 16 人一组 → 每组 Copeland 取前 4 → 16 人决赛 Copeland + softmax |
 
+**ML 选择器**（需要预训练模型，运行 `python scripts/train_ml_selectors.py` 生成）
+
+从 6 个数据集的 31,040 个带标注 (题目, run) 对中训练，特征为 12 维组内归一化向量。
+
+| 选择器 | 模型 | 说明 |
+|--------|------|------|
+| `linear-probe` | Ridge 回归 | 预测 is_correct 实数分数，取 argmax |
+| `logistic` | 逻辑回归 | 预测 P(正确)，取 argmax |
+| `isotonic-medoid` | 等渗回归（单特征） | 对 medoid rank 分数做单调校准 → P(正确) |
+| `isotonic-deepconf` | 等渗回归（单特征） | 对 DeepConf rank 分数做单调校准 → P(正确) |
+
+类型 `[ML]`。模型保存于 `models/ml_selectors/`，推理时懒加载。
+留一数据集 CV：`logistic` 69.7%，`linear-probe` 69.8%——泛化能力与 `knn-medoid` 相当。
+
 完整跨数据集精度对比见 [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md)。
 
 ### CLI 参考
@@ -371,7 +385,23 @@ Type: `[S]` = independent per-run score, no distance matrix needed; `[P]` = requ
 | `twostage-medoid` | Groups of 16 → top-4 by mean distance → 16 finalists → medoid |
 | `twostage-tournament` | Groups of 16 → top-4 by Copeland → 16 finalists → Copeland + softmax |
 
-For all softmax-based selectors the default temperature is 0.2 and seed is 42. Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
+For all softmax-based selectors the default temperature is 0.2 and seed is 42.
+
+**ML selectors** (require pre-trained models — run `python scripts/train_ml_selectors.py`)
+
+Trained on 31,040 labelled (problem, run) pairs from 6 datasets. Features: 12-dim group-normalised vector (mean_dist, knn3, length, deepconf, copeland × z-score+rank; log_n, log_length).
+
+| Selector | Model | Description |
+|----------|-------|-------------|
+| `linear-probe` | Ridge regression | Predicts is_correct score, selects argmax |
+| `logistic` | Logistic regression | Predicts P(correct), selects argmax |
+| `isotonic-medoid` | Isotonic regression (1 feature) | Calibrates medoid rank → P(correct) |
+| `isotonic-deepconf` | Isotonic regression (1 feature) | Calibrates DeepConf rank → P(correct) |
+
+Type `[ML]`. Models stored in `models/ml_selectors/`, lazy-loaded at inference.
+Leave-one-out CV: `logistic` 69.7%, `linear-probe` 69.8% — on par with `knn-medoid` on held-out data.
+
+Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
 
 <details>
 <summary><strong>Custom Selectors</strong></summary>

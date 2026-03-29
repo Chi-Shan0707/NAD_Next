@@ -1,9 +1,11 @@
 """
-ML-based selectors.
+基于机器学习的选择器 | ML-based selectors.
 
-All three selectors load a pre-trained scikit-learn model from
+三个选择器均从预训练的 scikit-learn 模型文件加载，路径为：
+All three selectors load a pre-trained scikit-learn model from:
   models/ml_selectors/<name>.pkl
-Train models with:
+
+使用以下脚本训练模型 | Train models with:
   python scripts/train_ml_selectors.py
 """
 from __future__ import annotations
@@ -28,10 +30,11 @@ def _load_model(path: Path):
 
 class LinearProbeSelector(Selector):
     """
-    Ridge regression on group-normalised features.
-    Outputs a real-valued score per run; selects argmax.
+    线性探针选择器：对组内归一化特征做 Ridge 回归，输出每个 run 的实数分数，取 argmax。
+    Ridge regression on group-normalised features. Outputs a real-valued score per run; selects argmax.
 
-    Model: sklearn Pipeline(StandardScaler, Ridge) trained to predict is_correct.
+    模型 | Model: sklearn Pipeline(StandardScaler, Ridge)，训练目标为预测 is_correct。
+    Trained to predict is_correct.
     """
     def __init__(self, model_path: str | None = None):
         self._model_path = Path(model_path) if model_path else _DEFAULT_MODEL_DIR / "linear_probe.pkl"
@@ -54,10 +57,11 @@ class LinearProbeSelector(Selector):
 
 class LogisticSelector(Selector):
     """
-    Logistic regression on group-normalised features.
-    Outputs P(correct) per run via predict_proba; selects argmax.
+    逻辑回归选择器：对组内归一化特征做逻辑回归，输出每个 run 的 P(正确)，取 argmax。
+    Logistic regression on group-normalised features. Outputs P(correct) per run; selects argmax.
 
-    Model: sklearn Pipeline(StandardScaler, LogisticRegression) trained on is_correct labels.
+    模型 | Model: sklearn Pipeline(StandardScaler, LogisticRegression)，
+    训练目标为 is_correct 标签 | trained on is_correct labels.
     """
     def __init__(self, model_path: str | None = None):
         self._model_path = Path(model_path) if model_path else _DEFAULT_MODEL_DIR / "logistic.pkl"
@@ -80,18 +84,20 @@ class LogisticSelector(Selector):
 
 class IsotonicCalibratedSelector(Selector):
     """
-    Isotonic calibration on a single base score.
-
-    Takes a base selector's rank score (already in [0,1]) and maps it through
-    a fitted isotonic regression to get calibrated P(correct).
+    等渗校准选择器：将某个基础分数（已归一化到 [0,1]）通过拟合好的等渗回归映射为
+    P(正确)，取 argmax。
+    Isotonic calibration on a single base score. Maps a base selector's rank score
+    (in [0,1]) through a fitted isotonic regression to get calibrated P(correct).
     Selects argmax of calibrated probability.
 
-    Parameters
+    参数 | Parameters
     ----------
     base : "medoid" | "deepconf"
-        Which base score to calibrate.
-        - "medoid"   : rank of mean distance within group (higher = more central)
-        - "deepconf" : rank of DeepConf quality score (higher = more confident)
+        使用哪个基础分数进行校准 | Which base score to calibrate.
+        - "medoid"   : 组内平均距离的 rank（越大越居中）
+                       rank of mean distance within group (higher = more central)
+        - "deepconf" : DeepConf quality 分数的 rank（越大越自信）
+                       rank of DeepConf quality score (higher = more confident)
     """
     _BASE_FEATURE_IDX = {"medoid": 1, "deepconf": 7}   # col index in feature matrix
 

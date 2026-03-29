@@ -1,22 +1,35 @@
 """
-Feature extraction for ML-based selectors.
+ML 选择器特征提取 | Feature extraction for ML-based selectors.
 
+所有特征均在组内归一化（z-score 或 rank），确保模型在不同难度的题目间具备泛化能力。
 All features are group-normalized (z-score or rank within the problem group)
 so the model generalises across problems of different difficulty.
 
-Feature vector (12 dimensions, N_FEATURES):
-  0  mean_dist_z    z-score of mean pairwise distance (lower dist → more central)
-  1  mean_dist_r    rank [0,1] of mean distance   (1 = closest/most central)
-  2  knn3_z         z-score of KNN-3 similarity
-  3  knn3_r         rank [0,1] of KNN-3 similarity  (1 = highest)
-  4  length_z       z-score of activation length
-  5  length_r       rank [0,1] of activation length (1 = longest)
-  6  dc_z           z-score of DeepConf quality score
-  7  dc_r           rank [0,1] of DeepConf quality  (1 = most confident)
-  8  copeland_z     z-score of Copeland win count
-  9  copeland_r     rank [0,1] of Copeland wins     (1 = most wins)
- 10  log_n          log(group_size), same for all runs in a group
- 11  log_length     log(activation_length)
+特征向量（12 维） | Feature vector (12 dimensions, N_FEATURES):
+  0  mean_dist_z    组内平均距离的 z-score（距离越小 → 越居中）
+                    z-score of mean pairwise distance (lower dist → more central)
+  1  mean_dist_r    平均距离的组内 rank [0,1]（1 = 最居中）
+                    rank [0,1] of mean distance (1 = closest/most central)
+  2  knn3_z         KNN-3 相似度的 z-score
+                    z-score of KNN-3 similarity
+  3  knn3_r         KNN-3 相似度的 rank [0,1]（1 = 最高）
+                    rank [0,1] of KNN-3 similarity (1 = highest)
+  4  length_z       激活长度的 z-score
+                    z-score of activation length
+  5  length_r       激活长度的 rank [0,1]（1 = 最长）
+                    rank [0,1] of activation length (1 = longest)
+  6  dc_z           DeepConf quality 分数的 z-score
+                    z-score of DeepConf quality score
+  7  dc_r           DeepConf quality 的 rank [0,1]（1 = 最自信）
+                    rank [0,1] of DeepConf quality (1 = most confident)
+  8  copeland_z     Copeland 胜场数的 z-score
+                    z-score of Copeland win count
+  9  copeland_r     Copeland 胜场数的 rank [0,1]（1 = 最多胜场）
+                    rank [0,1] of Copeland wins (1 = most wins)
+ 10  log_n          log(组大小)，组内所有 run 相同
+                    log(group_size), same for all runs in a group
+ 11  log_length     log(激活长度)，绝对尺度特征
+                    log(activation_length), absolute scale feature
 """
 from __future__ import annotations
 import numpy as np
@@ -33,7 +46,7 @@ FEATURE_NAMES = [
 N_FEATURES = len(FEATURE_NAMES)
 
 
-# ── internal helpers ──────────────────────────────────────────────────────────
+# ── 内部工具函数 | internal helpers ───────────────────────────────────────────
 
 def _zscore(x: np.ndarray) -> np.ndarray:
     std = float(x.std())
@@ -43,7 +56,8 @@ def _zscore(x: np.ndarray) -> np.ndarray:
 
 
 def _rank01(x: np.ndarray) -> np.ndarray:
-    """Ascending rank normalised to [0, 1].  Ties share average rank."""
+    """升序 rank 归一化到 [0, 1]，并列者取平均 rank。
+    Ascending rank normalised to [0, 1].  Ties share average rank."""
     n = len(x)
     if n <= 1:
         return np.zeros(n, dtype=np.float64)
@@ -66,9 +80,11 @@ def _knn_scores(D: np.ndarray, k: int = 3) -> np.ndarray:
 
 def _copeland_wins(D: np.ndarray) -> np.ndarray:
     """
+    向量化 Copeland 投票：对每一对 (i,j)，统计有多少第三方 k（k≠i,k≠j）离 i 更近 vs 离 j 更近。
+    胜者 +1，平局各 +0.5。使用 numpy broadcasting，O(n³) 复杂度，n≤64 时速度足够快。
+
     Vectorised Copeland: for each pair (i,j), compare how many third-party
     runs k (k≠i, k≠j) are closer to i vs j.  Winner gets +1, tie +0.5.
-
     Uses O(n³) numpy broadcasting – fast for n ≤ 64.
     """
     n = D.shape[0]
@@ -107,7 +123,8 @@ def _copeland_wins(D: np.ndarray) -> np.ndarray:
 
 
 def _deepconf_quality(context) -> Optional[np.ndarray]:
-    """Return DeepConf quality scores for all runs in context, or None."""
+    """返回 context 中所有 run 的 DeepConf quality 分数，若无法获取则返回 None。
+    Return DeepConf quality scores for all runs in context, or None."""
     if context is None:
         return None
     try:
@@ -133,7 +150,7 @@ def _deepconf_quality(context) -> Optional[np.ndarray]:
         return None
 
 
-# ── public API ────────────────────────────────────────────────────────────────
+# ── 公开接口 | public API ─────────────────────────────────────────────────────
 
 def extract_run_features(
     D: np.ndarray,
@@ -142,18 +159,21 @@ def extract_run_features(
     k_nn: int = 3,
 ) -> np.ndarray:
     """
+    为一个题目组内的所有 run 提取组内归一化特征矩阵。
     Extract a group-normalised feature matrix for one problem group.
 
-    Parameters
+    参数 | Parameters
     ----------
-    D         : (n, n) pairwise Jaccard distance matrix
-    run_stats : dict with key "lengths" (np.ndarray, shape (n,))
-    context   : SelectorContext (optional, provides DeepConf access)
-    k_nn      : number of nearest neighbours for KNN feature
+    D         : (n, n) 两两 Jaccard 距离矩阵 | pairwise Jaccard distance matrix
+    run_stats : 包含 "lengths" 键的字典（np.ndarray, shape (n,)）
+                dict with key "lengths" (np.ndarray, shape (n,))
+    context   : SelectorContext（可选，用于读取 DeepConf 数据）
+                SelectorContext (optional, provides DeepConf access)
+    k_nn      : KNN 特征使用的近邻数 | number of nearest neighbours for KNN feature
 
-    Returns
+    返回 | Returns
     -------
-    features : (n, N_FEATURES) float64 array
+    features : (n, N_FEATURES) float64 数组 | float64 array
     """
     n = D.shape[0]
     lengths = np.asarray(run_stats["lengths"], dtype=np.float64)

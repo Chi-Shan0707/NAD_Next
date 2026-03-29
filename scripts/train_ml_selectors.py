@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 """
+训练基于机器学习的选择器（线性探针、逻辑回归、等渗校准）。
 Train ML-based selectors (linear probe, logistic regression, isotonic calibration)
 using labelled data from all available caches.
 
-Usage (from repo root):
+从所有可用缓存中收集带标注的训练数据（problem, run）对，训练 4 个模型并保存。
+同时输出留一数据集交叉验证（leave-one-dataset-out CV）结果，提供诚实的泛化估计。
+
+用法（从仓库根目录运行）| Usage (from repo root):
     python scripts/train_ml_selectors.py [--datasets aime24,aime25,...] [--out models/ml_selectors]
 
-Outputs
+输出 | Outputs
 -------
 models/ml_selectors/
-    linear_probe.pkl        Pipeline(StandardScaler, Ridge)
-    logistic.pkl            Pipeline(StandardScaler, LogisticRegression)
-    isotonic_medoid.pkl     IsotonicRegression  on  mean_dist_r feature
-    isotonic_deepconf.pkl   IsotonicRegression  on  dc_r feature
-    feature_stats.json      class balance, feature means/stds for diagnostics
+    linear_probe.pkl        Pipeline(StandardScaler, Ridge)          线性探针
+    logistic.pkl            Pipeline(StandardScaler, LogisticRegression)  逻辑回归
+    isotonic_medoid.pkl     IsotonicRegression on mean_dist_r feature     等渗校准（medoid）
+    isotonic_deepconf.pkl   IsotonicRegression on dc_r feature            等渗校准（deepconf）
+    feature_stats.json      类别分布、特征均值/标准差等诊断信息
+                            class balance, feature means/stds for diagnostics
 
+留一交叉验证精度会打印到标准输出。
 Leave-one-dataset-out cross-validation accuracy is printed to stdout.
 """
 from __future__ import annotations
@@ -37,7 +43,7 @@ from nad.core.selectors.base import SelectorContext
 from nad.core.selectors.ml_features import extract_run_features, FEATURE_NAMES, N_FEATURES
 from nad.ops.accuracy import _load_ground_truth
 
-# ── dataset → cache path mapping (relative to repo root) ────────────────────
+# ── 数据集 → 缓存路径映射（相对于仓库根目录）| dataset → cache path mapping ──
 DATASET_CACHES: dict[str, str] = {
     "aime24":          "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime24/cache_neuron_output_1_act_no_rms_20250902_025610",
     "aime25":          "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime25/cache_neuron_output_1_act_no_rms_20251126_114548",
@@ -47,7 +53,7 @@ DATASET_CACHES: dict[str, str] = {
     "livecodebench_v5":"MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/livecodebench_v5/cache_neuron_output_1_act_no_rms_20251127_032808",
 }
 
-# ── view / distance config (must match nad.cli analyze defaults) ─────────────
+# ── 视图/距离配置（必须与 nad.cli analyze 默认值一致）| view / distance config ─
 _AGG   = Agg("max")
 _CS    = CutSpec(CutType.MASS, 0.98)
 _VSPEC = ViewSpec(agg=_AGG, cut=_CS, order=Order.BY_KEY)
@@ -58,6 +64,8 @@ _DSPEC = DistanceSpec(name="ja", normalize=True, num_threads=16, assume_unique=T
 
 def _collect_dataset(cache_root: str) -> tuple[np.ndarray, np.ndarray]:
     """
+    为单个缓存构建特征矩阵 X (n_samples, N_FEATURES) 和标签向量 y (n_samples,)。
+    每个样本 = 一个 (题目, run) 对。
     Build feature matrix X (n_samples, N_FEATURES) and label vector y (n_samples,)
     for one cache.  One sample = one (problem, run) pair.
     """
@@ -110,7 +118,7 @@ def _collect_dataset(cache_root: str) -> tuple[np.ndarray, np.ndarray]:
 
 
 def collect_all(datasets: list[str]) -> dict[str, tuple[np.ndarray, np.ndarray]]:
-    """Return {dataset_name: (X, y)} for each requested dataset."""
+    """收集所有请求数据集的特征和标签。Return {dataset_name: (X, y)} for each requested dataset."""
     os.chdir(REPO_ROOT)     # paths are relative to repo root
     data = {}
     for ds in datasets:
@@ -182,7 +190,7 @@ def _selector_accuracy_from_model(model, X_groups, y_groups, model_type="logisti
 
 def leave_one_out_cv(data: dict[str, tuple[np.ndarray, np.ndarray]],
                      data_groups: dict[str, list[tuple[np.ndarray, np.ndarray]]]):
-    """Leave-one-dataset-out CV, print results table."""
+    """留一数据集交叉验证，打印结果表格。Leave-one-dataset-out CV, print results table."""
     datasets = list(data.keys())
     if len(datasets) < 2:
         print("Need ≥ 2 datasets for leave-one-out CV, skipping.")
