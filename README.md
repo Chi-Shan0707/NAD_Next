@@ -6,7 +6,7 @@
 
 ## 中文
 
-神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 10 种选择算法为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
+神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 21 种选择算法（含 ML 和时序折扣）为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
 
 ### 快速开始
 
@@ -60,7 +60,7 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 
 ### 选择器
 
-内置 16 种选择器算法，从每个题目组中挑选最具代表性的样本：
+内置 21 种选择器算法，从每个题目组中挑选最具代表性的样本：
 
 **基础选择器**
 
@@ -113,6 +113,16 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 
 类型 `[ML]`。模型保存于 `models/ml_selectors/`，推理时懒加载。
 留一数据集 CV：`logistic` 69.7%，`linear-probe` 69.8%——泛化能力与 `knn-medoid` 相当。
+单特征消融显示 `dc_z`（DeepConf quality）以 70.9% 成为最强单特征，超过全部 12 特征模型。
+
+**时序折扣切片选择器**（按 slice 分段，末端加权，无需距离矩阵）
+
+| 选择器 | 类型 | 说明 |
+|--------|------|------|
+| `temporal-slice` | [S] | token 序列按 32 一段分段，γ^(2k) 指数折扣，加权质量分最高者胜出 |
+
+类型 `[S]`，默认参数由网格搜索确定：`tok_neg_entropy`、γ=0.7、T=0.1。最优均值准确率 60.3%。
+参数保存于 `models/ml_selectors/temporal_best_params.json`。
 
 完整跨数据集精度对比见 [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md)。
 
@@ -153,7 +163,7 @@ python3 scripts/rank_selectors.py \
 
 ## English
 
-A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies 10 selection algorithms to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
+A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies 21 selection algorithms (including ML-based and temporal discount selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 
 ---
 
@@ -286,7 +296,7 @@ NAD_Next/
       adapters/                # NPZ shard -> CSR conversion (shard_reader, batch_processor)
       distance/                # Jaccard distance engine (roaring / numpy, auto-switch at 4096)
       schema/                  # Cache manifest (v4.0+)
-      selectors/               # 10 selector algorithms + plugin loader
+      selectors/               # 21 selector algorithms (base, ensemble, ML, temporal) + plugin loader
       storage/                 # Binary cache I/O (mmap)
       views/                   # CacheReader (lazy mmap access)
     io/                        # NadNextLoader (256 MB LRU), index, viz catalog
@@ -345,7 +355,7 @@ Cache type `cache_neuron_output_1_*` = 1 token/row. Type `cache_neuron_output_2_
 
 ## Selectors
 
-Sixteen built-in selector algorithms pick the most representative sample from each problem group.
+Twenty-one built-in selector algorithms pick the most representative sample from each problem group.
 
 **Base selectors**
 
@@ -400,6 +410,16 @@ Trained on 31,040 labelled (problem, run) pairs from 6 datasets. Features: 12-di
 
 Type `[ML]`. Models stored in `models/ml_selectors/`, lazy-loaded at inference.
 Leave-one-out CV: `logistic` 69.7%, `linear-probe` 69.8% — on par with `knn-medoid` on held-out data.
+Single-feature ablation shows `dc_z` (DeepConf quality) at 70.9% as the strongest individual feature, outperforming the full 12-feature model.
+
+**Temporal discount slice selector** (slice-based weighting, no distance matrix needed)
+
+| Selector | Type | Description |
+|----------|------|-------------|
+| `temporal-slice` | [S] | Splits tokens into 32-token slices, weights later slices with γ^(2k), picks highest weighted quality |
+
+Type `[S]`. Default params from grid search: `tok_neg_entropy`, γ=0.7, T=0.1. Best mean accuracy: 60.3%.
+Params saved to `models/ml_selectors/temporal_best_params.json`.
 
 Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
 

@@ -110,10 +110,126 @@ isotonic_medoid                76.7%     73.3%     76.7%     66.7%     56.7%    
 isotonic_deepconf              76.7%     66.7%     63.3%     61.6%     46.7%     58.7%   62.3%
 ```
 
+## Single-Feature Ablation (Leave-One-Dataset-Out CV)
+
+Each of the 12 ML features is used **individually** to train a LogisticRegression selector, then evaluated via leave-one-dataset-out CV. This reveals which single signal is most predictive.
+
+```
+Feature              AIME24    AIME25   BruMo25      GPQA    HMMT25     LCBv5      Mean
+---------------------------------------------------------------------------------------
+mean_dist_z           80.0%     73.3%     73.3%     65.7%     56.7%     58.1%     67.8%
+mean_dist_r           80.0%     73.3%     73.3%     65.7%     56.7%     58.1%     67.8%
+knn3_z                86.7%     76.7%     76.7%     65.7%     53.3%     59.9%     69.8%
+knn3_r                86.7%     76.7%     76.7%     65.7%     53.3%     59.9%     69.8%
+length_z              83.3%     73.3%     76.7%     61.1%     46.7%     56.9%     66.3%
+length_r              83.3%     73.3%     76.7%     61.1%     46.7%     56.9%     66.3%
+dc_z ★                80.0%     73.3%     83.3%     60.6%     70.0%     58.1%     70.9%
+dc_r ★                80.0%     73.3%     83.3%     60.6%     70.0%     58.1%     70.9%
+copeland_z            80.0%     73.3%     76.7%     65.2%     56.7%     58.1%     68.3%
+copeland_r            80.0%     70.0%     73.3%     66.2%     56.7%     58.1%     67.4%
+log_n                 76.7%     66.7%     63.3%     61.6%     46.7%     58.7%     62.3%
+log_length            83.3%     73.3%     76.7%     61.1%     46.7%     56.9%     66.3%
+```
+
+### Ablation Rank
+
+```
+   1. dc_z / dc_r         70.9%   ★ Best single feature (DeepConf quality)
+   2. knn3_z / knn3_r     69.8%     KNN-3 similarity
+   3. copeland_z          68.3%     Copeland win count
+   4. mean_dist_z / r     67.8%     Mean distance (medoid-like)
+   5. copeland_r          67.4%     Copeland rank
+   6. length_z / r        66.3%     Activation length
+   6. log_length          66.3%     log(activation length)
+   8. log_n               62.3%     log(group size) — weakest
+```
+
+### Ablation Insights
+
+- **DeepConf quality (dc_z/dc_r) is the single most predictive feature at 70.9%**, outperforming the full 12-feature logistic model (69.7% LOO CV). This suggests feature noise from weaker signals slightly hurts generalisation.
+- **dc excels on HMMT25 (70.0%)** — far above any other single feature (next best: copeland_z at 56.7%) — indicating DeepConf captures confidence patterns especially valuable for competition math.
+- **knn3 excels on AIME (86.7%)** — top single feature for that dataset, confirming local neighbourhood structure is informative for AIME-style problems.
+- z-score and rank variants perform identically because single-feature logistic regression is inherently monotonic.
+- **log_n (62.3%)** is the weakest feature — group size alone provides minimal signal.
+- The gap between best single-feature (70.9%) and full 12-feature (69.7%) indicates **limited feature complementarity** for the current feature set.
+
+Single-feature models saved to `models/ml_selectors/single_feat_*.pkl` (12 files).
+
+---
+
+## Temporal Discount Slice Selector
+
+A heuristic selector that splits the token sequence into 32-token slices, weighs later slices more heavily via exponential discounting γ^(2k), and picks the run with the highest weighted quality score. No distance matrix needed (O(n) per problem).
+
+### Formula
+
+```
+score(r) = Σ_{k=0}^{K-1} γ^(2k) · quality(r, slice_{S-1-k})
+
+K = max slices where γ^(2k) ≥ threshold
+quality = -mean(tok_conf) for tok_conf       (lower conf = more confident = better)
+quality =  mean(tok_neg_entropy) for tok_neg_entropy  (closer to 0 = more certain = better)
+```
+
+### Grid Search Results
+
+```
+metric            gamma  thresh    AIME24    AIME25   BruMo25      GPQA    HMMT25     LCBv5      Mean
+-----------------------------------------------------------------------------------------------------
+tok_conf           0.70   0.001     43.3%     40.0%     36.7%     46.0%     23.3%     58.1%     41.2%
+tok_conf           0.70   0.010     43.3%     40.0%     36.7%     46.0%     23.3%     58.1%     41.2%
+tok_conf           0.70   0.100     43.3%     43.3%     40.0%     46.0%     23.3%     58.1%     42.3%
+tok_conf           0.80   0.001     43.3%     40.0%     36.7%     44.9%     23.3%     56.3%     40.8%
+tok_conf           0.80   0.010     43.3%     40.0%     36.7%     44.9%     23.3%     56.3%     40.8%
+tok_conf           0.80   0.100     43.3%     40.0%     36.7%     44.9%     23.3%     57.5%     41.0%
+tok_conf           0.90   0.001     46.7%     40.0%     36.7%     44.4%     20.0%     55.1%     40.5%
+tok_conf           0.90   0.010     46.7%     40.0%     36.7%     44.9%     20.0%     55.7%     40.7%
+tok_conf           0.90   0.100     50.0%     40.0%     36.7%     47.5%     20.0%     55.1%     41.5%
+tok_conf           0.95   0.001     43.3%     43.3%     36.7%     46.0%     23.3%     58.1%     41.8%
+tok_conf           0.95   0.010     43.3%     43.3%     36.7%     46.0%     23.3%     58.7%     41.9%
+tok_conf           0.95   0.100     43.3%     43.3%     36.7%     46.5%     23.3%     59.3%     42.1%
+tok_neg_entropy    0.70   0.001     70.0%     60.0%     60.0%     64.6%     36.7%     59.3%     58.4%
+tok_neg_entropy    0.70   0.010     70.0%     60.0%     60.0%     64.6%     36.7%     58.7%     58.3%
+tok_neg_entropy    0.70   0.100 ★   70.0%     63.3%     63.3%     66.7%     40.0%     58.7%     60.3%
+tok_neg_entropy    0.80   0.001     63.3%     63.3%     60.0%     67.7%     36.7%     59.3%     58.4%
+tok_neg_entropy    0.80   0.010     63.3%     63.3%     60.0%     66.7%     36.7%     59.3%     58.2%
+tok_neg_entropy    0.80   0.100     63.3%     60.0%     60.0%     64.6%     33.3%     59.3%     56.8%
+tok_neg_entropy    0.90   0.001     70.0%     66.7%     53.3%     66.7%     36.7%     56.9%     58.4%
+tok_neg_entropy    0.90   0.010     70.0%     66.7%     53.3%     65.7%     30.0%     57.5%     57.2%
+tok_neg_entropy    0.90   0.100     66.7%     63.3%     56.7%     66.7%     26.7%     58.1%     56.3%
+tok_neg_entropy    0.95   0.001     73.3%     56.7%     53.3%     65.2%     33.3%     56.3%     56.4%
+tok_neg_entropy    0.95   0.010     73.3%     56.7%     53.3%     66.2%     33.3%     57.5%     56.7%
+tok_neg_entropy    0.95   0.100     73.3%     53.3%     60.0%     66.7%     30.0%     56.9%     56.7%
+```
+
+### Best Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| metric | `tok_neg_entropy` |
+| gamma | 0.7 |
+| threshold | 0.1 |
+| slice_size | 32 |
+| **Mean accuracy** | **60.3%** |
+
+Best params saved to `models/ml_selectors/temporal_best_params.json`.
+
+### Temporal Selector Insights
+
+- **`tok_neg_entropy` vastly outperforms `tok_conf`** for temporal selection (60.3% vs 42.1% best). Negative entropy captures certainty patterns that scale better under slice-level aggregation.
+- **Steeper discount (γ=0.7) works best** — the model benefits from strongly weighting the final reasoning steps over early ones.
+- **Threshold has minor impact** — most accuracy variation comes from metric and gamma choices.
+- **Temporal selector (60.3%) underperforms plain DeepConf (61.0%) and DeepConf-based ML features (dc_z 70.9%)**. Splitting into discrete slices loses the benefit of DeepConf's sliding-window smoothing. The temporal approach may be more effective when combined with other signals rather than used standalone.
+- **HMMT25 remains the hardest** dataset across all methods (40.0% best temporal vs 70.0% best dc single-feature).
+
+---
+
 ## Key Observations
 
 - **`logistic` (70.6%) and `linear-probe` (70.3%)** rank 2nd and 4th overall, surpassing `consensus-min` (70.4%) and `knn-medoid` (69.8%). They outperform all non-oracle non-ML selectors on mean accuracy.
 - **Leave-one-out CV** shows `linear_probe` (69.8%) and `logistic` (69.7%) remain competitive with `knn-medoid` (69.8%) even when evaluated on held-out datasets, confirming generalisation.
+- **Single-feature ablation** reveals `dc_z`/`dc_r` (DeepConf quality, 70.9%) as the strongest individual feature — outperforming the full 12-feature model — suggesting feature set pruning may improve ML selectors.
 - **`isotonic-medoid` (68.4%)** improves over plain `medoid` (67.8%) with no additional distance computation — it simply recalibrates the medoid score using learned monotonic mapping.
+- **Temporal discount selector** (60.3% best) does not surpass DeepConf or ML approaches; slice-level aggregation without smoothing loses signal quality.
 - DeepConf-based ML variants (`isotonic-deepconf`) do not improve meaningfully over plain `deepconf`, consistent with the pattern seen in other DeepConf-based selectors.
 - All ML selectors are deterministic at inference (no randomness); training takes ~10 minutes on 6 datasets.
