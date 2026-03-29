@@ -205,6 +205,7 @@
       "selectors": {
         "min-activation": 0,
         "max-activation": 50,
+        "min-confidence": 22,
         "medoid": 13,
         "knn-medoid": 51,
         "dbscan-medoid": 13,
@@ -212,7 +213,13 @@
         "consensus-max": 13,
         "deepconf": 49,
         "avg64@": 0,
-        "con64@": 0
+        "con64@": 0,
+        "ensemble-medoid": 63,
+        "ensemble-deepconf": 49,
+        "tournament-copeland": 19,
+        "tournament-deepconf": 25,
+        "twostage-medoid": 9,
+        "twostage-tournament": 40
       }
     },
     "brumo25-1": {
@@ -420,6 +427,7 @@
       "selectors": {
         "min-activation": 126,
         "max-activation": 80,
+        "min-confidence": 92,
         "medoid": 90,
         "knn-medoid": 112,
         "dbscan-medoid": 90,
@@ -427,7 +435,13 @@
         "consensus-max": 90,
         "deepconf": 91,
         "avg64@": 64,
-        "con64@": 64
+        "con64@": 64,
+        "ensemble-medoid": 90,
+        "ensemble-deepconf": 91,
+        "tournament-copeland": 86,
+        "tournament-deepconf": 86,
+        "twostage-medoid": 90,
+        "twostage-tournament": 90
       }
     },
     "brumo25-2": {
@@ -635,6 +649,7 @@
       "selectors": {
         "min-activation": 136,
         "max-activation": 172,
+        "min-confidence": 146,
         "medoid": 142,
         "knn-medoid": 189,
         "dbscan-medoid": 142,
@@ -642,7 +657,13 @@
         "consensus-max": 189,
         "deepconf": 138,
         "avg64@": 128,
-        "con64@": 128
+        "con64@": 128,
+        "ensemble-medoid": 142,
+        "ensemble-deepconf": 138,
+        "tournament-copeland": 149,
+        "tournament-deepconf": 146,
+        "twostage-medoid": 142,
+        "twostage-tournament": 158
       }
     },
     "brumo25-3": {
@@ -850,6 +871,7 @@
       "selectors": {
         "min-activation": 223,
         "max-activation": 235,
+        "min-confidence": 235,
         "medoid": 240,
         "knn-medoid": 214,
         "dbscan-medoid": 240,
@@ -857,7 +879,13 @@
         "consensus-max": 240,
         "deepconf": 233,
         "avg64@": 192,
-        "con64@": 192
+        "con64@": 192,
+        "ensemble-medoid": 240,
+        "ensemble-deepconf": 233,
+        "tournament-copeland": 213,
+        "tournament-deepconf": 225,
+        "twostage-medoid": 228,
+        "twostage-tournament": 222
       }
     },
     "brumo25-4": {
@@ -1065,6 +1093,7 @@
       "selectors": {
         "min-activation": 262,
         "max-activation": 295,
+        "min-confidence": 256,
         "medoid": 257,
         "knn-medoid": 257,
         "dbscan-medoid": 257,
@@ -1072,7 +1101,13 @@
         "consensus-max": 257,
         "deepconf": 258,
         "avg64@": 256,
-        "con64@": 256
+        "con64@": 256,
+        "ensemble-medoid": 257,
+        "ensemble-deepconf": 258,
+        "tournament-copeland": 286,
+        "tournament-deepconf": 275,
+        "twostage-medoid": 257,
+        "twostage-tournament": 257
       }
     },
     "brumo25-5": {
@@ -1280,6 +1315,7 @@
       "selectors": {
         "min-activation": 360,
         "max-activation": 375,
+        "min-confidence": 336,
         "medoid": 322,
         "knn-medoid": 358,
         "dbscan-medoid": 322,
@@ -1287,7 +1323,13 @@
         "consensus-max": 322,
         "deepconf": 357,
         "avg64@": 320,
-        "con64@": 320
+        "con64@": 320,
+        "ensemble-medoid": 322,
+        "ensemble-deepconf": 357,
+        "tournament-copeland": 338,
+        "tournament-deepconf": 355,
+        "twostage-medoid": 322,
+        "twostage-tournament": 322
       }
     },
     "brumo25-6": {
@@ -1495,6 +1537,7 @@
       "selectors": {
         "min-activation": 444,
         "max-activation": 397,
+        "min-confidence": 438,
         "medoid": 416,
         "knn-medoid": 390,
         "dbscan-medoid": 416,
@@ -1502,7 +1545,13 @@
         "consensus-max": 416,
         "deepconf": 410,
         "avg64@": 384,
-        "con64@": 384
+        "con64@": 384,
+        "ensemble-medoid": 428,
+        "ensemble-deepconf": 410,
+        "tournament-copeland": 409,
+        "tournament-deepconf": 410,
+        "twostage-medoid": 428,
+        "twostage-tournament": 416
       }
     },
     "brumo25-7": {
@@ -1710,6 +1759,7 @@
       "selectors": {
         "min-activation": 509,
         "max-activation": 474,
+        "min-confidence": 473,
         "medoid": 465,
         "knn-medoid": 483,
         "dbscan-medoid": 465,
@@ -1717,7 +1767,13 @@
         "consensus-max": 465,
         "deepconf": 484,
         "avg64@": 448,
-        "con64@": 448
+        "con64@": 448,
+        "ensemble-medoid": 500,
+        "ensemble-deepconf": 484,
+        "tournament-copeland": 484,
+        "tournament-deepconf": 474,
+        "twostage-medoid": 500,
+        "twostage-tournament": 508
       }
     },
     "brumo25-8": {
@@ -1925,6 +1981,7 @@
       "selectors": {
         "min-activation": 560,
         "max-activation": 520,
+        "min-confidence": 520,
         "medoid": 542,
         "knn-medoid": 560,
         "dbscan-medoid": 542,
@@ -1932,7 +1989,13 @@
         "consensus-max": 542,
         "deepconf": 518,
         "avg64@": 512,
-        "con64@": 512
+        "con64@": 512,
+        "ensemble-medoid": 542,
+        "ensemble-deepconf": 518,
+        "tournament-copeland": 527,
+        "tournament-deepconf": 534,
+        "twostage-medoid": 542,
+        "twostage-tournament": 562
       }
     },
     "brumo25-9": {
@@ -2140,6 +2203,7 @@
       "selectors": {
         "min-activation": 597,
         "max-activation": 629,
+        "min-confidence": 615,
         "medoid": 617,
         "knn-medoid": 627,
         "dbscan-medoid": 617,
@@ -2147,7 +2211,13 @@
         "consensus-max": 627,
         "deepconf": 637,
         "avg64@": 576,
-        "con64@": 576
+        "con64@": 576,
+        "ensemble-medoid": 607,
+        "ensemble-deepconf": 637,
+        "tournament-copeland": 600,
+        "tournament-deepconf": 593,
+        "twostage-medoid": 617,
+        "twostage-tournament": 578
       }
     },
     "brumo25-10": {
@@ -2355,6 +2425,7 @@
       "selectors": {
         "min-activation": 644,
         "max-activation": 648,
+        "min-confidence": 672,
         "medoid": 700,
         "knn-medoid": 675,
         "dbscan-medoid": 700,
@@ -2362,7 +2433,13 @@
         "consensus-max": 700,
         "deepconf": 642,
         "avg64@": 640,
-        "con64@": 640
+        "con64@": 640,
+        "ensemble-medoid": 645,
+        "ensemble-deepconf": 642,
+        "tournament-copeland": 678,
+        "tournament-deepconf": 654,
+        "twostage-medoid": 700,
+        "twostage-tournament": 700
       }
     },
     "brumo25-11": {
@@ -2570,6 +2647,7 @@
       "selectors": {
         "min-activation": 716,
         "max-activation": 704,
+        "min-confidence": 713,
         "medoid": 753,
         "knn-medoid": 718,
         "dbscan-medoid": 753,
@@ -2577,7 +2655,13 @@
         "consensus-max": 718,
         "deepconf": 736,
         "avg64@": 704,
-        "con64@": 704
+        "con64@": 704,
+        "ensemble-medoid": 720,
+        "ensemble-deepconf": 736,
+        "tournament-copeland": 723,
+        "tournament-deepconf": 730,
+        "twostage-medoid": 720,
+        "twostage-tournament": 723
       }
     },
     "brumo25-12": {
@@ -2785,6 +2869,7 @@
       "selectors": {
         "min-activation": 830,
         "max-activation": 771,
+        "min-confidence": 825,
         "medoid": 821,
         "knn-medoid": 805,
         "dbscan-medoid": 821,
@@ -2792,7 +2877,13 @@
         "consensus-max": 821,
         "deepconf": 776,
         "avg64@": 768,
-        "con64@": 768
+        "con64@": 768,
+        "ensemble-medoid": 805,
+        "ensemble-deepconf": 776,
+        "tournament-copeland": 788,
+        "tournament-deepconf": 801,
+        "twostage-medoid": 805,
+        "twostage-tournament": 815
       }
     },
     "brumo25-13": {
@@ -3000,6 +3091,7 @@
       "selectors": {
         "min-activation": 895,
         "max-activation": 847,
+        "min-confidence": 878,
         "medoid": 861,
         "knn-medoid": 885,
         "dbscan-medoid": 834,
@@ -3007,7 +3099,13 @@
         "consensus-max": 861,
         "deepconf": 861,
         "avg64@": 832,
-        "con64@": 832
+        "con64@": 832,
+        "ensemble-medoid": 860,
+        "ensemble-deepconf": 861,
+        "tournament-copeland": 860,
+        "tournament-deepconf": 852,
+        "twostage-medoid": 861,
+        "twostage-tournament": 861
       }
     },
     "brumo25-14": {
@@ -3215,6 +3313,7 @@
       "selectors": {
         "min-activation": 949,
         "max-activation": 900,
+        "min-confidence": 917,
         "medoid": 926,
         "knn-medoid": 931,
         "dbscan-medoid": 926,
@@ -3222,7 +3321,13 @@
         "consensus-max": 926,
         "deepconf": 949,
         "avg64@": 896,
-        "con64@": 896
+        "con64@": 896,
+        "ensemble-medoid": 926,
+        "ensemble-deepconf": 949,
+        "tournament-copeland": 927,
+        "tournament-deepconf": 915,
+        "twostage-medoid": 936,
+        "twostage-tournament": 936
       }
     },
     "brumo25-15": {
@@ -3430,6 +3535,7 @@
       "selectors": {
         "min-activation": 972,
         "max-activation": 1014,
+        "min-confidence": 1010,
         "medoid": 1016,
         "knn-medoid": 1012,
         "dbscan-medoid": 1012,
@@ -3437,7 +3543,13 @@
         "consensus-max": 1016,
         "deepconf": 1016,
         "avg64@": 960,
-        "con64@": 960
+        "con64@": 960,
+        "ensemble-medoid": 993,
+        "ensemble-deepconf": 1016,
+        "tournament-copeland": 985,
+        "tournament-deepconf": 990,
+        "twostage-medoid": 1012,
+        "twostage-tournament": 993
       }
     },
     "brumo25-16": {
@@ -3645,6 +3757,7 @@
       "selectors": {
         "min-activation": 1029,
         "max-activation": 1034,
+        "min-confidence": 1043,
         "medoid": 1042,
         "knn-medoid": 1026,
         "dbscan-medoid": 1042,
@@ -3652,7 +3765,13 @@
         "consensus-max": 1042,
         "deepconf": 1055,
         "avg64@": 1024,
-        "con64@": 1024
+        "con64@": 1024,
+        "ensemble-medoid": 1042,
+        "ensemble-deepconf": 1055,
+        "tournament-copeland": 1036,
+        "tournament-deepconf": 1042,
+        "twostage-medoid": 1035,
+        "twostage-tournament": 1035
       }
     },
     "brumo25-17": {
@@ -3860,6 +3979,7 @@
       "selectors": {
         "min-activation": 1137,
         "max-activation": 1146,
+        "min-confidence": 1147,
         "medoid": 1150,
         "knn-medoid": 1107,
         "dbscan-medoid": 1150,
@@ -3867,7 +3987,13 @@
         "consensus-max": 1150,
         "deepconf": 1118,
         "avg64@": 1088,
-        "con64@": 1088
+        "con64@": 1088,
+        "ensemble-medoid": 1100,
+        "ensemble-deepconf": 1118,
+        "tournament-copeland": 1110,
+        "tournament-deepconf": 1117,
+        "twostage-medoid": 1100,
+        "twostage-tournament": 1092
       }
     },
     "brumo25-18": {
@@ -4075,6 +4201,7 @@
       "selectors": {
         "min-activation": 1197,
         "max-activation": 1167,
+        "min-confidence": 1184,
         "medoid": 1207,
         "knn-medoid": 1215,
         "dbscan-medoid": 1207,
@@ -4082,7 +4209,13 @@
         "consensus-max": 1207,
         "deepconf": 1196,
         "avg64@": 1152,
-        "con64@": 1152
+        "con64@": 1152,
+        "ensemble-medoid": 1164,
+        "ensemble-deepconf": 1196,
+        "tournament-copeland": 1167,
+        "tournament-deepconf": 1181,
+        "twostage-medoid": 1207,
+        "twostage-tournament": 1167
       }
     },
     "brumo25-19": {
@@ -4290,6 +4423,7 @@
       "selectors": {
         "min-activation": 1219,
         "max-activation": 1276,
+        "min-confidence": 1273,
         "medoid": 1277,
         "knn-medoid": 1271,
         "dbscan-medoid": 1277,
@@ -4297,7 +4431,13 @@
         "consensus-max": 1277,
         "deepconf": 1219,
         "avg64@": 1216,
-        "con64@": 1216
+        "con64@": 1216,
+        "ensemble-medoid": 1277,
+        "ensemble-deepconf": 1219,
+        "tournament-copeland": 1244,
+        "tournament-deepconf": 1233,
+        "twostage-medoid": 1277,
+        "twostage-tournament": 1274
       }
     },
     "brumo25-20": {
@@ -4505,6 +4645,7 @@
       "selectors": {
         "min-activation": 1321,
         "max-activation": 1287,
+        "min-confidence": 1334,
         "medoid": 1320,
         "knn-medoid": 1320,
         "dbscan-medoid": 1320,
@@ -4512,7 +4653,13 @@
         "consensus-max": 1320,
         "deepconf": 1283,
         "avg64@": 1280,
-        "con64@": 1280
+        "con64@": 1280,
+        "ensemble-medoid": 1310,
+        "ensemble-deepconf": 1283,
+        "tournament-copeland": 1306,
+        "tournament-deepconf": 1306,
+        "twostage-medoid": 1310,
+        "twostage-tournament": 1310
       }
     },
     "brumo25-21": {
@@ -4720,6 +4867,7 @@
       "selectors": {
         "min-activation": 1362,
         "max-activation": 1396,
+        "min-confidence": 1352,
         "medoid": 1401,
         "knn-medoid": 1355,
         "dbscan-medoid": 1401,
@@ -4727,7 +4875,13 @@
         "consensus-max": 1401,
         "deepconf": 1347,
         "avg64@": 1344,
-        "con64@": 1344
+        "con64@": 1344,
+        "ensemble-medoid": 1389,
+        "ensemble-deepconf": 1347,
+        "tournament-copeland": 1368,
+        "tournament-deepconf": 1367,
+        "twostage-medoid": 1401,
+        "twostage-tournament": 1360
       }
     },
     "brumo25-22": {
@@ -4935,6 +5089,7 @@
       "selectors": {
         "min-activation": 1440,
         "max-activation": 1430,
+        "min-confidence": 1449,
         "medoid": 1463,
         "knn-medoid": 1413,
         "dbscan-medoid": 1463,
@@ -4942,7 +5097,13 @@
         "consensus-max": 1463,
         "deepconf": 1414,
         "avg64@": 1408,
-        "con64@": 1408
+        "con64@": 1408,
+        "ensemble-medoid": 1466,
+        "ensemble-deepconf": 1414,
+        "tournament-copeland": 1437,
+        "tournament-deepconf": 1433,
+        "twostage-medoid": 1433,
+        "twostage-tournament": 1467
       }
     },
     "brumo25-23": {
@@ -5150,6 +5311,7 @@
       "selectors": {
         "min-activation": 1494,
         "max-activation": 1519,
+        "min-confidence": 1475,
         "medoid": 1476,
         "knn-medoid": 1509,
         "dbscan-medoid": 1476,
@@ -5157,7 +5319,13 @@
         "consensus-max": 1509,
         "deepconf": 1479,
         "avg64@": 1472,
-        "con64@": 1472
+        "con64@": 1472,
+        "ensemble-medoid": 1534,
+        "ensemble-deepconf": 1479,
+        "tournament-copeland": 1495,
+        "tournament-deepconf": 1492,
+        "twostage-medoid": 1476,
+        "twostage-tournament": 1476
       }
     },
     "brumo25-24": {
@@ -5365,6 +5533,7 @@
       "selectors": {
         "min-activation": 1585,
         "max-activation": 1555,
+        "min-confidence": 1590,
         "medoid": 1557,
         "knn-medoid": 1596,
         "dbscan-medoid": 1557,
@@ -5372,7 +5541,13 @@
         "consensus-max": 1557,
         "deepconf": 1543,
         "avg64@": 1536,
-        "con64@": 1536
+        "con64@": 1536,
+        "ensemble-medoid": 1578,
+        "ensemble-deepconf": 1543,
+        "tournament-copeland": 1557,
+        "tournament-deepconf": 1563,
+        "twostage-medoid": 1557,
+        "twostage-tournament": 1557
       }
     },
     "brumo25-25": {
@@ -5580,6 +5755,7 @@
       "selectors": {
         "min-activation": 1656,
         "max-activation": 1606,
+        "min-confidence": 1606,
         "medoid": 1608,
         "knn-medoid": 1618,
         "dbscan-medoid": 1608,
@@ -5587,7 +5763,13 @@
         "consensus-max": 1608,
         "deepconf": 1632,
         "avg64@": 1600,
-        "con64@": 1600
+        "con64@": 1600,
+        "ensemble-medoid": 1608,
+        "ensemble-deepconf": 1632,
+        "tournament-copeland": 1623,
+        "tournament-deepconf": 1620,
+        "twostage-medoid": 1647,
+        "twostage-tournament": 1608
       }
     },
     "brumo25-26": {
@@ -5795,6 +5977,7 @@
       "selectors": {
         "min-activation": 1723,
         "max-activation": 1684,
+        "min-confidence": 1668,
         "medoid": 1698,
         "knn-medoid": 1702,
         "dbscan-medoid": 1698,
@@ -5802,7 +5985,13 @@
         "consensus-max": 1698,
         "deepconf": 1707,
         "avg64@": 1664,
-        "con64@": 1664
+        "con64@": 1664,
+        "ensemble-medoid": 1693,
+        "ensemble-deepconf": 1707,
+        "tournament-copeland": 1693,
+        "tournament-deepconf": 1692,
+        "twostage-medoid": 1679,
+        "twostage-tournament": 1718
       }
     },
     "brumo25-27": {
@@ -6010,6 +6199,7 @@
       "selectors": {
         "min-activation": 1755,
         "max-activation": 1776,
+        "min-confidence": 1789,
         "medoid": 1746,
         "knn-medoid": 1746,
         "dbscan-medoid": 1746,
@@ -6017,7 +6207,13 @@
         "consensus-max": 1746,
         "deepconf": 1736,
         "avg64@": 1728,
-        "con64@": 1728
+        "con64@": 1728,
+        "ensemble-medoid": 1746,
+        "ensemble-deepconf": 1736,
+        "tournament-copeland": 1753,
+        "tournament-deepconf": 1749,
+        "twostage-medoid": 1746,
+        "twostage-tournament": 1736
       }
     },
     "brumo25-28": {
@@ -6225,6 +6421,7 @@
       "selectors": {
         "min-activation": 1855,
         "max-activation": 1797,
+        "min-confidence": 1797,
         "medoid": 1835,
         "knn-medoid": 1834,
         "dbscan-medoid": 1835,
@@ -6232,7 +6429,13 @@
         "consensus-max": 1835,
         "deepconf": 1803,
         "avg64@": 1792,
-        "con64@": 1792
+        "con64@": 1792,
+        "ensemble-medoid": 1831,
+        "ensemble-deepconf": 1803,
+        "tournament-copeland": 1817,
+        "tournament-deepconf": 1813,
+        "twostage-medoid": 1823,
+        "twostage-tournament": 1823
       }
     },
     "brumo25-29": {
@@ -6440,6 +6643,7 @@
       "selectors": {
         "min-activation": 1907,
         "max-activation": 1893,
+        "min-confidence": 1899,
         "medoid": 1860,
         "knn-medoid": 1860,
         "dbscan-medoid": 1860,
@@ -6447,7 +6651,13 @@
         "consensus-max": 1860,
         "deepconf": 1896,
         "avg64@": 1856,
-        "con64@": 1856
+        "con64@": 1856,
+        "ensemble-medoid": 1860,
+        "ensemble-deepconf": 1896,
+        "tournament-copeland": 1880,
+        "tournament-deepconf": 1883,
+        "twostage-medoid": 1860,
+        "twostage-tournament": 1862
       }
     }
   }

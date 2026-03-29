@@ -60,20 +60,47 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 
 ### 选择器
 
-内置 10 种选择器算法，从每个题目组中挑选最具代表性的样本：
+内置 16 种选择器算法，从每个题目组中挑选最具代表性的样本：
+
+**基础选择器**
+
+| 选择器 | 类型 | 说明 |
+|--------|------|------|
+| `min-activation` | [S] | 总神经元激活数最少 |
+| `max-activation` | [S] | 总神经元激活数最多 |
+| `min-confidence` | [S] | 最低均值 tok_conf（最自信） |
+| `medoid` | [P] | 组的几何中心（Jaccard 距离） |
+| `knn-medoid` | [P] | 限于 K 个最近邻的 medoid |
+| `dbscan-medoid` | [P] | 最密 DBSCAN 簇的 medoid |
+| `consensus-min` | [P] | 共识候选集中激活数最少者 |
+| `consensus-max` | [P] | 共识候选集中激活数最多者 |
+| `deepconf` | [S] | 基于 token 置信度滑窗（需要 `token_data/`） |
+| `con64@` / `avg64@` | [O] | 共识 / 均值基线（oracle，仅完整序列） |
+
+类型：`[S]` 单样本评分，无需距离矩阵；`[P]` 需要 N×N Jaccard 矩阵；`[O]` 使用全部标注的 oracle 基线。
+
+**分组 Ensemble 选择器**（随机分组，逐轮淘汰）
 
 | 选择器 | 说明 |
 |--------|------|
-| `min-activation` | 总神经元激活数最少 |
-| `max-activation` | 总神经元激活数最多 |
-| `medoid` | 组的几何中心（Jaccard 距离） |
-| `knn-medoid` | 限于 K 个最近邻的 medoid |
-| `dbscan-medoid` | 最密 DBSCAN 簇的 medoid |
-| `consensus-min` | 共识投票分数的最小值 |
-| `consensus-max` | 共识投票分数的最大值 |
-| `deepconf` | 基于 token 置信度（需要 `token_data/`） |
-| `con64@` | 前 64 个运行的共识（仅完整序列） |
-| `avg64@` | 前 64 个运行的平均分（仅完整序列） |
+| `ensemble-medoid` | 随机 8 人一组 → 每组 medoid → 胜者再 medoid |
+| `ensemble-deepconf` | 随机 8 人一组 → 每组 DeepConf 最优 → 胜者再最优 |
+
+**Tournament 选择器**（两两比较 + softmax）
+
+| 选择器 | 说明 |
+|--------|------|
+| `tournament-copeland` | Copeland 投票：对每对 (i,j) 统计多数第三方更近者得分 → softmax |
+| `tournament-deepconf` | DeepConf quality 两两比较 → 累计胜场 → softmax |
+
+**两阶段选择器**（分组 Top-K → 决赛）
+
+| 选择器 | 说明 |
+|--------|------|
+| `twostage-medoid` | 16 人一组 → 每组取组内距离前 4 → 16 人决赛 medoid |
+| `twostage-tournament` | 16 人一组 → 每组 Copeland 取前 4 → 16 人决赛 Copeland + softmax |
+
+完整跨数据集精度对比见 [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md)。
 
 ### CLI 参考
 
@@ -304,22 +331,47 @@ Cache type `cache_neuron_output_1_*` = 1 token/row. Type `cache_neuron_output_2_
 
 ## Selectors
 
-Ten built-in selector algorithms pick the most representative sample from each problem group.
+Sixteen built-in selector algorithms pick the most representative sample from each problem group.
+
+**Base selectors**
+
+| Selector | Type | Description |
+|----------|------|-------------|
+| `min-activation` | [S] | Fewest total neuron activations |
+| `max-activation` | [S] | Most total neuron activations |
+| `min-confidence` | [S] | Lowest mean tok_conf (most confident) |
+| `medoid` | [P] | Geometric centre of the group (Jaccard distance) |
+| `knn-medoid` | [P] | Medoid restricted to K nearest neighbours |
+| `dbscan-medoid` | [P] | Medoid of the densest DBSCAN cluster |
+| `consensus-min` | [P] | Fewest activations among consensus candidates |
+| `consensus-max` | [P] | Most activations among consensus candidates |
+| `deepconf` | [S] | Token-confidence sliding window (requires `token_data/`) |
+| `con64@` / `avg64@` | [O] | Consensus / average oracle baselines (full sequence only) |
+
+Type: `[S]` = independent per-run score, no distance matrix needed; `[P]` = requires N×N Jaccard matrix; `[O]` = oracle baseline using all ground-truth labels.
+
+**Group Ensemble selectors** (random groups, elimination rounds)
 
 | Selector | Description |
 |----------|-------------|
-| `min-activation` | Fewest total neuron activations |
-| `max-activation` | Most total neuron activations |
-| `medoid` | Geometric centre of the group (Jaccard distance) |
-| `knn-medoid` | Medoid restricted to K nearest neighbours |
-| `dbscan-medoid` | Medoid of the densest DBSCAN cluster |
-| `consensus-min` | Minimum of consensus voting scores |
-| `consensus-max` | Maximum of consensus voting scores |
-| `deepconf` | Token-confidence based (requires `token_data/`) |
-| `con64@` | Consensus of top-64 runs (full sequence only) |
-| `avg64@` | Average score of top-64 runs (full sequence only) |
+| `ensemble-medoid` | Random groups of 8 → medoid per group → medoid of winners |
+| `ensemble-deepconf` | Random groups of 8 → best DeepConf per group → best of winners |
 
-`con64@` and `avg64@` require full-sequence context and are not available in position-window mode.
+**Tournament selectors** (pairwise comparison + softmax)
+
+| Selector | Description |
+|----------|-------------|
+| `tournament-copeland` | Copeland voting: for each pair (i,j) count how many third parties are closer to i vs j → softmax |
+| `tournament-deepconf` | Pairwise DeepConf quality comparison → win count → softmax |
+
+**Two-stage selectors** (group top-k → final round)
+
+| Selector | Description |
+|----------|-------------|
+| `twostage-medoid` | Groups of 16 → top-4 by mean distance → 16 finalists → medoid |
+| `twostage-tournament` | Groups of 16 → top-4 by Copeland → 16 finalists → Copeland + softmax |
+
+For all softmax-based selectors the default temperature is 0.2 and seed is 42. Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
 
 <details>
 <summary><strong>Custom Selectors</strong></summary>

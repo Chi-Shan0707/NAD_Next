@@ -2,6 +2,7 @@
   "selector_accuracy": {
     "min-activation": 73.33333333333333,
     "max-activation": 56.666666666666664,
+    "min-confidence": 50.0,
     "medoid": 73.33333333333333,
     "knn-medoid": 76.66666666666667,
     "dbscan-medoid": 73.33333333333333,
@@ -9,7 +10,13 @@
     "consensus-max": 76.66666666666667,
     "deepconf": 70.0,
     "avg64@": 65.7,
-    "con64@": 76.66666666666667
+    "con64@": 76.66666666666667,
+    "ensemble-medoid": 73.33333333333333,
+    "ensemble-deepconf": 70.0,
+    "tournament-copeland": 70.0,
+    "tournament-deepconf": 63.333333333333336,
+    "twostage-medoid": 73.33333333333333,
+    "twostage-tournament": 70.0
   },
   "selector_counts": {
     "min-activation": {
@@ -18,6 +25,10 @@
     },
     "max-activation": {
       "correct": 17,
+      "total": 30
+    },
+    "min-confidence": {
+      "correct": 15,
       "total": 30
     },
     "medoid": {
@@ -51,50 +62,44 @@
     "con64@": {
       "correct": 23,
       "total": 30
+    },
+    "ensemble-medoid": {
+      "correct": 22,
+      "total": 30
+    },
+    "ensemble-deepconf": {
+      "correct": 21,
+      "total": 30
+    },
+    "tournament-copeland": {
+      "correct": 21,
+      "total": 30
+    },
+    "tournament-deepconf": {
+      "correct": 19,
+      "total": 30
+    },
+    "twostage-medoid": {
+      "correct": 22,
+      "total": 30
+    },
+    "twostage-tournament": {
+      "correct": 21,
+      "total": 30
     }
   },
   "per_problem": {
     "0": {
       "problem_id": "0",
       "selectors": {
-        "min-activation": {
-          "run_index": 64,
-          "sample_id": 63,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 56,
-          "sample_id": 55,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 4,
           "sample_id": 3,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 11,
-          "sample_id": 10,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 4,
-          "sample_id": 3,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 11,
-          "sample_id": 10,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 4,
-          "sample_id": 3,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 37,
-          "sample_id": 36,
+        "twostage-tournament": {
+          "run_index": 20,
+          "sample_id": 19,
           "is_correct": true
         }
       }
@@ -102,44 +107,14 @@
     "1": {
       "problem_id": "1",
       "selectors": {
-        "min-activation": {
-          "run_index": 39,
-          "sample_id": 102,
+        "twostage-medoid": {
+          "run_index": 5,
+          "sample_id": 68,
           "is_correct": true
         },
-        "max-activation": {
-          "run_index": 23,
-          "sample_id": 86,
-          "is_correct": false
-        },
-        "medoid": {
-          "run_index": 53,
-          "sample_id": 116,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 57,
-          "sample_id": 120,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 53,
-          "sample_id": 116,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 57,
-          "sample_id": 120,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 53,
-          "sample_id": 116,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 49,
-          "sample_id": 112,
+        "twostage-tournament": {
+          "run_index": 20,
+          "sample_id": 83,
           "is_correct": true
         }
       }
@@ -147,44 +122,14 @@
     "2": {
       "problem_id": "2",
       "selectors": {
-        "min-activation": {
-          "run_index": 43,
-          "sample_id": 170,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 62,
-          "sample_id": 189,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 33,
           "sample_id": 160,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 17,
-          "sample_id": 144,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 33,
-          "sample_id": 160,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 17,
-          "sample_id": 144,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 33,
-          "sample_id": 160,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 26,
-          "sample_id": 153,
+        "twostage-tournament": {
+          "run_index": 10,
+          "sample_id": 137,
           "is_correct": true
         }
       }
@@ -192,44 +137,14 @@
     "3": {
       "problem_id": "3",
       "selectors": {
-        "min-activation": {
-          "run_index": 54,
-          "sample_id": 245,
+        "twostage-medoid": {
+          "run_index": 10,
+          "sample_id": 201,
           "is_correct": true
         },
-        "max-activation": {
-          "run_index": 5,
-          "sample_id": 196,
-          "is_correct": true
-        },
-        "medoid": {
-          "run_index": 36,
-          "sample_id": 227,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 21,
-          "sample_id": 212,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 36,
-          "sample_id": 227,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 36,
-          "sample_id": 227,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 21,
-          "sample_id": 212,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 43,
-          "sample_id": 234,
+        "twostage-tournament": {
+          "run_index": 25,
+          "sample_id": 216,
           "is_correct": true
         }
       }
@@ -237,42 +152,12 @@
     "4": {
       "problem_id": "4",
       "selectors": {
-        "min-activation": {
-          "run_index": 49,
-          "sample_id": 304,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 36,
-          "sample_id": 291,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 48,
           "sample_id": 303,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 48,
-          "sample_id": 303,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 48,
-          "sample_id": 303,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 48,
-          "sample_id": 303,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 48,
-          "sample_id": 303,
-          "is_correct": true
-        },
-        "deepconf": {
+        "twostage-tournament": {
           "run_index": 48,
           "sample_id": 303,
           "is_correct": true
@@ -282,44 +167,14 @@
     "5": {
       "problem_id": "5",
       "selectors": {
-        "min-activation": {
-          "run_index": 43,
-          "sample_id": 362,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 2,
-          "sample_id": 321,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 3,
           "sample_id": 322,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 52,
-          "sample_id": 371,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 58,
-          "sample_id": 377,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 52,
-          "sample_id": 371,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 3,
-          "sample_id": 322,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 36,
-          "sample_id": 355,
+        "twostage-tournament": {
+          "run_index": 61,
+          "sample_id": 380,
           "is_correct": true
         }
       }
@@ -327,44 +182,14 @@
     "6": {
       "problem_id": "6",
       "selectors": {
-        "min-activation": {
-          "run_index": 63,
-          "sample_id": 446,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 54,
-          "sample_id": 437,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 9,
           "sample_id": 392,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 62,
-          "sample_id": 445,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
+        "twostage-tournament": {
           "run_index": 9,
           "sample_id": 392,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 9,
-          "sample_id": 392,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 62,
-          "sample_id": 445,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 44,
-          "sample_id": 427,
           "is_correct": true
         }
       }
@@ -372,44 +197,14 @@
     "7": {
       "problem_id": "7",
       "selectors": {
-        "min-activation": {
-          "run_index": 19,
-          "sample_id": 466,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 61,
-          "sample_id": 508,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 35,
           "sample_id": 482,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 47,
-          "sample_id": 494,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 47,
-          "sample_id": 494,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 47,
-          "sample_id": 494,
-          "is_correct": true
-        },
-        "consensus-max": {
+        "twostage-tournament": {
           "run_index": 35,
           "sample_id": 482,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 38,
-          "sample_id": 485,
           "is_correct": true
         }
       }
@@ -417,44 +212,14 @@
     "8": {
       "problem_id": "8",
       "selectors": {
-        "min-activation": {
-          "run_index": 51,
-          "sample_id": 562,
+        "twostage-medoid": {
+          "run_index": 13,
+          "sample_id": 524,
           "is_correct": true
         },
-        "max-activation": {
-          "run_index": 36,
-          "sample_id": 547,
-          "is_correct": false
-        },
-        "medoid": {
-          "run_index": 28,
-          "sample_id": 539,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 54,
-          "sample_id": 565,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 28,
-          "sample_id": 539,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 28,
-          "sample_id": 539,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 54,
-          "sample_id": 565,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 28,
-          "sample_id": 539,
+        "twostage-tournament": {
+          "run_index": 47,
+          "sample_id": 558,
           "is_correct": true
         }
       }
@@ -462,44 +227,14 @@
     "9": {
       "problem_id": "9",
       "selectors": {
-        "min-activation": {
-          "run_index": 42,
-          "sample_id": 617,
+        "twostage-medoid": {
+          "run_index": 53,
+          "sample_id": 628,
           "is_correct": false
         },
-        "max-activation": {
-          "run_index": 19,
-          "sample_id": 594,
-          "is_correct": false
-        },
-        "medoid": {
-          "run_index": 25,
-          "sample_id": 600,
-          "is_correct": false
-        },
-        "knn-medoid": {
-          "run_index": 49,
-          "sample_id": 624,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 25,
-          "sample_id": 600,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 25,
-          "sample_id": 600,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 49,
-          "sample_id": 624,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 21,
-          "sample_id": 596,
+        "twostage-tournament": {
+          "run_index": 53,
+          "sample_id": 628,
           "is_correct": false
         }
       }
@@ -507,89 +242,29 @@
     "10": {
       "problem_id": "10",
       "selectors": {
-        "min-activation": {
-          "run_index": 53,
-          "sample_id": 692,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 5,
-          "sample_id": 644,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 62,
           "sample_id": 701,
           "is_correct": false
         },
-        "knn-medoid": {
-          "run_index": 18,
-          "sample_id": 657,
+        "twostage-tournament": {
+          "run_index": 45,
+          "sample_id": 684,
           "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 62,
-          "sample_id": 701,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 18,
-          "sample_id": 657,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 62,
-          "sample_id": 701,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 43,
-          "sample_id": 682,
-          "is_correct": true
         }
       }
     },
     "11": {
       "problem_id": "11",
       "selectors": {
-        "min-activation": {
-          "run_index": 29,
-          "sample_id": 732,
-          "is_correct": true
-        },
-        "max-activation": {
+        "twostage-medoid": {
           "run_index": 47,
           "sample_id": 750,
           "is_correct": false
         },
-        "medoid": {
+        "twostage-tournament": {
           "run_index": 47,
           "sample_id": 750,
-          "is_correct": false
-        },
-        "knn-medoid": {
-          "run_index": 10,
-          "sample_id": 713,
-          "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 47,
-          "sample_id": 750,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 10,
-          "sample_id": 713,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 47,
-          "sample_id": 750,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 49,
-          "sample_id": 752,
           "is_correct": false
         }
       }
@@ -597,44 +272,14 @@
     "12": {
       "problem_id": "12",
       "selectors": {
-        "min-activation": {
-          "run_index": 29,
-          "sample_id": 796,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 14,
-          "sample_id": 781,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 52,
           "sample_id": 819,
           "is_correct": false
         },
-        "knn-medoid": {
-          "run_index": 52,
-          "sample_id": 819,
-          "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 52,
-          "sample_id": 819,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 52,
-          "sample_id": 819,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 52,
-          "sample_id": 819,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 12,
-          "sample_id": 779,
+        "twostage-tournament": {
+          "run_index": 3,
+          "sample_id": 770,
           "is_correct": false
         }
       }
@@ -642,44 +287,14 @@
     "13": {
       "problem_id": "13",
       "selectors": {
-        "min-activation": {
-          "run_index": 46,
-          "sample_id": 877,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 43,
-          "sample_id": 874,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 19,
           "sample_id": 850,
           "is_correct": false
         },
-        "knn-medoid": {
+        "twostage-tournament": {
           "run_index": 20,
           "sample_id": 851,
-          "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 19,
-          "sample_id": 850,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 20,
-          "sample_id": 851,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 19,
-          "sample_id": 850,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 21,
-          "sample_id": 852,
           "is_correct": false
         }
       }
@@ -687,44 +302,14 @@
     "14": {
       "problem_id": "14",
       "selectors": {
-        "min-activation": {
-          "run_index": 22,
-          "sample_id": 917,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 14,
-          "sample_id": 909,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 35,
           "sample_id": 930,
           "is_correct": false
         },
-        "knn-medoid": {
-          "run_index": 35,
-          "sample_id": 930,
-          "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 35,
-          "sample_id": 930,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 35,
-          "sample_id": 930,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 35,
-          "sample_id": 930,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 13,
-          "sample_id": 908,
+        "twostage-tournament": {
+          "run_index": 1,
+          "sample_id": 896,
           "is_correct": false
         }
       }
@@ -732,44 +317,14 @@
     "15": {
       "problem_id": "15",
       "selectors": {
-        "min-activation": {
-          "run_index": 21,
-          "sample_id": 980,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 58,
-          "sample_id": 1017,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 4,
           "sample_id": 963,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 4,
-          "sample_id": 963,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 4,
-          "sample_id": 963,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 4,
-          "sample_id": 963,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 4,
-          "sample_id": 963,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 19,
-          "sample_id": 978,
+        "twostage-tournament": {
+          "run_index": 20,
+          "sample_id": 979,
           "is_correct": true
         }
       }
@@ -777,44 +332,14 @@
     "16": {
       "problem_id": "16",
       "selectors": {
-        "min-activation": {
-          "run_index": 32,
-          "sample_id": 1055,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 19,
-          "sample_id": 1042,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 60,
           "sample_id": 1083,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 20,
-          "sample_id": 1043,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 60,
-          "sample_id": 1083,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 20,
-          "sample_id": 1043,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 60,
-          "sample_id": 1083,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 21,
-          "sample_id": 1044,
+        "twostage-tournament": {
+          "run_index": 44,
+          "sample_id": 1067,
           "is_correct": true
         }
       }
@@ -822,89 +347,29 @@
     "17": {
       "problem_id": "17",
       "selectors": {
-        "min-activation": {
-          "run_index": 39,
-          "sample_id": 1126,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 23,
-          "sample_id": 1110,
-          "is_correct": true
-        },
-        "medoid": {
-          "run_index": 35,
-          "sample_id": 1122,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 17,
-          "sample_id": 1104,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
+        "twostage-medoid": {
           "run_index": 2,
           "sample_id": 1089,
           "is_correct": true
         },
-        "consensus-min": {
-          "run_index": 17,
-          "sample_id": 1104,
+        "twostage-tournament": {
+          "run_index": 2,
+          "sample_id": 1089,
           "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 35,
-          "sample_id": 1122,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 55,
-          "sample_id": 1142,
-          "is_correct": false
         }
       }
     },
     "18": {
       "problem_id": "18",
       "selectors": {
-        "min-activation": {
-          "run_index": 33,
-          "sample_id": 1184,
+        "twostage-medoid": {
+          "run_index": 63,
+          "sample_id": 1214,
           "is_correct": true
         },
-        "max-activation": {
-          "run_index": 60,
-          "sample_id": 1211,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-tournament": {
           "run_index": 44,
           "sample_id": 1195,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 41,
-          "sample_id": 1192,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 44,
-          "sample_id": 1195,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 41,
-          "sample_id": 1192,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 44,
-          "sample_id": 1195,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 50,
-          "sample_id": 1201,
           "is_correct": true
         }
       }
@@ -912,89 +377,29 @@
     "19": {
       "problem_id": "19",
       "selectors": {
-        "min-activation": {
-          "run_index": 48,
-          "sample_id": 1263,
+        "twostage-medoid": {
+          "run_index": 53,
+          "sample_id": 1268,
           "is_correct": true
         },
-        "max-activation": {
-          "run_index": 32,
-          "sample_id": 1247,
-          "is_correct": true
-        },
-        "medoid": {
-          "run_index": 40,
-          "sample_id": 1255,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 16,
-          "sample_id": 1231,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 40,
-          "sample_id": 1255,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 16,
-          "sample_id": 1231,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 40,
-          "sample_id": 1255,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 39,
-          "sample_id": 1254,
-          "is_correct": true
+        "twostage-tournament": {
+          "run_index": 4,
+          "sample_id": 1219,
+          "is_correct": false
         }
       }
     },
     "20": {
       "problem_id": "20",
       "selectors": {
-        "min-activation": {
-          "run_index": 40,
-          "sample_id": 1319,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 14,
-          "sample_id": 1293,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 2,
           "sample_id": 1281,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 3,
-          "sample_id": 1282,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
+        "twostage-tournament": {
           "run_index": 2,
           "sample_id": 1281,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 3,
-          "sample_id": 1282,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 2,
-          "sample_id": 1281,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 61,
-          "sample_id": 1340,
           "is_correct": true
         }
       }
@@ -1002,44 +407,14 @@
     "21": {
       "problem_id": "21",
       "selectors": {
-        "min-activation": {
-          "run_index": 7,
-          "sample_id": 1350,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 5,
-          "sample_id": 1348,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 60,
           "sample_id": 1403,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 60,
-          "sample_id": 1403,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 60,
-          "sample_id": 1403,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 60,
-          "sample_id": 1403,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 60,
-          "sample_id": 1403,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 13,
-          "sample_id": 1356,
+        "twostage-tournament": {
+          "run_index": 32,
+          "sample_id": 1375,
           "is_correct": true
         }
       }
@@ -1047,89 +422,29 @@
     "22": {
       "problem_id": "22",
       "selectors": {
-        "min-activation": {
-          "run_index": 54,
-          "sample_id": 1461,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 55,
-          "sample_id": 1462,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 33,
           "sample_id": 1440,
           "is_correct": true
         },
-        "knn-medoid": {
+        "twostage-tournament": {
           "run_index": 56,
           "sample_id": 1463,
           "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 33,
-          "sample_id": 1440,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 56,
-          "sample_id": 1463,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 33,
-          "sample_id": 1440,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 32,
-          "sample_id": 1439,
-          "is_correct": false
         }
       }
     },
     "23": {
       "problem_id": "23",
       "selectors": {
-        "min-activation": {
-          "run_index": 52,
-          "sample_id": 1523,
+        "twostage-medoid": {
+          "run_index": 36,
+          "sample_id": 1507,
           "is_correct": true
         },
-        "max-activation": {
-          "run_index": 37,
-          "sample_id": 1508,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-tournament": {
           "run_index": 42,
           "sample_id": 1513,
-          "is_correct": true
-        },
-        "knn-medoid": {
-          "run_index": 56,
-          "sample_id": 1527,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 42,
-          "sample_id": 1513,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 42,
-          "sample_id": 1513,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 56,
-          "sample_id": 1527,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 4,
-          "sample_id": 1475,
           "is_correct": true
         }
       }
@@ -1137,42 +452,12 @@
     "24": {
       "problem_id": "24",
       "selectors": {
-        "min-activation": {
-          "run_index": 19,
-          "sample_id": 1554,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 59,
-          "sample_id": 1594,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 50,
           "sample_id": 1585,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 50,
-          "sample_id": 1585,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 50,
-          "sample_id": 1585,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 50,
-          "sample_id": 1585,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 50,
-          "sample_id": 1585,
-          "is_correct": true
-        },
-        "deepconf": {
+        "twostage-tournament": {
           "run_index": 50,
           "sample_id": 1585,
           "is_correct": true
@@ -1182,42 +467,12 @@
     "25": {
       "problem_id": "25",
       "selectors": {
-        "min-activation": {
-          "run_index": 17,
-          "sample_id": 1616,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 34,
-          "sample_id": 1633,
-          "is_correct": true
-        },
-        "medoid": {
-          "run_index": 45,
-          "sample_id": 1644,
-          "is_correct": true
-        },
-        "knn-medoid": {
+        "twostage-medoid": {
           "run_index": 38,
           "sample_id": 1637,
           "is_correct": true
         },
-        "dbscan-medoid": {
-          "run_index": 32,
-          "sample_id": 1631,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 45,
-          "sample_id": 1644,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 38,
-          "sample_id": 1637,
-          "is_correct": true
-        },
-        "deepconf": {
+        "twostage-tournament": {
           "run_index": 32,
           "sample_id": 1631,
           "is_correct": true
@@ -1227,44 +482,14 @@
     "26": {
       "problem_id": "26",
       "selectors": {
-        "min-activation": {
-          "run_index": 42,
-          "sample_id": 1705,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 28,
-          "sample_id": 1691,
-          "is_correct": true
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 6,
           "sample_id": 1669,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 6,
-          "sample_id": 1669,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 6,
-          "sample_id": 1669,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 6,
-          "sample_id": 1669,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 6,
-          "sample_id": 1669,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 53,
-          "sample_id": 1716,
+        "twostage-tournament": {
+          "run_index": 32,
+          "sample_id": 1695,
           "is_correct": true
         }
       }
@@ -1272,44 +497,14 @@
     "27": {
       "problem_id": "27",
       "selectors": {
-        "min-activation": {
-          "run_index": 21,
-          "sample_id": 1748,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 34,
-          "sample_id": 1761,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 36,
           "sample_id": 1763,
           "is_correct": false
         },
-        "knn-medoid": {
-          "run_index": 48,
-          "sample_id": 1775,
-          "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 36,
-          "sample_id": 1763,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 48,
-          "sample_id": 1775,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 36,
-          "sample_id": 1763,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 33,
-          "sample_id": 1760,
+        "twostage-tournament": {
+          "run_index": 53,
+          "sample_id": 1780,
           "is_correct": false
         }
       }
@@ -1317,44 +512,14 @@
     "28": {
       "problem_id": "28",
       "selectors": {
-        "min-activation": {
-          "run_index": 44,
-          "sample_id": 1835,
-          "is_correct": true
-        },
-        "max-activation": {
-          "run_index": 5,
-          "sample_id": 1796,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 49,
           "sample_id": 1840,
           "is_correct": true
         },
-        "knn-medoid": {
-          "run_index": 34,
-          "sample_id": 1825,
-          "is_correct": true
-        },
-        "dbscan-medoid": {
-          "run_index": 49,
-          "sample_id": 1840,
-          "is_correct": true
-        },
-        "consensus-min": {
-          "run_index": 49,
-          "sample_id": 1840,
-          "is_correct": true
-        },
-        "consensus-max": {
-          "run_index": 34,
-          "sample_id": 1825,
-          "is_correct": true
-        },
-        "deepconf": {
-          "run_index": 41,
-          "sample_id": 1832,
+        "twostage-tournament": {
+          "run_index": 2,
+          "sample_id": 1793,
           "is_correct": true
         }
       }
@@ -1362,44 +527,14 @@
     "29": {
       "problem_id": "29",
       "selectors": {
-        "min-activation": {
-          "run_index": 55,
-          "sample_id": 1910,
-          "is_correct": false
-        },
-        "max-activation": {
-          "run_index": 45,
-          "sample_id": 1900,
-          "is_correct": false
-        },
-        "medoid": {
+        "twostage-medoid": {
           "run_index": 39,
           "sample_id": 1894,
           "is_correct": false
         },
-        "knn-medoid": {
-          "run_index": 9,
-          "sample_id": 1864,
-          "is_correct": false
-        },
-        "dbscan-medoid": {
-          "run_index": 39,
-          "sample_id": 1894,
-          "is_correct": false
-        },
-        "consensus-min": {
-          "run_index": 39,
-          "sample_id": 1894,
-          "is_correct": false
-        },
-        "consensus-max": {
-          "run_index": 9,
-          "sample_id": 1864,
-          "is_correct": false
-        },
-        "deepconf": {
-          "run_index": 29,
-          "sample_id": 1884,
+        "twostage-tournament": {
+          "run_index": 46,
+          "sample_id": 1901,
           "is_correct": false
         }
       }

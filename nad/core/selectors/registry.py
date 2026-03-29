@@ -7,9 +7,12 @@ import importlib.util
 import sys
 import os
 from .base import SelectorSpec
-from .impl import (MinActivationSelector, MaxActivationSelector, MedoidSelector,
-                   KNNMedoidSelector, DBSCANMedoidSelector,
-                   ConsensusMinSelector, ConsensusMaxSelector, DeepConfSelector, BaselineSelector)
+from .impl import (MinActivationSelector, MaxActivationSelector, MinConfidenceSelector,
+                   MedoidSelector, KNNMedoidSelector, DBSCANMedoidSelector,
+                   ConsensusMinSelector, ConsensusMaxSelector, DeepConfSelector, BaselineSelector,
+                   GroupEnsembleMedoidSelector, GroupEnsembleDeepConfSelector,
+                   TournamentCopelandSelector, TournamentDeepConfSelector,
+                   TwoStageMedoidSelector, TwoStageTournamentSelector)
 from .impl_legacy import (LegacyKNNMedoidSelector, LegacyMedoidSelector,
                          LegacyDBSCANMedoidSelector, LegacyConsensusMinSelector,
                          LegacyConsensusMaxSelector)
@@ -94,6 +97,8 @@ def build_selector(spec: SelectorSpec):
         return MinActivationSelector()
     if lowered in ("max-activation", "max_activation", "max"):
         return MaxActivationSelector()
+    if lowered in ("min-confidence", "min_confidence", "minconf"):
+        return MinConfidenceSelector()
     if lowered in ("medoid",):
         return MedoidSelector()
     if lowered in ("knn-medoid", "knn_medoid", "knn"):
@@ -124,6 +129,41 @@ def build_selector(spec: SelectorSpec):
         group_size = int(params.get("group_size", 20))
         return DeepConfSelector(metric=metric, reduction=reduction, group_size=group_size)
 
+    # Ensemble selectors (分组淘汰)
+    if lowered in ("ensemble-medoid", "ensemble_medoid"):
+        gs = int(params.get("group_size", 8))
+        seed = int(params.get("seed", 42))
+        return GroupEnsembleMedoidSelector(group_size=gs, seed=seed)
+    if lowered in ("ensemble-deepconf", "ensemble_deepconf"):
+        gs = int(params.get("group_size", 8))
+        metric = params.get("metric", "tok_conf")
+        seed = int(params.get("seed", 42))
+        return GroupEnsembleDeepConfSelector(group_size=gs, metric=metric, seed=seed)
+
+    # Tournament selectors (两两比较 + softmax)
+    if lowered in ("tournament-copeland", "tournament_copeland"):
+        temp = float(params.get("temperature", 0.2))
+        seed = int(params.get("seed", 42))
+        return TournamentCopelandSelector(temperature=temp, seed=seed)
+    if lowered in ("tournament-deepconf", "tournament_deepconf"):
+        metric = params.get("metric", "tok_conf")
+        temp = float(params.get("temperature", 0.2))
+        seed = int(params.get("seed", 42))
+        return TournamentDeepConfSelector(metric=metric, temperature=temp, seed=seed)
+
+    # Two-stage selectors (分组 Top-K → 决赛)
+    if lowered in ("twostage-medoid", "twostage_medoid", "2stage-medoid"):
+        gs = int(params.get("group_size", 16))
+        tk = int(params.get("top_k", 4))
+        seed = int(params.get("seed", 42))
+        return TwoStageMedoidSelector(group_size=gs, top_k=tk, seed=seed)
+    if lowered in ("twostage-tournament", "twostage_tournament", "2stage-tournament"):
+        gs = int(params.get("group_size", 16))
+        tk = int(params.get("top_k", 4))
+        temp = float(params.get("temperature", 0.2))
+        seed = int(params.get("seed", 42))
+        return TwoStageTournamentSelector(group_size=gs, top_k=tk, temperature=temp, seed=seed)
+
     raise ValueError(f"Unknown selector: {spec.name}")
 
 def expand_selector_all(cache_root: str = None):
@@ -139,12 +179,19 @@ def expand_selector_all(cache_root: str = None):
     selectors = [
         {"name":"min-activation"},
         {"name":"max-activation"},
+        {"name":"min-confidence"},
         {"name":"medoid"},
         {"name":"knn-medoid","params":{"k":3}},
         {"name":"dbscan-medoid","params":{"eps":"auto","min_samples":3}},
         {"name":"consensus-min","params":{"k":3,"eps":"auto","min_samples":3}},
         {"name":"consensus-max","params":{"k":3,"eps":"auto","min_samples":3}},
         {"name":"deepconf"},  # DeepConf selector with default parameters
+        {"name":"ensemble-medoid","params":{"group_size":8,"seed":42}},
+        {"name":"ensemble-deepconf","params":{"group_size":8,"seed":42}},
+        {"name":"tournament-copeland","params":{"temperature":0.2,"seed":42}},
+        {"name":"tournament-deepconf","params":{"temperature":0.2,"seed":42}},
+        {"name":"twostage-medoid","params":{"group_size":16,"top_k":4,"seed":42}},
+        {"name":"twostage-tournament","params":{"group_size":16,"top_k":4,"temperature":0.2,"seed":42}},
     ]
 
     # Add baseline selectors (avgN@, conN@)
