@@ -39,6 +39,12 @@ psutil>=5.8.0
 tqdm>=4.50.0
 
 # ========================================
+# ML Selectors (linear probe, logistic regression, isotonic calibration)
+# ========================================
+scikit-learn>=1.0.0
+joblib>=1.1.0
+
+# ========================================
 # Development Dependencies (Optional)
 # ========================================
 # Uncomment for development and testing

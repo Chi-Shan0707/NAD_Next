@@ -16,7 +16,11 @@
     "tournament-copeland": 65.15151515151516,
     "tournament-deepconf": 58.08080808080808,
     "twostage-medoid": 66.16161616161617,
-    "twostage-tournament": 63.63636363636363
+    "twostage-tournament": 63.63636363636363,
+    "linear-probe": 67.17171717171718,
+    "logistic": 68.18181818181819,
+    "isotonic-medoid": 64.14141414141415,
+    "isotonic-deepconf": 61.61616161616162
   },
   "selector_counts": {
     "min-activation": {
@@ -86,20 +90,46 @@
     "twostage-tournament": {
       "correct": 126,
       "total": 198
+    },
+    "linear-probe": {
+      "correct": 133,
+      "total": 198
+    },
+    "logistic": {
+      "correct": 135,
+      "total": 198
+    },
+    "isotonic-medoid": {
+      "correct": 127,
+      "total": 198
+    },
+    "isotonic-deepconf": {
+      "correct": 122,
+      "total": 198
     }
   },
   "per_problem": {
     "gpqa-0": {
       "problem_id": "gpqa-0",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 55,
-          "sample_id": 54,
+        "linear-probe": {
+          "run_index": 64,
+          "sample_id": 63,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 34,
-          "sample_id": 33,
+        "logistic": {
+          "run_index": 64,
+          "sample_id": 63,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 44,
+          "sample_id": 43,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 0,
           "is_correct": true
         }
       }
@@ -107,29 +137,49 @@
     "gpqa-1": {
       "problem_id": "gpqa-1",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 50,
-          "sample_id": 113,
-          "is_correct": true
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 13,
           "sample_id": 76,
           "is_correct": false
+        },
+        "logistic": {
+          "run_index": 13,
+          "sample_id": 76,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 37,
+          "sample_id": 100,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 64,
+          "is_correct": true
         }
       }
     },
     "gpqa-2": {
       "problem_id": "gpqa-2",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 30,
-          "sample_id": 157,
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 129,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 30,
-          "sample_id": 157,
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 129,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 129,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 128,
           "is_correct": true
         }
       }
@@ -137,14 +187,24 @@
     "gpqa-3": {
       "problem_id": "gpqa-3",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 13,
           "sample_id": 204,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 45,
-          "sample_id": 236,
+        "logistic": {
+          "run_index": 13,
+          "sample_id": 204,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 13,
+          "sample_id": 204,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 192,
           "is_correct": false
         }
       }
@@ -152,14 +212,24 @@
     "gpqa-4": {
       "problem_id": "gpqa-4",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 29,
-          "sample_id": 284,
+        "linear-probe": {
+          "run_index": 11,
+          "sample_id": 266,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 15,
-          "sample_id": 270,
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 266,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 3,
+          "sample_id": 258,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 256,
           "is_correct": true
         }
       }
@@ -167,14 +237,24 @@
     "gpqa-5": {
       "problem_id": "gpqa-5",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 27,
-          "sample_id": 346,
+        "linear-probe": {
+          "run_index": 4,
+          "sample_id": 323,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 27,
-          "sample_id": 346,
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 323,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 8,
+          "sample_id": 327,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 320,
           "is_correct": true
         }
       }
@@ -182,14 +262,24 @@
     "gpqa-6": {
       "problem_id": "gpqa-6",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 60,
-          "sample_id": 443,
+        "linear-probe": {
+          "run_index": 33,
+          "sample_id": 416,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 443,
+        "logistic": {
+          "run_index": 33,
+          "sample_id": 416,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 1,
+          "sample_id": 384,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 384,
           "is_correct": true
         }
       }
@@ -197,44 +287,74 @@
     "gpqa-7": {
       "problem_id": "gpqa-7",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 64,
+          "sample_id": 511,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 64,
+          "sample_id": 511,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 25,
           "sample_id": 472,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 25,
-          "sample_id": 472,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 448,
+          "is_correct": true
         }
       }
     },
     "gpqa-8": {
       "problem_id": "gpqa-8",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 50,
+          "sample_id": 561,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 50,
+          "sample_id": 561,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 49,
           "sample_id": 560,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 50,
-          "sample_id": 561,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 512,
+          "is_correct": false
         }
       }
     },
     "gpqa-9": {
       "problem_id": "gpqa-9",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 4,
+          "sample_id": 579,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 579,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 32,
           "sample_id": 607,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 4,
-          "sample_id": 579,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 576,
           "is_correct": false
         }
       }
@@ -242,14 +362,24 @@
     "gpqa-10": {
       "problem_id": "gpqa-10",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 18,
           "sample_id": 657,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 18,
           "sample_id": 657,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 14,
+          "sample_id": 653,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 640,
           "is_correct": true
         }
       }
@@ -257,14 +387,24 @@
     "gpqa-11": {
       "problem_id": "gpqa-11",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 5,
           "sample_id": 708,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 44,
-          "sample_id": 747,
+        "logistic": {
+          "run_index": 5,
+          "sample_id": 708,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 5,
+          "sample_id": 708,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 704,
           "is_correct": true
         }
       }
@@ -272,14 +412,24 @@
     "gpqa-12": {
       "problem_id": "gpqa-12",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 10,
-          "sample_id": 777,
+        "linear-probe": {
+          "run_index": 29,
+          "sample_id": 796,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 41,
-          "sample_id": 808,
+        "logistic": {
+          "run_index": 29,
+          "sample_id": 796,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 15,
+          "sample_id": 782,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 768,
           "is_correct": false
         }
       }
@@ -287,14 +437,24 @@
     "gpqa-13": {
       "problem_id": "gpqa-13",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 41,
           "sample_id": 872,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 41,
+          "sample_id": 872,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 6,
           "sample_id": 837,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 832,
           "is_correct": true
         }
       }
@@ -302,14 +462,24 @@
     "gpqa-14": {
       "problem_id": "gpqa-14",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 6,
+          "sample_id": 901,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 6,
+          "sample_id": 901,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 19,
           "sample_id": 914,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 50,
-          "sample_id": 945,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 896,
           "is_correct": true
         }
       }
@@ -317,14 +487,24 @@
     "gpqa-15": {
       "problem_id": "gpqa-15",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 39,
           "sample_id": 998,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 979,
+        "logistic": {
+          "run_index": 39,
+          "sample_id": 998,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 39,
+          "sample_id": 998,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 960,
           "is_correct": true
         }
       }
@@ -332,14 +512,24 @@
     "gpqa-16": {
       "problem_id": "gpqa-16",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 46,
           "sample_id": 1069,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 1070,
+        "logistic": {
+          "run_index": 46,
+          "sample_id": 1069,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 46,
+          "sample_id": 1069,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1024,
           "is_correct": true
         }
       }
@@ -347,14 +537,24 @@
     "gpqa-17": {
       "problem_id": "gpqa-17",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 49,
-          "sample_id": 1136,
+        "linear-probe": {
+          "run_index": 11,
+          "sample_id": 1098,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 1098,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 48,
           "sample_id": 1135,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1088,
           "is_correct": false
         }
       }
@@ -362,27 +562,47 @@
     "gpqa-18": {
       "problem_id": "gpqa-18",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 35,
-          "sample_id": 1186,
+        "linear-probe": {
+          "run_index": 11,
+          "sample_id": 1162,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 1211,
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 1162,
           "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 32,
+          "sample_id": 1183,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1152,
+          "is_correct": true
         }
       }
     },
     "gpqa-19": {
       "problem_id": "gpqa-19",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 3,
           "sample_id": 1218,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 3,
+          "sample_id": 1218,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 1,
+          "sample_id": 1216,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
           "run_index": 1,
           "sample_id": 1216,
           "is_correct": true
@@ -392,14 +612,24 @@
     "gpqa-20": {
       "problem_id": "gpqa-20",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 20,
-          "sample_id": 1299,
+        "linear-probe": {
+          "run_index": 10,
+          "sample_id": 1289,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 1299,
+        "logistic": {
+          "run_index": 10,
+          "sample_id": 1289,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 10,
+          "sample_id": 1289,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1280,
           "is_correct": true
         }
       }
@@ -407,14 +637,24 @@
     "gpqa-21": {
       "problem_id": "gpqa-21",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 38,
           "sample_id": 1381,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 38,
           "sample_id": 1381,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 33,
+          "sample_id": 1376,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1344,
           "is_correct": false
         }
       }
@@ -422,14 +662,24 @@
     "gpqa-22": {
       "problem_id": "gpqa-22",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 7,
+          "sample_id": 1414,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 7,
+          "sample_id": 1414,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 43,
           "sample_id": 1450,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 1467,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1408,
           "is_correct": false
         }
       }
@@ -437,14 +687,24 @@
     "gpqa-23": {
       "problem_id": "gpqa-23",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 4,
+          "sample_id": 1475,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 1475,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 1473,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 1473,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1472,
           "is_correct": true
         }
       }
@@ -452,14 +712,24 @@
     "gpqa-24": {
       "problem_id": "gpqa-24",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 32,
-          "sample_id": 1567,
+        "linear-probe": {
+          "run_index": 58,
+          "sample_id": 1593,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 1596,
+        "logistic": {
+          "run_index": 58,
+          "sample_id": 1593,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 58,
+          "sample_id": 1593,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1536,
           "is_correct": false
         }
       }
@@ -467,14 +737,24 @@
     "gpqa-25": {
       "problem_id": "gpqa-25",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 27,
           "sample_id": 1626,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 45,
-          "sample_id": 1644,
+        "logistic": {
+          "run_index": 27,
+          "sample_id": 1626,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 6,
+          "sample_id": 1605,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1600,
           "is_correct": false
         }
       }
@@ -482,14 +762,24 @@
     "gpqa-26": {
       "problem_id": "gpqa-26",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 4,
           "sample_id": 1667,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 4,
           "sample_id": 1667,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 4,
+          "sample_id": 1667,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1664,
           "is_correct": true
         }
       }
@@ -497,44 +787,74 @@
     "gpqa-27": {
       "problem_id": "gpqa-27",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 37,
+          "sample_id": 1764,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 1764,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 35,
           "sample_id": 1762,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 37,
-          "sample_id": 1764,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1728,
+          "is_correct": false
         }
       }
     },
     "gpqa-28": {
       "problem_id": "gpqa-28",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 58,
+          "sample_id": 1849,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 58,
+          "sample_id": 1849,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 7,
           "sample_id": 1798,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 1796,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1792,
+          "is_correct": false
         }
       }
     },
     "gpqa-29": {
       "problem_id": "gpqa-29",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 27,
+          "sample_id": 1882,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 27,
+          "sample_id": 1882,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 32,
           "sample_id": 1887,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 1887,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1856,
           "is_correct": false
         }
       }
@@ -542,14 +862,24 @@
     "gpqa-30": {
       "problem_id": "gpqa-30",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 22,
+          "sample_id": 1941,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 22,
+          "sample_id": 1941,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 35,
           "sample_id": 1954,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 1951,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1920,
           "is_correct": false
         }
       }
@@ -557,29 +887,49 @@
     "gpqa-31": {
       "problem_id": "gpqa-31",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 46,
-          "sample_id": 2029,
+        "linear-probe": {
+          "run_index": 40,
+          "sample_id": 2023,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 62,
-          "sample_id": 2045,
-          "is_correct": false
+        "logistic": {
+          "run_index": 40,
+          "sample_id": 2023,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 41,
+          "sample_id": 2024,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1984,
+          "is_correct": true
         }
       }
     },
     "gpqa-32": {
       "problem_id": "gpqa-32",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 8,
+          "sample_id": 2055,
+          "is_correct": true
+        },
+        "logistic": {
           "run_index": 11,
           "sample_id": 2058,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 27,
-          "sample_id": 2074,
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 2058,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2048,
           "is_correct": false
         }
       }
@@ -587,14 +937,24 @@
     "gpqa-33": {
       "problem_id": "gpqa-33",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 57,
           "sample_id": 2168,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 12,
-          "sample_id": 2123,
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 2168,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 57,
+          "sample_id": 2168,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2112,
           "is_correct": false
         }
       }
@@ -602,14 +962,24 @@
     "gpqa-34": {
       "problem_id": "gpqa-34",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 3,
+          "sample_id": 2178,
+          "is_correct": true
+        },
+        "logistic": {
           "run_index": 64,
           "sample_id": 2239,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 2236,
+        "isotonic-medoid": {
+          "run_index": 3,
+          "sample_id": 2178,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2176,
           "is_correct": true
         }
       }
@@ -617,29 +987,49 @@
     "gpqa-35": {
       "problem_id": "gpqa-35",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 48,
-          "sample_id": 2287,
-          "is_correct": true
-        },
-        "twostage-tournament": {
-          "run_index": 13,
-          "sample_id": 2252,
+        "linear-probe": {
+          "run_index": 40,
+          "sample_id": 2279,
           "is_correct": false
+        },
+        "logistic": {
+          "run_index": 40,
+          "sample_id": 2279,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 38,
+          "sample_id": 2277,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2240,
+          "is_correct": true
         }
       }
     },
     "gpqa-36": {
       "problem_id": "gpqa-36",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 29,
-          "sample_id": 2332,
+        "linear-probe": {
+          "run_index": 60,
+          "sample_id": 2363,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 31,
-          "sample_id": 2334,
+        "logistic": {
+          "run_index": 60,
+          "sample_id": 2363,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 2330,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2304,
           "is_correct": false
         }
       }
@@ -647,14 +1037,24 @@
     "gpqa-37": {
       "problem_id": "gpqa-37",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 64,
           "sample_id": 2431,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 64,
+          "sample_id": 2431,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 32,
           "sample_id": 2399,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2368,
           "is_correct": true
         }
       }
@@ -662,14 +1062,24 @@
     "gpqa-38": {
       "problem_id": "gpqa-38",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 41,
+          "sample_id": 2472,
+          "is_correct": true
+        },
+        "logistic": {
           "run_index": 32,
           "sample_id": 2463,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 2463,
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 2458,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2432,
           "is_correct": true
         }
       }
@@ -677,29 +1087,49 @@
     "gpqa-39": {
       "problem_id": "gpqa-39",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 22,
           "sample_id": 2517,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 22,
           "sample_id": 2517,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 22,
+          "sample_id": 2517,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2496,
+          "is_correct": false
         }
       }
     },
     "gpqa-40": {
       "problem_id": "gpqa-40",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 14,
-          "sample_id": 2573,
+        "linear-probe": {
+          "run_index": 30,
+          "sample_id": 2589,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 2619,
+        "logistic": {
+          "run_index": 30,
+          "sample_id": 2589,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 4,
+          "sample_id": 2563,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2560,
           "is_correct": true
         }
       }
@@ -707,14 +1137,24 @@
     "gpqa-41": {
       "problem_id": "gpqa-41",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 40,
-          "sample_id": 2663,
+        "linear-probe": {
+          "run_index": 59,
+          "sample_id": 2682,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 2643,
+        "logistic": {
+          "run_index": 59,
+          "sample_id": 2682,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 3,
+          "sample_id": 2626,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2624,
           "is_correct": true
         }
       }
@@ -722,14 +1162,24 @@
     "gpqa-42": {
       "problem_id": "gpqa-42",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 60,
-          "sample_id": 2747,
-          "is_correct": true
+        "linear-probe": {
+          "run_index": 37,
+          "sample_id": 2724,
+          "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 50,
-          "sample_id": 2737,
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 2724,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 54,
+          "sample_id": 2741,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2688,
           "is_correct": true
         }
       }
@@ -737,14 +1187,24 @@
     "gpqa-43": {
       "problem_id": "gpqa-43",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 56,
-          "sample_id": 2807,
+        "linear-probe": {
+          "run_index": 19,
+          "sample_id": 2770,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 2812,
+        "logistic": {
+          "run_index": 19,
+          "sample_id": 2770,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 54,
+          "sample_id": 2805,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2752,
           "is_correct": true
         }
       }
@@ -752,14 +1212,24 @@
     "gpqa-44": {
       "problem_id": "gpqa-44",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 55,
-          "sample_id": 2870,
+        "linear-probe": {
+          "run_index": 28,
+          "sample_id": 2843,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 2857,
+        "logistic": {
+          "run_index": 28,
+          "sample_id": 2843,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 30,
+          "sample_id": 2845,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2816,
           "is_correct": true
         }
       }
@@ -767,14 +1237,24 @@
     "gpqa-45": {
       "problem_id": "gpqa-45",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 64,
-          "sample_id": 2943,
-          "is_correct": true
+        "linear-probe": {
+          "run_index": 17,
+          "sample_id": 2896,
+          "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 16,
-          "sample_id": 2895,
+        "logistic": {
+          "run_index": 17,
+          "sample_id": 2896,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 55,
+          "sample_id": 2934,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2880,
           "is_correct": false
         }
       }
@@ -782,14 +1262,24 @@
     "gpqa-46": {
       "problem_id": "gpqa-46",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 59,
           "sample_id": 3002,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 13,
-          "sample_id": 2956,
+        "logistic": {
+          "run_index": 59,
+          "sample_id": 3002,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 1,
+          "sample_id": 2944,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 2944,
           "is_correct": true
         }
       }
@@ -797,14 +1287,24 @@
     "gpqa-47": {
       "problem_id": "gpqa-47",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 54,
-          "sample_id": 3061,
+        "linear-probe": {
+          "run_index": 52,
+          "sample_id": 3059,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 52,
+          "sample_id": 3059,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 36,
+          "sample_id": 3043,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 3049,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3008,
           "is_correct": false
         }
       }
@@ -812,14 +1312,24 @@
     "gpqa-48": {
       "problem_id": "gpqa-48",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 45,
+          "sample_id": 3116,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 45,
+          "sample_id": 3116,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 40,
           "sample_id": 3111,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 3118,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3072,
           "is_correct": true
         }
       }
@@ -827,29 +1337,49 @@
     "gpqa-49": {
       "problem_id": "gpqa-49",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 64,
-          "sample_id": 3199,
+        "linear-probe": {
+          "run_index": 15,
+          "sample_id": 3150,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 28,
-          "sample_id": 3163,
-          "is_correct": false
+        "logistic": {
+          "run_index": 15,
+          "sample_id": 3150,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 57,
+          "sample_id": 3192,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3136,
+          "is_correct": true
         }
       }
     },
     "gpqa-50": {
       "problem_id": "gpqa-50",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 19,
+          "sample_id": 3218,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 19,
+          "sample_id": 3218,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 60,
           "sample_id": 3259,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 3259,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3200,
           "is_correct": true
         }
       }
@@ -857,14 +1387,24 @@
     "gpqa-51": {
       "problem_id": "gpqa-51",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 3265,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 3265,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 17,
           "sample_id": 3280,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 14,
-          "sample_id": 3277,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3264,
           "is_correct": true
         }
       }
@@ -872,44 +1412,74 @@
     "gpqa-52": {
       "problem_id": "gpqa-52",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 20,
-          "sample_id": 3347,
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 3329,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 3374,
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 3329,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 13,
+          "sample_id": 3340,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3328,
+          "is_correct": false
         }
       }
     },
     "gpqa-53": {
       "problem_id": "gpqa-53",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 37,
+          "sample_id": 3428,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 3428,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 15,
           "sample_id": 3406,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 3433,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3392,
+          "is_correct": true
         }
       }
     },
     "gpqa-54": {
       "problem_id": "gpqa-54",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 49,
-          "sample_id": 3504,
+        "linear-probe": {
+          "run_index": 35,
+          "sample_id": 3490,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 3475,
+        "logistic": {
+          "run_index": 12,
+          "sample_id": 3467,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 3466,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3456,
           "is_correct": true
         }
       }
@@ -917,14 +1487,24 @@
     "gpqa-55": {
       "problem_id": "gpqa-55",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 52,
-          "sample_id": 3571,
+        "linear-probe": {
+          "run_index": 44,
+          "sample_id": 3563,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 44,
+          "sample_id": 3563,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 3521,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3520,
           "is_correct": true
         }
       }
@@ -932,14 +1512,24 @@
     "gpqa-56": {
       "problem_id": "gpqa-56",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 46,
-          "sample_id": 3629,
+        "linear-probe": {
+          "run_index": 39,
+          "sample_id": 3622,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 12,
-          "sample_id": 3595,
+        "logistic": {
+          "run_index": 39,
+          "sample_id": 3622,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 33,
+          "sample_id": 3616,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3584,
           "is_correct": true
         }
       }
@@ -947,14 +1537,24 @@
     "gpqa-57": {
       "problem_id": "gpqa-57",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 9,
           "sample_id": 3656,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 9,
           "sample_id": 3656,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 9,
+          "sample_id": 3656,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3648,
           "is_correct": true
         }
       }
@@ -962,14 +1562,24 @@
     "gpqa-58": {
       "problem_id": "gpqa-58",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 62,
-          "sample_id": 3773,
+        "linear-probe": {
+          "run_index": 21,
+          "sample_id": 3732,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 46,
-          "sample_id": 3757,
+        "logistic": {
+          "run_index": 21,
+          "sample_id": 3732,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 3722,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3712,
           "is_correct": true
         }
       }
@@ -977,14 +1587,24 @@
     "gpqa-59": {
       "problem_id": "gpqa-59",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 57,
-          "sample_id": 3832,
+        "linear-probe": {
+          "run_index": 62,
+          "sample_id": 3837,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 3793,
+        "logistic": {
+          "run_index": 62,
+          "sample_id": 3837,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 32,
+          "sample_id": 3807,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3776,
           "is_correct": false
         }
       }
@@ -992,14 +1612,24 @@
     "gpqa-60": {
       "problem_id": "gpqa-60",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 43,
+          "sample_id": 3882,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 43,
+          "sample_id": 3882,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 11,
           "sample_id": 3850,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 11,
-          "sample_id": 3850,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3840,
           "is_correct": true
         }
       }
@@ -1007,14 +1637,24 @@
     "gpqa-61": {
       "problem_id": "gpqa-61",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 38,
-          "sample_id": 3941,
+        "linear-probe": {
+          "run_index": 45,
+          "sample_id": 3948,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 45,
+          "sample_id": 3948,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 9,
           "sample_id": 3912,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3904,
           "is_correct": true
         }
       }
@@ -1022,14 +1662,24 @@
     "gpqa-62": {
       "problem_id": "gpqa-62",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 34,
-          "sample_id": 4001,
+        "linear-probe": {
+          "run_index": 19,
+          "sample_id": 3986,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 19,
+          "sample_id": 3986,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 4,
           "sample_id": 3971,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 3968,
           "is_correct": true
         }
       }
@@ -1037,14 +1687,24 @@
     "gpqa-63": {
       "problem_id": "gpqa-63",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 48,
-          "sample_id": 4079,
-          "is_correct": false
+        "linear-probe": {
+          "run_index": 26,
+          "sample_id": 4057,
+          "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 4091,
+        "logistic": {
+          "run_index": 26,
+          "sample_id": 4057,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 7,
+          "sample_id": 4038,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4032,
           "is_correct": true
         }
       }
@@ -1052,14 +1712,24 @@
     "gpqa-64": {
       "problem_id": "gpqa-64",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 6,
+          "sample_id": 4101,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 6,
+          "sample_id": 4101,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 1,
           "sample_id": 4096,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 26,
-          "sample_id": 4121,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4096,
           "is_correct": false
         }
       }
@@ -1067,14 +1737,24 @@
     "gpqa-65": {
       "problem_id": "gpqa-65",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 31,
-          "sample_id": 4190,
+        "linear-probe": {
+          "run_index": 50,
+          "sample_id": 4209,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 31,
-          "sample_id": 4190,
+        "logistic": {
+          "run_index": 50,
+          "sample_id": 4209,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 17,
+          "sample_id": 4176,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4160,
           "is_correct": true
         }
       }
@@ -1082,14 +1762,24 @@
     "gpqa-66": {
       "problem_id": "gpqa-66",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 62,
-          "sample_id": 4285,
+        "linear-probe": {
+          "run_index": 11,
+          "sample_id": 4234,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 27,
-          "sample_id": 4250,
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 4234,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 13,
+          "sample_id": 4236,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4224,
           "is_correct": true
         }
       }
@@ -1097,14 +1787,24 @@
     "gpqa-67": {
       "problem_id": "gpqa-67",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 46,
-          "sample_id": 4333,
+        "linear-probe": {
+          "run_index": 37,
+          "sample_id": 4324,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 4305,
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 4324,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 34,
+          "sample_id": 4321,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4288,
           "is_correct": true
         }
       }
@@ -1112,14 +1812,24 @@
     "gpqa-68": {
       "problem_id": "gpqa-68",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 5,
-          "sample_id": 4356,
+        "linear-probe": {
+          "run_index": 47,
+          "sample_id": 4398,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 4356,
+        "logistic": {
+          "run_index": 47,
+          "sample_id": 4398,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 22,
+          "sample_id": 4373,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4352,
           "is_correct": true
         }
       }
@@ -1127,29 +1837,49 @@
     "gpqa-69": {
       "problem_id": "gpqa-69",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 23,
+          "sample_id": 4438,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 23,
+          "sample_id": 4438,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 9,
           "sample_id": 4424,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 7,
-          "sample_id": 4422,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4416,
+          "is_correct": false
         }
       }
     },
     "gpqa-70": {
       "problem_id": "gpqa-70",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 8,
+          "sample_id": 4487,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 4487,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 35,
           "sample_id": 4514,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 59,
-          "sample_id": 4538,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4480,
           "is_correct": true
         }
       }
@@ -1157,14 +1887,24 @@
     "gpqa-71": {
       "problem_id": "gpqa-71",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 48,
           "sample_id": 4591,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 48,
           "sample_id": 4591,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 8,
+          "sample_id": 4551,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4544,
           "is_correct": false
         }
       }
@@ -1172,29 +1912,49 @@
     "gpqa-72": {
       "problem_id": "gpqa-72",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 41,
-          "sample_id": 4648,
+        "linear-probe": {
+          "run_index": 38,
+          "sample_id": 4645,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 10,
-          "sample_id": 4617,
-          "is_correct": false
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 4645,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 54,
+          "sample_id": 4661,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4608,
+          "is_correct": true
         }
       }
     },
     "gpqa-73": {
       "problem_id": "gpqa-73",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 40,
           "sample_id": 4711,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 12,
-          "sample_id": 4683,
+        "logistic": {
+          "run_index": 40,
+          "sample_id": 4711,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 23,
+          "sample_id": 4694,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4672,
           "is_correct": true
         }
       }
@@ -1202,14 +1962,24 @@
     "gpqa-74": {
       "problem_id": "gpqa-74",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 49,
+          "sample_id": 4784,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 62,
+          "sample_id": 4797,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 28,
           "sample_id": 4763,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 58,
-          "sample_id": 4793,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4736,
           "is_correct": true
         }
       }
@@ -1217,14 +1987,24 @@
     "gpqa-75": {
       "problem_id": "gpqa-75",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 33,
-          "sample_id": 4832,
+        "linear-probe": {
+          "run_index": 15,
+          "sample_id": 4814,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 5,
+          "sample_id": 4804,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 33,
-          "sample_id": 4832,
+        "isotonic-medoid": {
+          "run_index": 19,
+          "sample_id": 4818,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4800,
           "is_correct": true
         }
       }
@@ -1232,14 +2012,24 @@
     "gpqa-76": {
       "problem_id": "gpqa-76",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 11,
           "sample_id": 4874,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 4874,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 7,
           "sample_id": 4870,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4864,
           "is_correct": false
         }
       }
@@ -1247,14 +2037,24 @@
     "gpqa-77": {
       "problem_id": "gpqa-77",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 48,
-          "sample_id": 4975,
+        "linear-probe": {
+          "run_index": 62,
+          "sample_id": 4989,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 48,
-          "sample_id": 4975,
+        "logistic": {
+          "run_index": 62,
+          "sample_id": 4989,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 32,
+          "sample_id": 4959,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4928,
           "is_correct": true
         }
       }
@@ -1262,14 +2062,24 @@
     "gpqa-78": {
       "problem_id": "gpqa-78",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 36,
+          "sample_id": 5027,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 36,
+          "sample_id": 5027,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 38,
           "sample_id": 5029,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 4996,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 4992,
           "is_correct": false
         }
       }
@@ -1277,14 +2087,24 @@
     "gpqa-79": {
       "problem_id": "gpqa-79",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 34,
-          "sample_id": 5089,
+        "linear-probe": {
+          "run_index": 42,
+          "sample_id": 5097,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 38,
-          "sample_id": 5093,
+        "logistic": {
+          "run_index": 42,
+          "sample_id": 5097,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 24,
+          "sample_id": 5079,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5056,
           "is_correct": false
         }
       }
@@ -1292,14 +2112,24 @@
     "gpqa-80": {
       "problem_id": "gpqa-80",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 43,
           "sample_id": 5162,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 50,
-          "sample_id": 5169,
+        "logistic": {
+          "run_index": 43,
+          "sample_id": 5162,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 43,
+          "sample_id": 5162,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5120,
           "is_correct": false
         }
       }
@@ -1307,29 +2137,49 @@
     "gpqa-81": {
       "problem_id": "gpqa-81",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 60,
-          "sample_id": 5243,
+        "linear-probe": {
+          "run_index": 8,
+          "sample_id": 5191,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 37,
-          "sample_id": 5220,
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 5191,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 8,
+          "sample_id": 5191,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5184,
+          "is_correct": false
         }
       }
     },
     "gpqa-82": {
       "problem_id": "gpqa-82",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 2,
-          "sample_id": 5249,
+        "linear-probe": {
+          "run_index": 46,
+          "sample_id": 5293,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 4,
-          "sample_id": 5251,
+        "logistic": {
+          "run_index": 46,
+          "sample_id": 5293,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 13,
+          "sample_id": 5260,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5248,
           "is_correct": true
         }
       }
@@ -1337,14 +2187,24 @@
     "gpqa-83": {
       "problem_id": "gpqa-83",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 43,
-          "sample_id": 5354,
-          "is_correct": true
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 33,
           "sample_id": 5344,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 59,
+          "sample_id": 5370,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 7,
+          "sample_id": 5318,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5312,
           "is_correct": true
         }
       }
@@ -1352,29 +2212,49 @@
     "gpqa-84": {
       "problem_id": "gpqa-84",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 31,
-          "sample_id": 5406,
+        "linear-probe": {
+          "run_index": 8,
+          "sample_id": 5383,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 5383,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 36,
+          "sample_id": 5411,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 38,
-          "sample_id": 5413,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5376,
+          "is_correct": true
         }
       }
     },
     "gpqa-85": {
       "problem_id": "gpqa-85",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 15,
-          "sample_id": 5454,
+        "linear-probe": {
+          "run_index": 50,
+          "sample_id": 5489,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 29,
-          "sample_id": 5468,
+        "logistic": {
+          "run_index": 50,
+          "sample_id": 5489,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 12,
+          "sample_id": 5451,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5440,
           "is_correct": false
         }
       }
@@ -1382,14 +2262,24 @@
     "gpqa-86": {
       "problem_id": "gpqa-86",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 7,
-          "sample_id": 5510,
+        "linear-probe": {
+          "run_index": 47,
+          "sample_id": 5550,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 7,
-          "sample_id": 5510,
+        "logistic": {
+          "run_index": 47,
+          "sample_id": 5550,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 43,
+          "sample_id": 5546,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5504,
           "is_correct": true
         }
       }
@@ -1397,14 +2287,24 @@
     "gpqa-87": {
       "problem_id": "gpqa-87",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 31,
           "sample_id": 5598,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 31,
           "sample_id": 5598,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 31,
+          "sample_id": 5598,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5568,
           "is_correct": true
         }
       }
@@ -1412,29 +2312,49 @@
     "gpqa-88": {
       "problem_id": "gpqa-88",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 11,
+          "sample_id": 5642,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 5642,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 10,
           "sample_id": 5641,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 59,
-          "sample_id": 5690,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5632,
+          "is_correct": false
         }
       }
     },
     "gpqa-89": {
       "problem_id": "gpqa-89",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 42,
-          "sample_id": 5737,
-          "is_correct": true
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 61,
           "sample_id": 5756,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 7,
+          "sample_id": 5702,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 7,
+          "sample_id": 5702,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5696,
           "is_correct": false
         }
       }
@@ -1442,14 +2362,24 @@
     "gpqa-90": {
       "problem_id": "gpqa-90",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 51,
-          "sample_id": 5810,
+        "linear-probe": {
+          "run_index": 27,
+          "sample_id": 5786,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 57,
-          "sample_id": 5816,
+        "logistic": {
+          "run_index": 27,
+          "sample_id": 5786,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 38,
+          "sample_id": 5797,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5760,
           "is_correct": false
         }
       }
@@ -1457,14 +2387,24 @@
     "gpqa-91": {
       "problem_id": "gpqa-91",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 21,
-          "sample_id": 5844,
-          "is_correct": false
+        "linear-probe": {
+          "run_index": 50,
+          "sample_id": 5873,
+          "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 5883,
+        "logistic": {
+          "run_index": 50,
+          "sample_id": 5873,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 18,
+          "sample_id": 5841,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5824,
           "is_correct": true
         }
       }
@@ -1472,14 +2412,24 @@
     "gpqa-92": {
       "problem_id": "gpqa-92",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 10,
           "sample_id": 5897,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 51,
-          "sample_id": 5938,
+        "logistic": {
+          "run_index": 10,
+          "sample_id": 5897,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 10,
+          "sample_id": 5897,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5888,
           "is_correct": true
         }
       }
@@ -1487,14 +2437,24 @@
     "gpqa-93": {
       "problem_id": "gpqa-93",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 19,
           "sample_id": 5970,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 33,
-          "sample_id": 5984,
+        "logistic": {
+          "run_index": 19,
+          "sample_id": 5970,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 19,
+          "sample_id": 5970,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 5952,
           "is_correct": false
         }
       }
@@ -1502,27 +2462,47 @@
     "gpqa-94": {
       "problem_id": "gpqa-94",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 50,
-          "sample_id": 6065,
-          "is_correct": false
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 37,
           "sample_id": 6052,
           "is_correct": true
+        },
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 6052,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 10,
+          "sample_id": 6025,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6016,
+          "is_correct": false
         }
       }
     },
     "gpqa-95": {
       "problem_id": "gpqa-95",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 30,
+          "sample_id": 6109,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 30,
+          "sample_id": 6109,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 27,
           "sample_id": 6106,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "isotonic-deepconf": {
           "run_index": 1,
           "sample_id": 6080,
           "is_correct": true
@@ -1532,14 +2512,24 @@
     "gpqa-96": {
       "problem_id": "gpqa-96",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 35,
-          "sample_id": 6178,
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 6145,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 35,
-          "sample_id": 6178,
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 6145,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 6145,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6144,
           "is_correct": true
         }
       }
@@ -1547,14 +2537,24 @@
     "gpqa-97": {
       "problem_id": "gpqa-97",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 15,
-          "sample_id": 6222,
+        "linear-probe": {
+          "run_index": 48,
+          "sample_id": 6255,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 6225,
+        "logistic": {
+          "run_index": 48,
+          "sample_id": 6255,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 6,
+          "sample_id": 6213,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6208,
           "is_correct": false
         }
       }
@@ -1562,14 +2562,24 @@
     "gpqa-98": {
       "problem_id": "gpqa-98",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 2,
-          "sample_id": 6273,
+        "linear-probe": {
+          "run_index": 37,
+          "sample_id": 6308,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 50,
-          "sample_id": 6321,
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 6308,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 34,
+          "sample_id": 6305,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6272,
           "is_correct": false
         }
       }
@@ -1577,27 +2587,47 @@
     "gpqa-99": {
       "problem_id": "gpqa-99",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 52,
-          "sample_id": 6387,
+        "linear-probe": {
+          "run_index": 39,
+          "sample_id": 6374,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 39,
+          "sample_id": 6374,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 47,
+          "sample_id": 6382,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 6377,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6336,
+          "is_correct": false
         }
       }
     },
     "gpqa-100": {
       "problem_id": "gpqa-100",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 52,
-          "sample_id": 6451,
+        "linear-probe": {
+          "run_index": 54,
+          "sample_id": 6453,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 56,
+          "sample_id": 6455,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 6401,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
           "run_index": 1,
           "sample_id": 6400,
           "is_correct": true
@@ -1607,14 +2637,24 @@
     "gpqa-101": {
       "problem_id": "gpqa-101",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 37,
+          "sample_id": 6500,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 37,
+          "sample_id": 6500,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 6465,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 6465,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6464,
           "is_correct": true
         }
       }
@@ -1622,14 +2662,24 @@
     "gpqa-102": {
       "problem_id": "gpqa-102",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 47,
-          "sample_id": 6574,
+        "linear-probe": {
+          "run_index": 9,
+          "sample_id": 6536,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 6574,
+        "logistic": {
+          "run_index": 9,
+          "sample_id": 6536,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 23,
+          "sample_id": 6550,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6528,
           "is_correct": false
         }
       }
@@ -1637,14 +2687,24 @@
     "gpqa-103": {
       "problem_id": "gpqa-103",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 26,
-          "sample_id": 6617,
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 6593,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 51,
-          "sample_id": 6642,
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 6593,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 6593,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6592,
           "is_correct": true
         }
       }
@@ -1652,14 +2712,24 @@
     "gpqa-104": {
       "problem_id": "gpqa-104",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 60,
+          "sample_id": 6715,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 60,
+          "sample_id": 6715,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 23,
           "sample_id": 6678,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 10,
-          "sample_id": 6665,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6656,
           "is_correct": true
         }
       }
@@ -1667,14 +2737,24 @@
     "gpqa-105": {
       "problem_id": "gpqa-105",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 40,
+          "sample_id": 6759,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 39,
+          "sample_id": 6758,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 21,
           "sample_id": 6740,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 6761,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6720,
           "is_correct": false
         }
       }
@@ -1682,14 +2762,24 @@
     "gpqa-106": {
       "problem_id": "gpqa-106",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 1,
           "sample_id": 6784,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 51,
-          "sample_id": 6834,
+        "logistic": {
+          "run_index": 1,
+          "sample_id": 6784,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 1,
+          "sample_id": 6784,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6784,
           "is_correct": false
         }
       }
@@ -1697,14 +2787,24 @@
     "gpqa-107": {
       "problem_id": "gpqa-107",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 62,
-          "sample_id": 6909,
-          "is_correct": true
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 48,
           "sample_id": 6895,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 48,
+          "sample_id": 6895,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 47,
+          "sample_id": 6894,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6848,
           "is_correct": true
         }
       }
@@ -1712,27 +2812,47 @@
     "gpqa-108": {
       "problem_id": "gpqa-108",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 23,
-          "sample_id": 6934,
+        "linear-probe": {
+          "run_index": 25,
+          "sample_id": 6936,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 6913,
+        "logistic": {
+          "run_index": 25,
+          "sample_id": 6936,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 10,
+          "sample_id": 6921,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 6912,
+          "is_correct": false
         }
       }
     },
     "gpqa-109": {
       "problem_id": "gpqa-109",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 1,
+          "sample_id": 6976,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 1,
+          "sample_id": 6976,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 14,
           "sample_id": 6989,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "isotonic-deepconf": {
           "run_index": 1,
           "sample_id": 6976,
           "is_correct": true
@@ -1742,14 +2862,24 @@
     "gpqa-110": {
       "problem_id": "gpqa-110",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 35,
           "sample_id": 7074,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 55,
-          "sample_id": 7094,
+        "logistic": {
+          "run_index": 35,
+          "sample_id": 7074,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 21,
+          "sample_id": 7060,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7040,
           "is_correct": false
         }
       }
@@ -1757,14 +2887,24 @@
     "gpqa-111": {
       "problem_id": "gpqa-111",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 25,
+          "sample_id": 7128,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 25,
+          "sample_id": 7128,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 24,
           "sample_id": 7127,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 41,
-          "sample_id": 7144,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7104,
           "is_correct": true
         }
       }
@@ -1772,14 +2912,24 @@
     "gpqa-112": {
       "problem_id": "gpqa-112",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 30,
           "sample_id": 7197,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 30,
+          "sample_id": 7197,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 25,
           "sample_id": 7192,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7168,
           "is_correct": true
         }
       }
@@ -1787,14 +2937,24 @@
     "gpqa-113": {
       "problem_id": "gpqa-113",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 15,
-          "sample_id": 7246,
-          "is_correct": false
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 19,
           "sample_id": 7250,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 19,
+          "sample_id": 7250,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 35,
+          "sample_id": 7266,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7232,
           "is_correct": false
         }
       }
@@ -1802,14 +2962,24 @@
     "gpqa-114": {
       "problem_id": "gpqa-114",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 4,
           "sample_id": 7299,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 7299,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 5,
           "sample_id": 7300,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7296,
           "is_correct": true
         }
       }
@@ -1817,29 +2987,49 @@
     "gpqa-115": {
       "problem_id": "gpqa-115",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 32,
+          "sample_id": 7391,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 32,
+          "sample_id": 7391,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 5,
           "sample_id": 7364,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 7364,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7360,
+          "is_correct": false
         }
       }
     },
     "gpqa-116": {
       "problem_id": "gpqa-116",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 54,
           "sample_id": 7477,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 15,
-          "sample_id": 7438,
+        "logistic": {
+          "run_index": 54,
+          "sample_id": 7477,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 54,
+          "sample_id": 7477,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7424,
           "is_correct": true
         }
       }
@@ -1847,14 +3037,24 @@
     "gpqa-117": {
       "problem_id": "gpqa-117",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 18,
           "sample_id": 7505,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 18,
           "sample_id": 7505,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 18,
+          "sample_id": 7505,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7488,
           "is_correct": true
         }
       }
@@ -1862,74 +3062,124 @@
     "gpqa-118": {
       "problem_id": "gpqa-118",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 3,
           "sample_id": 7554,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 7593,
+        "logistic": {
+          "run_index": 3,
+          "sample_id": 7554,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 3,
+          "sample_id": 7554,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7552,
+          "is_correct": false
         }
       }
     },
     "gpqa-119": {
       "problem_id": "gpqa-119",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 55,
+          "sample_id": 7670,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 55,
+          "sample_id": 7670,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 11,
           "sample_id": 7626,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 3,
-          "sample_id": 7618,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7616,
+          "is_correct": true
         }
       }
     },
     "gpqa-120": {
       "problem_id": "gpqa-120",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 7,
-          "sample_id": 7686,
+        "linear-probe": {
+          "run_index": 52,
+          "sample_id": 7731,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 7697,
+        "logistic": {
+          "run_index": 52,
+          "sample_id": 7731,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 44,
+          "sample_id": 7723,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7680,
+          "is_correct": false
         }
       }
     },
     "gpqa-121": {
       "problem_id": "gpqa-121",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 42,
-          "sample_id": 7785,
+        "linear-probe": {
+          "run_index": 62,
+          "sample_id": 7805,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 62,
+          "sample_id": 7805,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 38,
           "sample_id": 7781,
           "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7744,
+          "is_correct": true
         }
       }
     },
     "gpqa-122": {
       "problem_id": "gpqa-122",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 57,
+          "sample_id": 7864,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 7864,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 9,
           "sample_id": 7816,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 56,
-          "sample_id": 7863,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7808,
           "is_correct": true
         }
       }
@@ -1937,14 +3187,24 @@
     "gpqa-123": {
       "problem_id": "gpqa-123",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 35,
-          "sample_id": 7906,
+        "linear-probe": {
+          "run_index": 25,
+          "sample_id": 7896,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 14,
-          "sample_id": 7885,
+        "logistic": {
+          "run_index": 25,
+          "sample_id": 7896,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 25,
+          "sample_id": 7896,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7872,
           "is_correct": true
         }
       }
@@ -1952,14 +3212,24 @@
     "gpqa-124": {
       "problem_id": "gpqa-124",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 54,
-          "sample_id": 7989,
+        "linear-probe": {
+          "run_index": 7,
+          "sample_id": 7942,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 34,
-          "sample_id": 7969,
+        "logistic": {
+          "run_index": 7,
+          "sample_id": 7942,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 7962,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 7936,
           "is_correct": true
         }
       }
@@ -1967,14 +3237,24 @@
     "gpqa-125": {
       "problem_id": "gpqa-125",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 62,
+          "sample_id": 8061,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 62,
+          "sample_id": 8061,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 36,
           "sample_id": 8035,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 51,
-          "sample_id": 8050,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8000,
           "is_correct": false
         }
       }
@@ -1982,29 +3262,49 @@
     "gpqa-126": {
       "problem_id": "gpqa-126",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 53,
-          "sample_id": 8116,
+        "linear-probe": {
+          "run_index": 36,
+          "sample_id": 8099,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 8123,
-          "is_correct": true
+        "logistic": {
+          "run_index": 36,
+          "sample_id": 8099,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 44,
+          "sample_id": 8107,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8064,
+          "is_correct": false
         }
       }
     },
     "gpqa-127": {
       "problem_id": "gpqa-127",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 25,
-          "sample_id": 8152,
+        "linear-probe": {
+          "run_index": 38,
+          "sample_id": 8165,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 8165,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 21,
+          "sample_id": 8148,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 25,
-          "sample_id": 8152,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8128,
           "is_correct": true
         }
       }
@@ -2012,14 +3312,24 @@
     "gpqa-128": {
       "problem_id": "gpqa-128",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 42,
-          "sample_id": 8233,
+        "linear-probe": {
+          "run_index": 55,
+          "sample_id": 8246,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 8209,
+        "logistic": {
+          "run_index": 55,
+          "sample_id": 8246,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 16,
+          "sample_id": 8207,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8192,
           "is_correct": false
         }
       }
@@ -2027,14 +3337,24 @@
     "gpqa-129": {
       "problem_id": "gpqa-129",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 26,
-          "sample_id": 8281,
-          "is_correct": true
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 7,
           "sample_id": 8262,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 7,
+          "sample_id": 8262,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 7,
+          "sample_id": 8262,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8256,
           "is_correct": true
         }
       }
@@ -2042,14 +3362,24 @@
     "gpqa-130": {
       "problem_id": "gpqa-130",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 42,
-          "sample_id": 8361,
+        "linear-probe": {
+          "run_index": 57,
+          "sample_id": 8376,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 8361,
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 8376,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 8321,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8320,
           "is_correct": false
         }
       }
@@ -2057,14 +3387,24 @@
     "gpqa-131": {
       "problem_id": "gpqa-131",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 47,
-          "sample_id": 8430,
+        "linear-probe": {
+          "run_index": 13,
+          "sample_id": 8396,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 31,
-          "sample_id": 8414,
+        "logistic": {
+          "run_index": 13,
+          "sample_id": 8396,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 12,
+          "sample_id": 8395,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8384,
           "is_correct": false
         }
       }
@@ -2072,14 +3412,24 @@
     "gpqa-132": {
       "problem_id": "gpqa-132",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 53,
-          "sample_id": 8500,
+        "linear-probe": {
+          "run_index": 33,
+          "sample_id": 8480,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 8452,
+        "logistic": {
+          "run_index": 33,
+          "sample_id": 8480,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 33,
+          "sample_id": 8480,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8448,
           "is_correct": true
         }
       }
@@ -2087,14 +3437,24 @@
     "gpqa-133": {
       "problem_id": "gpqa-133",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 21,
-          "sample_id": 8532,
+        "linear-probe": {
+          "run_index": 18,
+          "sample_id": 8529,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 8513,
+        "logistic": {
+          "run_index": 18,
+          "sample_id": 8529,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 16,
+          "sample_id": 8527,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8512,
           "is_correct": true
         }
       }
@@ -2102,14 +3462,24 @@
     "gpqa-134": {
       "problem_id": "gpqa-134",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 57,
+          "sample_id": 8632,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 8632,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 9,
           "sample_id": 8584,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 37,
-          "sample_id": 8612,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8576,
           "is_correct": true
         }
       }
@@ -2117,14 +3487,24 @@
     "gpqa-135": {
       "problem_id": "gpqa-135",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 61,
-          "sample_id": 8700,
+        "linear-probe": {
+          "run_index": 15,
+          "sample_id": 8654,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 8700,
+        "logistic": {
+          "run_index": 15,
+          "sample_id": 8654,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 31,
+          "sample_id": 8670,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8640,
           "is_correct": true
         }
       }
@@ -2132,14 +3512,24 @@
     "gpqa-136": {
       "problem_id": "gpqa-136",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 53,
           "sample_id": 8756,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 8735,
+        "logistic": {
+          "run_index": 53,
+          "sample_id": 8756,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 44,
+          "sample_id": 8747,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8704,
           "is_correct": false
         }
       }
@@ -2147,14 +3537,24 @@
     "gpqa-137": {
       "problem_id": "gpqa-137",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 34,
           "sample_id": 8801,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 34,
           "sample_id": 8801,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 62,
+          "sample_id": 8829,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8768,
           "is_correct": true
         }
       }
@@ -2162,14 +3562,24 @@
     "gpqa-138": {
       "problem_id": "gpqa-138",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 11,
-          "sample_id": 8842,
-          "is_correct": false
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 47,
           "sample_id": 8878,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 47,
+          "sample_id": 8878,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 8833,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8832,
           "is_correct": false
         }
       }
@@ -2177,29 +3587,49 @@
     "gpqa-139": {
       "problem_id": "gpqa-139",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 26,
+          "sample_id": 8921,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 26,
+          "sample_id": 8921,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 14,
           "sample_id": 8909,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 17,
-          "sample_id": 8912,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8896,
+          "is_correct": true
         }
       }
     },
     "gpqa-140": {
       "problem_id": "gpqa-140",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 9,
+          "sample_id": 8968,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 9,
+          "sample_id": 8968,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 13,
           "sample_id": 8972,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 41,
-          "sample_id": 9000,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 8960,
           "is_correct": false
         }
       }
@@ -2207,14 +3637,24 @@
     "gpqa-141": {
       "problem_id": "gpqa-141",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 40,
+          "sample_id": 9063,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 64,
+          "sample_id": 9087,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 59,
           "sample_id": 9082,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 9070,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9024,
           "is_correct": true
         }
       }
@@ -2222,14 +3662,24 @@
     "gpqa-142": {
       "problem_id": "gpqa-142",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 28,
-          "sample_id": 9115,
+        "linear-probe": {
+          "run_index": 30,
+          "sample_id": 9117,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 55,
-          "sample_id": 9142,
+        "logistic": {
+          "run_index": 30,
+          "sample_id": 9117,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 14,
+          "sample_id": 9101,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9088,
           "is_correct": false
         }
       }
@@ -2237,14 +3687,24 @@
     "gpqa-143": {
       "problem_id": "gpqa-143",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 4,
+          "sample_id": 9155,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 9155,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 55,
           "sample_id": 9206,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 55,
-          "sample_id": 9206,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9152,
           "is_correct": true
         }
       }
@@ -2252,14 +3712,24 @@
     "gpqa-144": {
       "problem_id": "gpqa-144",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 54,
+          "sample_id": 9269,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 54,
+          "sample_id": 9269,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 21,
           "sample_id": 9236,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 40,
-          "sample_id": 9255,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9216,
           "is_correct": false
         }
       }
@@ -2267,29 +3737,49 @@
     "gpqa-145": {
       "problem_id": "gpqa-145",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 12,
-          "sample_id": 9291,
+        "linear-probe": {
+          "run_index": 29,
+          "sample_id": 9308,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 43,
+          "sample_id": 9322,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 9281,
           "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9280,
+          "is_correct": false
         }
       }
     },
     "gpqa-146": {
       "problem_id": "gpqa-146",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 41,
+          "sample_id": 9384,
+          "is_correct": true
+        },
+        "logistic": {
           "run_index": 7,
           "sample_id": 9350,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 42,
-          "sample_id": 9385,
+        "isotonic-medoid": {
+          "run_index": 7,
+          "sample_id": 9350,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9344,
           "is_correct": true
         }
       }
@@ -2297,14 +3787,24 @@
     "gpqa-147": {
       "problem_id": "gpqa-147",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 54,
           "sample_id": 9461,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 33,
-          "sample_id": 9440,
+        "logistic": {
+          "run_index": 54,
+          "sample_id": 9461,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 4,
+          "sample_id": 9411,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9408,
           "is_correct": false
         }
       }
@@ -2312,14 +3812,24 @@
     "gpqa-148": {
       "problem_id": "gpqa-148",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 18,
-          "sample_id": 9489,
+        "linear-probe": {
+          "run_index": 15,
+          "sample_id": 9486,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 15,
+          "sample_id": 9486,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 5,
           "sample_id": 9476,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9472,
           "is_correct": true
         }
       }
@@ -2327,29 +3837,49 @@
     "gpqa-149": {
       "problem_id": "gpqa-149",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 27,
+          "sample_id": 9562,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 27,
+          "sample_id": 9562,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 16,
           "sample_id": 9551,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 16,
-          "sample_id": 9551,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9536,
+          "is_correct": false
         }
       }
     },
     "gpqa-150": {
       "problem_id": "gpqa-150",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 53,
-          "sample_id": 9652,
+        "linear-probe": {
+          "run_index": 63,
+          "sample_id": 9662,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 63,
+          "sample_id": 9662,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 37,
           "sample_id": 9636,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9600,
           "is_correct": true
         }
       }
@@ -2357,14 +3887,24 @@
     "gpqa-151": {
       "problem_id": "gpqa-151",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 42,
           "sample_id": 9705,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 42,
           "sample_id": 9705,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 4,
+          "sample_id": 9667,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9664,
           "is_correct": true
         }
       }
@@ -2372,29 +3912,49 @@
     "gpqa-152": {
       "problem_id": "gpqa-152",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 10,
-          "sample_id": 9737,
-          "is_correct": false
-        },
-        "twostage-tournament": {
-          "run_index": 62,
-          "sample_id": 9789,
+        "linear-probe": {
+          "run_index": 58,
+          "sample_id": 9785,
           "is_correct": true
+        },
+        "logistic": {
+          "run_index": 30,
+          "sample_id": 9757,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 31,
+          "sample_id": 9758,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9728,
+          "is_correct": false
         }
       }
     },
     "gpqa-153": {
       "problem_id": "gpqa-153",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 63,
+          "sample_id": 9854,
+          "is_correct": true
+        },
+        "logistic": {
           "run_index": 26,
           "sample_id": 9817,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 14,
-          "sample_id": 9805,
+        "isotonic-medoid": {
+          "run_index": 26,
+          "sample_id": 9817,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9792,
           "is_correct": true
         }
       }
@@ -2402,14 +3962,24 @@
     "gpqa-154": {
       "problem_id": "gpqa-154",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 45,
           "sample_id": 9900,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 45,
+          "sample_id": 9900,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 13,
           "sample_id": 9868,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9856,
           "is_correct": true
         }
       }
@@ -2417,14 +3987,24 @@
     "gpqa-155": {
       "problem_id": "gpqa-155",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 61,
-          "sample_id": 9980,
+        "linear-probe": {
+          "run_index": 18,
+          "sample_id": 9937,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 9980,
+        "logistic": {
+          "run_index": 18,
+          "sample_id": 9937,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 18,
+          "sample_id": 9937,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9920,
           "is_correct": true
         }
       }
@@ -2432,14 +4012,24 @@
     "gpqa-156": {
       "problem_id": "gpqa-156",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 11,
           "sample_id": 9994,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 4,
-          "sample_id": 9987,
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 9994,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 9994,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 9984,
           "is_correct": true
         }
       }
@@ -2447,14 +4037,24 @@
     "gpqa-157": {
       "problem_id": "gpqa-157",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 26,
           "sample_id": 10073,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 10107,
+        "logistic": {
+          "run_index": 26,
+          "sample_id": 10073,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 26,
+          "sample_id": 10073,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10048,
           "is_correct": true
         }
       }
@@ -2462,14 +4062,24 @@
     "gpqa-158": {
       "problem_id": "gpqa-158",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 58,
           "sample_id": 10169,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 10172,
+        "logistic": {
+          "run_index": 58,
+          "sample_id": 10169,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 35,
+          "sample_id": 10146,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10112,
           "is_correct": true
         }
       }
@@ -2477,14 +4087,24 @@
     "gpqa-159": {
       "problem_id": "gpqa-159",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 8,
           "sample_id": 10183,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 34,
-          "sample_id": 10209,
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 10183,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 8,
+          "sample_id": 10183,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10176,
           "is_correct": false
         }
       }
@@ -2492,29 +4112,49 @@
     "gpqa-160": {
       "problem_id": "gpqa-160",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 16,
-          "sample_id": 10255,
-          "is_correct": false
+        "linear-probe": {
+          "run_index": 56,
+          "sample_id": 10295,
+          "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 16,
-          "sample_id": 10255,
-          "is_correct": false
+        "logistic": {
+          "run_index": 56,
+          "sample_id": 10295,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 10241,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10240,
+          "is_correct": true
         }
       }
     },
     "gpqa-161": {
       "problem_id": "gpqa-161",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 39,
-          "sample_id": 10342,
+        "linear-probe": {
+          "run_index": 36,
+          "sample_id": 10339,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 10335,
+        "logistic": {
+          "run_index": 36,
+          "sample_id": 10339,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 34,
+          "sample_id": 10337,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10304,
           "is_correct": true
         }
       }
@@ -2522,14 +4162,24 @@
     "gpqa-162": {
       "problem_id": "gpqa-162",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 43,
           "sample_id": 10410,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 10385,
+        "logistic": {
+          "run_index": 10,
+          "sample_id": 10377,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 43,
+          "sample_id": 10410,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10368,
           "is_correct": false
         }
       }
@@ -2537,29 +4187,49 @@
     "gpqa-163": {
       "problem_id": "gpqa-163",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 42,
+          "sample_id": 10473,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 42,
+          "sample_id": 10473,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 7,
           "sample_id": 10438,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 7,
-          "sample_id": 10438,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10432,
+          "is_correct": true
         }
       }
     },
     "gpqa-164": {
       "problem_id": "gpqa-164",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 43,
           "sample_id": 10538,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 22,
-          "sample_id": 10517,
+        "logistic": {
+          "run_index": 43,
+          "sample_id": 10538,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 14,
+          "sample_id": 10509,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10496,
           "is_correct": false
         }
       }
@@ -2567,29 +4237,49 @@
     "gpqa-165": {
       "problem_id": "gpqa-165",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 20,
-          "sample_id": 10579,
+        "linear-probe": {
+          "run_index": 53,
+          "sample_id": 10612,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 10579,
+        "logistic": {
+          "run_index": 53,
+          "sample_id": 10612,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 12,
+          "sample_id": 10571,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10560,
+          "is_correct": false
         }
       }
     },
     "gpqa-166": {
       "problem_id": "gpqa-166",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 34,
-          "sample_id": 10657,
+        "linear-probe": {
+          "run_index": 61,
+          "sample_id": 10684,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 34,
-          "sample_id": 10657,
+        "logistic": {
+          "run_index": 61,
+          "sample_id": 10684,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 24,
+          "sample_id": 10647,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10624,
           "is_correct": false
         }
       }
@@ -2597,14 +4287,24 @@
     "gpqa-167": {
       "problem_id": "gpqa-167",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 60,
           "sample_id": 10747,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 60,
           "sample_id": 10747,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 28,
+          "sample_id": 10715,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10688,
           "is_correct": false
         }
       }
@@ -2612,14 +4312,24 @@
     "gpqa-168": {
       "problem_id": "gpqa-168",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 20,
-          "sample_id": 10771,
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 10753,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 57,
-          "sample_id": 10808,
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 10753,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 10753,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10752,
           "is_correct": true
         }
       }
@@ -2627,12 +4337,22 @@
     "gpqa-169": {
       "problem_id": "gpqa-169",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 10,
+          "sample_id": 10825,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 10,
+          "sample_id": 10825,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 7,
           "sample_id": 10822,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "isotonic-deepconf": {
           "run_index": 1,
           "sample_id": 10816,
           "is_correct": true
@@ -2642,29 +4362,49 @@
     "gpqa-170": {
       "problem_id": "gpqa-170",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 36,
-          "sample_id": 10915,
+        "linear-probe": {
+          "run_index": 38,
+          "sample_id": 10917,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 10917,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 33,
+          "sample_id": 10912,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 48,
-          "sample_id": 10927,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10880,
+          "is_correct": true
         }
       }
     },
     "gpqa-171": {
       "problem_id": "gpqa-171",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 30,
-          "sample_id": 10973,
+        "linear-probe": {
+          "run_index": 57,
+          "sample_id": 11000,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 30,
-          "sample_id": 10973,
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 11000,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 12,
+          "sample_id": 10955,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 10944,
           "is_correct": true
         }
       }
@@ -2672,14 +4412,24 @@
     "gpqa-172": {
       "problem_id": "gpqa-172",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 38,
           "sample_id": 11045,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 38,
           "sample_id": 11045,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 38,
+          "sample_id": 11045,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11008,
           "is_correct": true
         }
       }
@@ -2687,14 +4437,24 @@
     "gpqa-173": {
       "problem_id": "gpqa-173",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 58,
-          "sample_id": 11129,
+        "linear-probe": {
+          "run_index": 47,
+          "sample_id": 11118,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 11132,
+        "logistic": {
+          "run_index": 47,
+          "sample_id": 11118,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 16,
+          "sample_id": 11087,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11072,
           "is_correct": true
         }
       }
@@ -2702,14 +4462,24 @@
     "gpqa-174": {
       "problem_id": "gpqa-174",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 60,
           "sample_id": 11195,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 60,
           "sample_id": 11195,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 23,
+          "sample_id": 11158,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11136,
           "is_correct": false
         }
       }
@@ -2717,14 +4487,24 @@
     "gpqa-175": {
       "problem_id": "gpqa-175",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 18,
+          "sample_id": 11217,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 18,
+          "sample_id": 11217,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 46,
           "sample_id": 11245,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 62,
-          "sample_id": 11261,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11200,
           "is_correct": true
         }
       }
@@ -2732,14 +4512,24 @@
     "gpqa-176": {
       "problem_id": "gpqa-176",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 14,
+          "sample_id": 11277,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 14,
+          "sample_id": 11277,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 52,
           "sample_id": 11315,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 41,
-          "sample_id": 11304,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11264,
           "is_correct": true
         }
       }
@@ -2747,14 +4537,24 @@
     "gpqa-177": {
       "problem_id": "gpqa-177",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 31,
-          "sample_id": 11358,
+        "linear-probe": {
+          "run_index": 40,
+          "sample_id": 11367,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 31,
-          "sample_id": 11358,
+        "logistic": {
+          "run_index": 25,
+          "sample_id": 11352,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 25,
+          "sample_id": 11352,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11328,
           "is_correct": true
         }
       }
@@ -2762,14 +4562,24 @@
     "gpqa-178": {
       "problem_id": "gpqa-178",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 47,
-          "sample_id": 11438,
+        "linear-probe": {
+          "run_index": 50,
+          "sample_id": 11441,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 11438,
+        "logistic": {
+          "run_index": 50,
+          "sample_id": 11441,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 18,
+          "sample_id": 11409,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11392,
           "is_correct": true
         }
       }
@@ -2777,29 +4587,49 @@
     "gpqa-179": {
       "problem_id": "gpqa-179",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 8,
           "sample_id": 11463,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 11463,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 11457,
           "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11456,
+          "is_correct": false
         }
       }
     },
     "gpqa-180": {
       "problem_id": "gpqa-180",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 21,
+          "sample_id": 11540,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 21,
+          "sample_id": 11540,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 4,
           "sample_id": 11523,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 4,
-          "sample_id": 11523,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11520,
           "is_correct": false
         }
       }
@@ -2807,29 +4637,49 @@
     "gpqa-181": {
       "problem_id": "gpqa-181",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 53,
           "sample_id": 11636,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 14,
-          "sample_id": 11597,
+        "logistic": {
+          "run_index": 53,
+          "sample_id": 11636,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 11610,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11584,
+          "is_correct": false
         }
       }
     },
     "gpqa-182": {
       "problem_id": "gpqa-182",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 2,
-          "sample_id": 11649,
+        "linear-probe": {
+          "run_index": 8,
+          "sample_id": 11655,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 3,
-          "sample_id": 11650,
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 11655,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 17,
+          "sample_id": 11664,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11648,
           "is_correct": false
         }
       }
@@ -2837,29 +4687,49 @@
     "gpqa-183": {
       "problem_id": "gpqa-183",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 53,
-          "sample_id": 11764,
+        "linear-probe": {
+          "run_index": 26,
+          "sample_id": 11737,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 26,
+          "sample_id": 11737,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 10,
+          "sample_id": 11721,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 6,
-          "sample_id": 11717,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11712,
+          "is_correct": true
         }
       }
     },
     "gpqa-184": {
       "problem_id": "gpqa-184",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 15,
           "sample_id": 11790,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 58,
-          "sample_id": 11833,
+        "logistic": {
+          "run_index": 15,
+          "sample_id": 11790,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 15,
+          "sample_id": 11790,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11776,
           "is_correct": true
         }
       }
@@ -2867,74 +4737,124 @@
     "gpqa-185": {
       "problem_id": "gpqa-185",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 21,
-          "sample_id": 11860,
-          "is_correct": true
-        },
-        "twostage-tournament": {
-          "run_index": 18,
-          "sample_id": 11857,
+        "linear-probe": {
+          "run_index": 14,
+          "sample_id": 11853,
           "is_correct": false
+        },
+        "logistic": {
+          "run_index": 14,
+          "sample_id": 11853,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 10,
+          "sample_id": 11849,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11840,
+          "is_correct": true
         }
       }
     },
     "gpqa-186": {
       "problem_id": "gpqa-186",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 32,
+          "sample_id": 11935,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 32,
+          "sample_id": 11935,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 10,
           "sample_id": 11913,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 10,
-          "sample_id": 11913,
-          "is_correct": false
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11904,
+          "is_correct": true
         }
       }
     },
     "gpqa-187": {
       "problem_id": "gpqa-187",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 25,
-          "sample_id": 11992,
+        "linear-probe": {
+          "run_index": 5,
+          "sample_id": 11972,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 30,
-          "sample_id": 11997,
+        "logistic": {
+          "run_index": 5,
+          "sample_id": 11972,
           "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 24,
+          "sample_id": 11991,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 11968,
+          "is_correct": true
         }
       }
     },
     "gpqa-188": {
       "problem_id": "gpqa-188",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 4,
           "sample_id": 12035,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 12036,
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 12035,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 4,
+          "sample_id": 12035,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12032,
+          "is_correct": false
         }
       }
     },
     "gpqa-189": {
       "problem_id": "gpqa-189",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 40,
-          "sample_id": 12135,
+        "linear-probe": {
+          "run_index": 12,
+          "sample_id": 12107,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 12,
+          "sample_id": 12107,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 4,
           "sample_id": 12099,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12096,
           "is_correct": true
         }
       }
@@ -2942,14 +4862,24 @@
     "gpqa-190": {
       "problem_id": "gpqa-190",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 42,
+          "sample_id": 12201,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 42,
+          "sample_id": 12201,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 10,
           "sample_id": 12169,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 12191,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12160,
           "is_correct": false
         }
       }
@@ -2957,44 +4887,74 @@
     "gpqa-191": {
       "problem_id": "gpqa-191",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 22,
-          "sample_id": 12245,
+        "linear-probe": {
+          "run_index": 31,
+          "sample_id": 12254,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 31,
+          "sample_id": 12254,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 12,
           "sample_id": 12235,
           "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12224,
+          "is_correct": true
         }
       }
     },
     "gpqa-192": {
       "problem_id": "gpqa-192",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 12289,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 12289,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 17,
           "sample_id": 12304,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 17,
-          "sample_id": 12304,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12288,
+          "is_correct": false
         }
       }
     },
     "gpqa-193": {
       "problem_id": "gpqa-193",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 38,
           "sample_id": 12389,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 49,
-          "sample_id": 12400,
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 12389,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 12362,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12352,
           "is_correct": true
         }
       }
@@ -3002,14 +4962,24 @@
     "gpqa-194": {
       "problem_id": "gpqa-194",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 3,
+          "sample_id": 12418,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 3,
+          "sample_id": 12418,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 18,
           "sample_id": 12433,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 4,
-          "sample_id": 12419,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12416,
           "is_correct": true
         }
       }
@@ -3017,14 +4987,24 @@
     "gpqa-195": {
       "problem_id": "gpqa-195",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 41,
           "sample_id": 12520,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 41,
           "sample_id": 12520,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 41,
+          "sample_id": 12520,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12480,
           "is_correct": true
         }
       }
@@ -3032,29 +5012,49 @@
     "gpqa-196": {
       "problem_id": "gpqa-196",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 32,
+          "sample_id": 12575,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 32,
+          "sample_id": 12575,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 1,
           "sample_id": 12544,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 12548,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12544,
+          "is_correct": false
         }
       }
     },
     "gpqa-197": {
       "problem_id": "gpqa-197",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 23,
-          "sample_id": 12630,
+        "linear-probe": {
+          "run_index": 8,
+          "sample_id": 12615,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 25,
-          "sample_id": 12632,
+        "logistic": {
+          "run_index": 8,
+          "sample_id": 12615,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 12618,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 12608,
           "is_correct": true
         }
       }

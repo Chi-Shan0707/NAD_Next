@@ -13,6 +13,7 @@ from .impl import (MinActivationSelector, MaxActivationSelector, MinConfidenceSe
                    GroupEnsembleMedoidSelector, GroupEnsembleDeepConfSelector,
                    TournamentCopelandSelector, TournamentDeepConfSelector,
                    TwoStageMedoidSelector, TwoStageTournamentSelector)
+from .ml_impl import LinearProbeSelector, LogisticSelector, IsotonicCalibratedSelector
 from .impl_legacy import (LegacyKNNMedoidSelector, LegacyMedoidSelector,
                          LegacyDBSCANMedoidSelector, LegacyConsensusMinSelector,
                          LegacyConsensusMaxSelector)
@@ -163,6 +164,20 @@ def build_selector(spec: SelectorSpec):
         temp = float(params.get("temperature", 0.2))
         seed = int(params.get("seed", 42))
         return TwoStageTournamentSelector(group_size=gs, top_k=tk, temperature=temp, seed=seed)
+
+    # ML selectors (require pre-trained models from scripts/train_ml_selectors.py)
+    if lowered in ("linear-probe", "linear_probe", "linearprobe"):
+        mp = params.get("model_path", None)
+        return LinearProbeSelector(model_path=mp)
+    if lowered in ("logistic", "logistic-regression", "logistic_regression"):
+        mp = params.get("model_path", None)
+        return LogisticSelector(model_path=mp)
+    if lowered in ("isotonic-medoid", "isotonic_medoid"):
+        mp = params.get("model_path", None)
+        return IsotonicCalibratedSelector(base="medoid", model_path=mp)
+    if lowered in ("isotonic-deepconf", "isotonic_deepconf"):
+        mp = params.get("model_path", None)
+        return IsotonicCalibratedSelector(base="deepconf", model_path=mp)
 
     raise ValueError(f"Unknown selector: {spec.name}")
 

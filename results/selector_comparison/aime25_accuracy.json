@@ -16,7 +16,11 @@
     "tournament-copeland": 70.0,
     "tournament-deepconf": 63.333333333333336,
     "twostage-medoid": 73.33333333333333,
-    "twostage-tournament": 70.0
+    "twostage-tournament": 70.0,
+    "linear-probe": 76.66666666666667,
+    "logistic": 76.66666666666667,
+    "isotonic-medoid": 73.33333333333333,
+    "isotonic-deepconf": 66.66666666666667
   },
   "selector_counts": {
     "min-activation": {
@@ -86,20 +90,46 @@
     "twostage-tournament": {
       "correct": 21,
       "total": 30
+    },
+    "linear-probe": {
+      "correct": 23,
+      "total": 30
+    },
+    "logistic": {
+      "correct": 23,
+      "total": 30
+    },
+    "isotonic-medoid": {
+      "correct": 22,
+      "total": 30
+    },
+    "isotonic-deepconf": {
+      "correct": 20,
+      "total": 30
     }
   },
   "per_problem": {
     "0": {
       "problem_id": "0",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 26,
+          "sample_id": 25,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 26,
+          "sample_id": 25,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 4,
           "sample_id": 3,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 19,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 0,
           "is_correct": true
         }
       }
@@ -107,14 +137,24 @@
     "1": {
       "problem_id": "1",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 53,
+          "sample_id": 116,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 53,
+          "sample_id": 116,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 5,
           "sample_id": 68,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 83,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 64,
           "is_correct": true
         }
       }
@@ -122,14 +162,24 @@
     "2": {
       "problem_id": "2",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 17,
+          "sample_id": 144,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 15,
+          "sample_id": 142,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 33,
           "sample_id": 160,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 10,
-          "sample_id": 137,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 128,
           "is_correct": true
         }
       }
@@ -137,14 +187,24 @@
     "3": {
       "problem_id": "3",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 10,
-          "sample_id": 201,
+        "linear-probe": {
+          "run_index": 46,
+          "sample_id": 237,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 25,
-          "sample_id": 216,
+        "logistic": {
+          "run_index": 46,
+          "sample_id": 237,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 36,
+          "sample_id": 227,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 192,
           "is_correct": true
         }
       }
@@ -152,14 +212,24 @@
     "4": {
       "problem_id": "4",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 48,
-          "sample_id": 303,
+        "linear-probe": {
+          "run_index": 2,
+          "sample_id": 257,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 48,
-          "sample_id": 303,
+        "logistic": {
+          "run_index": 2,
+          "sample_id": 257,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 257,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 256,
           "is_correct": true
         }
       }
@@ -167,14 +237,24 @@
     "5": {
       "problem_id": "5",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 43,
+          "sample_id": 362,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 43,
+          "sample_id": 362,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 3,
           "sample_id": 322,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 380,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 320,
           "is_correct": true
         }
       }
@@ -182,14 +262,24 @@
     "6": {
       "problem_id": "6",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 14,
+          "sample_id": 397,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 14,
+          "sample_id": 397,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 9,
           "sample_id": 392,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 9,
-          "sample_id": 392,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 384,
           "is_correct": true
         }
       }
@@ -197,14 +287,24 @@
     "7": {
       "problem_id": "7",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 35,
           "sample_id": 482,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 35,
           "sample_id": 482,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 35,
+          "sample_id": 482,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 448,
           "is_correct": true
         }
       }
@@ -212,14 +312,24 @@
     "8": {
       "problem_id": "8",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 54,
+          "sample_id": 565,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 54,
+          "sample_id": 565,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 13,
           "sample_id": 524,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 47,
-          "sample_id": 558,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 512,
           "is_correct": true
         }
       }
@@ -227,14 +337,24 @@
     "9": {
       "problem_id": "9",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 53,
-          "sample_id": 628,
+        "linear-probe": {
+          "run_index": 4,
+          "sample_id": 579,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 53,
-          "sample_id": 628,
+        "logistic": {
+          "run_index": 4,
+          "sample_id": 579,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 7,
+          "sample_id": 582,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 576,
           "is_correct": false
         }
       }
@@ -242,14 +362,24 @@
     "10": {
       "problem_id": "10",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 62,
-          "sample_id": 701,
+        "linear-probe": {
+          "run_index": 38,
+          "sample_id": 677,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 677,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 44,
+          "sample_id": 683,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 45,
-          "sample_id": 684,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 640,
           "is_correct": false
         }
       }
@@ -257,14 +387,24 @@
     "11": {
       "problem_id": "11",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 47,
           "sample_id": 750,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 47,
           "sample_id": 750,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 40,
+          "sample_id": 743,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 704,
           "is_correct": false
         }
       }
@@ -272,14 +412,24 @@
     "12": {
       "problem_id": "12",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 57,
+          "sample_id": 824,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 824,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 52,
           "sample_id": 819,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 3,
-          "sample_id": 770,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 768,
           "is_correct": false
         }
       }
@@ -287,14 +437,24 @@
     "13": {
       "problem_id": "13",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 19,
           "sample_id": 850,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 851,
+        "logistic": {
+          "run_index": 19,
+          "sample_id": 850,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 19,
+          "sample_id": 850,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 832,
           "is_correct": false
         }
       }
@@ -302,12 +462,22 @@
     "14": {
       "problem_id": "14",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 35,
-          "sample_id": 930,
+        "linear-probe": {
+          "run_index": 1,
+          "sample_id": 896,
           "is_correct": false
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 1,
+          "sample_id": 896,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 922,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
           "run_index": 1,
           "sample_id": 896,
           "is_correct": false
@@ -317,14 +487,24 @@
     "15": {
       "problem_id": "15",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 40,
+          "sample_id": 999,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 40,
+          "sample_id": 999,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 4,
           "sample_id": 963,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 979,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 960,
           "is_correct": true
         }
       }
@@ -332,14 +512,24 @@
     "16": {
       "problem_id": "16",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 60,
           "sample_id": 1083,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 44,
-          "sample_id": 1067,
+        "logistic": {
+          "run_index": 60,
+          "sample_id": 1083,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 45,
+          "sample_id": 1068,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1024,
           "is_correct": true
         }
       }
@@ -347,14 +537,24 @@
     "17": {
       "problem_id": "17",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 35,
+          "sample_id": 1122,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 35,
+          "sample_id": 1122,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 1089,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 1089,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1088,
           "is_correct": true
         }
       }
@@ -362,14 +562,24 @@
     "18": {
       "problem_id": "18",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 63,
-          "sample_id": 1214,
+        "linear-probe": {
+          "run_index": 41,
+          "sample_id": 1192,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 41,
+          "sample_id": 1192,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 44,
           "sample_id": 1195,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1152,
           "is_correct": true
         }
       }
@@ -377,29 +587,49 @@
     "19": {
       "problem_id": "19",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 53,
           "sample_id": 1268,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 4,
-          "sample_id": 1219,
-          "is_correct": false
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 1226,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 40,
+          "sample_id": 1255,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1216,
+          "is_correct": true
         }
       }
     },
     "20": {
       "problem_id": "20",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 3,
+          "sample_id": 1282,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 3,
+          "sample_id": 1282,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 2,
           "sample_id": 1281,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 1281,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1280,
           "is_correct": true
         }
       }
@@ -407,14 +637,24 @@
     "21": {
       "problem_id": "21",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 60,
-          "sample_id": 1403,
+        "linear-probe": {
+          "run_index": 63,
+          "sample_id": 1406,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 1375,
+        "logistic": {
+          "run_index": 63,
+          "sample_id": 1406,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 33,
+          "sample_id": 1376,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1344,
           "is_correct": true
         }
       }
@@ -422,44 +662,74 @@
     "22": {
       "problem_id": "22",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 33,
           "sample_id": 1440,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 56,
-          "sample_id": 1463,
+        "logistic": {
+          "run_index": 33,
+          "sample_id": 1440,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 33,
+          "sample_id": 1440,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1408,
+          "is_correct": false
         }
       }
     },
     "23": {
       "problem_id": "23",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 36,
-          "sample_id": 1507,
+        "linear-probe": {
+          "run_index": 46,
+          "sample_id": 1517,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 46,
+          "sample_id": 1517,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 42,
           "sample_id": 1513,
           "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1472,
+          "is_correct": false
         }
       }
     },
     "24": {
       "problem_id": "24",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 50,
-          "sample_id": 1585,
+        "linear-probe": {
+          "run_index": 47,
+          "sample_id": 1582,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 50,
-          "sample_id": 1585,
+        "logistic": {
+          "run_index": 47,
+          "sample_id": 1582,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 6,
+          "sample_id": 1541,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1536,
           "is_correct": true
         }
       }
@@ -467,14 +737,24 @@
     "25": {
       "problem_id": "25",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 38,
           "sample_id": 1637,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 1637,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 32,
           "sample_id": 1631,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1600,
           "is_correct": true
         }
       }
@@ -482,14 +762,24 @@
     "26": {
       "problem_id": "26",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 6,
           "sample_id": 1669,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 1695,
+        "logistic": {
+          "run_index": 6,
+          "sample_id": 1669,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 6,
+          "sample_id": 1669,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1664,
           "is_correct": true
         }
       }
@@ -497,14 +787,24 @@
     "27": {
       "problem_id": "27",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 48,
+          "sample_id": 1775,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 48,
+          "sample_id": 1775,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 36,
           "sample_id": 1763,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 53,
-          "sample_id": 1780,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1728,
           "is_correct": false
         }
       }
@@ -512,14 +812,24 @@
     "28": {
       "problem_id": "28",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 45,
+          "sample_id": 1836,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 45,
+          "sample_id": 1836,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 49,
           "sample_id": 1840,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 2,
-          "sample_id": 1793,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1792,
           "is_correct": true
         }
       }
@@ -527,14 +837,24 @@
     "29": {
       "problem_id": "29",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 52,
+          "sample_id": 1907,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 52,
+          "sample_id": 1907,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 39,
           "sample_id": 1894,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 46,
-          "sample_id": 1901,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1856,
           "is_correct": false
         }
       }

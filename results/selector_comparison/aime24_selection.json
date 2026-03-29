@@ -219,7 +219,11 @@
         "tournament-copeland": 25,
         "tournament-deepconf": 23,
         "twostage-medoid": 62,
-        "twostage-tournament": 2
+        "twostage-tournament": 2,
+        "linear-probe": 39,
+        "logistic": 39,
+        "isotonic-medoid": 2,
+        "isotonic-deepconf": 0
       }
     },
     "61": {
@@ -441,7 +445,11 @@
         "tournament-copeland": 93,
         "tournament-deepconf": 82,
         "twostage-medoid": 125,
-        "twostage-tournament": 69
+        "twostage-tournament": 69,
+        "linear-probe": 125,
+        "logistic": 125,
+        "isotonic-medoid": 106,
+        "isotonic-deepconf": 64
       }
     },
     "62": {
@@ -663,7 +671,11 @@
         "tournament-copeland": 141,
         "tournament-deepconf": 147,
         "twostage-medoid": 146,
-        "twostage-tournament": 136
+        "twostage-tournament": 136,
+        "linear-probe": 152,
+        "logistic": 152,
+        "isotonic-medoid": 133,
+        "isotonic-deepconf": 128
       }
     },
     "63": {
@@ -885,7 +897,11 @@
         "tournament-copeland": 220,
         "tournament-deepconf": 219,
         "twostage-medoid": 225,
-        "twostage-tournament": 225
+        "twostage-tournament": 225,
+        "linear-probe": 216,
+        "logistic": 216,
+        "isotonic-medoid": 225,
+        "isotonic-deepconf": 192
       }
     },
     "64": {
@@ -1107,7 +1123,11 @@
         "tournament-copeland": 275,
         "tournament-deepconf": 275,
         "twostage-medoid": 292,
-        "twostage-tournament": 288
+        "twostage-tournament": 288,
+        "linear-probe": 292,
+        "logistic": 295,
+        "isotonic-medoid": 263,
+        "isotonic-deepconf": 256
       }
     },
     "65": {
@@ -1329,7 +1349,11 @@
         "tournament-copeland": 345,
         "tournament-deepconf": 346,
         "twostage-medoid": 349,
-        "twostage-tournament": 351
+        "twostage-tournament": 351,
+        "linear-probe": 375,
+        "logistic": 375,
+        "isotonic-medoid": 324,
+        "isotonic-deepconf": 320
       }
     },
     "66": {
@@ -1551,7 +1575,11 @@
         "tournament-copeland": 411,
         "tournament-deepconf": 400,
         "twostage-medoid": 384,
-        "twostage-tournament": 384
+        "twostage-tournament": 384,
+        "linear-probe": 446,
+        "logistic": 446,
+        "isotonic-medoid": 437,
+        "isotonic-deepconf": 384
       }
     },
     "67": {
@@ -1773,7 +1801,11 @@
         "tournament-copeland": 472,
         "tournament-deepconf": 477,
         "twostage-medoid": 491,
-        "twostage-tournament": 480
+        "twostage-tournament": 480,
+        "linear-probe": 471,
+        "logistic": 471,
+        "isotonic-medoid": 480,
+        "isotonic-deepconf": 448
       }
     },
     "68": {
@@ -1995,7 +2027,11 @@
         "tournament-copeland": 532,
         "tournament-deepconf": 537,
         "twostage-medoid": 520,
-        "twostage-tournament": 520
+        "twostage-tournament": 520,
+        "linear-probe": 516,
+        "logistic": 516,
+        "isotonic-medoid": 516,
+        "isotonic-deepconf": 512
       }
     },
     "69": {
@@ -2217,7 +2253,11 @@
         "tournament-copeland": 604,
         "tournament-deepconf": 603,
         "twostage-medoid": 582,
-        "twostage-tournament": 582
+        "twostage-tournament": 582,
+        "linear-probe": 579,
+        "logistic": 579,
+        "isotonic-medoid": 579,
+        "isotonic-deepconf": 576
       }
     },
     "70": {
@@ -2439,7 +2479,11 @@
         "tournament-copeland": 671,
         "tournament-deepconf": 662,
         "twostage-medoid": 655,
-        "twostage-tournament": 669
+        "twostage-tournament": 669,
+        "linear-probe": 640,
+        "logistic": 640,
+        "isotonic-medoid": 655,
+        "isotonic-deepconf": 640
       }
     },
     "71": {
@@ -2661,7 +2705,11 @@
         "tournament-copeland": 719,
         "tournament-deepconf": 725,
         "twostage-medoid": 706,
-        "twostage-tournament": 758
+        "twostage-tournament": 758,
+        "linear-probe": 706,
+        "logistic": 706,
+        "isotonic-medoid": 706,
+        "isotonic-deepconf": 704
       }
     },
     "72": {
@@ -2883,7 +2931,11 @@
         "tournament-copeland": 784,
         "tournament-deepconf": 794,
         "twostage-medoid": 772,
-        "twostage-tournament": 772
+        "twostage-tournament": 772,
+        "linear-probe": 772,
+        "logistic": 772,
+        "isotonic-medoid": 770,
+        "isotonic-deepconf": 768
       }
     },
     "73": {
@@ -3105,7 +3157,11 @@
         "tournament-copeland": 854,
         "tournament-deepconf": 858,
         "twostage-medoid": 859,
-        "twostage-tournament": 891
+        "twostage-tournament": 891,
+        "linear-probe": 875,
+        "logistic": 875,
+        "isotonic-medoid": 859,
+        "isotonic-deepconf": 832
       }
     },
     "74": {
@@ -3327,7 +3383,11 @@
         "tournament-copeland": 923,
         "tournament-deepconf": 920,
         "twostage-medoid": 904,
-        "twostage-tournament": 956
+        "twostage-tournament": 956,
+        "linear-probe": 904,
+        "logistic": 904,
+        "isotonic-medoid": 904,
+        "isotonic-deepconf": 896
       }
     },
     "75": {
@@ -3549,7 +3609,11 @@
         "tournament-copeland": 974,
         "tournament-deepconf": 980,
         "twostage-medoid": 1018,
-        "twostage-tournament": 968
+        "twostage-tournament": 968,
+        "linear-probe": 983,
+        "logistic": 983,
+        "isotonic-medoid": 986,
+        "isotonic-deepconf": 960
       }
     },
     "76": {
@@ -3771,7 +3835,11 @@
         "tournament-copeland": 1039,
         "tournament-deepconf": 1040,
         "twostage-medoid": 1034,
-        "twostage-tournament": 1029
+        "twostage-tournament": 1029,
+        "linear-probe": 1025,
+        "logistic": 1025,
+        "isotonic-medoid": 1025,
+        "isotonic-deepconf": 1024
       }
     },
     "77": {
@@ -3993,7 +4061,11 @@
         "tournament-copeland": 1108,
         "tournament-deepconf": 1115,
         "twostage-medoid": 1107,
-        "twostage-tournament": 1146
+        "twostage-tournament": 1146,
+        "linear-probe": 1117,
+        "logistic": 1117,
+        "isotonic-medoid": 1107,
+        "isotonic-deepconf": 1088
       }
     },
     "78": {
@@ -4215,7 +4287,11 @@
         "tournament-copeland": 1179,
         "tournament-deepconf": 1179,
         "twostage-medoid": 1213,
-        "twostage-tournament": 1201
+        "twostage-tournament": 1201,
+        "linear-probe": 1168,
+        "logistic": 1168,
+        "isotonic-medoid": 1185,
+        "isotonic-deepconf": 1152
       }
     },
     "79": {
@@ -4437,7 +4513,11 @@
         "tournament-copeland": 1235,
         "tournament-deepconf": 1242,
         "twostage-medoid": 1234,
-        "twostage-tournament": 1222
+        "twostage-tournament": 1222,
+        "linear-probe": 1234,
+        "logistic": 1234,
+        "isotonic-medoid": 1234,
+        "isotonic-deepconf": 1216
       }
     },
     "80": {
@@ -4659,7 +4739,11 @@
         "tournament-copeland": 1307,
         "tournament-deepconf": 1309,
         "twostage-medoid": 1298,
-        "twostage-tournament": 1340
+        "twostage-tournament": 1340,
+        "linear-probe": 1298,
+        "logistic": 1298,
+        "isotonic-medoid": 1297,
+        "isotonic-deepconf": 1280
       }
     },
     "81": {
@@ -4881,7 +4965,11 @@
         "tournament-copeland": 1370,
         "tournament-deepconf": 1374,
         "twostage-medoid": 1376,
-        "twostage-tournament": 1398
+        "twostage-tournament": 1398,
+        "linear-probe": 1399,
+        "logistic": 1399,
+        "isotonic-medoid": 1367,
+        "isotonic-deepconf": 1344
       }
     },
     "82": {
@@ -5103,7 +5191,11 @@
         "tournament-copeland": 1427,
         "tournament-deepconf": 1428,
         "twostage-medoid": 1463,
-        "twostage-tournament": 1463
+        "twostage-tournament": 1463,
+        "linear-probe": 1440,
+        "logistic": 1440,
+        "isotonic-medoid": 1417,
+        "isotonic-deepconf": 1408
       }
     },
     "83": {
@@ -5325,7 +5417,11 @@
         "tournament-copeland": 1500,
         "tournament-deepconf": 1491,
         "twostage-medoid": 1510,
-        "twostage-tournament": 1515
+        "twostage-tournament": 1515,
+        "linear-probe": 1515,
+        "logistic": 1515,
+        "isotonic-medoid": 1510,
+        "isotonic-deepconf": 1472
       }
     },
     "84": {
@@ -5547,7 +5643,11 @@
         "tournament-copeland": 1561,
         "tournament-deepconf": 1557,
         "twostage-medoid": 1537,
-        "twostage-tournament": 1537
+        "twostage-tournament": 1537,
+        "linear-probe": 1537,
+        "logistic": 1537,
+        "isotonic-medoid": 1537,
+        "isotonic-deepconf": 1536
       }
     },
     "85": {
@@ -5769,7 +5869,11 @@
         "tournament-copeland": 1621,
         "tournament-deepconf": 1627,
         "twostage-medoid": 1613,
-        "twostage-tournament": 1641
+        "twostage-tournament": 1641,
+        "linear-probe": 1646,
+        "logistic": 1646,
+        "isotonic-medoid": 1613,
+        "isotonic-deepconf": 1600
       }
     },
     "86": {
@@ -5991,7 +6095,11 @@
         "tournament-copeland": 1688,
         "tournament-deepconf": 1690,
         "twostage-medoid": 1666,
-        "twostage-tournament": 1714
+        "twostage-tournament": 1714,
+        "linear-probe": 1683,
+        "logistic": 1683,
+        "isotonic-medoid": 1666,
+        "isotonic-deepconf": 1664
       }
     },
     "87": {
@@ -6213,7 +6321,11 @@
         "tournament-copeland": 1746,
         "tournament-deepconf": 1753,
         "twostage-medoid": 1779,
-        "twostage-tournament": 1745
+        "twostage-tournament": 1745,
+        "linear-probe": 1757,
+        "logistic": 1757,
+        "isotonic-medoid": 1762,
+        "isotonic-deepconf": 1728
       }
     },
     "88": {
@@ -6435,7 +6547,11 @@
         "tournament-copeland": 1814,
         "tournament-deepconf": 1805,
         "twostage-medoid": 1830,
-        "twostage-tournament": 1819
+        "twostage-tournament": 1819,
+        "linear-probe": 1801,
+        "logistic": 1801,
+        "isotonic-medoid": 1817,
+        "isotonic-deepconf": 1792
       }
     },
     "89": {
@@ -6657,7 +6773,11 @@
         "tournament-copeland": 1881,
         "tournament-deepconf": 1879,
         "twostage-medoid": 1894,
-        "twostage-tournament": 1892
+        "twostage-tournament": 1892,
+        "linear-probe": 1867,
+        "logistic": 1867,
+        "isotonic-medoid": 1864,
+        "isotonic-deepconf": 1856
       }
     }
   }

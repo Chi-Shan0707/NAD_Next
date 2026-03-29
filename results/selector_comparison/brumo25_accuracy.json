@@ -16,7 +16,11 @@
     "tournament-copeland": 76.66666666666667,
     "tournament-deepconf": 66.66666666666667,
     "twostage-medoid": 80.0,
-    "twostage-tournament": 80.0
+    "twostage-tournament": 80.0,
+    "linear-probe": 76.66666666666667,
+    "logistic": 76.66666666666667,
+    "isotonic-medoid": 76.66666666666667,
+    "isotonic-deepconf": 63.333333333333336
   },
   "selector_counts": {
     "min-activation": {
@@ -86,20 +90,46 @@
     "twostage-tournament": {
       "correct": 24,
       "total": 30
+    },
+    "linear-probe": {
+      "correct": 23,
+      "total": 30
+    },
+    "logistic": {
+      "correct": 23,
+      "total": 30
+    },
+    "isotonic-medoid": {
+      "correct": 23,
+      "total": 30
+    },
+    "isotonic-deepconf": {
+      "correct": 19,
+      "total": 30
     }
   },
   "per_problem": {
     "brumo25-0": {
       "problem_id": "brumo25-0",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 10,
-          "sample_id": 9,
+        "linear-probe": {
+          "run_index": 52,
+          "sample_id": 51,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 41,
-          "sample_id": 40,
+        "logistic": {
+          "run_index": 52,
+          "sample_id": 51,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 14,
+          "sample_id": 13,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 0,
           "is_correct": true
         }
       }
@@ -107,14 +137,24 @@
     "brumo25-1": {
       "problem_id": "brumo25-1",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 27,
-          "sample_id": 90,
+        "linear-probe": {
+          "run_index": 63,
+          "sample_id": 126,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 27,
-          "sample_id": 90,
+        "logistic": {
+          "run_index": 63,
+          "sample_id": 126,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 26,
+          "sample_id": 89,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 64,
           "is_correct": true
         }
       }
@@ -122,14 +162,24 @@
     "brumo25-2": {
       "problem_id": "brumo25-2",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 62,
+          "sample_id": 189,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 62,
+          "sample_id": 189,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 15,
           "sample_id": 142,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 31,
-          "sample_id": 158,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 128,
           "is_correct": true
         }
       }
@@ -137,14 +187,24 @@
     "brumo25-3": {
       "problem_id": "brumo25-3",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 37,
-          "sample_id": 228,
+        "linear-probe": {
+          "run_index": 23,
+          "sample_id": 214,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 31,
-          "sample_id": 222,
+        "logistic": {
+          "run_index": 23,
+          "sample_id": 214,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 30,
+          "sample_id": 221,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 192,
           "is_correct": true
         }
       }
@@ -152,14 +212,24 @@
     "brumo25-4": {
       "problem_id": "brumo25-4",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 2,
           "sample_id": 257,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 2,
           "sample_id": 257,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 2,
+          "sample_id": 257,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 256,
           "is_correct": true
         }
       }
@@ -167,29 +237,49 @@
     "brumo25-5": {
       "problem_id": "brumo25-5",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 39,
+          "sample_id": 358,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 10,
+          "sample_id": 329,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 3,
           "sample_id": 322,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 3,
-          "sample_id": 322,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 320,
+          "is_correct": false
         }
       }
     },
     "brumo25-6": {
       "problem_id": "brumo25-6",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 45,
-          "sample_id": 428,
+        "linear-probe": {
+          "run_index": 10,
+          "sample_id": 393,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 10,
+          "sample_id": 393,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 33,
           "sample_id": 416,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 384,
           "is_correct": true
         }
       }
@@ -197,14 +287,24 @@
     "brumo25-7": {
       "problem_id": "brumo25-7",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 53,
-          "sample_id": 500,
+        "linear-probe": {
+          "run_index": 36,
+          "sample_id": 483,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 508,
+        "logistic": {
+          "run_index": 36,
+          "sample_id": 483,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 18,
+          "sample_id": 465,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 448,
           "is_correct": true
         }
       }
@@ -212,14 +312,24 @@
     "brumo25-8": {
       "problem_id": "brumo25-8",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 31,
           "sample_id": 542,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 51,
-          "sample_id": 562,
+        "logistic": {
+          "run_index": 31,
+          "sample_id": 542,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 538,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 512,
           "is_correct": true
         }
       }
@@ -227,14 +337,24 @@
     "brumo25-9": {
       "problem_id": "brumo25-9",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 42,
-          "sample_id": 617,
+        "linear-probe": {
+          "run_index": 21,
+          "sample_id": 596,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 21,
+          "sample_id": 596,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 32,
+          "sample_id": 607,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 3,
-          "sample_id": 578,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 576,
           "is_correct": true
         }
       }
@@ -242,44 +362,74 @@
     "brumo25-10": {
       "problem_id": "brumo25-10",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 61,
-          "sample_id": 700,
+        "linear-probe": {
+          "run_index": 36,
+          "sample_id": 675,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 61,
-          "sample_id": 700,
+        "logistic": {
+          "run_index": 36,
+          "sample_id": 675,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 6,
+          "sample_id": 645,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 640,
+          "is_correct": false
         }
       }
     },
     "brumo25-11": {
       "problem_id": "brumo25-11",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 17,
-          "sample_id": 720,
+        "linear-probe": {
+          "run_index": 15,
+          "sample_id": 718,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 20,
-          "sample_id": 723,
+        "logistic": {
+          "run_index": 15,
+          "sample_id": 718,
           "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 50,
+          "sample_id": 753,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 704,
+          "is_correct": false
         }
       }
     },
     "brumo25-12": {
       "problem_id": "brumo25-12",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 38,
           "sample_id": 805,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 48,
-          "sample_id": 815,
+        "logistic": {
+          "run_index": 38,
+          "sample_id": 805,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 38,
+          "sample_id": 805,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 768,
           "is_correct": false
         }
       }
@@ -287,14 +437,24 @@
     "brumo25-13": {
       "problem_id": "brumo25-13",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 30,
-          "sample_id": 861,
+        "linear-probe": {
+          "run_index": 34,
+          "sample_id": 865,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 30,
-          "sample_id": 861,
+        "logistic": {
+          "run_index": 34,
+          "sample_id": 865,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 3,
+          "sample_id": 834,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 832,
           "is_correct": true
         }
       }
@@ -302,14 +462,24 @@
     "brumo25-14": {
       "problem_id": "brumo25-14",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 41,
-          "sample_id": 936,
+        "linear-probe": {
+          "run_index": 31,
+          "sample_id": 926,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 41,
-          "sample_id": 936,
+        "logistic": {
+          "run_index": 31,
+          "sample_id": 926,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 31,
+          "sample_id": 926,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 896,
           "is_correct": false
         }
       }
@@ -317,14 +487,24 @@
     "brumo25-15": {
       "problem_id": "brumo25-15",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 57,
+          "sample_id": 1016,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 57,
+          "sample_id": 1016,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 53,
           "sample_id": 1012,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 34,
-          "sample_id": 993,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 960,
           "is_correct": true
         }
       }
@@ -332,14 +512,24 @@
     "brumo25-16": {
       "problem_id": "brumo25-16",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 28,
+          "sample_id": 1051,
+          "is_correct": false
+        },
+        "logistic": {
+          "run_index": 28,
+          "sample_id": 1051,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
           "run_index": 12,
           "sample_id": 1035,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 12,
-          "sample_id": 1035,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1024,
           "is_correct": false
         }
       }
@@ -347,14 +537,24 @@
     "brumo25-17": {
       "problem_id": "brumo25-17",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 58,
+          "sample_id": 1145,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 58,
+          "sample_id": 1145,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 13,
           "sample_id": 1100,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 1092,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1088,
           "is_correct": true
         }
       }
@@ -362,14 +562,24 @@
     "brumo25-18": {
       "problem_id": "brumo25-18",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 56,
           "sample_id": 1207,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 56,
+          "sample_id": 1207,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 16,
           "sample_id": 1167,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1152,
           "is_correct": true
         }
       }
@@ -377,14 +587,24 @@
     "brumo25-19": {
       "problem_id": "brumo25-19",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 62,
-          "sample_id": 1277,
+        "linear-probe": {
+          "run_index": 56,
+          "sample_id": 1271,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 59,
-          "sample_id": 1274,
+        "logistic": {
+          "run_index": 56,
+          "sample_id": 1271,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 23,
+          "sample_id": 1238,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1216,
           "is_correct": true
         }
       }
@@ -392,14 +612,24 @@
     "brumo25-20": {
       "problem_id": "brumo25-20",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 31,
           "sample_id": 1310,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
           "run_index": 31,
           "sample_id": 1310,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 27,
+          "sample_id": 1306,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1280,
           "is_correct": true
         }
       }
@@ -407,29 +637,49 @@
     "brumo25-21": {
       "problem_id": "brumo25-21",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 58,
-          "sample_id": 1401,
-          "is_correct": true
-        },
-        "twostage-tournament": {
+        "linear-probe": {
           "run_index": 17,
           "sample_id": 1360,
           "is_correct": true
+        },
+        "logistic": {
+          "run_index": 17,
+          "sample_id": 1360,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 26,
+          "sample_id": 1369,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1344,
+          "is_correct": false
         }
       }
     },
     "brumo25-22": {
       "problem_id": "brumo25-22",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 26,
-          "sample_id": 1433,
+        "linear-probe": {
+          "run_index": 6,
+          "sample_id": 1413,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 60,
-          "sample_id": 1467,
+        "logistic": {
+          "run_index": 6,
+          "sample_id": 1413,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 56,
+          "sample_id": 1463,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1408,
           "is_correct": true
         }
       }
@@ -437,29 +687,49 @@
     "brumo25-23": {
       "problem_id": "brumo25-23",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 44,
+          "sample_id": 1515,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 44,
+          "sample_id": 1515,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 5,
           "sample_id": 1476,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 5,
-          "sample_id": 1476,
-          "is_correct": true
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1472,
+          "is_correct": false
         }
       }
     },
     "brumo25-24": {
       "problem_id": "brumo25-24",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 61,
+          "sample_id": 1596,
+          "is_correct": true
+        },
+        "logistic": {
+          "run_index": 61,
+          "sample_id": 1596,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 22,
           "sample_id": 1557,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 22,
-          "sample_id": 1557,
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1536,
           "is_correct": true
         }
       }
@@ -467,14 +737,24 @@
     "brumo25-25": {
       "problem_id": "brumo25-25",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 48,
           "sample_id": 1647,
           "is_correct": true
         },
-        "twostage-tournament": {
+        "logistic": {
+          "run_index": 48,
+          "sample_id": 1647,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
           "run_index": 9,
           "sample_id": 1608,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1600,
           "is_correct": true
         }
       }
@@ -482,14 +762,24 @@
     "brumo25-26": {
       "problem_id": "brumo25-26",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 16,
-          "sample_id": 1679,
+        "linear-probe": {
+          "run_index": 11,
+          "sample_id": 1674,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 55,
-          "sample_id": 1718,
+        "logistic": {
+          "run_index": 11,
+          "sample_id": 1674,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 11,
+          "sample_id": 1674,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1664,
           "is_correct": false
         }
       }
@@ -497,14 +787,24 @@
     "brumo25-27": {
       "problem_id": "brumo25-27",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
+          "run_index": 21,
+          "sample_id": 1748,
+          "is_correct": false
+        },
+        "logistic": {
           "run_index": 19,
           "sample_id": 1746,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 9,
-          "sample_id": 1736,
+        "isotonic-medoid": {
+          "run_index": 19,
+          "sample_id": 1746,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1728,
           "is_correct": false
         }
       }
@@ -512,14 +812,24 @@
     "brumo25-28": {
       "problem_id": "brumo25-28",
       "selectors": {
-        "twostage-medoid": {
-          "run_index": 32,
-          "sample_id": 1823,
+        "linear-probe": {
+          "run_index": 43,
+          "sample_id": 1834,
           "is_correct": true
         },
-        "twostage-tournament": {
-          "run_index": 32,
-          "sample_id": 1823,
+        "logistic": {
+          "run_index": 43,
+          "sample_id": 1834,
+          "is_correct": true
+        },
+        "isotonic-medoid": {
+          "run_index": 40,
+          "sample_id": 1831,
+          "is_correct": true
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1792,
           "is_correct": true
         }
       }
@@ -527,14 +837,24 @@
     "brumo25-29": {
       "problem_id": "brumo25-29",
       "selectors": {
-        "twostage-medoid": {
+        "linear-probe": {
           "run_index": 5,
           "sample_id": 1860,
           "is_correct": false
         },
-        "twostage-tournament": {
-          "run_index": 7,
-          "sample_id": 1862,
+        "logistic": {
+          "run_index": 5,
+          "sample_id": 1860,
+          "is_correct": false
+        },
+        "isotonic-medoid": {
+          "run_index": 5,
+          "sample_id": 1860,
+          "is_correct": false
+        },
+        "isotonic-deepconf": {
+          "run_index": 1,
+          "sample_id": 1856,
           "is_correct": false
         }
       }
