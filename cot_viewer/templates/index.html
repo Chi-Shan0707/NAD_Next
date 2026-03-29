@@ -27,22 +27,69 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 #mode-badge.fixed  { background: #e8f4fd; color: #1a6fa8; }
 #mode-badge.smart  { background: #ede9fe; color: #5b21b6; }
 
-#cot-panel {
-  margin: 12px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
-  max-height: 55vh; overflow-y: auto; padding: 16px;
+/* Run chip bar */
+#run-chips-row {
+  display: flex; align-items: center; gap: 4px; padding: 6px 16px;
+  background: #fff; border-bottom: 1px solid #ddd;
+  overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
+}
+#run-chips-row .row-label {
+  font-size: 12px; font-weight: 600; color: #888; margin-right: 4px; flex-shrink: 0;
+}
+.run-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 10px; border-radius: 14px; font-size: 12px; font-weight: 500;
+  border: 1.5px solid #ccc; background: #fff; cursor: pointer;
+  user-select: none; transition: all 0.15s; flex-shrink: 0;
+}
+.run-chip:hover { border-color: #888; background: #f5f5f5; }
+.run-chip.selected-first { border-color: #1565c0; background: #e3f2fd; font-weight: 700; }
+.run-chip.selected { border-color: #7b1fa2; background: #f3e5f5; }
+.run-chip.selected-first.selected { border-color: #1565c0; background: #e3f2fd; }
+.run-chip .chip-cb {
+  width: 13px; height: 13px; margin: 0; cursor: pointer; accent-color: #1565c0;
+}
+.run-chip .correct-mark { margin-left: 1px; }
+.correct-mark.yes { color: #2e7d32; }
+.correct-mark.no  { color: #c62828; }
+
+/* CoT area: dynamic flex container for side-by-side panels */
+#cot-area {
+  display: flex; gap: 8px; margin: 12px 16px; min-height: 120px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.cot-panel-wrap {
+  background: #fff; border: 1px solid #ddd; border-radius: 6px;
+  max-height: 55vh; overflow-y: auto; padding: 0;
   font-family: 'SF Mono', 'Consolas', 'Menlo', monospace; font-size: 13px;
   line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  min-width: 0; flex: 1; min-width: 280px;
+  display: flex; flex-direction: column;
 }
-#cot-panel .slice {
+.cot-panel-wrap .panel-header {
+  display: flex; align-items: center; gap: 6px; padding: 8px 12px;
+  border-bottom: 1px solid #eee; font-size: 13px; font-weight: 600;
+  flex-shrink: 0; background: #fafafa; border-radius: 6px 6px 0 0;
+}
+.cot-panel-wrap .panel-header.first { background: #e3f2fd; }
+.cot-panel-wrap .panel-header.other { background: #f3e5f5; }
+.cot-panel-wrap .panel-body {
+  overflow-y: auto; flex: 1; padding: 12px 16px;
+  white-space: pre-wrap; word-break: break-word;
+}
+.cot-panel-wrap .slice {
   cursor: pointer; border-bottom: 1px dashed #ccc; transition: background 0.15s;
 }
-#cot-panel .slice:hover { background: #e8f4fd; }
-#cot-panel .slice.active { background: #cce5ff; }
+.cot-panel-wrap .slice:hover { background: #e8f4fd; }
+.cot-panel-wrap .slice.active { background: #cce5ff; }
 
-/* Smart-mode slices: subtle purple underline to signal variable width */
-#cot-panel .slice-smart { border-bottom: 1px dashed #9b7cdb; }
-#cot-panel .slice-smart:hover { background: #f3eeff; }
-#cot-panel .slice-smart.active { background: #e0d4ff; }
+/* Smart-mode slices */
+.cot-panel-wrap .slice-smart { border-bottom: 1px dashed #9b7cdb; }
+.cot-panel-wrap .slice-smart:hover { background: #f3eeff; }
+.cot-panel-wrap .slice-smart.active { background: #e0d4ff; }
+
+/* Empty state for cot-area when no panels */
+#cot-area .empty-msg { padding: 24px; text-align: center; color: #aaa; font-size: 14px; flex: 1; }
 
 #detail-panel {
   margin: 0 16px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
@@ -97,9 +144,23 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 #deriv-chart-area svg { display: block; min-width: 100%; }
 #deriv-chart-area .ref-line { stroke: #ccc; stroke-width: 0.5; stroke-dasharray: 4 2; }
 #deriv-chart-area .axis-label { font-size: 9px; fill: #999; }
-#deriv-chart-area polyline { fill: none; stroke-width: 1.5; }
+#deriv-chart-area polyline { fill: none; }
 #deriv-chart-area circle { cursor: pointer; }
 #deriv-chart-area circle:hover { r: 4; }
+
+/* Layout toggle buttons */
+.layout-toggle { display: inline-flex; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; margin-left: 4px; }
+.layout-toggle button {
+  background: #fff; border: none; padding: 2px 10px; font-size: 11px; cursor: pointer;
+  border-right: 1px solid #ccc; color: #555;
+}
+.layout-toggle button:last-child { border-right: none; }
+.layout-toggle button.active { background: #1565c0; color: #fff; font-weight: 600; }
+.layout-toggle button:hover:not(.active) { background: #f0f0f0; }
+
+/* Legend inside deriv chart */
+.deriv-legend { font-size: 10px; fill: #555; }
+.deriv-legend rect { rx: 3; ry: 3; }
 </style>
 </head>
 <body>
@@ -114,10 +175,6 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
     <select id="sel-problem"><option>--</option></select>
   </div>
   <div class="ctrl-group">
-    <label>Run</label>
-    <select id="sel-run"><option>--</option></select>
-  </div>
-  <div class="ctrl-group">
     <label>Slice mode</label>
     <select id="sel-mode">
       <option value="fixed">Fixed (32 tok)</option>
@@ -128,7 +185,14 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
   <span id="mode-badge"></span>
 </div>
 
-<div id="cot-panel"><div class="empty-msg">Select a dataset, problem, and run to view the chain-of-thought.</div></div>
+<div id="run-chips-row">
+  <span class="row-label">Runs</span>
+  <span id="run-chips"></span>
+</div>
+
+<div id="cot-area">
+  <div class="empty-msg">Select a dataset, problem, and run to view the chain-of-thought.</div>
+</div>
 
 <div id="deriv-panel" class="collapsed">
   <div id="deriv-header"><span class="toggle-arrow">&#9654;</span> Derivatives</div>
@@ -143,23 +207,27 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 
 <script>
 const $ = s => document.querySelector(s);
-const selDS = $('#sel-dataset'), selProb = $('#sel-problem'), selRun = $('#sel-run'), selMode = $('#sel-mode');
-const cotPanel = $('#cot-panel'), detailBody = $('#detail-body'), detailHeader = $('#detail-header');
+const selDS = $('#sel-dataset'), selProb = $('#sel-problem'), selMode = $('#sel-mode');
+const cotArea = $('#cot-area');
+const detailBody = $('#detail-body'), detailHeader = $('#detail-header');
 const status = $('#status'), modeBadge = $('#mode-badge');
+const runChipsContainer = $('#run-chips');
 
 let currentCache = null;
-let currentSampleId = null;
 
-// Derive base URL to support WebVPN proxies: absolute paths like /api/... break
-// because the browser resolves them against the WebVPN origin, not the proxied app.
-// Using BASE ensures the proxy prefix is preserved in all API requests.
+// -- Multi-run state ---------------------------------------------------------
+let allRuns = [];              // [{sample_id, run_index, is_correct}, ...]
+let selectedRuns = [];         // ordered array; first = primary
+let allDerivData = {};         // {sample_id: derivData}
+let derivLayout = 'overlay';   // 'overlay' | 'split'
+
+// Derive base URL to support WebVPN proxies
 const BASE = (function() {
   const href = window.location.href.split('?')[0];
   return href.endsWith('/') ? href : href + '/';
 })();
 
 async function api(path) {
-  // Strip leading '/' so the path is relative, then prepend BASE
   const rel = path.replace(/^\//, '');
   const sep = rel.includes('?') ? '&' : '?';
   const url = currentCache ? BASE + rel + sep + 'cache=' + encodeURIComponent(currentCache) : BASE + rel;
@@ -208,42 +276,143 @@ async function loadProblems() {
   if (selProb.options.length) loadRuns();
 }
 
-// -- Runs --------------------------------------------------------------------
+// -- Runs (chip bar) ---------------------------------------------------------
 async function loadRuns() {
   const pid = selProb.value;
   setStatus('Loading runs...');
-  const runs = await api('/api/runs/' + encodeURIComponent(pid));
-  selRun.innerHTML = '';
-  for (const r of runs) {
-    const o = document.createElement('option');
-    o.value = r.sample_id;
-    const mark = r.is_correct === true ? ' \u2713' : r.is_correct === false ? ' \u2717' : '';
-    o.textContent = `Run ${r.run_index}${mark}`;
-    selRun.appendChild(o);
+  allRuns = await api('/api/runs/' + encodeURIComponent(pid));
+
+  // Reset multi-run state
+  selectedRuns = [];
+  allDerivData = {};
+
+  renderChips();
+
+  setStatus(`${allRuns.length} runs`);
+  // Auto-select first run
+  if (allRuns.length > 0) {
+    toggleRunSelection(allRuns[0]);
   }
-  setStatus(`${runs.length} runs`);
-  if (selRun.options.length) loadChain();
 }
 
-// -- Chain -------------------------------------------------------------------
-async function loadChain() {
-  currentSampleId = parseInt(selRun.value, 10);
-  const mode = selMode.value;
-  setStatus('Loading chain...');
-  updateModeBadge();
-  cotPanel.innerHTML = '';
-  detailBody.innerHTML = '<div class="empty-msg">Click a slice above to inspect per-token metrics.</div>';
-  detailHeader.textContent = 'Token Detail';
+function renderChips() {
+  runChipsContainer.innerHTML = '';
+  for (const r of allRuns) {
+    const chip = document.createElement('span');
+    chip.className = 'run-chip';
+    const selIdx = selectedRuns.findIndex(s => s.sample_id === r.sample_id);
+    const isSelected = selIdx >= 0;
+    if (isSelected && selIdx === 0) chip.classList.add('selected-first', 'selected');
+    else if (isSelected) chip.classList.add('selected');
 
-  const data = await api('/api/chain/' + currentSampleId + '?mode=' + mode);
-  if (!data.slices || data.slices.length === 0) {
-    cotPanel.innerHTML = '<div class="empty-msg">No chain data available.</div>';
-    setStatus('No data');
+    // Checkbox
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.className = 'chip-cb';
+    cb.checked = isSelected;
+    cb.addEventListener('click', (e) => e.stopPropagation());
+    cb.addEventListener('change', () => toggleRunSelection(r));
+    chip.appendChild(cb);
+
+    // Label
+    const lbl = document.createElement('span');
+    lbl.textContent = `Run ${r.run_index}`;
+    chip.appendChild(lbl);
+
+    // Correctness mark
+    if (r.is_correct !== null && r.is_correct !== undefined) {
+      const mark = document.createElement('span');
+      mark.className = 'correct-mark ' + (r.is_correct ? 'yes' : 'no');
+      mark.textContent = r.is_correct ? ' \u2713' : ' \u2717';
+      chip.appendChild(mark);
+    }
+
+    chip.dataset.sampleId = r.sample_id;
+
+    // Click on chip body (not checkbox) also toggles
+    chip.addEventListener('click', (e) => {
+      if (e.target === cb) return;
+      cb.checked = !cb.checked;
+      toggleRunSelection(r);
+    });
+
+    runChipsContainer.appendChild(chip);
+  }
+}
+
+function toggleRunSelection(run) {
+  const idx = selectedRuns.findIndex(s => s.sample_id === run.sample_id);
+  if (idx >= 0) {
+    // Don't allow deselecting the last run
+    if (selectedRuns.length === 1) return;
+    selectedRuns.splice(idx, 1);
+    delete allDerivData[run.sample_id];
+  } else {
+    selectedRuns.push(run);
+  }
+  renderChips();
+  loadAllPanels();
+}
+
+// -- Dynamic CoT Panels ------------------------------------------------------
+async function loadAllPanels() {
+  if (selectedRuns.length === 0) {
+    cotArea.innerHTML = '<div class="empty-msg">Select a dataset, problem, and run to view the chain-of-thought.</div>';
     return;
   }
 
-  const isSmart = mode === 'smart';
-  for (const s of data.slices) {
+  const mode = selMode.value;
+  updateModeBadge();
+  detailBody.innerHTML = '<div class="empty-msg">Click a slice above to inspect per-token metrics.</div>';
+  detailHeader.textContent = 'Token Detail';
+
+  cotArea.innerHTML = '';
+
+  // Create panels for each selected run (limit display to ~4 for readability)
+  const panelsToShow = selectedRuns;
+
+  const loadPromises = panelsToShow.map(async (run, i) => {
+    const panel = document.createElement('div');
+    panel.className = 'cot-panel-wrap';
+    panel.dataset.sampleId = run.sample_id;
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'panel-header ' + (i === 0 ? 'first' : 'other');
+    const mark = run.is_correct === true ? ' \u2713' : run.is_correct === false ? ' \u2717' : '';
+    header.textContent = `Run ${run.run_index}${mark}`;
+    panel.appendChild(header);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'panel-body';
+    body.innerHTML = '<div class="empty-msg">Loading...</div>';
+    panel.appendChild(body);
+
+    cotArea.appendChild(panel);
+
+    try {
+      const data = await api('/api/chain/' + run.sample_id + '?mode=' + mode);
+      body.innerHTML = '';
+      if (!data.slices || data.slices.length === 0) {
+        body.innerHTML = '<div class="empty-msg">No chain data available.</div>';
+        return;
+      }
+      const isSmart = mode === 'smart';
+      renderSlices(body, data.slices, isSmart, run.sample_id);
+    } catch (e) {
+      body.innerHTML = '<div class="empty-msg">Failed to load chain data.</div>';
+    }
+  });
+
+  await Promise.all(loadPromises);
+
+  setStatus(`${selectedRuns.length} run${selectedRuns.length > 1 ? 's' : ''} selected`);
+  loadAllDerivatives();
+}
+
+function renderSlices(container, slices, isSmart, sampleId) {
+  for (const s of slices) {
     const span = document.createElement('span');
     span.className = 'slice' + (isSmart ? ' slice-smart' : '');
     span.dataset.idx = s.idx;
@@ -251,27 +420,29 @@ async function loadChain() {
     span.dataset.tokEnd = s.tok_end;
     span.textContent = s.text;
     const tokCount = s.tok_end - s.tok_start;
-    span.title = `${isSmart ? 'Smart slice' : 'Slice'} ${s.idx}  ·  tokens ${s.tok_start}–${s.tok_end - 1}  (${tokCount} tok)`;
-    span.addEventListener('click', () => onSliceClick(span, s.idx, s.tok_start, s.tok_end));
-    cotPanel.appendChild(span);
+    span.title = `${isSmart ? 'Smart slice' : 'Slice'} ${s.idx}  \u00b7  tokens ${s.tok_start}\u2013${s.tok_end - 1}  (${tokCount} tok)`;
+    span.addEventListener('click', () => onSliceClick(container, span, s.idx, s.tok_start, s.tok_end, sampleId));
+    container.appendChild(span);
   }
-  setStatus(`${data.num_slices} ${isSmart ? 'smart ' : ''}slices`);
-  loadDerivatives();
 }
 
 // -- Slice detail ------------------------------------------------------------
-async function onSliceClick(el, idx, tokStart, tokEnd) {
-  cotPanel.querySelectorAll('.slice.active').forEach(e => e.classList.remove('active'));
+async function onSliceClick(panel, el, idx, tokStart, tokEnd, sampleId) {
+  // Clear active in all panels
+  cotArea.querySelectorAll('.slice.active').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
 
   const mode = selMode.value;
   const label = mode === 'smart' ? 'Smart slice' : 'Slice';
   const tokCount = tokEnd - tokStart;
-  detailHeader.textContent = `${label} ${idx}  ·  tokens ${tokStart}–${tokEnd - 1}  (${tokCount} tok)`;
+
+  const run = allRuns.find(r => r.sample_id === sampleId);
+  const runLabel = run ? `Run ${run.run_index}` : `Sample ${sampleId}`;
+  detailHeader.textContent = `${runLabel} \u2014 ${label} ${idx}  \u00b7  tokens ${tokStart}\u2013${tokEnd - 1}  (${tokCount} tok)`;
   detailBody.innerHTML = '<div class="empty-msg">Loading...</div>';
 
   const data = await api(
-    '/api/slice/' + currentSampleId + '/' + idx +
+    '/api/slice/' + sampleId + '/' + idx +
     '?tok_start=' + tokStart + '&tok_end=' + tokEnd
   );
   if (!data.tokens || data.tokens.length === 0) {
@@ -308,20 +479,23 @@ function fmt(v) {
   return Number(v).toFixed(4);
 }
 
-// -- Derivatives chart -------------------------------------------------------
+// -- Derivatives chart (multi-run overlay / split) ---------------------------
 const derivPanel = $('#deriv-panel'), derivHeader = $('#deriv-header');
 const derivControls = $('#deriv-controls'), derivChartArea = $('#deriv-chart-area');
 
 const DERIV_COLORS = { entropy: '#d32f2f', conf: '#1565c0', gini: '#2e7d32', selfcert: '#e65100', logprob: '#6a1b9a' };
 const DERIV_DASH = { averages: '', d1: '6 3', d2: '2 3', d3: '6 2 2 2' };
-let derivData = null;
+
+// Distinct hues for per-run differentiation in legend
+const RUN_HUES = ['#1565c0','#c62828','#2e7d32','#e65100','#6a1b9a','#00838f','#ad1457','#4e342e','#37474f','#827717'];
 
 derivHeader.addEventListener('click', () => {
   derivPanel.classList.toggle('collapsed');
   derivHeader.querySelector('.toggle-arrow').innerHTML = derivPanel.classList.contains('collapsed') ? '&#9654;' : '&#9660;';
+  if (!derivPanel.classList.contains('collapsed')) renderDerivChart();
 });
 
-function buildDerivControls(numSlices) {
+function buildDerivControls(maxSlices) {
   let html = '<div class="ctrl-section"><span class="ctrl-label">Metrics</span>';
   for (const m of ['entropy','conf','gini','selfcert','logprob']) {
     const chk = (m === 'entropy' || m === 'conf') ? ' checked' : '';
@@ -330,37 +504,104 @@ function buildDerivControls(numSlices) {
   html += '</div><div class="ctrl-section"><span class="ctrl-label">Order</span>';
   const orders = [['averages','avg'],['d1','d1'],['d2','d2'],['d3','d3']];
   for (const [key, label] of orders) {
-    if (key === 'd3' && numSlices < 4) continue;
-    if (key === 'd2' && numSlices < 3) continue;
+    if (key === 'd3' && maxSlices < 4) continue;
+    if (key === 'd2' && maxSlices < 3) continue;
     const chk = (key === 'averages' || key === 'd1') ? ' checked' : '';
     html += `<label><input type="checkbox" data-order="${key}"${chk}> ${label}</label>`;
   }
   html += '</div>';
+
+  // Layout toggle (only show when multiple runs selected)
+  if (selectedRuns.length > 1) {
+    html += '<div class="ctrl-section"><span class="ctrl-label">Layout</span>';
+    html += '<span class="layout-toggle">';
+    html += `<button data-layout="overlay" class="${derivLayout === 'overlay' ? 'active' : ''}">Overlay</button>`;
+    html += `<button data-layout="split" class="${derivLayout === 'split' ? 'active' : ''}">Split</button>`;
+    html += '</span></div>';
+  }
+
   derivControls.innerHTML = html;
   derivControls.querySelectorAll('input').forEach(inp => inp.addEventListener('change', renderDerivChart));
+  derivControls.querySelectorAll('.layout-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      derivLayout = btn.dataset.layout;
+      derivControls.querySelectorAll('.layout-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDerivChart();
+    });
+  });
+}
+
+async function loadAllDerivatives() {
+  if (selectedRuns.length === 0) return;
+  const mode = selMode.value;
+
+  const promises = selectedRuns.map(async (run) => {
+    if (allDerivData[run.sample_id]) return;
+    try {
+      const data = await api('/api/derivatives/' + run.sample_id + '?mode=' + mode);
+      allDerivData[run.sample_id] = data;
+    } catch (e) {
+      // ignore failed fetches
+    }
+  });
+  await Promise.all(promises);
+
+  let maxSlices = 0;
+  for (const d of Object.values(allDerivData)) {
+    if (d.num_slices > maxSlices) maxSlices = d.num_slices;
+  }
+  buildDerivControls(maxSlices);
+
+  if (derivPanel.classList.contains('collapsed') && maxSlices > 0) {
+    derivPanel.classList.remove('collapsed');
+    derivHeader.querySelector('.toggle-arrow').innerHTML = '&#9660;';
+  }
+  renderDerivChart();
 }
 
 function renderDerivChart() {
-  if (!derivData) { derivChartArea.innerHTML = ''; return; }
+  if (selectedRuns.length === 0) { derivChartArea.innerHTML = ''; return; }
 
   const selMetrics = [...derivControls.querySelectorAll('input[data-metric]:checked')].map(e => e.dataset.metric);
   const selOrders = [...derivControls.querySelectorAll('input[data-order]:checked')].map(e => e.dataset.order);
   if (!selMetrics.length || !selOrders.length) { derivChartArea.innerHTML = '<div class="empty-msg">Select metrics and orders.</div>'; return; }
 
-  const MIN_PX_PER_POINT = 60;  // minimum horizontal pixels between data points
+  const runDerivs = selectedRuns.filter(r => allDerivData[r.sample_id]).map((r, i) => ({
+    run: r,
+    data: allDerivData[r.sample_id],
+    isFirst: i === 0,
+    colorIdx: i,
+  }));
+
+  if (!runDerivs.length) { derivChartArea.innerHTML = '<div class="empty-msg">No derivative data.</div>'; return; }
+
+  if (derivLayout === 'split' && runDerivs.length > 1) {
+    renderDerivSplit(runDerivs, selMetrics, selOrders);
+  } else {
+    renderDerivOverlay(runDerivs, selMetrics, selOrders);
+  }
+}
+
+function renderDerivOverlay(runDerivs, selMetrics, selOrders) {
+  const MIN_PX_PER_POINT = 60;
   const H = 220, PAD_L = 50, PAD_R = 20, PAD_T = 14, PAD_B = 24;
-  const maxLen = derivData.num_slices;
+  let maxLen = 0;
+  for (const rd of runDerivs) {
+    if (rd.data.num_slices > maxLen) maxLen = rd.data.num_slices;
+  }
   const containerW = derivChartArea.clientWidth || 800;
   const neededW = PAD_L + PAD_R + Math.max(maxLen - 1, 1) * MIN_PX_PER_POINT;
   const W = Math.max(containerW, neededW);
   const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
 
-  // Collect all values for Y-axis scaling
   let allVals = [];
-  for (const order of selOrders) {
-    const src = derivData[order];
-    for (const m of selMetrics) {
-      if (src[m]) src[m].forEach(v => { if (v !== null) allVals.push(v); });
+  for (const rd of runDerivs) {
+    for (const order of selOrders) {
+      const src = rd.data[order];
+      for (const m of selMetrics) {
+        if (src && src[m]) src[m].forEach(v => { if (v !== null) allVals.push(v); });
+      }
     }
   }
   if (!allVals.length) { derivChartArea.innerHTML = '<div class="empty-msg">No data.</div>'; return; }
@@ -375,52 +616,180 @@ function renderDerivChart() {
 
   let svg = `<svg width="${W}px" height="${H}px" style="min-width:${W}px" xmlns="http://www.w3.org/2000/svg">`;
 
-  // Y=0 reference line (for derivatives)
   if (yMin < 0 && yMax > 0) {
     const y0 = yScale(0);
     svg += `<line x1="${PAD_L}" y1="${y0}" x2="${W - PAD_R}" y2="${y0}" class="ref-line"/>`;
     svg += `<text x="${PAD_L - 4}" y="${y0 + 3}" text-anchor="end" class="axis-label">0</text>`;
   }
 
-  // Y-axis labels
   svg += `<text x="${PAD_L - 4}" y="${PAD_T + 4}" text-anchor="end" class="axis-label">${yMax.toFixed(2)}</text>`;
   svg += `<text x="${PAD_L - 4}" y="${H - PAD_B + 4}" text-anchor="end" class="axis-label">${yMin.toFixed(2)}</text>`;
 
-  // X-axis slice labels — show every Nth to avoid overlap
   const pxPerPt = plotW / Math.max(maxLen - 1, 1);
   const step = pxPerPt >= 30 ? 1 : pxPerPt >= 15 ? 2 : Math.max(1, Math.ceil(30 / pxPerPt));
   for (let i = 0; i < maxLen; i += step) {
     svg += `<text x="${xScale(i)}" y="${H - 2}" text-anchor="middle" class="axis-label">${i}</text>`;
   }
 
-  // Draw lines
-  for (const order of selOrders) {
-    const src = derivData[order];
-    for (const m of selMetrics) {
-      const vals = src[m];
-      if (!vals) continue;
-      // Offset: averages align to slice index, d1 starts at 0.5, d2 at 1, d3 at 1.5
-      const offsetMap = { averages: 0, d1: 0.5, d2: 1, d3: 1.5 };
-      const xOff = offsetMap[order] || 0;
+  for (const rd of runDerivs) {
+    const strokeW = rd.isFirst ? 1.5 : 1.0;
+    const opacity = rd.isFirst ? 1.0 : 0.35;
 
-      // Build polyline segments (break on null)
-      let segments = [], current = [];
-      for (let i = 0; i < vals.length; i++) {
-        if (vals[i] === null) {
-          if (current.length) { segments.push(current); current = []; }
-        } else {
-          current.push({ i: i + xOff, v: vals[i], sliceIdx: i });
+    for (const order of selOrders) {
+      const src = rd.data[order];
+      for (const m of selMetrics) {
+        const vals = src ? src[m] : null;
+        if (!vals) continue;
+        const offsetMap = { averages: 0, d1: 0.5, d2: 1, d3: 1.5 };
+        const xOff = offsetMap[order] || 0;
+
+        let segments = [], current = [];
+        for (let i = 0; i < vals.length; i++) {
+          if (vals[i] === null) {
+            if (current.length) { segments.push(current); current = []; }
+          } else {
+            current.push({ i: i + xOff, v: vals[i], sliceIdx: i });
+          }
+        }
+        if (current.length) segments.push(current);
+
+        const color = DERIV_COLORS[m];
+        const dash = DERIV_DASH[order];
+        for (const seg of segments) {
+          const pts = seg.map(p => `${xScale(p.i)},${yScale(p.v)}`).join(' ');
+          svg += `<polyline points="${pts}" stroke="${color}" stroke-dasharray="${dash}" stroke-width="${strokeW}" opacity="${opacity}"/>`;
+          for (const p of seg) {
+            svg += `<circle cx="${xScale(p.i)}" cy="${yScale(p.v)}" r="${rd.isFirst ? 2.5 : 2}" fill="${color}" opacity="${opacity}" data-slice="${p.sliceIdx}" data-metric="${m}" data-order="${order}" data-val="${p.v}" data-sample="${rd.run.sample_id}"/>`;
+          }
         }
       }
-      if (current.length) segments.push(current);
+    }
+  }
 
-      const color = DERIV_COLORS[m];
-      const dash = DERIV_DASH[order];
-      for (const seg of segments) {
-        const pts = seg.map(p => `${xScale(p.i)},${yScale(p.v)}`).join(' ');
-        svg += `<polyline points="${pts}" stroke="${color}" stroke-dasharray="${dash}"/>`;
-        for (const p of seg) {
-          svg += `<circle cx="${xScale(p.i)}" cy="${yScale(p.v)}" r="2.5" fill="${color}" data-slice="${p.sliceIdx}" data-metric="${m}" data-order="${order}" data-val="${p.v}"/>`;
+  // Legend
+  if (runDerivs.length > 1) {
+    const legX = W - PAD_R - 10;
+    let legY = PAD_T + 4;
+    for (let i = runDerivs.length - 1; i >= 0; i--) {
+      const rd = runDerivs[i];
+      const mark = rd.run.is_correct === true ? '\u2713' : rd.run.is_correct === false ? '\u2717' : '';
+      const txt = `Run ${rd.run.run_index} ${mark}`;
+      const color = RUN_HUES[rd.colorIdx % RUN_HUES.length];
+      const opacity = rd.isFirst ? 1.0 : 0.5;
+      svg += `<g class="deriv-legend" opacity="${opacity}">`;
+      svg += `<circle cx="${legX - 4}" cy="${legY - 3}" r="4" fill="${color}"/>`;
+      svg += `<text x="${legX - 12}" y="${legY}" text-anchor="end" fill="#333" font-weight="${rd.isFirst ? '700' : '400'}">${txt}</text>`;
+      svg += `</g>`;
+      legY += 14;
+    }
+  }
+
+  svg += '</svg>';
+  derivChartArea.innerHTML = svg;
+  attachDerivClickHandlers();
+}
+
+function renderDerivSplit(runDerivs, selMetrics, selOrders) {
+  const MIN_PX_PER_POINT = 60;
+  const H_PER_CHART = 180, PAD_L = 50, PAD_R = 20, PAD_T = 22, PAD_B = 24;
+
+  let globalMaxLen = 0;
+  for (const rd of runDerivs) {
+    if (rd.data.num_slices > globalMaxLen) globalMaxLen = rd.data.num_slices;
+  }
+  const containerW = derivChartArea.clientWidth || 800;
+  const neededW = PAD_L + PAD_R + Math.max(globalMaxLen - 1, 1) * MIN_PX_PER_POINT;
+  const W = Math.max(containerW, neededW);
+  const plotW = W - PAD_L - PAD_R;
+  const plotH = H_PER_CHART - PAD_T - PAD_B;
+
+  const totalH = runDerivs.length * H_PER_CHART;
+  let svg = `<svg width="${W}px" height="${totalH}px" style="min-width:${W}px" xmlns="http://www.w3.org/2000/svg">`;
+
+  const xScale = i => PAD_L + (i / Math.max(globalMaxLen - 1, 1)) * plotW;
+
+  for (let ri = 0; ri < runDerivs.length; ri++) {
+    const rd = runDerivs[ri];
+    const yOff = ri * H_PER_CHART;
+
+    // Per-chart Y-axis scaling
+    let chartVals = [];
+    for (const order of selOrders) {
+      const src = rd.data[order];
+      for (const m of selMetrics) {
+        if (src && src[m]) src[m].forEach(v => { if (v !== null) chartVals.push(v); });
+      }
+    }
+    if (!chartVals.length) continue;
+
+    let yMin = Math.min(...chartVals), yMax = Math.max(...chartVals);
+    if (yMin === yMax) { yMin -= 0.5; yMax += 0.5; }
+    const yPad = (yMax - yMin) * 0.08;
+    yMin -= yPad; yMax += yPad;
+
+    const yScale = v => yOff + PAD_T + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+
+    // Chart background
+    svg += `<rect x="0" y="${yOff}" width="${W}" height="${H_PER_CHART}" fill="${ri % 2 === 0 ? '#fff' : '#fafafa'}" />`;
+
+    // Separator line
+    if (ri > 0) {
+      svg += `<line x1="0" y1="${yOff}" x2="${W}" y2="${yOff}" stroke="#ddd" stroke-width="1"/>`;
+    }
+
+    // Run label
+    const mark = rd.run.is_correct === true ? '\u2713' : rd.run.is_correct === false ? '\u2717' : '';
+    const runColor = RUN_HUES[rd.colorIdx % RUN_HUES.length];
+    svg += `<circle cx="12" cy="${yOff + 12}" r="5" fill="${runColor}"/>`;
+    svg += `<text x="22" y="${yOff + 15}" font-size="11" font-weight="600" fill="#333">Run ${rd.run.run_index} ${mark}</text>`;
+
+    // Y=0 reference line
+    if (yMin < 0 && yMax > 0) {
+      const y0 = yScale(0);
+      svg += `<line x1="${PAD_L}" y1="${y0}" x2="${W - PAD_R}" y2="${y0}" class="ref-line"/>`;
+      svg += `<text x="${PAD_L - 4}" y="${y0 + 3}" text-anchor="end" class="axis-label">0</text>`;
+    }
+
+    // Y-axis labels
+    svg += `<text x="${PAD_L - 4}" y="${yOff + PAD_T + 4}" text-anchor="end" class="axis-label">${yMax.toFixed(2)}</text>`;
+    svg += `<text x="${PAD_L - 4}" y="${yOff + H_PER_CHART - PAD_B + 4}" text-anchor="end" class="axis-label">${yMin.toFixed(2)}</text>`;
+
+    // X-axis labels (only on last chart)
+    if (ri === runDerivs.length - 1) {
+      const pxPerPt = plotW / Math.max(globalMaxLen - 1, 1);
+      const step = pxPerPt >= 30 ? 1 : pxPerPt >= 15 ? 2 : Math.max(1, Math.ceil(30 / pxPerPt));
+      for (let i = 0; i < globalMaxLen; i += step) {
+        svg += `<text x="${xScale(i)}" y="${yOff + H_PER_CHART - 2}" text-anchor="middle" class="axis-label">${i}</text>`;
+      }
+    }
+
+    // Draw lines
+    for (const order of selOrders) {
+      const src = rd.data[order];
+      for (const m of selMetrics) {
+        const vals = src ? src[m] : null;
+        if (!vals) continue;
+        const offsetMap = { averages: 0, d1: 0.5, d2: 1, d3: 1.5 };
+        const xOff = offsetMap[order] || 0;
+
+        let segments = [], current = [];
+        for (let i = 0; i < vals.length; i++) {
+          if (vals[i] === null) {
+            if (current.length) { segments.push(current); current = []; }
+          } else {
+            current.push({ i: i + xOff, v: vals[i], sliceIdx: i });
+          }
+        }
+        if (current.length) segments.push(current);
+
+        const color = DERIV_COLORS[m];
+        const dash = DERIV_DASH[order];
+        for (const seg of segments) {
+          const pts = seg.map(p => `${xScale(p.i)},${yScale(p.v)}`).join(' ');
+          svg += `<polyline points="${pts}" stroke="${color}" stroke-dasharray="${dash}" stroke-width="1.5"/>`;
+          for (const p of seg) {
+            svg += `<circle cx="${xScale(p.i)}" cy="${yScale(p.v)}" r="2.5" fill="${color}" data-slice="${p.sliceIdx}" data-metric="${m}" data-order="${order}" data-val="${p.v}" data-sample="${rd.run.sample_id}"/>`;
+          }
         }
       }
     }
@@ -428,40 +797,34 @@ function renderDerivChart() {
 
   svg += '</svg>';
   derivChartArea.innerHTML = svg;
+  attachDerivClickHandlers();
+}
 
-  // Click on data point → highlight slice
-  derivChartArea.querySelectorAll('circle').forEach(c => {
+function attachDerivClickHandlers() {
+  derivChartArea.querySelectorAll('circle[data-slice]').forEach(c => {
     c.addEventListener('click', () => {
       const si = parseInt(c.dataset.slice, 10);
-      const span = cotPanel.querySelector(`.slice[data-idx="${si}"]`);
-      if (span) { span.scrollIntoView({ block: 'nearest' }); span.click(); }
+      const sampleId = parseInt(c.dataset.sample, 10);
+      // Find the panel for this run
+      const panel = cotArea.querySelector(`.cot-panel-wrap[data-sample-id="${sampleId}"]`);
+      if (panel) {
+        const span = panel.querySelector(`.slice[data-idx="${si}"]`);
+        if (span) { span.scrollIntoView({ block: 'nearest' }); span.click(); }
+      }
     });
   });
 }
 
-async function loadDerivatives() {
-  if (currentSampleId === null) return;
-  const mode = selMode.value;
-  try {
-    derivData = await api('/api/derivatives/' + currentSampleId + '?mode=' + mode);
-    buildDerivControls(derivData.num_slices);
-    if (!derivPanel.classList.contains('collapsed')) renderDerivChart();
-    // Auto-expand on first load
-    if (derivPanel.classList.contains('collapsed') && derivData.num_slices > 0) {
-      derivPanel.classList.remove('collapsed');
-      derivHeader.querySelector('.toggle-arrow').innerHTML = '&#9660;';
-      renderDerivChart();
-    }
-  } catch (e) {
-    derivChartArea.innerHTML = '<div class="empty-msg">Failed to load derivatives.</div>';
-  }
+// -- Reload on mode change ---------------------------------------------------
+function reloadAll() {
+  allDerivData = {};
+  loadAllPanels();
 }
 
 // -- Events ------------------------------------------------------------------
 selDS.addEventListener('change', loadProblems);
 selProb.addEventListener('change', loadRuns);
-selRun.addEventListener('change', loadChain);
-selMode.addEventListener('change', loadChain);
+selMode.addEventListener('change', reloadAll);
 
 loadDatasets();
 </script>
