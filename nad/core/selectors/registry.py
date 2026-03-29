@@ -14,6 +14,7 @@ from .impl import (MinActivationSelector, MaxActivationSelector, MinConfidenceSe
                    TournamentCopelandSelector, TournamentDeepConfSelector,
                    TwoStageMedoidSelector, TwoStageTournamentSelector)
 from .ml_impl import LinearProbeSelector, LogisticSelector, IsotonicCalibratedSelector
+from .temporal_impl import TemporalSliceSelector
 from .impl_legacy import (LegacyKNNMedoidSelector, LegacyMedoidSelector,
                          LegacyDBSCANMedoidSelector, LegacyConsensusMinSelector,
                          LegacyConsensusMaxSelector)
@@ -178,6 +179,16 @@ def build_selector(spec: SelectorSpec):
     if lowered in ("isotonic-deepconf", "isotonic_deepconf"):
         mp = params.get("model_path", None)
         return IsotonicCalibratedSelector(base="deepconf", model_path=mp)
+
+    # Temporal slice selector (时序折扣切片选择器)
+    # params: metric, gamma, threshold, slice_size
+    if lowered in ("temporal-slice", "temporal_slice"):
+        return TemporalSliceSelector(
+            metric=params.get("metric", "tok_conf"),
+            gamma=float(params.get("gamma", 0.9)),
+            threshold=float(params.get("threshold", 0.01)),
+            slice_size=int(params.get("slice_size", 32)),
+        )
 
     raise ValueError(f"Unknown selector: {spec.name}")
 

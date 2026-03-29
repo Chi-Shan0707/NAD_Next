@@ -1,0 +1,6 @@
+{
+  "metric": "tok_neg_entropy",
+  "gamma": 0.7,
+  "threshold": 0.1,
+  "slice_size": 32
+}

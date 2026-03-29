@@ -188,6 +188,248 @@ def _selector_accuracy_from_model(model, X_groups, y_groups, model_type="logisti
     return correct / total if total else 0.0
 
 
+# ── single-feature ablation ───────────────────────────────────────────────────
+
+def _selector_accuracy_from_model_single(
+    model,
+    groups: list[tuple[np.ndarray, np.ndarray]],
+    feat_idx: int,
+) -> float:
+    """
+    在单特征 X_g[:, feat_idx:feat_idx+1] 上评估 logistic 模型的选择准确率。
+    Evaluate logistic model accuracy using only feature column feat_idx.
+    """
+    correct = total = 0
+    for X_g, y_g in groups:
+        X_single = X_g[:, feat_idx:feat_idx+1]
+        scores   = model.predict_proba(X_single)[:, 1]
+        chosen   = int(np.argmax(scores))
+        correct += int(y_g[chosen])
+        total   += 1
+    return correct / total if total else 0.0
+
+
+def train_single_feature_ablation(
+    data: dict[str, tuple[np.ndarray, np.ndarray]],
+    data_groups: dict[str, list[tuple[np.ndarray, np.ndarray]]],
+    out_dir: "Path",
+):
+    """
+    单特征消融：逐一用每个特征（12个）单独训练 LogisticRegression，
+    做留一数据集交叉验证，打印准确率汇总表，
+    并将每个特征的全量训练模型保存到 out_dir/single_feat_<name>.pkl。
+
+    Single-feature ablation: train one LogisticRegression per feature (12 total)
+    using leave-one-dataset-out CV, print accuracy summary table,
+    and save each full-data model to out_dir/single_feat_<name>.pkl.
+    """
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.linear_model import LogisticRegression
+    import joblib
+
+    datasets = list(data.keys())
+    if len(datasets) < 2:
+        print("Need ≥ 2 datasets for single-feature ablation CV, skipping.")
+        return
+
+    print("\n=== Single-Feature Ablation (Leave-One-Dataset-Out CV) ===")
+    header = f"{'Feature':<20s}" + "".join(f"  {ds[:8]:>8s}" for ds in datasets) + "   Mean"
+    print(header)
+    print("-" * len(header))
+
+    X_all = np.vstack([d[0] for d in data.values()])
+    y_all = np.concatenate([d[1] for d in data.values()])
+
+    for feat_idx, fname in enumerate(FEATURE_NAMES):
+        accs = []
+
+        # 留一交叉验证 | leave-one-dataset-out CV
+        for test_ds in datasets:
+            train_dsets = [d for d in datasets if d != test_ds]
+            X_train = np.vstack([data[d][0][:, feat_idx:feat_idx+1] for d in train_dsets])
+            y_train = np.concatenate([data[d][1] for d in train_dsets])
+
+            pipe = Pipeline([
+                ("sc", StandardScaler()),
+                ("lr", LogisticRegression(
+                    C=1.0, max_iter=2000, solver="lbfgs", class_weight="balanced"
+                )),
+            ])
+            pipe.fit(X_train, y_train)
+
+            acc = _selector_accuracy_from_model_single(
+                pipe, data_groups[test_ds], feat_idx
+            )
+            accs.append(acc)
+
+        row  = f"{fname:<20s}" + "".join(f"  {a*100:7.1f}%" for a in accs)
+        row += f"   {np.mean(accs)*100:.1f}%"
+        print(row)
+
+        # 全量训练并保存 | train on all data and save
+        full_pipe = Pipeline([
+            ("sc", StandardScaler()),
+            ("lr", LogisticRegression(
+                C=1.0, max_iter=2000, solver="lbfgs", class_weight="balanced"
+            )),
+        ])
+        full_pipe.fit(X_all[:, feat_idx:feat_idx+1], y_all)
+        joblib.dump(full_pipe, out_dir / f"single_feat_{fname}.pkl")
+
+    print(f"\nSingle-feature models saved to {out_dir}/single_feat_*.pkl")
+
+
+# ── temporal selector tuning ──────────────────────────────────────────────────
+
+def tune_temporal_selector(datasets: list[str], out_dir: "Path"):
+    """
+    网格搜索时序折扣切片选择器的超参数 (gamma, threshold, metric)。
+    在所有可用数据集上直接评估准确率（时序选择器无需训练）。
+    打印结果表格，并将最优参数保存到 out_dir/temporal_best_params.json。
+
+    Grid-search hyperparameters (gamma, threshold, metric) for TemporalSliceSelector.
+    Evaluates accuracy directly on all available datasets (no training needed).
+    Prints a result table and saves best params to out_dir/temporal_best_params.json.
+    """
+    import math as _math
+    from nad.core.selectors.temporal_impl import TemporalSliceSelector
+
+    gamma_grid     = [0.7, 0.8, 0.9, 0.95]
+    threshold_grid = [0.001, 0.01, 0.1]
+    metric_grid    = ["tok_conf", "tok_neg_entropy"]
+    slice_size     = 32
+
+    available_ds = [ds for ds in datasets if ds in DATASET_CACHES]
+    if not available_ds:
+        print("No available datasets for temporal tuning, skipping.")
+        return
+
+    # ── 预加载数据集元信息 | Preload dataset metadata ────────────────────────
+    print("\nPreloading caches for temporal selector tuning …")
+    ds_info: dict[str, tuple] = {}
+    for ds in available_ds:
+        cache_root  = Path(DATASET_CACHES[ds])
+        reader      = CacheReader(str(cache_root))
+        correctness = _load_ground_truth(str(cache_root))
+        meta        = json.loads((cache_root / "meta.json").read_text())
+        groups: dict[str, list[int]] = {}
+        for sid, sample in enumerate(meta["samples"]):
+            pid = str(sample["problem_id"])
+            groups.setdefault(pid, []).append(sid)
+        ds_info[ds] = (reader, correctness, groups)
+
+    # ── 预计算 token 数组（每 metric × dataset 计算一次）| Precompute token arrays ──
+    # token_arrays[ds][metric] = {run_id: np.ndarray | None}
+    token_arrays: dict[str, dict[str, dict[int, np.ndarray | None]]] = {}
+    for ds in available_ds:
+        reader, _, groups = ds_info[ds]
+        token_arrays[ds] = {}
+        for metric in metric_grid:
+            print(f"  Loading {metric} arrays for {ds} …", end="", flush=True)
+            arrs: dict[int, np.ndarray | None] = {}
+            for run_ids in groups.values():
+                for rid in run_ids:
+                    if rid in arrs:
+                        continue
+                    tv = reader.get_token_view(int(rid))
+                    if tv is None:
+                        arrs[rid] = None
+                        continue
+                    raw = tv.tok_conf if metric == "tok_conf" else tv.tok_neg_entropy
+                    arrs[rid] = (
+                        np.asarray(raw, dtype=np.float64)
+                        if raw is not None and len(raw) > 0
+                        else None
+                    )
+            token_arrays[ds][metric] = arrs
+            total_runs = sum(len(rids) for rids in groups.values())
+            print(f" {total_runs} runs done.")
+
+    # ── 计算单个 run 的加权分数 | Compute per-run weighted score ─────────────
+    def _score(arr, metric, gamma, threshold):
+        """时序折扣切片质量分 | Temporally-discounted slice quality score."""
+        if arr is None or len(arr) == 0:
+            return -np.inf
+        n  = len(arr)
+        S  = max(1, (n + slice_size - 1) // slice_size)
+        means = np.array([
+            float(np.mean(arr[s * slice_size:(s + 1) * slice_size]))
+            for s in range(S)
+        ], dtype=np.float64)
+        quality = -means if metric == "tok_conf" else means
+
+        # K = number of slices with γ^(2k) ≥ threshold
+        if gamma >= 1.0 or threshold <= 0.0:
+            K = S
+        elif gamma <= 0.0:
+            K = 1
+        else:
+            log_g2  = _math.log(gamma ** 2)
+            K = max(1, min(S, int(_math.floor(_math.log(threshold) / log_g2)) + 1))
+
+        return sum(
+            (gamma ** (2 * k)) * quality[S - 1 - k]
+            for k in range(K)
+        )
+
+    # ── 网格搜索 | Grid search ───────────────────────────────────────────────
+    print("\n=== Temporal Selector Grid Search ===")
+    header = (
+        f"{'metric':<16s} {'gamma':>6s} {'thresh':>7s}"
+        + "".join(f"  {ds[:8]:>8s}" for ds in available_ds)
+        + "   Mean"
+    )
+    print(header)
+    print("-" * len(header))
+
+    best_mean   = -1.0
+    best_params: dict = {}
+
+    for metric in metric_grid:
+        for gamma in gamma_grid:
+            for threshold in threshold_grid:
+                accs = []
+                for ds in available_ds:
+                    _, correctness, groups = ds_info[ds]
+                    arrs = token_arrays[ds][metric]
+                    correct = total = 0
+                    for pid, run_ids in groups.items():
+                        if len(run_ids) < 2:
+                            continue
+                        run_scores = np.array(
+                            [_score(arrs.get(rid), metric, gamma, threshold)
+                             for rid in run_ids],
+                            dtype=np.float64,
+                        )
+                        chosen   = int(np.argmax(run_scores))
+                        correct += int(bool(correctness.get(run_ids[chosen], False)))
+                        total   += 1
+                    accs.append(correct / total if total else 0.0)
+
+                mean_acc = float(np.mean(accs))
+                row = (
+                    f"{metric:<16s} {gamma:>6.2f} {threshold:>7.3f}"
+                    + "".join(f"  {a * 100:7.1f}%" for a in accs)
+                    + f"   {mean_acc * 100:.1f}%"
+                )
+                print(row)
+
+                if mean_acc > best_mean:
+                    best_mean   = mean_acc
+                    best_params = {
+                        "metric":     metric,
+                        "gamma":      gamma,
+                        "threshold":  threshold,
+                        "slice_size": slice_size,
+                    }
+
+    print(f"\nBest params: {best_params}  (mean accuracy: {best_mean*100:.1f}%)")
+    out_path = out_dir / "temporal_best_params.json"
+    out_path.write_text(json.dumps(best_params, indent=2), encoding="utf-8")
+    print(f"Saved to {out_path}")
+
+
 def leave_one_out_cv(data: dict[str, tuple[np.ndarray, np.ndarray]],
                      data_groups: dict[str, list[tuple[np.ndarray, np.ndarray]]]):
     """留一数据集交叉验证，打印结果表格。Leave-one-dataset-out CV, print results table."""
@@ -281,6 +523,12 @@ def main():
 
     # ── 2. Leave-one-out CV ──────────────────────────────────────────────────
     leave_one_out_cv(data, data_groups)
+
+    # ── 2b. Single-feature ablation ──────────────────────────────────────────
+    train_single_feature_ablation(data, data_groups, out_dir)
+
+    # ── 2c. Temporal selector tuning ─────────────────────────────────────────
+    tune_temporal_selector(requested, out_dir)
 
     # ── 3. Train final models on all data ────────────────────────────────────
     X_all = np.vstack([d[0] for d in data.values()])
