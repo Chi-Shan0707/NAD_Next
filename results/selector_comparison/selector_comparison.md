@@ -1,15 +1,15 @@
-# Selector Accuracy Comparison
+# Selector Accuracy Comparison | 选择器准确率对比
 
-Model: DeepSeek-R1-0528-Qwen3-8B  |  Distance: Jaccard  |  Runs per problem: 64
+模型 Model: DeepSeek-R1-0528-Qwen3-8B  |  距离 Distance: Jaccard  |  每题 run 数 Runs per problem: 64
 
-Type legend:
-- `[S]`    single-run score (no distance matrix)
-- `[P]`    pairwise N×N Jaccard matrix
-- `[O]`    oracle baseline (uses all ground-truth labels)
-- `[P+E]`  pairwise + group ensemble
-- `[P+T]`  pairwise + tournament + softmax
-- `[P+2S]` pairwise + two-stage top-k
-- `[ML]`   ML selector (trained on labelled data, requires `models/ml_selectors/`)
+类型图例 | Type legend:
+- `[S]`    单样本评分 | single-run score (no distance matrix)
+- `[P]`    两两 Jaccard 矩阵 | pairwise N×N Jaccard matrix
+- `[O]`    Oracle 基线 | oracle baseline (uses all ground-truth labels)
+- `[P+E]`  两两 + 分组 Ensemble | pairwise + group ensemble
+- `[P+T]`  两两 + 锦标赛 + softmax | pairwise + tournament + softmax
+- `[P+2S]` 两两 + 两阶段 top-k | pairwise + two-stage top-k
+- `[ML]`   ML 选择器（需预训练模型）| ML selector (trained, requires `models/ml_selectors/`)
 
 ```
 Selector                  AIME24    AIME25   BruMo25      GPQA    HMMT25     LCBv5      Mean        Type
@@ -33,52 +33,64 @@ linear-probe               86.7%     76.7%     76.7%     67.2%     56.7%     58.
 logistic                   86.7%     76.7%     76.7%     68.2%     56.7%     58.7%     70.6%        [ML]
 isotonic-medoid            80.0%     73.3%     76.7%     64.1%     56.7%     59.9%     68.4%        [ML]
 isotonic-deepconf          76.7%     66.7%     63.3%     61.6%     46.7%     58.7%     62.3%        [ML]
+temporal-slice             70.0%     63.3%     63.3%     66.7%     40.0%     58.7%     60.3%         [S]
+trajectory                 66.7%     60.0%     66.7%     64.6%     36.7%     57.5%     58.7%         [S]
+layer-stratified           83.3%     73.3%     80.0%     63.6%     56.7%     59.3%     69.4%         [S]
+trajectory-fusion          66.7%     70.0%     83.3%     68.7%     63.3%     57.5%     68.3%        [ML]
 avg64@                     75.3%     65.7%     69.4%     60.2%     48.6%     58.7%     63.0%         [O]
 con64@                     80.0%     76.7%     80.0%     70.2%     66.7%     58.1%     71.9%         [O]
 ```
 
-## Rank by Mean Accuracy
+## Rank by Mean Accuracy | 按均值准确率排名
 
 ```
    1. con64@                   71.9%  [O]       oracle baseline
-   2. logistic                 70.6%  [ML]      ★ ML — logistic regression on 12 features
+   2. logistic                 70.6%  [ML]      ★ ML — logistic on 12 features
    3. consensus-min            70.4%  [P]
-   4. linear-probe             70.3%  [ML]      ★ ML — ridge regression on 12 features
+   4. linear-probe             70.3%  [ML]      ★ ML — ridge on 12 features
    5. knn-medoid               69.8%  [P]
-   6. twostage-tournament      69.2%  [P+2S]
-   7. twostage-medoid          69.1%  [P+2S]
-   8. tournament-copeland      68.8%  [P+T]
-   9. isotonic-medoid          68.4%  [ML]      ★ ML — isotonic calibration of medoid score
-  10. ensemble-medoid          68.4%  [P+E]
-  11. dbscan-medoid            67.9%  [P]
-  12. medoid                   67.8%  [P]
-  13. consensus-max            67.4%  [P]
-  14. min-activation           66.3%  [S]
-  15. avg64@                   63.0%  [O]       oracle baseline
-  16. tournament-deepconf      62.3%  [S+T]
-  17. isotonic-deepconf        62.3%  [ML]
-  18. deepconf                 61.0%  [S]
-  19. ensemble-deepconf        61.0%  [S+E]
-  20. max-activation           53.3%  [S]
-  21. min-confidence           48.1%  [S]
+   6. layer-stratified         69.4%  [S]       ★ NEW — layer activation distribution
+   7. twostage-tournament      69.2%  [P+2S]
+   8. twostage-medoid          69.1%  [P+2S]
+   9. tournament-copeland      68.8%  [P+T]
+  10. isotonic-medoid          68.4%  [ML]      ★ ML — isotonic calibration of medoid score
+  11. ensemble-medoid          68.4%  [P+E]
+  12. trajectory-fusion        68.3%  [ML]      ★ NEW — 22-D logistic (12 base + 10 trajectory)
+  13. dbscan-medoid            67.9%  [P]
+  14. medoid                   67.8%  [P]
+  15. consensus-max            67.4%  [P]
+  16. min-activation           66.3%  [S]
+  17. avg64@                   63.0%  [O]       oracle baseline
+  18. tournament-deepconf      62.3%  [S+T]
+  19. isotonic-deepconf        62.3%  [ML]
+  20. deepconf                 61.0%  [S]
+  21. ensemble-deepconf        61.0%  [S+E]
+  22. temporal-slice           60.3%  [S]       temporal discount on tok_neg_entropy
+  23. trajectory               58.7%  [S]       ★ NEW — trajectory structure heuristic
+  24. max-activation           53.3%  [S]
+  25. min-confidence           48.1%  [S]
 ```
 
-## Notes
+## Notes | 说明
 
-- **[S]** Single-run selectors score each run independently.
+- **[S]** 单样本评分，独立计算每个 run。Single-run selectors score each run independently.
   - `min-activation`, `max-activation`, `min-confidence`, `deepconf`
-- **[P]** Pairwise selectors use the full N×N Jaccard distance matrix.
-- **[O]** Oracle baselines use ground-truth correctness from all runs.
-  - `avg64@`: average accuracy across all 64 runs; `con64@`: majority-vote correctness
-- **[P+E] Group Ensemble**: split N runs into random groups of 8, select best per group, then select among winners.
-  - `ensemble-medoid` (medoid per group) | `ensemble-deepconf` (DeepConf per group)
-- **[P+T] Tournament + softmax**: pairwise Copeland or DeepConf comparison → rank → softmax (temp=0.2).
+- **[P]** 两两选择器，使用完整 N×N Jaccard 距离矩阵。Pairwise selectors use the full N×N Jaccard distance matrix.
+- **[O]** Oracle 基线，使用所有 ground-truth 标签。Oracle baselines use ground-truth correctness from all runs.
+  - `avg64@`: 64 个 run 的平均准确率 | average accuracy; `con64@`: 多数投票 | majority-vote
+- **[P+E] 分组 Ensemble | Group Ensemble**: N 个 run 随机分为 8 人组，每组选最佳，胜者再选。split N runs into groups of 8, select best per group, then among winners.
+  - `ensemble-medoid` (每组 medoid) | `ensemble-deepconf` (每组 DeepConf)
+- **[P+T] 锦标赛 + softmax | Tournament + softmax**: Copeland 或 DeepConf 两两比较 → rank → softmax (temp=0.2).
   - `tournament-copeland` | `tournament-deepconf`
-- **[P+2S] Two-Stage**: groups of 16 → top-4 per group → 16-finalist final round.
+- **[P+2S] 两阶段 | Two-Stage**: 16 人组 → 每组 top-4 → 16 人决赛。groups of 16 → top-4 per group → 16-finalist final round.
   - `twostage-medoid` (medoid) | `twostage-tournament` (Copeland + softmax)
-- **[ML] ML Selectors**: trained with `scripts/train_ml_selectors.py` on 31,040 labelled (problem, run) pairs from all 6 datasets. Models stored in `models/ml_selectors/`.
+- **[ML] ML 选择器 | ML Selectors**: 用 `scripts/train_ml_selectors.py` 在 31,040 个带标注 (题目, run) 对上训练。trained on 31,040 labelled (problem, run) pairs. Models in `models/ml_selectors/`.
+- **轨迹选择器 | Trajectory selectors** (实验 Exp 7-9, `nad/core/selectors/trajectory_impl.py`):
+  - `trajectory`: 轨迹结构启发式评分（连续性/反思/新颖度）| heuristic scoring on trajectory structure
+  - `layer-stratified`: 层激活分布启发式评分（深浅比/层熵/Gini）| heuristic scoring on layer distribution
+  - `trajectory-fusion`: 22-D 融合特征 ML 逻辑回归 | 22-D logistic regression (12 base + 10 trajectory)
 
-### ML Features (12 dimensions, group-normalised)
+### ML Features (12 dimensions, group-normalised) | ML 特征（12 维，组内归一化）
 
 | # | Feature | Description |
 |---|---------|-------------|
@@ -90,7 +102,7 @@ con64@                     80.0%     76.7%     80.0%     70.2%     66.7%     58.
 | 10 | `log_n` | log(group size), context feature |
 | 11 | `log_length` | log(activation length), absolute scale |
 
-### ML Model Details
+### ML Model Details | ML 模型详情
 
 | Model | Train target | Key hyperparams |
 |-------|-------------|-----------------|
@@ -99,20 +111,24 @@ con64@                     80.0%     76.7%     80.0%     70.2%     66.7%     58.
 | `isotonic-medoid` | IsotonicRegression on `mean_dist_r` | monotone increasing |
 | `isotonic-deepconf` | IsotonicRegression on `dc_r` | monotone increasing |
 
-### Leave-One-Dataset-Out CV (honest out-of-distribution estimates)
+### Leave-One-Dataset-Out CV | 留一数据集交叉验证（诚实的分布外估计）
 
 ```
 Selector                      aime24    aime25   brumo25      gpqa    hmmt25  livecode    Mean
 ----------------------------------------------------------------------------------------------
 linear_probe                   86.7%     76.7%     80.0%     62.6%     53.3%     59.3%   69.8%
-logistic                       86.7%     76.7%     80.0%     63.6%     53.3%     58.1%   69.7%
+logistic (base 12-D)           86.7%     76.7%     80.0%     63.6%     53.3%     58.1%   69.7%
 isotonic_medoid                76.7%     73.3%     76.7%     66.7%     56.7%     59.9%   68.3%
+trajectory-fusion (22-D)       66.7%     70.0%     83.3%     68.7%     63.3%     57.5%   68.3%
+logistic (traj 10-D only)      70.0%     70.0%     76.7%     63.1%     56.7%     58.7%   65.9%
 isotonic_deepconf              76.7%     66.7%     63.3%     61.6%     46.7%     58.7%   62.3%
 ```
 
 ## Single-Feature Ablation (Leave-One-Dataset-Out CV)
 
-Each of the 12 ML features is used **individually** to train a LogisticRegression selector, then evaluated via leave-one-dataset-out CV. This reveals which single signal is most predictive.
+Each of the 22 ML features (12 base + 10 trajectory) is used **individually** to train a LogisticRegression selector, then evaluated via leave-one-dataset-out CV. This reveals which single signal is most predictive.
+
+### Base Features (12-D, from distance matrix + token stats)
 
 ```
 Feature              AIME24    AIME25   BruMo25      GPQA    HMMT25     LCBv5      Mean
@@ -123,37 +139,79 @@ knn3_z                86.7%     76.7%     76.7%     65.7%     53.3%     59.9%   
 knn3_r                86.7%     76.7%     76.7%     65.7%     53.3%     59.9%     69.8%
 length_z              83.3%     73.3%     76.7%     61.1%     46.7%     56.9%     66.3%
 length_r              83.3%     73.3%     76.7%     61.1%     46.7%     56.9%     66.3%
-dc_z ★                80.0%     73.3%     83.3%     60.6%     70.0%     58.1%     70.9%
-dc_r ★                80.0%     73.3%     83.3%     60.6%     70.0%     58.1%     70.9%
+dc_z                  80.0%     73.3%     83.3%     60.6%     70.0%     58.1%     70.9%
+dc_r                  80.0%     73.3%     83.3%     60.6%     70.0%     58.1%     70.9%
 copeland_z            80.0%     73.3%     76.7%     65.2%     56.7%     58.1%     68.3%
 copeland_r            80.0%     70.0%     73.3%     66.2%     56.7%     58.1%     67.4%
 log_n                 76.7%     66.7%     63.3%     61.6%     46.7%     58.7%     62.3%
 log_length            83.3%     73.3%     76.7%     61.1%     46.7%     56.9%     66.3%
 ```
 
-### Ablation Rank
+### Trajectory Features (10-D, from neuron activation trajectory analysis)
+
+| # | Feature | Description |
+|---|---------|-------------|
+| 12 | `mean_continuity` | mean Jaccard similarity between consecutive 32-token slices |
+| 13 | `mean_novelty` | mean (1 - max prior Jaccard) across slices |
+| 14 | `max_reflection` | max non-adjacent Jaccard similarity (folding back) |
+| 15 | `reflection_count_r` | rank of number of slices where reflection > 0.5 |
+| 16 | `late_convergence` | whether trajectory converges in final 25% |
+| 17 | `deep_shallow_ratio_z` | z-score of deep (top 25%) to shallow (bottom 25%) layer activation ratio |
+| 18 | `layer_entropy` | Shannon entropy of layer-wise activation counts |
+| 19 | `layer_gini` | Gini coefficient of layer-wise activation counts |
+| 20 | `deep_frac_z` | z-score of fraction of activations in deep layers |
+| 21 | `n_active_layers_z` | z-score of number of distinct active layers |
 
 ```
-   1. dc_z / dc_r         70.9%   ★ Best single feature (DeepConf quality)
-   2. knn3_z / knn3_r     69.8%     KNN-3 similarity
-   3. copeland_z          68.3%     Copeland win count
-   4. mean_dist_z / r     67.8%     Mean distance (medoid-like)
-   5. copeland_r          67.4%     Copeland rank
-   6. length_z / r        66.3%     Activation length
-   6. log_length          66.3%     log(activation length)
-   8. log_n               62.3%     log(group size) — weakest
+Feature              AIME24    AIME25   BruMo25      GPQA    HMMT25     LCBv5      Mean
+---------------------------------------------------------------------------------------
+mean_continuity       70.0%     63.3%     73.3%     64.1%     46.7%     56.9%     62.4%
+mean_novelty          63.3%     56.7%     63.3%     60.1%     40.0%     58.7%     57.0%
+max_reflection        56.7%     56.7%     63.3%     62.1%     50.0%     59.9%     58.1%
+reflect_count_r ★★    83.3%     73.3%     86.7%     63.1%     60.0%     59.9%     71.1%
+late_convergence      80.0%     66.7%     76.7%     63.1%     43.3%     58.1%     64.6%
+deep_shallow_z        86.7%     73.3%     80.0%     62.6%     53.3%     58.7%     69.1%
+layer_entropy         83.3%     76.7%     83.3%     63.6%     56.7%     57.5%     70.2%
+layer_gini            83.3%     76.7%     83.3%     61.1%     56.7%     56.9%     69.7%
+deep_frac_z           83.3%     73.3%     80.0%     63.6%     56.7%     58.7%     69.3%
+n_active_layers_z     80.0%     66.7%     63.3%     61.1%     46.7%     57.5%     62.5%
+```
+
+### Ablation Rank (all 22 features)
+
+```
+   1. reflection_count_r   71.1%   ★★ NEW BEST — reflection count rank (trajectory)
+   2. dc_z / dc_r          70.9%   ★  DeepConf quality (base)
+   3. layer_entropy         70.2%      Layer activation entropy (trajectory)
+   4. knn3_z / knn3_r      69.8%      KNN-3 similarity (base)
+   5. layer_gini            69.7%      Layer Gini coefficient (trajectory)
+   6. deep_frac_z           69.3%      Deep layer fraction (trajectory)
+   7. deep_shallow_ratio_z  69.1%      Deep-shallow ratio (trajectory)
+   8. copeland_z            68.3%      Copeland win count (base)
+   9. mean_dist_z / r       67.8%      Mean distance (base)
+  10. copeland_r            67.4%      Copeland rank (base)
+  11. length_z / r          66.3%      Activation length (base)
+  11. log_length            66.3%      log(activation length) (base)
+  13. late_convergence      64.6%      Late convergence flag (trajectory)
+  14. n_active_layers_z     62.5%      Active layer count (trajectory)
+  15. mean_continuity       62.4%      Trajectory continuity (trajectory)
+  16. log_n                 62.3%      log(group size) (base)
+  17. max_reflection        58.1%      Max reflection similarity (trajectory)
+  18. mean_novelty          57.0%      Trajectory novelty (trajectory) — weakest
 ```
 
 ### Ablation Insights
 
-- **DeepConf quality (dc_z/dc_r) is the single most predictive feature at 70.9%**, outperforming the full 12-feature logistic model (69.7% LOO CV). This suggests feature noise from weaker signals slightly hurts generalisation.
-- **dc excels on HMMT25 (70.0%)** — far above any other single feature (next best: copeland_z at 56.7%) — indicating DeepConf captures confidence patterns especially valuable for competition math.
+- **`reflection_count_r` (71.1%) is the new best single feature**, surpassing `dc_z` (70.9%). This is a pure neuron-activation trajectory structure feature: the number of slices where the activation pattern "folds back" to resemble an earlier non-adjacent slice. This suggests that correct reasoning exhibits a characteristic pattern of self-reflection.
+- **Layer features dominate the top 10**: `layer_entropy` (70.2%), `layer_gini` (69.7%), `deep_frac_z` (69.3%), `deep_shallow_ratio_z` (69.1%) all appear in ranks 3-7. This confirms that **which layers activate** (deep vs shallow distribution) is strongly predictive of correctness.
+- **`reflection_count_r` excels on BruMo25 (86.7%)** — the highest single-feature accuracy on any dataset. It also scores 60.0% on HMMT25, second only to `dc_z` (70.0%).
+- **dc excels on HMMT25 (70.0%)** — far above any other single feature (next best: reflection_count_r at 60.0%) — indicating DeepConf captures confidence patterns especially valuable for competition math.
 - **knn3 excels on AIME (86.7%)** — top single feature for that dataset, confirming local neighbourhood structure is informative for AIME-style problems.
-- z-score and rank variants perform identically because single-feature logistic regression is inherently monotonic.
-- **log_n (62.3%)** is the weakest feature — group size alone provides minimal signal.
-- The gap between best single-feature (70.9%) and full 12-feature (69.7%) indicates **limited feature complementarity** for the current feature set.
+- **Trajectory structure features (continuity 62.4%, novelty 57.0%, max_reflection 58.1%) are weak** as standalone features. The aggregate statistics lose too much information; the signal is in the rank normalization (`reflection_count_r`) and layer decomposition.
+- **5 of the top 7 features are now trajectory-derived**, up from 0 before these experiments. This demonstrates that neuron activation trajectory analysis provides genuinely new predictive signal beyond existing distance/confidence features.
+- The gap between best single-feature (71.1%) and full 22-D fusion (68.3%) indicates **overfitting risk** when combining all features. Feature selection or regularisation tuning is needed.
 
-Single-feature models saved to `models/ml_selectors/single_feat_*.pkl` (12 files).
+Single-feature models saved to `models/ml_selectors/single_feat_*.pkl` (12 base feature files).
 
 ---
 
@@ -224,12 +282,75 @@ Best params saved to `models/ml_selectors/temporal_best_params.json`.
 
 ---
 
+## Trajectory Analysis Selectors (Exp 7-9)
+
+Neuron activation trajectory analysis leverages the `rows/` position-aware CSR bank (v4.1+) to decompose per-run activations into temporal slices (32 tokens each) and layer groups (decoded from key encoding `layer<<16|neuron_id`).
+
+### Exp 7: TrajectorySelector (轨迹结构选择器)
+
+**Method**: For each run, compute per-slice Jaccard similarities to measure:
+- **Continuity** C_t = Jaccard(slice_t, slice_{t-1}) — backbone coherence
+- **Reflection** R_t = max_{s<t-1} Jaccard(slice_t, slice_s) — folding back to earlier patterns
+- **Novelty** N_t = 1 - max_{s<t} Jaccard(slice_t, slice_s) — exploration of new patterns
+
+```
+backbone_score = α·mean_continuity - β·mean_novelty + γ·late_convergence + δ·bounded_reflection
+(α=1.0, β=0.3, γ=0.5, δ=0.3)
+```
+
+**Result: 58.7% mean** — weak standalone performance. The heuristic weighting does not generalise well; HMMT25 only 36.7%.
+
+### Exp 8: LayerStratifiedSelector (分层激活选择器)
+
+**Method**: Decode layer IDs from neuron keys, compute layer-wise activation distribution features:
+- Deep-shallow ratio (top 25% layers / bottom 25% layers)
+- Layer activation entropy (Shannon)
+- Layer concentration (Gini)
+
+```
+layer_score = α·deep_frac_z + β·layer_entropy - γ·layer_gini
+(α=1.0, β=0.5, γ=0.3)
+```
+
+**Result: 69.4% mean** — competitive with logistic (69.7%) without any ML training. Strong on AIME24 (83.3%) and BruMo25 (80.0%).
+
+### Exp 9: Trajectory Fusion LOO CV
+
+22-D logistic regression combining 12 base features + 10 trajectory features:
+
+```
+Model                             aime24    aime25   brumo25      gpqa    hmmt25  livecode   Mean
+-------------------------------------------------------------------------------------------------
+logistic (base 12-D)               86.7%     76.7%     80.0%     63.6%     53.3%     58.1%   69.7%
+logistic (traj 10-D)               70.0%     70.0%     76.7%     63.1%     56.7%     58.7%   65.9%
+logistic (fusion 22-D)             66.7%     70.0%     83.3%     68.7%     63.3%     57.5%   68.3%
+```
+
+**Result: 68.3% mean** — fusion did NOT improve over base 12-D (69.7%). The 22-D model suffers mild overfitting with only 6 datasets for LOO CV. However, the fusion model shows the best HMMT25 (63.3%) and GPQA (68.7%) scores, suggesting trajectory features capture complementary signal on harder datasets.
+
+### Trajectory Experiment Insights
+
+1. **Layer decomposition is the key insight**: 4 of the top 7 single features are layer-based (entropy, gini, deep_frac, deep_shallow_ratio), all at 69-70%.
+2. **reflection_count_r (71.1%) is the new single-feature champion**: the rank-normalised count of "reflection" events (slices resembling earlier non-adjacent slices) surpasses dc_z (70.9%).
+3. **Raw trajectory statistics (continuity, novelty) are weak**: aggregating Jaccard similarities across slices loses too much temporal structure.
+4. **The heuristic `layer-stratified` selector (69.4%) nearly matches ML logistic (69.7%)** without training — confirming that layer activation distribution is a robust, generalisable signal.
+5. **22-D fusion overfits on 6 datasets**: more datasets or feature selection needed to benefit from trajectory features in the ML pipeline.
+
+Training script: `scripts/train_trajectory_selectors.py`
+Implementation: `nad/core/selectors/trajectory_impl.py`
+Models: `models/ml_selectors/trajectory_fusion.pkl`, `trajectory_stats.json`
+
+---
+
 ## Key Observations
 
+- **`reflection_count_r` (71.1%) is the new best single feature**, surpassing `dc_z` (70.9%). This trajectory-derived feature captures how often a run's activation pattern "reflects" back to earlier states — a structural signature of correct self-reflection in reasoning.
+- **`layer-stratified` (69.4%) ranks #6 overall** — the highest non-ML, non-pairwise selector. It requires no distance matrix and no training, making it the most efficient high-accuracy selector.
 - **`logistic` (70.6%) and `linear-probe` (70.3%)** rank 2nd and 4th overall, surpassing `consensus-min` (70.4%) and `knn-medoid` (69.8%). They outperform all non-oracle non-ML selectors on mean accuracy.
 - **Leave-one-out CV** shows `linear_probe` (69.8%) and `logistic` (69.7%) remain competitive with `knn-medoid` (69.8%) even when evaluated on held-out datasets, confirming generalisation.
-- **Single-feature ablation** reveals `dc_z`/`dc_r` (DeepConf quality, 70.9%) as the strongest individual feature — outperforming the full 12-feature model — suggesting feature set pruning may improve ML selectors.
+- **Single-feature ablation (22 features)**: 5 of the top 7 features are trajectory-derived (reflection_count_r, layer_entropy, layer_gini, deep_frac_z, deep_shallow_ratio_z). Layer decomposition provides the strongest new signal class.
+- **22-D fusion (68.3%) does NOT improve over 12-D base (69.7%)** — mild overfitting with only 6 LOO CV folds. However, fusion shows best HMMT25 (63.3%) and GPQA (68.7%) scores, suggesting trajectory features help on harder datasets.
 - **`isotonic-medoid` (68.4%)** improves over plain `medoid` (67.8%) with no additional distance computation — it simply recalibrates the medoid score using learned monotonic mapping.
-- **Temporal discount selector** (60.3% best) does not surpass DeepConf or ML approaches; slice-level aggregation without smoothing loses signal quality.
+- **Temporal discount selector** (60.3% best) and **trajectory heuristic** (58.7%) are weak standalone — slice-level aggregation without ML or layer decomposition loses signal quality.
 - DeepConf-based ML variants (`isotonic-deepconf`) do not improve meaningfully over plain `deepconf`, consistent with the pattern seen in other DeepConf-based selectors.
-- All ML selectors are deterministic at inference (no randomness); training takes ~10 minutes on 6 datasets.
+- All ML selectors are deterministic at inference (no randomness); training takes ~10 minutes on 6 datasets (trajectory feature extraction adds ~2 hours).
