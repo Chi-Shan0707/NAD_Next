@@ -15,6 +15,7 @@ from .impl import (MinActivationSelector, MaxActivationSelector, MinConfidenceSe
                    TwoStageMedoidSelector, TwoStageTournamentSelector)
 from .ml_impl import LinearProbeSelector, LogisticSelector, IsotonicCalibratedSelector
 from .temporal_impl import TemporalSliceSelector
+from .trajectory_impl import TrajectorySelector, LayerStratifiedSelector, TrajectoryFusionSelector
 from .impl_legacy import (LegacyKNNMedoidSelector, LegacyMedoidSelector,
                          LegacyDBSCANMedoidSelector, LegacyConsensusMinSelector,
                          LegacyConsensusMaxSelector)
@@ -189,6 +190,24 @@ def build_selector(spec: SelectorSpec):
             threshold=float(params.get("threshold", 0.01)),
             slice_size=int(params.get("slice_size", 32)),
         )
+
+    # Trajectory selectors (轨迹分析选择器) — Exp 7, 8, 9
+    if lowered in ("trajectory", "trajectory-structure", "trajectory_structure"):
+        return TrajectorySelector(
+            alpha=float(params.get("alpha", 1.0)),
+            beta=float(params.get("beta", 0.5)),
+            gamma=float(params.get("gamma", 0.3)),
+            delta=float(params.get("delta", 0.2)),
+        )
+    if lowered in ("layer-stratified", "layer_stratified"):
+        return LayerStratifiedSelector(
+            alpha=float(params.get("alpha", 1.0)),
+            beta=float(params.get("beta", 0.5)),
+            gamma=float(params.get("gamma", 0.3)),
+        )
+    if lowered in ("trajectory-fusion", "trajectory_fusion"):
+        mp = params.get("model_path", None)
+        return TrajectoryFusionSelector(model_path=mp)
 
     raise ValueError(f"Unknown selector: {spec.name}")
 

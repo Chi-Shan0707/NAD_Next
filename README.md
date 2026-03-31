@@ -6,7 +6,7 @@
 
 ## 中文
 
-神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 21 种选择算法（含 ML 和时序折扣）为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
+神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 24 种选择算法（含 ML、时序折扣和轨迹分析）为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
 
 ### 快速开始
 
@@ -124,6 +124,20 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 类型 `[S]`，默认参数由网格搜索确定：`tok_neg_entropy`、γ=0.7、T=0.1。最优均值准确率 60.3%。
 参数保存于 `models/ml_selectors/temporal_best_params.json`。
 
+**轨迹分析选择器**（基于神经元激活模式的时序轨迹，需要 `rows/` bank v4.1+）
+
+| 选择器 | 类型 | 说明 |
+|--------|------|------|
+| `trajectory` | [S] | 轨迹结构评分：α·连续性 - β·新颖度 + γ·末尾收敛 + δ·适度反思 |
+| `layer-stratified` | [S] | 分层激活分布：α·深层占比 + β·层熵 - γ·层 Gini 系数 |
+| `trajectory-fusion` | [ML] | 轨迹 + 层 + 现有 12-D 特征融合为 22-D，用 LogisticRegression 预测 |
+
+类型 `[S]` / `[ML]`。轨迹特征利用 `rows/` bank 的逐切片（32 token）激活 key 集合计算切片间 Jaccard 相似度。
+层特征通过 neuron key 编码（`layer<<16|neuron_id`）解码层信息。
+实验结果：`layer-stratified` 69.4%，`trajectory` 58.7%，`trajectory-fusion` 68.3%。
+单特征消融发现 `reflection_count_r`（反思次数 rank）以 71.1% 超越 `dc_z`（70.9%）成为新最佳单特征。
+训练脚本：`python scripts/train_trajectory_selectors.py`。
+
 完整跨数据集精度对比见 [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md)。
 
 ### CLI 参考
@@ -163,7 +177,7 @@ python3 scripts/rank_selectors.py \
 
 ## English
 
-A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies 21 selection algorithms (including ML-based and temporal discount selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
+A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies 24 selection algorithms (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 
 ---
 
@@ -296,7 +310,7 @@ NAD_Next/
       adapters/                # NPZ shard -> CSR conversion (shard_reader, batch_processor)
       distance/                # Jaccard distance engine (roaring / numpy, auto-switch at 4096)
       schema/                  # Cache manifest (v4.0+)
-      selectors/               # 21 selector algorithms (base, ensemble, ML, temporal) + plugin loader
+      selectors/               # 24 selector algorithms (base, ensemble, ML, temporal, trajectory) + plugin loader
       storage/                 # Binary cache I/O (mmap)
       views/                   # CacheReader (lazy mmap access)
     io/                        # NadNextLoader (256 MB LRU), index, viz catalog
@@ -420,6 +434,20 @@ Single-feature ablation shows `dc_z` (DeepConf quality) at 70.9% as the stronges
 
 Type `[S]`. Default params from grid search: `tok_neg_entropy`, γ=0.7, T=0.1. Best mean accuracy: 60.3%.
 Params saved to `models/ml_selectors/temporal_best_params.json`.
+
+**Trajectory analysis selectors** (neuron activation trajectory over token positions; requires `rows/` bank v4.1+)
+
+| Selector | Type | Description |
+|----------|------|-------------|
+| `trajectory` | [S] | Trajectory structure score: α·continuity - β·novelty + γ·late_convergence + δ·bounded_reflection |
+| `layer-stratified` | [S] | Layer-wise activation distribution: α·deep_frac_z + β·layer_entropy - γ·layer_gini |
+| `trajectory-fusion` | [ML] | 22-D fusion of trajectory (10-D) + existing (12-D) features with LogisticRegression |
+
+Type `[S]` / `[ML]`. Trajectory features use per-slice (32-token) activation key sets from the `rows/` bank to compute inter-slice Jaccard similarities.
+Layer features decode layer info from neuron key encoding (`layer<<16|neuron_id`).
+Results: `layer-stratified` 69.4%, `trajectory` 58.7%, `trajectory-fusion` 68.3%.
+Single-feature ablation found `reflection_count_r` (reflection count rank) at 71.1% surpassing `dc_z` (70.9%) as the new best single feature.
+Training script: `python scripts/train_trajectory_selectors.py`.
 
 Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
 

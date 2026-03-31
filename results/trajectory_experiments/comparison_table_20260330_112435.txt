@@ -1,0 +1,12 @@
+Trajectory Experiments — 20260330_112435
+======================================================================
+Selector                     aime24    aime25   brumo25      gpqa    hmmt25  livecode   Mean
+--------------------------------------------------------------------------------------------
+trajectory                    66.7%     60.0%     66.7%     64.6%     36.7%     57.5%   58.7%
+layer-stratified              83.3%     73.3%     80.0%     63.6%     56.7%     59.3%   69.4%
+
+Reference baselines (from previous experiments):
+  medoid:          ~50-60%
+  deepconf:        ~55-65%
+  logistic (12-D): ~70.6%
+  dc_z (single):   ~70.9%
