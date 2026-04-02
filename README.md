@@ -137,6 +137,7 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 实验结果：`layer-stratified` 69.4%，`trajectory` 58.7%，`trajectory-fusion` 68.3%。
 单特征消融发现 `reflection_count_r`（反思次数 rank）以 71.1% 超越 `dc_z`（70.9%）成为新最佳单特征。
 训练脚本：`python scripts/train_trajectory_selectors.py`。
+最新产物快照（UTC）：评估报告生成于 `2026-03-30`，见 `results/trajectory_experiments/accuracy_summary_20260330_112435.json`、`results/trajectory_experiments/trajectory_20260330_112435.json`、`results/trajectory_experiments/layer_stratified_20260330_112435.json`；22 维轨迹融合训练统计更新于 `2026-03-31 01:56:52`，见 `models/ml_selectors/trajectory_stats.json`（`31,040` 个带标注样本对、`18,873` 个正确样本、`22` 个特征、`6` 个数据集）。
 
 完整跨数据集精度对比见 [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md)。
 
@@ -177,7 +178,7 @@ python3 scripts/rank_selectors.py \
 
 ## English
 
-A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies 24 selection algorithms (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
+A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies a broad selector suite (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 
 ---
 
@@ -310,7 +311,7 @@ NAD_Next/
       adapters/                # NPZ shard -> CSR conversion (shard_reader, batch_processor)
       distance/                # Jaccard distance engine (roaring / numpy, auto-switch at 4096)
       schema/                  # Cache manifest (v4.0+)
-      selectors/               # 24 selector algorithms (base, ensemble, ML, temporal, trajectory) + plugin loader
+      selectors/               # selector algorithms (base, ensemble, ML, temporal, trajectory) + plugin loader
       storage/                 # Binary cache I/O (mmap)
       views/                   # CacheReader (lazy mmap access)
     io/                        # NadNextLoader (256 MB LRU), index, viz catalog
@@ -448,6 +449,7 @@ Layer features decode layer info from neuron key encoding (`layer<<16|neuron_id`
 Results: `layer-stratified` 69.4%, `trajectory` 58.7%, `trajectory-fusion` 68.3%.
 Single-feature ablation found `reflection_count_r` (reflection count rank) at 71.1% surpassing `dc_z` (70.9%) as the new best single feature.
 Training script: `python scripts/train_trajectory_selectors.py`.
+Latest artifact snapshot (UTC): evaluation reports were generated on `2026-03-30` in `results/trajectory_experiments/accuracy_summary_20260330_112435.json`, `results/trajectory_experiments/trajectory_20260330_112435.json`, and `results/trajectory_experiments/layer_stratified_20260330_112435.json`; the 22-D trajectory-fusion training stats were refreshed on `2026-03-31 01:56:52` in `models/ml_selectors/trajectory_stats.json` (`31,040` labelled pairs, `18,873` correct, `22` features, `6` datasets).
 
 Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
 

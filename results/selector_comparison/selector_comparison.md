@@ -90,6 +90,12 @@ con64@                     80.0%     76.7%     80.0%     70.2%     66.7%     58.
   - `layer-stratified`: 层激活分布启发式评分（深浅比/层熵/Gini）| heuristic scoring on layer distribution
   - `trajectory-fusion`: 22-D 融合特征 ML 逻辑回归 | 22-D logistic regression (12 base + 10 trajectory)
 
+## Artifact Snapshot | 产物快照
+
+- `2026-03-30` UTC：轨迹实验评估报告写入 `results/trajectory_experiments/accuracy_summary_20260330_112435.json`、`results/trajectory_experiments/trajectory_20260330_112435.json`、`results/trajectory_experiments/layer_stratified_20260330_112435.json`
+- `2026-03-31 01:56:52` UTC：22-D 轨迹融合训练统计刷新到 `models/ml_selectors/trajectory_stats.json`，包含 `31,040` 个带标注样本对、`18,873` 个正确样本（`60.80%`）、`22` 个特征、`6` 个数据集
+- 持久化模型/参数文件位于 `models/ml_selectors/feature_stats.json`、`models/ml_selectors/temporal_best_params.json`、`models/ml_selectors/trajectory_fusion.pkl`
+
 ### ML Features (12 dimensions, group-normalised) | ML 特征（12 维，组内归一化）
 
 | # | Feature | Description |
@@ -211,7 +217,7 @@ n_active_layers_z     80.0%     66.7%     63.3%     61.1%     46.7%     57.5%   
 - **5 of the top 7 features are now trajectory-derived**, up from 0 before these experiments. This demonstrates that neuron activation trajectory analysis provides genuinely new predictive signal beyond existing distance/confidence features.
 - The gap between best single-feature (71.1%) and full 22-D fusion (68.3%) indicates **overfitting risk** when combining all features. Feature selection or regularisation tuning is needed.
 
-Single-feature models saved to `models/ml_selectors/single_feat_*.pkl` (12 base feature files).
+Persisted single-feature model files currently cover the 12 base features in `models/ml_selectors/single_feat_*.pkl`; the full 22-feature ablation results (including trajectory-derived features) are summarised in this report, with aggregate training statistics in `models/ml_selectors/trajectory_stats.json`.
 
 ---
 
@@ -338,7 +344,7 @@ logistic (fusion 22-D)             66.7%     70.0%     83.3%     68.7%     63.3%
 
 Training script: `scripts/train_trajectory_selectors.py`
 Implementation: `nad/core/selectors/trajectory_impl.py`
-Models: `models/ml_selectors/trajectory_fusion.pkl`, `trajectory_stats.json`
+Models: `models/ml_selectors/trajectory_fusion.pkl`, `models/ml_selectors/trajectory_stats.json`
 
 ---
 

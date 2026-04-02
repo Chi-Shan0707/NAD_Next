@@ -10,7 +10,7 @@ This document provides a step-by-step breakdown of **everything implemented** in
 2. [Data Pipeline: NPZ → Binary Cache](#2-data-pipeline-npz--binary-cache)
 3. [Cache Format & Storage Layout](#3-cache-format--storage-layout)
 4. [Distance Computation](#4-distance-computation)
-5. [Sample Selection Algorithms (10 Selectors)](#5-sample-selection-algorithms-10-selectors)
+5. [Sample Selection Algorithms (Core Selectors + Extended Families)](#5-sample-selection-algorithms-core-selectors--extended-families)
 6. [Plugin System: Custom Selectors](#6-plugin-system-custom-selectors)
 7. [Evaluation & Accuracy Scoring](#7-evaluation--accuracy-scoring)
 8. [Multi-Task Selector Ranking](#8-multi-task-selector-ranking)
@@ -42,7 +42,7 @@ NPZ Shards  ──▶  Binary Cache  ──▶  Selection JSON  ──▶  Accur
 **Key stats (codebase):**
 - ~51 Python files, ~4,600 lines
 - Python 3.9+, NumPy, PyRoaring, Flask, Plotly
-- No ML training code — pure analysis & evaluation
+- Includes ML selector training/evaluation scripts and cached experiment artifacts
 
 ---
 
@@ -193,9 +193,15 @@ Parallelisation is skipped for fewer than 256 pairs (overhead > savings).
 
 ---
 
-## 5. Sample Selection Algorithms (10 Selectors)
+## 5. Sample Selection Algorithms (Core Selectors + Extended Families)
 
 **Module:** `nad/core/selectors/impl.py`
+
+This section focuses on the 10 core selectors implemented in `nad/core/selectors/impl.py`. The full built-in selector surface also includes ensemble, tournament, two-stage, ML, temporal, trajectory, and oracle-style baselines documented in `README.md` and `results/selector_comparison/selector_comparison.md`.
+
+Latest experiment snapshot (UTC):
+- Evaluation reports generated on `2026-03-30`: `results/trajectory_experiments/accuracy_summary_20260330_112435.json`, `results/trajectory_experiments/trajectory_20260330_112435.json`, `results/trajectory_experiments/layer_stratified_20260330_112435.json`
+- 22-D trajectory-fusion training stats refreshed on `2026-03-31 01:56:52`: `models/ml_selectors/trajectory_stats.json` (`31,040` labelled pairs, `18,873` correct, `22` features across `6` datasets)
 
 All selectors share a common contract: given a pairwise distance matrix `D` (n × n) and per-run statistics, return a **group-local index** (0 to n−1). The pipeline maps that index to the global `run_id`.
 

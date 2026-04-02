@@ -14,6 +14,10 @@
 - `rows/` bank（v4.1+）：每 32 个 token 一个"切片"，记录该切片内所有激活神经元的 key 集合
 - neuron key 编码：`uint32 = layer << 16 | neuron_id`，可解码出层信息
 
+最新产物快照（UTC）：
+- `2026-03-30`：评估报告位于 `results/trajectory_experiments/accuracy_summary_20260330_112435.json`、`results/trajectory_experiments/trajectory_20260330_112435.json`、`results/trajectory_experiments/layer_stratified_20260330_112435.json`
+- `2026-03-31 01:56:52`：22-D 轨迹融合训练统计位于 `models/ml_selectors/trajectory_stats.json`，包含 `31,040` 个带标注样本对、`18,873` 个正确样本、`22` 个特征、`6` 个数据集
+
 ### 反思（Reflection）的定义与分类
 
 **反思**是轨迹分析中最重要的概念。直觉上，正确推理在展开论证后会"回头看"，重新审视早期的激活模式。
@@ -124,6 +128,10 @@ Trajectory analysis selectors (Exp 7-9) predict reasoning correctness by analysi
 Data sources:
 - `rows/` bank (v4.1+): each 32-token "slice" records the set of activated neuron keys
 - Neuron key encoding: `uint32 = layer << 16 | neuron_id`, allowing layer decomposition
+
+Latest artifact snapshot (UTC):
+- `2026-03-30`: evaluation reports live in `results/trajectory_experiments/accuracy_summary_20260330_112435.json`, `results/trajectory_experiments/trajectory_20260330_112435.json`, and `results/trajectory_experiments/layer_stratified_20260330_112435.json`
+- `2026-03-31 01:56:52`: 22-D trajectory-fusion training stats were refreshed in `models/ml_selectors/trajectory_stats.json`, covering `31,040` labelled pairs, `18,873` correct samples, `22` features, and `6` datasets
 
 ### Reflection: Definition and Classification
 
