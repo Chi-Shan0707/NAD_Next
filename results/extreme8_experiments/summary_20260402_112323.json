@@ -1,0 +1,55 @@
+{
+  "config": {
+    "tuple_size": 8,
+    "num_tuples": 512,
+    "tuple_sampling": "blind",
+    "seed": 42,
+    "reflection_threshold": 0.3,
+    "best_model": "models/ml_selectors/extreme8_best.pkl",
+    "worst_model": "models/ml_selectors/extreme8_worst.pkl"
+  },
+  "best_only": {
+    "per_dataset": {
+      "aime24": 0.8333333333333334,
+      "aime25": 0.7666666666666667,
+      "brumo25": 0.8666666666666667,
+      "gpqa": 0.6313131313131313,
+      "hmmt25": 0.6666666666666666,
+      "livecodebench_v5": 0.5868263473053892
+    },
+    "mean": 0.7252454686586424
+  },
+  "worst_only": {
+    "per_dataset": {
+      "aime24": 0.5,
+      "aime25": 0.6666666666666666,
+      "brumo25": 0.5666666666666667,
+      "gpqa": 0.42424242424242425,
+      "hmmt25": 0.8,
+      "livecodebench_v5": 0.40718562874251496
+    },
+    "mean": 0.5607935643863787
+  },
+  "best_plus_worst": {
+    "per_dataset": {
+      "aime24": 0.8333333333333334,
+      "aime25": 0.7666666666666667,
+      "brumo25": 0.8666666666666667,
+      "gpqa": 0.6313131313131313,
+      "hmmt25": 0.6666666666666666,
+      "livecodebench_v5": 0.5868263473053892
+    },
+    "mean": 0.7252454686586424
+  },
+  "worst_avoid": {
+    "per_dataset": {
+      "aime24": 0.8333333333333334,
+      "aime25": 0.7666666666666667,
+      "brumo25": 0.8666666666666667,
+      "gpqa": 0.6313131313131313,
+      "hmmt25": 0.6666666666666666,
+      "livecodebench_v5": 0.5868263473053892
+    },
+    "mean": 0.7252454686586424
+  }
+}

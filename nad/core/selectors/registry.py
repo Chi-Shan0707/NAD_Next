@@ -16,6 +16,7 @@ from .impl import (MinActivationSelector, MaxActivationSelector, MinConfidenceSe
 from .ml_impl import LinearProbeSelector, LogisticSelector, IsotonicCalibratedSelector
 from .temporal_impl import TemporalSliceSelector
 from .trajectory_impl import TrajectorySelector, LayerStratifiedSelector, TrajectoryFusionSelector
+from .extreme8_impl import Extreme8BestSelector, Extreme8WorstSelector, Extreme8MixedSelector
 from .impl_legacy import (LegacyKNNMedoidSelector, LegacyMedoidSelector,
                          LegacyDBSCANMedoidSelector, LegacyConsensusMinSelector,
                          LegacyConsensusMaxSelector)
@@ -198,6 +199,7 @@ def build_selector(spec: SelectorSpec):
             beta=float(params.get("beta", 0.5)),
             gamma=float(params.get("gamma", 0.3)),
             delta=float(params.get("delta", 0.2)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
         )
     if lowered in ("layer-stratified", "layer_stratified"):
         return LayerStratifiedSelector(
@@ -207,7 +209,38 @@ def build_selector(spec: SelectorSpec):
         )
     if lowered in ("trajectory-fusion", "trajectory_fusion"):
         mp = params.get("model_path", None)
-        return TrajectoryFusionSelector(model_path=mp)
+        return TrajectoryFusionSelector(
+            model_path=mp,
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+
+    if lowered in ("extreme8-best", "extreme8_best"):
+        mp = params.get("model_path", None)
+        return Extreme8BestSelector(
+            model_path=mp,
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+    if lowered in ("extreme8-worst", "extreme8_worst"):
+        mp = params.get("model_path", None)
+        return Extreme8WorstSelector(
+            model_path=mp,
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+    if lowered in ("extreme8-mixed", "extreme8_mixed"):
+        return Extreme8MixedSelector(
+            best_model_path=params.get("best_model_path", None),
+            worst_model_path=params.get("worst_model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
 
     raise ValueError(f"Unknown selector: {spec.name}")
 

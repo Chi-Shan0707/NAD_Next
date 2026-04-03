@@ -1,0 +1,578 @@
+[
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.20817725212831983,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.21355823379962421,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.04095633594849584,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.04069601192533935,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.01602241697129924,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.016454271037777128,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.14152574700451198,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.17536666632627348,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.030988639724116303,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.036036236112210886,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.011361316293032914,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.013268750424063966,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.10952101509426956,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.15976703621773342,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.02260359666800294,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.033662666181505665,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.009103112871610173,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.013836277239419093,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.1517464454616851,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.1983581140919584,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.02886242083531208,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.03972591798145428,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.01166029413067371,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.016229443796722937,
+    "n_runs": 658
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.17281218514012048,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.23549247970907003,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.031999102930096,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.04580076521238445,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.013362706774733352,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.019233735898129996,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.1439073418723261,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.18884015600944917,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.030451070716112034,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.042091516275110735,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.012151397069826445,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.016900151411001877,
+    "n_runs": 587
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.1985590548523838,
+    "n_runs": 7620
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.26540224144471614,
+    "n_runs": 7620
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.021847262440799972,
+    "n_runs": 7620
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.02888306572095376,
+    "n_runs": 7620
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.008436200227417428,
+    "n_runs": 7620
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.011401763771862071,
+    "n_runs": 7620
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.14427243350129726,
+    "n_runs": 5045
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.21551025855451303,
+    "n_runs": 5045
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.0063430374825618535,
+    "n_runs": 5045
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.011012314261034249,
+    "n_runs": 5045
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.0014343421128232205,
+    "n_runs": 5045
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.0031325173387330876,
+    "n_runs": 5045
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.15812092626702803,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.21064734687484707,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.02942582468056247,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.04085679641066048,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.01226947231709053,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.017133885758832346,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.12325886530804488,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.1727689304550062,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.026199396938776723,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.03860777045966568,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.010011562537757536,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.015015684923490483,
+    "n_runs": 987
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.1074327571604752,
+    "n_runs": 6271
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.17380102606222772,
+    "n_runs": 6271
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.022705566573685727,
+    "n_runs": 6271
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.035765545293363496,
+    "n_runs": 6271
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.007228900354145362,
+    "n_runs": 6271
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.012150199406482157,
+    "n_runs": 6271
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_gap": -0.09437642967403513,
+    "n_runs": 4414
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_gap": -0.14161502418331967,
+    "n_runs": 4414
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_gap": -0.018280725244539536,
+    "n_runs": 4414
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_gap": -0.028671072777796444,
+    "n_runs": 4414
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_gap": -0.00551048018831633,
+    "n_runs": 4414
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_gap": -0.009319267482928988,
+    "n_runs": 4414
+  }
+]

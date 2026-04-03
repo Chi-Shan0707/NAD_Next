@@ -149,13 +149,15 @@ where Jaccard(A, B) = |A ∩ B| / |A ∪ B|, with A and B being sorted uint32 ne
 
 **Key details:**
 - Adjacent slice (slice_{t-1}) is excluded — high similarity to the immediately preceding slice reflects "continuity", not "reflection"
-- Threshold 0.3: when R_t > 0.3, the slice is counted as a "reflection event"
+- Default threshold 0.3: when R_t > 0.3, the slice is counted as a "reflection event"
+- Follow-up threshold sweep (`2026-04-02`) found that `0.20` is slightly better for the single-feature `reflection_count_r` benchmark: `71.7%` LOO mean vs `71.1%` at `0.30`
 - `reflection_count`: total number of reflection events in a run
 - `reflection_count_r`: rank-normalised reflection_count within the problem group, mapped to [0, 1]
 
-**Why is reflection_count_r the best single feature (71.1%)?**
+**Why is reflection_count_r the best single feature (~71-72%)?**
 - Rank normalisation removes the effect of sequence length (longer sequences naturally have more reflection events)
 - Moderate reflection (neither too little nor too much) strongly correlates with correct reasoning
+- The `2026-04-02` sweep shows a small but consistent gain when the event threshold is reduced from `0.30` to `0.20`
 
 ### Trajectory Features (5 dimensions)
 
@@ -231,3 +233,31 @@ Each feature independently trains a LogisticRegression → LOO CV → evaluates 
 2. **Layer distribution matters more than trajectory structure**: layer features (entropy, gini, deep_frac) all at 69-70%, while raw trajectory features (continuity, novelty) only 57-62%
 3. **More features ≠ better**: 22-D fusion (68.3%) underperforms 12-D base (69.7%) — 6 datasets insufficient for high-dimensional LOO CV
 4. **No-ML `layer-stratified` (69.4%) nearly matches ML `logistic` (69.7%)**: layer activation distribution is a robust, generalisable signal
+
+### 2026-04-02 Follow-up: Reflection Dynamics
+
+Artifacts: `results/reflection_dynamics/summary.md`, `results/reflection_dynamics/threshold_sweep_summary.json`
+
+- Best reflection threshold by the single-feature LOO benchmark is `0.20`, improving `reflection_count_r` from `71.1%` to `71.7%`.
+- The strongest slice-level correlations are between reflection and average `gini` (positive) / average `entropy` (negative).
+- Reflection-event slices show smaller `confidence` derivative magnitudes (`abs_d1`, `abs_d2`) than non-event slices, suggesting locally steadier confidence around reflective behaviour.
+
+### 2026-04-02 Follow-up: Extreme8 Blind Subset Selector
+
+Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json`
+
+**Training setup**
+- Features restricted to `dc_z`, `dc_r`, `reflection_count_r`
+- Keep only problems with empirical accuracy in `[10%, 90%]`
+- Eligible problem counts: `aime24=8`, `aime25=10`, `brumo25=9`, `gpqa=96`, `hmmt25=12`, `livecodebench_v5=51`
+- Sample `256` mixed 8-tuples per eligible problem; pooled logistic-regression training for `best` and `worst`
+
+**Blind full-problem evaluation**
+- Full 64-run problems, `512` random 8-tuples per problem, `seed=42`
+- Tuple construction is blind: it does not use run correctness labels
+- Mean results: `best-only = 72.5%`, `worst-only = 56.1%` error-hit rate, `best+worst = 72.5%`
+- In this snapshot, `best+worst` does not improve over `best-only`, and `worst-avoid` matches `best-only`
+
+**Threshold caveat**
+- The current Extreme8 model snapshot was trained/evaluated with `reflection_threshold=0.30`.
+- The improved `0.20` threshold was discovered afterwards by the follow-up sweep and has not yet been propagated into this model snapshot.

@@ -1,0 +1,1442 @@
+[
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.08613366871513077,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.06731138491080321,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.3414233150384863,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.21724101242573257,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.08971343251266226,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.12965586779787663,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.09892707525347556,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.4267289652695877,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.21899753113645606,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.09651010524061515,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.11673004985140946,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.09077377149051512,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.437018191077725,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.22012785393719098,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.0959315362486628,
+    "n_runs": 1447
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.08788406108718431,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.07197809712041736,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.22063505012777673,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.14620778884032462,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.059838937007482475,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.10174151685449521,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.08097183551613224,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.34285004435695376,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.16596315285068078,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.07406670865536889,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.09139600482388506,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.07303065681897805,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.35877842510709024,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.16994070666664757,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime24",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.07480670972262428,
+    "n_runs": 473
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.05777615729206674,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.048682149696971024,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.29713153148727234,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.18411812155737436,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.07305139441603883,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.10560923518804823,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.09135172873578663,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.40198400277339935,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.2033245725402493,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.08599177785680186,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.09265535129828516,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.0806961681645087,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.40396947242169157,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.20420959245521922,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.08564208165242292,
+    "n_runs": 1262
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.08621337107711408,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.0678370283384939,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.3081161313462947,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.17668907541639697,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.07405127908340255,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.1375015024598948,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.11506787824974334,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.4465742668739594,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.20360998076818218,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.0926293734217974,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.12206050384695444,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.10201195607820285,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.44747759131172093,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.20437866057764778,
+    "n_runs": 658
+  },
+  {
+    "dataset": "aime25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.09152125669278911,
+    "n_runs": 658
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.08253800878454053,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.06904434713650608,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.3371992530396168,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.19327007581488015,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.07272112081090859,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.14501921999424935,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.12276828917513276,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.45055735956356124,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.21385355118757501,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.08938080353284869,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.1304379428129121,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.11006124032482525,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.4530623027203403,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.21455793537774015,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.0882290980817751,
+    "n_runs": 1333
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.08068713976648528,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.06443406012287052,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.34510760653271494,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.18154166660747822,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.07351337134982225,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.1462167679727336,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.12234804312278212,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.4895498576150464,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.20706372470698825,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.09138985788295917,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.12759457918543232,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.10646284838106806,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.4911498399702868,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.20734202543582855,
+    "n_runs": 587
+  },
+  {
+    "dataset": "brumo25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.08955065625288372,
+    "n_runs": 587
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.10813975478526401,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.09208974787942048,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.11673521472916158,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.15660014014465357,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.049366263616718795,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.0846398933828488,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.07038875523124913,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.330409865956939,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.1958347292419544,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.0786425912247212,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.07578263246578251,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.06437728188919124,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.33988953190148213,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.19914041695735674,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.08009827126167532,
+    "n_runs": 7625
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.09565008274303818,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.08790436747263358,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.03138828423281918,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.13384377018125757,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.04464940096617213,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.029140093938459885,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.028869932178768296,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.28156668100993965,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.19607451543450186,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.08616259235490158,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.019328425853104507,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.02114632414016223,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.2871327367616173,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.20089848880112268,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "gpqa",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.08948770223332958,
+    "n_runs": 5047
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.08383722093216721,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.06514140745620117,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.32084438730043885,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.18848238731064015,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.07610354212702133,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.14535278424713427,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.1186538043165915,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.430449408339345,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.20728182804170284,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.09109302570685192,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.13112875142773345,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.10664761276084196,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.4323982732793108,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.20811833701835736,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.08992103569945212,
+    "n_runs": 933
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.07091080846995607,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.05781601213546344,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.31622915693626225,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.17444463476961428,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.07061113087169359,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.11635165309316249,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.09914597328828786,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.4555134254516306,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.20434218594652115,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.09021432348008804,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.09921205601227985,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.08462682745441273,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.4571999279807236,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.20530349097152076,
+    "n_runs": 987
+  },
+  {
+    "dataset": "hmmt25",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.08907281377100194,
+    "n_runs": 987
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.0669691992660725,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.05707655105940997,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.21013759483249728,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.12284716555474315,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.04243709058969728,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.08063907164848984,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.06752274186670741,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.34177510016383056,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.15466919852882752,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.05857353900307493,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.06597788196514784,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.055982941526161054,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.3492358135500096,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.15691574299309707,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "correct",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.05822554251001584,
+    "n_runs": 6273
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d1",
+    "mean_spearman": -0.06324252322469139,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "abs_d2",
+    "mean_spearman": -0.050916054714315574,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "avg",
+    "mean_spearman": 0.20542165421825898,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d1",
+    "mean_spearman": 0.12736727421048855,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "conf",
+    "series": "d2",
+    "mean_spearman": 0.04295018949972963,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d1",
+    "mean_spearman": -0.06879605108765675,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "abs_d2",
+    "mean_spearman": -0.055759947354888845,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "avg",
+    "mean_spearman": -0.3304062464359535,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d1",
+    "mean_spearman": -0.1612677798342113,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "entropy",
+    "series": "d2",
+    "mean_spearman": -0.061580658372600655,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d1",
+    "mean_spearman": -0.05499242878484606,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "abs_d2",
+    "mean_spearman": -0.04495464809127576,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "avg",
+    "mean_spearman": 0.33793585554736977,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d1",
+    "mean_spearman": 0.16392356564470506,
+    "n_runs": 4415
+  },
+  {
+    "dataset": "livecodebench_v5",
+    "label": "incorrect",
+    "metric": "gini",
+    "series": "d2",
+    "mean_spearman": 0.06154726916024514,
+    "n_runs": 4415
+  }
+]

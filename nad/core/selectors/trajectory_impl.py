@@ -29,6 +29,7 @@ from .base import Selector, SelectorContext
 
 # ── 默认模型路径 | default model path ─────────────────────────────────────────
 _DEFAULT_MODEL_DIR = Path(__file__).resolve().parent.parent.parent.parent / "models" / "ml_selectors"
+DEFAULT_REFLECTION_THRESHOLD = 0.30
 
 
 # ============================================================================
@@ -88,46 +89,25 @@ def _jaccard_sim(a: np.ndarray, b: np.ndarray) -> float:
     return inter / union if union > 0 else 0.0
 
 
-def _compute_trajectory_scores(slice_keysets: List[np.ndarray]) -> dict:
-    """
-    根据逐切片 key 集合序列计算轨迹特征。
-    Compute trajectory features from a sequence of per-slice key sets.
-
-    特征 | Features
-    -------
-    mean_continuity   相邻切片 Jaccard 相似度均值（骨干强度）
-                      mean Jaccard similarity between consecutive slices (backbone strength)
-    mean_novelty      每切片相对于所有前序切片的最大新颖度均值
-                      mean novelty (1 - max similarity to any prior slice)
-    max_reflection    最大回溯相似度（非相邻切片的最高 Jaccard）
-                      max folding-back similarity (highest Jaccard to a non-adjacent prior slice)
-    reflection_count  反思次数（R_t > 0.3 的切片数）
-                      number of slices with reflection score > 0.3
-    late_convergence  末尾 25% 切片的连续性是否高于前 75%（布尔 → float）
-                      whether continuity in final 25% exceeds first 75% (bool → float)
-    """
+def _compute_trajectory_arrays(slice_keysets: List[np.ndarray]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Return per-slice continuity / novelty / reflection arrays."""
     S = len(slice_keysets)
     if S <= 1:
-        return {
-            "mean_continuity": 0.0,
-            "mean_novelty": 1.0,
-            "max_reflection": 0.0,
-            "reflection_count": 0,
-            "late_convergence": 0.0,
-        }
+        return (
+            np.zeros(0, dtype=np.float64),
+            np.zeros(0, dtype=np.float64),
+            np.zeros(0, dtype=np.float64),
+        )
 
-    continuity = []   # C_t = J(slice_t, slice_{t-1})
-    novelty = []      # N_t = 1 - max_{s<t} J(slice_t, slice_s)
-    reflection = []   # R_t = max_{s<t-1} J(slice_t, slice_s)
+    continuity = []
+    novelty = []
+    reflection = []
 
     for t in range(1, S):
-        # Continuity: similarity to immediately preceding slice
         c_t = _jaccard_sim(slice_keysets[t], slice_keysets[t - 1])
         continuity.append(c_t)
 
-        # Max similarity to any prior slice (for novelty)
         max_sim_any = c_t
-        # Max similarity to non-adjacent prior slices (for reflection)
         max_sim_nonadj = 0.0
         for s in range(0, t - 1):
             sim = _jaccard_sim(slice_keysets[t], slice_keysets[s])
@@ -139,22 +119,135 @@ def _compute_trajectory_scores(slice_keysets: List[np.ndarray]) -> dict:
         novelty.append(1.0 - max_sim_any)
         reflection.append(max_sim_nonadj)
 
-    cont_arr = np.array(continuity, dtype=np.float64)
-    refl_arr = np.array(reflection, dtype=np.float64)
-    nov_arr = np.array(novelty, dtype=np.float64)
+    return (
+        np.asarray(continuity, dtype=np.float64),
+        np.asarray(novelty, dtype=np.float64),
+        np.asarray(reflection, dtype=np.float64),
+    )
 
-    # Late convergence: compare final 25% continuity to first 75%
+
+def _compute_trajectory_scores(
+    slice_keysets: List[np.ndarray],
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
+) -> dict:
+    """
+    根据逐切片 key 集合序列计算轨迹特征。
+    Compute trajectory features from a sequence of per-slice key sets.
+    """
+    S = len(slice_keysets)
+    if S <= 1:
+        return {
+            "mean_continuity": 0.0,
+            "mean_novelty": 1.0,
+            "max_reflection": 0.0,
+            "reflection_count": 0,
+            "late_convergence": 0.0,
+        }
+
+    cont_arr, nov_arr, refl_arr = _compute_trajectory_arrays(slice_keysets)
+
     split = max(1, int(len(cont_arr) * 0.75))
     early_cont = float(cont_arr[:split].mean()) if split > 0 else 0.0
     late_cont = float(cont_arr[split:].mean()) if split < len(cont_arr) else 0.0
     late_conv = 1.0 if late_cont > early_cont else 0.0
 
     return {
-        "mean_continuity": float(cont_arr.mean()),
-        "mean_novelty": float(nov_arr.mean()),
+        "mean_continuity": float(cont_arr.mean()) if cont_arr.size > 0 else 0.0,
+        "mean_novelty": float(nov_arr.mean()) if nov_arr.size > 0 else 1.0,
         "max_reflection": float(refl_arr.max()) if refl_arr.size > 0 else 0.0,
-        "reflection_count": int((refl_arr > 0.3).sum()),
+        "reflection_count": int((refl_arr > float(reflection_threshold)).sum()),
         "late_convergence": late_conv,
+    }
+
+
+def _slice_metric_means(cache, run_id: int) -> dict[str, np.ndarray]:
+    """Mean token metrics for each raw slice row of a run."""
+    empty = {name: np.zeros(0, dtype=np.float64) for name in ("entropy", "conf", "gini")}
+
+    rows_srp = cache.rows_sample_row_ptr
+    rows_trp = cache.rows_token_row_ptr
+    if rows_srp is None or rows_trp is None:
+        return empty
+
+    token_view = cache.get_token_view(int(run_id))
+    if token_view.token_ids is None:
+        return empty
+
+    row_start = int(rows_srp[run_id])
+    row_end = int(rows_srp[run_id + 1])
+    if row_end <= row_start:
+        return empty
+
+    offsets = np.asarray(rows_trp[row_start:row_end + 1], dtype=np.int64)
+    base = int(offsets[0])
+    offsets = offsets - base
+    n_tokens = len(token_view.token_ids)
+    offsets = np.clip(offsets, 0, n_tokens)
+
+    metric_arrays = {
+        "entropy": None if token_view.tok_neg_entropy is None else -np.asarray(token_view.tok_neg_entropy, dtype=np.float64),
+        "conf": None if token_view.tok_conf is None else np.asarray(token_view.tok_conf, dtype=np.float64),
+        "gini": None if token_view.tok_gini is None else np.asarray(token_view.tok_gini, dtype=np.float64),
+    }
+
+    out = {name: [] for name in metric_arrays}
+    for i in range(len(offsets) - 1):
+        lo = int(offsets[i])
+        hi = int(offsets[i + 1])
+        for name, arr in metric_arrays.items():
+            if arr is None or hi <= lo or lo >= len(arr):
+                out[name].append(np.nan)
+                continue
+            seg = arr[lo:min(hi, len(arr))]
+            if seg.size == 0 or np.all(np.isnan(seg)):
+                out[name].append(np.nan)
+            else:
+                out[name].append(float(np.nanmean(seg)))
+
+    return {name: np.asarray(values, dtype=np.float64) for name, values in out.items()}
+
+
+def _discrete_derivatives(values: np.ndarray) -> dict[str, np.ndarray]:
+    arr = np.asarray(values, dtype=np.float64)
+    d1 = np.full(arr.shape, np.nan, dtype=np.float64)
+    d2 = np.full(arr.shape, np.nan, dtype=np.float64)
+
+    if arr.size >= 2:
+        d1[1:] = arr[1:] - arr[:-1]
+    if arr.size >= 3:
+        d2[2:] = d1[2:] - d1[1:-1]
+
+    return {
+        "avg": arr,
+        "d1": d1,
+        "d2": d2,
+    }
+
+
+def extract_run_dynamics(
+    cache,
+    run_id: int,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
+) -> dict:
+    """Export raw slice-level trajectory and token-metric dynamics for one run."""
+    slice_keysets = _extract_slice_keysets(cache, int(run_id))
+    cont_arr, nov_arr, refl_arr = _compute_trajectory_arrays(slice_keysets)
+    scores = _compute_trajectory_scores(
+        slice_keysets,
+        reflection_threshold=reflection_threshold,
+    )
+    slice_metrics = _slice_metric_means(cache, int(run_id))
+    derivatives = {name: _discrete_derivatives(values) for name, values in slice_metrics.items()}
+
+    return {
+        "num_slices": int(len(slice_keysets)),
+        "reflection_threshold": float(reflection_threshold),
+        "continuity_scores": cont_arr,
+        "novelty_scores": nov_arr,
+        "reflection_scores": refl_arr,
+        "trajectory_scores": scores,
+        "slice_metrics": slice_metrics,
+        "derivatives": derivatives,
     }
 
 
@@ -273,7 +366,10 @@ def _rank01(x: np.ndarray) -> np.ndarray:
     return ranks / max(n - 1, 1)
 
 
-def extract_trajectory_features(context: SelectorContext) -> np.ndarray:
+def extract_trajectory_features(
+    context: SelectorContext,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
+) -> np.ndarray:
     """
     为一个题目组内的所有 run 提取轨迹 + 层特征矩阵。
     Extract trajectory + layer feature matrix for all runs in a problem group.
@@ -306,7 +402,10 @@ def extract_trajectory_features(context: SelectorContext) -> np.ndarray:
         # Trajectory features (from rows/ bank)
         slices = _extract_slice_keysets(cache, int(rid))
         if slices:
-            traj = _compute_trajectory_scores(slices)
+            traj = _compute_trajectory_scores(
+                slices,
+                reflection_threshold=reflection_threshold,
+            )
             raw_cont[i] = traj["mean_continuity"]
             raw_nov[i] = traj["mean_novelty"]
             raw_refl[i] = traj["max_reflection"]
@@ -373,11 +472,13 @@ class TrajectorySelector(Selector):
         beta: float = 0.5,
         gamma: float = 0.3,
         delta: float = 0.2,
+        reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
     ):
         self.alpha = float(alpha)
         self.beta = float(beta)
         self.gamma = float(gamma)
         self.delta = float(delta)
+        self.reflection_threshold = float(reflection_threshold)
         self._context: Optional[SelectorContext] = None
 
     def bind(self, context: SelectorContext) -> None:
@@ -400,7 +501,10 @@ class TrajectorySelector(Selector):
                 scores[i] = 0.0
                 continue
 
-            traj = _compute_trajectory_scores(slices)
+            traj = _compute_trajectory_scores(
+                slices,
+                reflection_threshold=self.reflection_threshold,
+            )
             cont = traj["mean_continuity"]
             nov = traj["mean_novelty"]
             late = traj["late_convergence"]
@@ -544,8 +648,13 @@ class TrajectoryFusionSelector(Selector):
     model_path : str | None  模型文件路径；默认 models/ml_selectors/trajectory_fusion.pkl
     """
 
-    def __init__(self, model_path: str | None = None):
+    def __init__(
+        self,
+        model_path: str | None = None,
+        reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
+    ):
         self._model_path = Path(model_path) if model_path else _DEFAULT_MODEL_DIR / "trajectory_fusion.pkl"
+        self.reflection_threshold = float(reflection_threshold)
         self._model = None
         self._context: Optional[SelectorContext] = None
 
@@ -569,7 +678,10 @@ class TrajectoryFusionSelector(Selector):
         base_feat = extract_run_features(D, run_stats, context=self._context)  # (n, 12)
 
         # Extract trajectory 10-D features
-        traj_feat = extract_trajectory_features(self._context)  # (n, 10)
+        traj_feat = extract_trajectory_features(
+            self._context,
+            reflection_threshold=self.reflection_threshold,
+        )  # (n, 10)
 
         # Concatenate: (n, 22)
         feat = np.hstack([base_feat, traj_feat])

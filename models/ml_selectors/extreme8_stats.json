@@ -1,0 +1,37 @@
+{
+  "feature_names": [
+    "dc_z",
+    "dc_r",
+    "reflection_count_r"
+  ],
+  "reflection_threshold": 0.3,
+  "tuple_size": 8,
+  "num_tuples_per_problem": 256,
+  "seed": 42,
+  "datasets": [
+    "aime24",
+    "aime25",
+    "brumo25",
+    "gpqa",
+    "hmmt25",
+    "livecodebench_v5"
+  ],
+  "eligible_problem_counts": {
+    "aime24": 8,
+    "aime25": 10,
+    "brumo25": 9,
+    "gpqa": 96,
+    "hmmt25": 12,
+    "livecodebench_v5": 51
+  },
+  "n_best_samples": 380928,
+  "n_worst_samples": 380928,
+  "best_positive_rate": 0.5391307543682796,
+  "worst_positive_rate": 0.46086924563172044,
+  "best_training_tuple_accuracy": 0.6217237903225806,
+  "worst_training_error_hit": 0.5837113575268817,
+  "model_paths": {
+    "best": "models/ml_selectors/extreme8_best.pkl",
+    "worst": "models/ml_selectors/extreme8_worst.pkl"
+  }
+}

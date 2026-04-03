@@ -219,6 +219,46 @@ n_active_layers_z     80.0%     66.7%     63.3%     61.1%     46.7%     57.5%   
 
 Persisted single-feature model files currently cover the 12 base features in `models/ml_selectors/single_feat_*.pkl`; the full 22-feature ablation results (including trajectory-derived features) are summarised in this report, with aggregate training statistics in `models/ml_selectors/trajectory_stats.json`.
 
+### 2026-04-02 Follow-up: Reflection Dynamics
+
+A dedicated slice-level follow-up (`results/reflection_dynamics/summary.md`) exported raw reflection scores together with entropy / confidence / gini averages and their first/second discrete derivatives.
+
+- **Best reflection threshold:** lowering the reflection-event threshold from `0.30` to `0.20` improves the single-feature LOO mean of `reflection_count_r` from `71.1%` to `71.7%`.
+- **Strongest slice-level relationships:** reflection is most strongly **positively** correlated with average `gini` and **negatively** correlated with average `entropy`.
+- **Event dynamics:** the largest event vs non-event gaps appear on `confidence` derivative magnitudes (`abs_d1`, `abs_d2`), and the gaps are negative — reflection-event slices tend to be locally more stable in confidence.
+
+### 2026-04-02 Follow-up: Extreme8 Blind 64-Run Evaluation
+
+> This section is **not directly comparable** to the LOO selector rankings above: it uses pooled training on eligible problems, then evaluates full 64-run problems by aggregating scores over blind random 8-tuples.
+
+**Training protocol**
+- Features restricted to the three strongest signals: `dc_z`, `dc_r`, `reflection_count_r`
+- Keep only problems with empirical accuracy in `[10%, 90%]`
+- Sample `256` mixed 8-tuples per eligible problem for pooled `best` / `worst` logistic-regression training
+- Current model snapshot uses `reflection_threshold=0.30`; the improved `0.20` threshold was discovered afterwards by the follow-up sweep
+
+**Full 64-run evaluation protocol**
+- Sample `512` blind random 8-tuples per problem (`8` runs each)
+- Tuple construction does **not** use run correctness labels
+- Aggregate per-run `best`, `worst`, and `best - worst` scores across tuples
+
+```
+Method                  AIME24    AIME25   BruMo25      GPQA    HMMT25     LCBv5      Mean
+-------------------------------------------------------------------------------------------
+best-only               83.3%     76.7%     86.7%     63.1%     66.7%     58.7%     72.5%
+worst-only*             50.0%     66.7%     56.7%     42.4%     80.0%     40.7%     56.1%
+best+worst              83.3%     76.7%     86.7%     63.1%     66.7%     58.7%     72.5%
+worst-avoid             83.3%     76.7%     86.7%     63.1%     66.7%     58.7%     72.5%
+```
+
+`* worst-only` reports **error-hit rate** (chosen run is incorrect), not accuracy.
+
+**Takeaways**
+- Blind `best-only` reaches a **72.5%** 6-dataset mean using only three features.
+- `best+worst` does **not** improve over `best-only` in this run; the learned `worst` signal is not additive here.
+- `worst-avoid` collapses to the same choices as `best-only` in this snapshot.
+- Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json`, `results/extreme8_experiments/details_20260402_112323.json`.
+
 ---
 
 ## Temporal Discount Slice Selector
