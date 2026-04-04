@@ -1,0 +1,121 @@
+{
+  "feature_names": [
+    "dc_z",
+    "dc_r",
+    "reflection_count_r"
+  ],
+  "objective": "pointwise",
+  "artifact_prefix": "baseline12_pointwise",
+  "reflection_threshold": 0.3,
+  "tuple_size": 12,
+  "num_tuples_per_problem": 256,
+  "num_tuples_validation": 1024,
+  "tuple_min_correct": 2,
+  "tuple_max_correct": 10,
+  "seed": 42,
+  "workers": 4,
+  "datasets": [
+    "gpqa"
+  ],
+  "split_seed": 42,
+  "val_split": 0.2,
+  "alpha": 1.0,
+  "beta": 0.35,
+  "gamma": -0.5,
+  "problem_counts": {
+    "train": {
+      "train_full": {
+        "gpqa": 2
+      },
+      "train_split": {
+        "gpqa": 2
+      },
+      "val_eligible": {
+        "gpqa": 0
+      },
+      "val_all": {
+        "gpqa": 2
+      }
+    },
+    "train_total": 4,
+    "val_total": 2,
+    "val_eligible_total": 0
+  },
+  "worker_buckets": {
+    "train": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "validation": [
+      1,
+      1
+    ]
+  },
+  "objective_stats": {
+    "best_training_tuple_accuracy": 0.5068359375,
+    "worst_training_error_hit": 0.677734375,
+    "n_training_tuples": 1024,
+    "best_positive_rate": 0.4200846354166667,
+    "worst_positive_rate": 0.5799153645833334
+  },
+  "validation": {
+    "eligible": {
+      "mean": {},
+      "per_dataset": {},
+      "n_bundles": 0,
+      "n_problems": 0
+    },
+    "all": {
+      "mean": {
+        "best_only": {
+          "auroc": 0.49072265625,
+          "hit_at_1": 0.5,
+          "hit_at_3": 0.5,
+          "selective_acc_at_10pct": 0.38461538461538464,
+          "pairwise_accuracy": null
+        },
+        "mix": {
+          "auroc": 0.49072265625,
+          "hit_at_1": 0.5,
+          "hit_at_3": 0.5,
+          "selective_acc_at_10pct": 0.38461538461538464,
+          "pairwise_accuracy": null
+        }
+      },
+      "per_dataset": {
+        "gpqa": {
+          "best_only": {
+            "auroc": 0.49072265625,
+            "hit_at_1": 0.5,
+            "hit_at_3": 0.5,
+            "selective_acc_at_10pct": 0.38461538461538464,
+            "pairwise_accuracy": null,
+            "n_problems": 2,
+            "n_samples": 128,
+            "n_positive": 64,
+            "n_negative": 64
+          },
+          "mix": {
+            "auroc": 0.49072265625,
+            "hit_at_1": 0.5,
+            "hit_at_3": 0.5,
+            "selective_acc_at_10pct": 0.38461538461538464,
+            "pairwise_accuracy": null,
+            "n_problems": 2,
+            "n_samples": 128,
+            "n_positive": 64,
+            "n_negative": 64
+          }
+        }
+      },
+      "n_bundles": 1,
+      "n_problems": 2
+    }
+  },
+  "model_paths": {
+    "best": "results/extreme12_band_experiments/20260403_083020/models/baseline12_pointwise_best.pkl",
+    "worst": "results/extreme12_band_experiments/20260403_083020/models/baseline12_pointwise_worst.pkl"
+  }
+}

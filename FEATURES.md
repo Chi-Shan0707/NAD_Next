@@ -268,9 +268,277 @@ reduction:
 
 ---
 
+## 5a. Extended ML Selector Families: Extreme8 / Extreme9 / Extreme10 + Graph Topology
+
+> **双语说明 | Bilingual note**
+> 本节同时提供中文与英文描述，以便中英文读者均可快速定位关键细节。
+> This section is provided in both Chinese and English for accessibility.
+
+---
+
+### 5a-1. Shared Architecture (共享架构)
+
+All Extreme selectors follow a unified **tuple-sampling + linear ranking** pattern:
+
+```
+bind(context)
+  → extract raw per-run scalar features (no D available here)
+  → self._raw_values = dict of np.ndarray, one value per run
+
+select(D, run_stats)
+  → [if graph features needed] lazy-compute graph_raw from D, cache per group
+  → sample N random k-tuples from the n runs
+  → for each tuple: build feature matrix (n_sub, dim) and score with model
+  → accumulate per-run scores, return argmax(score_best)
+```
+
+所有 Extreme 系选择器使用相同的**随机 k-tuple 采样 + 线性排名**框架：`bind()` 阶段提取无需距离矩阵的标量特征；`select(D, ...)` 阶段对随机子集打分并汇总。
+
+**Selector contract** (`base.py`):
+- `bind(context: SelectorContext) → None` — called once per problem group; D unavailable
+- `select(D: np.ndarray, run_stats: dict) → int` — returns **group-local** index (0 to n-1)
+
+---
+
+### 5a-2. Extreme8 (3-dim) — `extreme8_impl.py`
+
+**Features (3 dimensions)**:
+
+| Dim | Name | Formula | Direction |
+|-----|------|---------|-----------|
+| 0 | `dc_z` | z-score of per-run DeepConf quality (`−mean(tok_conf)`) within the group | Higher = better |
+| 1 | `dc_r` | rank of per-run DeepConf quality, normalised to [0,1] | Higher = better |
+| 2 | `reflection_count_r` | rank of reflection event count (inter-slice Jaccard > threshold), normalised to [0,1] | Higher = better |
+
+**Key implementation files:**
+- `nad/core/selectors/extreme8_impl.py` — `extract_extreme8_raw_values()`, `build_extreme8_features()`, `LinearRankModel`, `Extreme8{Best,Worst,Mixed}Selector`
+- `scripts/train_extreme8_selectors.py` — training with pointwise / band-reward / aggregated_selacc10 objectives
+
+**Performance:** Blind 64-run evaluation (512 tuples/problem) → **72.5%** mean across 6 datasets.
+Baseline metrics (Extreme8): Hit@1 ≈ 72.5%, SelAcc@10% ≈ 75.99%.
+
+**中文说明：** Extreme8 仅用三个强特征：DeepConf z-score（`dc_z`）、DeepConf rank（`dc_r`）、反思事件次数 rank（`reflection_count_r`）。其中 `dc_z` 和 `dc_r` 衡量 run 整体的 token 置信度；`reflection_count_r` 衡量推理过程中发生的反思跳转次数，是迄今最强单特征（71.1% LOO 均值）。
+
+---
+
+### 5a-3. Extreme9 (11-dim) — `extreme9_impl.py` + `local_conf_impl.py`
+
+**Feature list (11 dimensions)**:
+
+```
+Extreme8 base (3)  +  local tok_conf aggregations (8)
+```
+
+| Dim | Name | Source module | Formula | Direction |
+|-----|------|--------------|---------|-----------|
+| 0–2 | `dc_z`, `dc_r`, `reflection_count_r` | `extreme8_impl` | (see Extreme8) | ↑ better |
+| 3 | `tail_2k_r` | `local_conf_impl` | rank of `mean(arr[-min(2000,T):])` | ↑ (lower tok_conf = better) |
+| 4 | `tail_q10_r` | `local_conf_impl` | rank of `mean(arr[-T//10:])` | ↑ |
+| 5 | `lgc_512_r` | `local_conf_impl` | rank of least sliding-window mean, window=512 | ↑ |
+| 6 | `lgc_2k_r` | `local_conf_impl` | rank of least sliding-window mean, window=2000 | ↑ |
+| 7 | `bottom_q10_r` | `local_conf_impl` | rank of 10th-percentile tok_conf | ↑ |
+| 8 | `head_tail_gap_r` | `local_conf_impl` | rank of `mean(head 10%) − mean(tail 10%)` | ↑ (positive = tail confident) |
+| 9 | `last_event_tail_conf_r` | `local_conf_impl` | rank of mean tok_conf after last reflection event | ↑ |
+| 10 | `event_nonevent_gap_r` | `local_conf_impl` | rank of `event_mean − nonevent_mean` tok_conf | ↑ |
+
+**Feature builder internals:**
+- tok_conf direction: lower value = more confident → apply `_rank01(-arr)` so higher rank = better
+- `head_tail_gap`, `event_nonevent_gap`: sign already meaningful; apply `_rank01(arr)`
+- `_impute_finite(arr, fill)`: replaces NaN/±inf with fill before ranking
+- LGC (Least-Grouped Confidence): `min(sliding-window means)`, mirrors DeepConf paper's operator
+
+**Zero-training baseline:** `local-conf-tail` (`LocalConfTailSelector`) — selects `argmin(tail_2k)` without any trained model. Validates that the local confidence direction is correct before training Extreme9.
+
+**Training script:** `scripts/train_extreme9_selectors.py`
+**Model artifacts:** `models/ml_selectors/extreme9_{best,worst}.pkl`
+
+**中文说明：** Extreme9 在 Extreme8 基础上加入 8 个局部 `tok_conf` 聚合特征。核心思路来自 DeepConf 论文：全局均值信号（dc\_r）已经很强，但局部算子（尾部均值、最差滑窗、底部百分位）能捕捉到全局均值遮盖的细节。`last_event_tail_conf_r` 和 `event_nonevent_gap_r` 还利用了 reflection event 的切片边界信息，衡量反思后 token 置信度是否收敛。所有 tok_conf 特征均以"越低越好"方向进行 rank 归一化。
+
+---
+
+### 5a-4. Graph Topology Module — `graph_topo_impl.py`
+
+**Motivation:** Inspired by CodeCircuit (attribution graph topology → correctness prediction). Correct-answer runs tend to form **denser, more connected clusters** in the activation similarity graph built from the 64-run Jaccard distance matrix.
+
+**灵感来源（中文）：** 受 CodeCircuit 研究启发，正确 run 倾向于在激活相似图中形成更密集、连通性更高的簇。图拓扑特征从 64-run Jaccard 距离矩阵 D 中提取，无需额外训练即可作为零训练基线信号。
+
+#### `extract_graph_topo_raw(D, eps=None, min_samples=3) → dict`
+
+```python
+# Adaptive eps = 30th percentile of upper-triangular distances
+eps = np.quantile(D[np.triu_indices(n, k=1)], 0.30)
+
+adj = (D <= eps).astype(float)   # adjacency matrix (diagonal zeroed)
+degree = adj.sum(axis=1)         # raw degree per run
+
+# local_cc: fraction of neighbours that are mutual neighbours
+AA = adj @ adj                   # closed walks of length 2
+safe_denom = where(d*(d-1) > 0, d*(d-1), 1.0)
+local_cc = where(d*(d-1) > 0, diag(AA) / safe_denom, 0.0)
+
+norm_degree = degree / (n - 1)   # normalised to [0, 1]
+
+# DBSCAN cluster labels (same BFS kernel as DBSCANMedoidSelector in impl.py)
+labels = _dbscan_cluster_labels(D, eps, min_samples)
+cluster_size_frac[i] = size_of_run_i_cluster / n  # noise → 1/n
+```
+
+#### `GraphDegreeSelector` — zero-training baseline
+
+Registered as **`graph-degree`**. Selects `argmax(norm_degree)` without any trained model. Used at ablation step ① to confirm graph topology signal before adding it to Extreme10.
+
+**Graph feature quality direction:** All three features — `local_cc`, `norm_degree`, `cluster_size_frac` — are "higher = better" (denser graph neighbourhood → more likely in correct cluster). In the feature builder they use `_rank01(sub)`.
+
+---
+
+### 5a-5. Extreme10 (17-dim) — `extreme10_impl.py`
+
+**Complete feature list (17 dimensions)**:
+
+```
+Extreme9 base (11)  +  Graph topology (3, from D)  +  Error-mass (3, from tok_conf)
+```
+
+| Dim | Name | Source | Formula | Direction |
+|-----|------|--------|---------|-----------|
+| 0–10 | (Extreme9 features) | `extreme9_impl` + `local_conf_impl` | (see §5a-3) | — |
+| 11 | `local_cc_r` | `graph_topo_impl` | `_rank01(local_cc[idx])` | ↑ |
+| 12 | `norm_degree_r` | `graph_topo_impl` | `_rank01(norm_degree[idx])` | ↑ |
+| 13 | `cluster_size_r` | `graph_topo_impl` | `_rank01(cluster_size_frac[idx])` | ↑ |
+| 14 | `instability_mass_r` | `local_conf_impl` | `_rank01(-mean(arr > μ+0.5σ))` | ↑ (lower mass = better) |
+| 15 | `tail_variance_r` | `local_conf_impl` | `_rank01(-var(arr[-T//10:]))` | ↑ (lower var = better) |
+| 16 | `event_pre_post_delta_r` | `local_conf_impl` | `_rank01(mean(pre_2slices) − mean(post_event))` | ↑ (recovery = better) |
+
+#### Error-mass feature details (`extract_error_mass_raw` in `local_conf_impl.py`)
+
+**`instability_mass`**: fraction of tokens where `tok_conf > μ_i + 0.5σ_i`. Captures bursty confidence spikes — a run with many such tokens is unstable. Default fallback = 0.5.
+
+**`tail_variance`**: `np.var(arr[-max(1,T//10):])` over the final 10% of tokens. High variance at the end indicates the model has not settled into a confident generation mode. Default fallback = imputed finite mean.
+
+**`event_pre_post_delta`**: `mean(arr[pre_lo:pre_hi]) − mean(arr[post_start:])` where:
+- `pre_window` = tokens in the 2 slices immediately preceding the **last** reflection event
+- `post_window` = all tokens after the last reflection event slice
+
+Positive delta means the run became more confident (lower tok_conf) after reflecting — a hallmark of productive reflection. Default = 0.0 if no reflection event exists.
+
+**中文说明 — 误差质量特征三要素：**
+- `instability_mass`：置信度不稳定 token 占比（tok\_conf 超过均值 + 0.5标准差）；越低越好，说明 run 整体平稳。
+- `tail_variance`：末尾 10% token 的方差；越低越好，说明末尾生成进入稳定的自信状态。
+- `event_pre_post_delta`：最后一次反思事件前后置信度恢复幅度（正值 = 反思有效，tok\_conf 下降 = 更自信）；越高越好。
+
+#### Key architectural decision: lazy D-computation in `select()`
+
+Graph features require D, which is **not available at `bind()` time**. The base class `_Extreme10BaseSelector` caches `self._graph_raw = None` and populates it on the first call to `_score_payload(D, ...)`:
+
+```python
+def _score_payload(self, D, best_model, worst_model):
+    if self._graph_raw is None:               # lazy, once per group
+        self._graph_raw = extract_graph_topo_raw(D)
+    return accumulate_extreme10_scores(
+        ..., graph_raw=self._graph_raw, ...
+    )
+```
+
+`bind()` resets `_graph_raw = None` for each new problem group, ensuring no cross-group contamination.
+
+**关键架构决策（中文）：** 图拓扑特征需要 D 矩阵，而 `bind()` 阶段没有 D。因此在 `_score_payload()` 内部**惰性计算并缓存** `graph_raw`：每个问题组第一次调用 `select()` 时计算，后续同组调用直接复用。`bind()` 会将 `_graph_raw` 重置为 `None`，确保组间隔离。
+
+#### Training script architecture: Option C (precompute D in worker)
+
+`train_extreme10_selectors.py` extends `train_extreme9_selectors.py` with D computation inside each worker:
+
+```python
+def _extract_problem_payloads(batch, reflection_threshold):
+    for spec in batch:
+        # Step 1: extract 14-key raw values (no D needed)
+        raw_values = extract_extreme10_raw_values(ctx, reflection_threshold)
+
+        # Step 2: build RunViews and compute D (1 thread per worker)
+        default_vspec = ViewSpec(Agg.MAX, CutSpec(CutType.MASS, 1.0), Order.BY_KEY)
+        views = [reader.get_run_view(rid, default_vspec) for rid in run_ids]
+        D = DistanceEngine(DistanceSpec("ja", num_threads=1)).dense_matrix(views)
+
+        # Step 3: extract graph topology features
+        graph_raw = extract_graph_topo_raw(D)
+
+        payload["raw_values"] = {k: np.asarray(v, float64) for k,v in raw_values.items()}
+        payload["graph_raw"]  = {k: np.asarray(v, float64) for k,v in graph_raw.items()}
+```
+
+Thread constraint: `--workers 4` × `1 DistanceEngine thread` = 4 threads total ≤ 16-core limit.
+
+**训练脚本架构（中文）：** 采用 Option C 方案：在 worker 进程内部直接计算 D（`DistanceEngine(DistanceSpec("ja", num_threads=1))`），同步提取 `graph_raw`，以 `payload["graph_raw"]` 形式传递回主进程。每个 worker 只用 1 个 DistanceEngine 线程，`--workers 4` 时共 4 线程，满足 16 核限制。回退保护：若 D 计算失败，`graph_raw` 自动填充为零（`norm_degree=0, cluster_size_frac=1/n`），训练不中断。
+
+---
+
+### 5a-6. Ablation Strategy & Verification Commands (消融策略与验证命令)
+
+```
+消融顺序 | Ablation order:
+
+① graph-degree (零训练，~5 min | zero-training, ~5 min)
+   → confirm: graph topology signal vs dc_r / dbscan-medoid
+
+② Extreme9 + graph only (14-dim, train)
+   → isolate graph contribution
+
+③ Extreme9 + error-mass only (14-dim, train)
+   → isolate error-mass contribution
+
+④ Full Extreme10 (17-dim, train only if ② or ③ shows gain)
+   → check synergy vs individual contributions
+
+⑤ Zero-ablation (optional): remove each of the 6 new features one at a time
+   → prune features that do not contribute
+```
+
+```bash
+# Step 1: zero-training graph baseline (5 min)
+# 步骤一：零训练图拓扑基线
+python -m nad.cli analyze \
+  --cache-root MUI_HUB/cache/.../cache_... \
+  --selectors graph-degree dc_r dbscan-medoid \
+  --distance ja --distance-threads 16 \
+  --out /tmp/gtopo_test.json
+
+# Step 2: train full Extreme10
+# 步骤二：训练 Extreme10
+source .venv/bin/activate
+python scripts/train_extreme10_selectors.py \
+  --objective aggregated_selacc10 \
+  --workers 4
+
+# Step 3: evaluate
+# 步骤三：评估
+python -m nad.cli analyze \
+  --cache-root MUI_HUB/cache/.../cache_... \
+  --selectors extreme10-best extreme10-mixed extreme9-best dc_r \
+  --distance ja --distance-threads 16 \
+  --out /tmp/extreme10_eval.json
+```
+
+---
+
+### 5a-7. File Map (文件清单)
+
+| File | Role |
+|------|------|
+| `nad/core/selectors/extreme8_impl.py` | Extreme8: 3-dim, base reusables (`_impute_finite`, `normalize_weight_direction`, `sample_tuple_indices`, `LinearRankModel`, `ZeroRankModel`, band-reward utilities) |
+| `nad/core/selectors/local_conf_impl.py` | Local tok_conf features (8 dims for Extreme9) + error-mass features (3 dims for Extreme10): `extract_local_conf_raw()`, `extract_error_mass_raw()`, `LocalConfTailSelector` |
+| `nad/core/selectors/graph_topo_impl.py` | Graph topology features: `extract_graph_topo_raw()`, `_dbscan_cluster_labels()`, `GraphDegreeSelector` |
+| `nad/core/selectors/extreme9_impl.py` | Extreme9: 11-dim, `LinearRankModel9`, `extract_extreme9_raw_values()`, `build_extreme9_features()`, `accumulate_extreme9_scores()`, `Extreme9{Best,Worst,Mixed}Selector` |
+| `nad/core/selectors/extreme10_impl.py` | Extreme10: 17-dim, `LinearRankModel10`, `extract_extreme10_raw_values()`, `build_extreme10_features()`, `accumulate_extreme10_scores()`, `Extreme10{Best,Worst,Mixed}Selector` |
+| `nad/core/selectors/registry.py` | Dispatcher: `build_selector()` routes `graph-degree`, `local-conf-tail`, `extreme9-*`, `extreme10-*` |
+| `scripts/train_extreme9_selectors.py` | Extreme9 training (pointwise / band-reward / aggregated_selacc10) |
+| `scripts/train_extreme10_selectors.py` | Extreme10 training (same objectives + D computation per worker via `DistanceEngine`) |
+| `models/ml_selectors/extreme9_{best,worst}.pkl` | Trained Extreme9 model artifacts |
+| `models/ml_selectors/extreme10_{best,worst}.pkl` | Trained Extreme10 model artifacts (after training) |
+
+---
+
 ## 6. Plugin System: Custom Selectors
 
-**Module:** `nad/core/selectors/registry.py`  
+**Module:** `nad/core/selectors/registry.py`
 **Example:** `plugins/kink_selector.py`
 
 ### Loading custom selectors
@@ -730,7 +998,7 @@ This table shows everything implemented **beyond** chain-of-thought, neuron acti
 | **Data ingestion** | Two-stage Map-Reduce NPZ→CSR cache builder; atomic writes; 32–60 parallel workers |
 | **Cache format** | CSR binary cache (base, index, token_data, rows); manifest v4.0 with SHA-256 integrity; lazy mmap access |
 | **Distance metrics** | Jaccard (unweighted); Weighted Jaccard; NumPy and Roaring Bitmap backends; auto-switching at 4 096 elements; thread-parallel dense matrix |
-| **Selection algorithms** | 10 selectors: min/max-activation, Medoid, KNN-Medoid, DBSCAN-Medoid, Consensus-Min, Consensus-Max, DeepConf, avg64@, con64@ |
+| **Selection algorithms** | 35 selectors: 10 core (min/max-activation, Medoid, KNN-Medoid, DBSCAN-Medoid, Consensus-Min, Consensus-Max, DeepConf, avg64@, con64@); 4 Ensemble/Tournament; 2 Two-stage; 4 classic ML; 1 Temporal; 3 Trajectory; 3 Extreme8; 1 LocalConfTail; 3 Extreme9; 1 GraphDegree; 3 Extreme10 |
 | **Plugin system** | File-based and module-path plugin loading; full SelectorContext API; KinkSelector reference implementation |
 | **Accuracy evaluation** | Ground truth loading (2 schemas); per-problem and per-selector accuracy; compressing/decompressing evaluation reports |
 | **Ground truth generation** | Auto-discovery from MUI_Public directory layout; multi-schema conversion; compact binary format |

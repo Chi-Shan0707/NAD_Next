@@ -34,6 +34,28 @@ from flask import Flask, jsonify, render_template, request
 from nad.io import build_problem_catalog, detect_nad_next_cache, load_nad_next_index, NadNextLoader
 
 # =============================================================================
+# Optional: Scatter / MDS / Extreme8 analysis dependencies
+# =============================================================================
+
+try:
+    from sklearn.manifold import MDS as _MDS
+    _HAS_SKLEARN_MDS = True
+except ImportError:  # pragma: no cover
+    _HAS_SKLEARN_MDS = False
+
+try:
+    from nad.core.distance.engine import DistanceEngine, DistanceSpec
+    from nad.core.views.reader import CacheReader, ViewSpec, CutSpec, Agg, CutType, Order
+    from nad.core.selectors.base import SelectorContext
+    from nad.core.selectors.extreme8_impl import (
+        extract_extreme8_raw_values,
+        build_extreme8_features,
+    )
+    _HAS_SCATTER_DEPS = True
+except ImportError:  # pragma: no cover
+    _HAS_SCATTER_DEPS = False
+
+# =============================================================================
 # Configuration Constants
 # =============================================================================
 
@@ -275,6 +297,8 @@ GLOBAL_STATE: Dict[str, Any] = {
     "current_selection": {"model": None, "dataset": None, "cache": None},
     "cache_root_path": None,                 # Resolved Path to the models base dir
     "max_cache_mb_setting": 256,             # Preserved for re-loading
+    # Scatter / MDS / KNN analysis cache: (problem_id_str, cache_path) -> result dict
+    "scatter_cache": {},
 }
 
 GLOBAL_LOCK = threading.Lock()
@@ -1357,6 +1381,465 @@ def api_search():
     problem_ids = GLOBAL_STATE.get("problem_ids") or []
     matches = [pid for pid in problem_ids if query in str(pid).lower()][:20]
     return jsonify(matches)
+
+
+# =============================================================================
+# Scatter / MDS / KNN Analysis
+# =============================================================================
+
+def _compute_scatter_data(cache_path: str, problem_id, problem_info: dict):
+    """
+    Compute per-run MDS coordinates, Extreme8 features, and KNN purity for a problem group.
+
+    Returns (result_dict, raw_data_dict):
+      result_dict  — JSON-serialisable response for /api/v1/scatter_data
+      raw_data_dict — numerical arrays kept in memory for selector simulation
+    """
+    correct_runs = problem_info.get("correct_runs", [])
+    incorrect_runs = problem_info.get("incorrect_runs", [])
+
+    run_ids: List[int] = []
+    correct_labels: List[bool] = []
+    for run in correct_runs:
+        run_ids.append(int(run["sample_id"]))
+        correct_labels.append(True)
+    for run in incorrect_runs:
+        run_ids.append(int(run["sample_id"]))
+        correct_labels.append(False)
+
+    n = len(run_ids)
+    empty = {"problem_id": str(problem_id), "runs": [], "n_runs": 0, "knn_purity_mean": None}
+    if n == 0:
+        return empty, {}
+
+    reader = CacheReader(cache_path)
+    vspec = ViewSpec(agg=Agg.MAX, cut=CutSpec(CutType.MASS, 0.98), order=Order.BY_KEY)
+    views = [reader.get_run_view(rid, vspec) for rid in run_ids]
+    lengths = [int(len(v.keys)) for v in views]
+
+    engine = DistanceEngine(DistanceSpec("ja", num_threads=4))
+    D = engine.dense_matrix(views).astype(np.float64)
+
+    # MDS projection
+    mds_xy = np.zeros((n, 2), dtype=np.float64)
+    if _HAS_SKLEARN_MDS and n >= 2:
+        try:
+            D_sym = np.clip((D + D.T) / 2.0, 0.0, None)
+            np.fill_diagonal(D_sym, 0.0)
+            mds = _MDS(
+                n_components=2,
+                dissimilarity="precomputed",
+                random_state=42,
+                n_init=1,
+                max_iter=300,
+                normalized_stress="auto",
+            )
+            mds_xy = mds.fit_transform(D_sym)
+        except Exception as exc:  # pragma: no cover
+            logger.warning(f"MDS failed for problem {problem_id}: {exc}")
+
+    # Extreme8 features: dc_z, dc_r, reflection_count_r
+    context = SelectorContext(
+        cache=reader,
+        problem_id=str(problem_id),
+        run_ids=run_ids,
+        views=views,
+    )
+    raw = extract_extreme8_raw_values(context)
+    feats = build_extreme8_features(raw)  # (n, 3): dc_z, dc_r, reflection_count_r
+
+    # KNN (k=5)
+    k = min(5, n - 1)
+    runs_list: List[dict] = []
+    knn_purity_sum = 0.0
+
+    for i in range(n):
+        dists_i = D[i].copy()
+        dists_i[i] = np.inf
+        nn_idx = np.argsort(dists_i)[:k]
+        knn5 = []
+        correct_count = 0
+        for j in nn_idx:
+            knn5.append({
+                "sample_id": int(run_ids[j]),
+                "distance": round(float(dists_i[j]), 4),
+                "correct": bool(correct_labels[j]),
+                "dc_r": round(float(feats[j, 1]), 4),
+                "rc_r": round(float(feats[j, 2]), 4),
+            })
+            if correct_labels[j]:
+                correct_count += 1
+        purity = float(correct_count) / k if k > 0 else 0.0
+        knn_purity_sum += purity
+
+        runs_list.append({
+            "sample_id": int(run_ids[i]),
+            "correct": bool(correct_labels[i]),
+            "dc_z": round(float(feats[i, 0]), 4),
+            "dc_r": round(float(feats[i, 1]), 4),
+            "reflection_count_r": round(float(feats[i, 2]), 4),
+            "reflection_count": round(float(raw["reflection_count"][i]), 1),
+            "mds_x": round(float(mds_xy[i, 0]), 4),
+            "mds_y": round(float(mds_xy[i, 1]), 4),
+            "knn5": knn5,
+            "knn_purity": round(purity, 2),
+        })
+
+    result = {
+        "problem_id": str(problem_id),
+        "runs": runs_list,
+        "n_runs": n,
+        "knn_purity_mean": round(float(knn_purity_sum / n), 3) if n > 0 else None,
+    }
+    raw_data = {
+        "D": D,                              # (n,n) float64 Jaccard distance matrix
+        "feats": feats,                       # (n,3) float64: dc_z, dc_r, reflection_count_r
+        "raw": raw,                           # {"dc_raw": ..., "reflection_count": ...}
+        "run_ids": run_ids,                   # list[int] global sample IDs
+        "correct_labels": correct_labels,     # list[bool]
+        "lengths": lengths,                   # list[int] neuron activation counts
+        "mds_xy": mds_xy,                     # (n,2) float64
+        "cache_path": cache_path,
+        "problem_id": str(problem_id),
+    }
+    return result, raw_data
+
+
+@app.route("/api/v1/scatter_data/<path:problem_id>")
+def api_scatter_data(problem_id: str):
+    """
+    Compute and return scatter/MDS/KNN analysis for a problem group.
+
+    Returns per-run dc_r, dc_z, reflection_count_r, MDS coordinates, and KNN neighbours.
+    Results are cached in memory by (problem_id, cache_path) to avoid recomputation.
+
+    Returns:
+        JSON with runs list and knn_purity_mean.
+    """
+    if not GLOBAL_STATE.get("data_loaded"):
+        return jsonify({"success": False, "error": "Data still loading"}), 404
+
+    if not _HAS_SCATTER_DEPS:
+        return jsonify({
+            "success": False,
+            "error": "Required dependencies (sklearn, nad.core) not available",
+        }), 503
+
+    loader = GLOBAL_STATE.get("loader")
+    if loader is None:
+        return jsonify({"success": False, "error": "Loader not initialized"}), 404
+
+    problems_data = GLOBAL_STATE.get("problems_data") or {}
+    problem_ids_list = GLOBAL_STATE.get("problem_ids") or []
+
+    # Resolve problem_id type (int vs str, same logic as api_plotly_data)
+    if problem_ids_list and isinstance(problem_ids_list[0], int):
+        try:
+            actual_pid = int(problem_id)
+        except ValueError:
+            return jsonify({"success": False, "error": f"Invalid problem ID: {problem_id}"}), 404
+    else:
+        actual_pid = problem_id
+
+    if actual_pid not in problems_data:
+        return jsonify({"success": False, "error": f"Problem {problem_id} not found"}), 404
+
+    cache_path = str(loader.root)
+    cache_key = (str(actual_pid), cache_path)
+
+    scatter_cache: dict = GLOBAL_STATE.get("scatter_cache", {})
+    if cache_key in scatter_cache:
+        return jsonify({"success": True, **scatter_cache[cache_key]["result"]})
+
+    try:
+        result, raw_data = _compute_scatter_data(cache_path, actual_pid, problems_data[actual_pid])
+        scatter_cache[cache_key] = {"result": result, "raw": raw_data}
+        return jsonify({"success": True, **result})
+    except Exception as exc:
+        logger.error(f"scatter_data error for problem {problem_id}: {exc}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(exc)}), 500
+
+
+# =============================================================================
+# Selector Simulation
+# =============================================================================
+
+# Selectors available in the UI dropdown.
+# "virtual" = computed directly from features/distance, no Selector class needed.
+_SELECTOR_CATALOG: List[dict] = [
+    {"id": "dc_r",               "label": "dc_r  (conf. rank)",          "group": "Feature",  "virtual": True},
+    {"id": "reflection_count_r", "label": "reflection_count_r",          "group": "Feature",  "virtual": True},
+    {"id": "deepconf",           "label": "DeepConf  (min tok_conf)",    "group": "Feature",  "virtual": False},
+    {"id": "medoid",             "label": "Medoid  (Jaccard)",           "group": "Distance", "virtual": False},
+    {"id": "knn-medoid-3",       "label": "KNN-Medoid  k=3",             "group": "Distance", "virtual": False},
+    {"id": "knn-medoid-5",       "label": "KNN-Medoid  k=5",             "group": "Distance", "virtual": False},
+    {"id": "min-activation",     "label": "Min-Activation",              "group": "Baseline", "virtual": False},
+    {"id": "max-activation",     "label": "Max-Activation",              "group": "Baseline", "virtual": False},
+    {"id": "extreme8-best",      "label": "Extreme8-Best  (ML model)",   "group": "ML",       "virtual": False},
+    {"id": "extreme8-mixed",     "label": "Extreme8-Mixed  (ML model)",  "group": "ML",       "virtual": False},
+]
+
+_SELECTOR_ID_TO_NAME = {
+    "knn-medoid-3": "knn-medoid",
+    "knn-medoid-5": "knn-medoid",
+}
+_SELECTOR_ID_TO_PARAMS = {
+    "knn-medoid-3": {"k": 3},
+    "knn-medoid-5": {"k": 5},
+}
+
+
+def _rank01(arr: np.ndarray) -> np.ndarray:
+    """Map values to [0,1] rank (0=smallest, 1=largest). Ties broken arbitrarily."""
+    n = len(arr)
+    if n <= 1:
+        return np.zeros(n, dtype=np.float64)
+    order = np.argsort(arr, kind="stable")
+    ranks = np.empty(n, dtype=np.float64)
+    ranks[order] = np.arange(n, dtype=np.float64) / (n - 1)
+    return ranks
+
+
+def _norm01(arr: np.ndarray) -> np.ndarray:
+    """Linearly scale arr to [0, 1]. Returns zeros if range is 0."""
+    lo, hi = float(arr.min()), float(arr.max())
+    if hi - lo < 1e-12:
+        return np.zeros(len(arr), dtype=np.float64)
+    return (arr - lo) / (hi - lo)
+
+
+def _run_selector_on_raw(raw_data: dict, selector_id: str) -> dict:
+    """
+    Run a single selector on cached raw data for a problem group.
+
+    Returns a dict with:
+      selected_idx      — group-internal index of the selected run
+      selected_sample_id
+      selected_correct
+      scores            — float array (n,), higher = selector prefers this run
+      score_label       — human-readable name for the score column
+      error             — str or None if selector raised
+    """
+    D = raw_data.get("D")
+    feats = raw_data.get("feats")
+    raw = raw_data.get("raw")
+    run_ids = raw_data["run_ids"]
+    correct_labels = raw_data["correct_labels"]
+    lengths = raw_data["lengths"]
+    cache_path = raw_data["cache_path"]
+    problem_id = raw_data["problem_id"]
+    n = len(run_ids)
+
+    scores = np.zeros(n, dtype=np.float64)
+    selected_idx = 0
+    score_label = "score"
+    error = None
+
+    try:
+        if selector_id == "dc_r":
+            scores = feats[:, 1].copy()
+            selected_idx = int(np.argmax(scores))
+            score_label = "dc_r"
+
+        elif selector_id == "reflection_count_r":
+            scores = feats[:, 2].copy()
+            selected_idx = int(np.argmax(scores))
+            score_label = "rc_r"
+
+        elif selector_id == "min-activation":
+            lengths_arr = np.array(lengths, dtype=np.float64)
+            scores = _norm01(-lengths_arr)
+            selected_idx = int(np.argmin(lengths_arr))
+            score_label = "−length (norm)"
+
+        elif selector_id == "max-activation":
+            lengths_arr = np.array(lengths, dtype=np.float64)
+            scores = _norm01(lengths_arr)
+            selected_idx = int(np.argmax(lengths_arr))
+            score_label = "length (norm)"
+
+        elif selector_id == "medoid":
+            mean_dist = D.mean(axis=1)
+            scores = _norm01(-mean_dist)
+            selected_idx = int(np.argmin(mean_dist))
+            score_label = "−mean_dist (norm)"
+
+        elif selector_id in ("knn-medoid-3", "knn-medoid-5"):
+            k_val = 3 if selector_id == "knn-medoid-3" else 5
+            k_val = min(k_val, n - 1)
+            S = 1.0 - D
+            raw_scores = np.zeros(n, dtype=np.float64)
+            for i in range(n):
+                sims = np.delete(S[i], i)
+                top = np.partition(sims, -k_val)[-k_val:] if k_val < len(sims) else sims
+                raw_scores[i] = float(top.mean())
+            scores = _norm01(raw_scores)
+            selected_idx = int(np.argmax(raw_scores))
+            score_label = f"knn-sim k={k_val} (norm)"
+
+        else:
+            # Use the real Selector class
+            from nad.core.selectors.registry import build_selector
+            from nad.core.selectors.base import SelectorSpec as _SelectorSpec
+
+            sel_name = _SELECTOR_ID_TO_NAME.get(selector_id, selector_id)
+            sel_params = _SELECTOR_ID_TO_PARAMS.get(selector_id, {})
+            sel = build_selector(_SelectorSpec(sel_name, sel_params))
+
+            # Rebuild reader + views + context (no heavy I/O, all mmap)
+            reader = CacheReader(cache_path)
+            vspec = ViewSpec(agg=Agg.MAX, cut=CutSpec(CutType.MASS, 0.98), order=Order.BY_KEY)
+            views = [reader.get_run_view(rid, vspec) for rid in run_ids]
+            ctx = SelectorContext(
+                cache=reader,
+                problem_id=problem_id,
+                run_ids=run_ids,
+                views=views,
+            )
+            sel.bind(ctx)
+            run_stats = {"lengths": np.array(lengths, dtype=np.int32)}
+            selected_idx = int(sel.select(D, run_stats))
+
+            # Derive per-run scores for display
+            if selector_id == "deepconf":
+                dc_quality = -raw["dc_raw"]           # higher quality = lower tok_conf
+                scores = _norm01(dc_quality)
+                score_label = "deepconf quality (norm)"
+            elif selector_id in ("extreme8-best", "extreme8-mixed"):
+                # Extract scores from the selector after bind
+                if hasattr(sel, "_raw_values") and sel._raw_values is not None:
+                    rv = sel._raw_values
+                    sub_feats = build_extreme8_features(rv)
+                    scores = _norm01(sub_feats[:, 1] + sub_feats[:, 2])  # dc_r + rc_r proxy
+                    score_label = "dc_r+rc_r proxy (norm)"
+                else:
+                    scores = np.zeros(n)
+                    score_label = "score"
+            else:
+                scores = np.zeros(n)
+                score_label = "score"
+                scores[selected_idx] = 1.0  # mark selected
+
+    except Exception as exc:
+        error = str(exc)
+        logger.error(f"selector simulation error ({selector_id}): {exc}")
+
+    return {
+        "selected_idx": selected_idx,
+        "selected_sample_id": int(run_ids[selected_idx]),
+        "selected_correct": bool(correct_labels[selected_idx]),
+        "scores": scores,
+        "score_label": score_label,
+        "error": error,
+    }
+
+
+@app.route("/api/v1/selector_catalog")
+def api_selector_catalog():
+    """Return list of selectors available for simulation."""
+    return jsonify({"selectors": _SELECTOR_CATALOG})
+
+
+@app.route("/api/v1/selector_pick/<path:problem_id>")
+def api_selector_pick(problem_id: str):
+    """
+    Simulate a selector on a problem group and return per-run scores + selected run.
+
+    Query Params:
+        selector (str): selector ID from /api/v1/selector_catalog
+
+    Returns JSON with:
+        selected_sample_id, selected_correct, score_label,
+        all_runs: [{sample_id, correct, score, rank, dc_r, rc_r, reflection_count, mds_x, mds_y}]
+    """
+    if not GLOBAL_STATE.get("data_loaded"):
+        return jsonify({"success": False, "error": "Data still loading"}), 404
+    if not _HAS_SCATTER_DEPS:
+        return jsonify({"success": False, "error": "Required dependencies not available"}), 503
+
+    selector_id = request.args.get("selector", "medoid").strip()
+
+    loader = GLOBAL_STATE.get("loader")
+    if loader is None:
+        return jsonify({"success": False, "error": "Loader not initialized"}), 404
+
+    problems_data = GLOBAL_STATE.get("problems_data") or {}
+    problem_ids_list = GLOBAL_STATE.get("problem_ids") or []
+
+    if problem_ids_list and isinstance(problem_ids_list[0], int):
+        try:
+            actual_pid = int(problem_id)
+        except ValueError:
+            return jsonify({"success": False, "error": f"Invalid problem ID: {problem_id}"}), 404
+    else:
+        actual_pid = problem_id
+
+    if actual_pid not in problems_data:
+        return jsonify({"success": False, "error": f"Problem {problem_id} not found"}), 404
+
+    cache_path = str(loader.root)
+    cache_key = (str(actual_pid), cache_path)
+
+    scatter_cache: dict = GLOBAL_STATE.get("scatter_cache", {})
+
+    # Ensure scatter data (and raw_data) is computed
+    if cache_key not in scatter_cache:
+        try:
+            result, raw_data = _compute_scatter_data(cache_path, actual_pid, problems_data[actual_pid])
+            scatter_cache[cache_key] = {"result": result, "raw": raw_data}
+        except Exception as exc:
+            logger.error(f"scatter precompute error: {exc}")
+            return jsonify({"success": False, "error": str(exc)}), 500
+
+    raw_data = scatter_cache[cache_key].get("raw", {})
+    scatter_result = scatter_cache[cache_key]["result"]
+
+    if not raw_data:
+        return jsonify({"success": False, "error": "No runs for this problem"}), 404
+
+    sim = _run_selector_on_raw(raw_data, selector_id)
+    if sim["error"]:
+        return jsonify({"success": False, "error": sim["error"],
+                        "selector": selector_id}), 500
+
+    # Build per-run response using scatter result as base
+    scores = sim["scores"]
+    # Rank: 0 = best (highest score)
+    order = np.argsort(-scores, kind="stable")
+    ranks = np.empty(len(scores), dtype=int)
+    ranks[order] = np.arange(len(scores))
+
+    all_runs = []
+    for i, run_info in enumerate(scatter_result["runs"]):
+        all_runs.append({
+            "sample_id": run_info["sample_id"],
+            "correct": run_info["correct"],
+            "score": round(float(scores[i]), 4),
+            "rank": int(ranks[i]),           # 0-based, 0 = top
+            "is_selected": (i == sim["selected_idx"]),
+            "dc_r": run_info["dc_r"],
+            "dc_z": run_info["dc_z"],
+            "reflection_count_r": run_info["reflection_count_r"],
+            "reflection_count": run_info["reflection_count"],
+            "mds_x": run_info["mds_x"],
+            "mds_y": run_info["mds_y"],
+        })
+
+    # Sort by rank for the response
+    all_runs.sort(key=lambda r: r["rank"])
+
+    return jsonify({
+        "success": True,
+        "problem_id": str(actual_pid),
+        "selector": selector_id,
+        "selected_sample_id": sim["selected_sample_id"],
+        "selected_correct": sim["selected_correct"],
+        "score_label": sim["score_label"],
+        "n_runs": len(all_runs),
+        "all_runs": all_runs,
+    })
 
 
 def create_arg_parser() -> argparse.ArgumentParser:

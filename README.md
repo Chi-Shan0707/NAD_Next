@@ -60,7 +60,7 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 
 ### 选择器
 
-内置 21 种选择器算法，从每个题目组中挑选最具代表性的样本：
+内置 35 种选择器算法，从每个题目组中挑选最具代表性的样本：
 
 **基础选择器**
 
@@ -140,6 +140,54 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 最新产物快照（UTC）：评估报告生成于 `2026-03-30`，见 `results/trajectory_experiments/accuracy_summary_20260330_112435.json`、`results/trajectory_experiments/trajectory_20260330_112435.json`、`results/trajectory_experiments/layer_stratified_20260330_112435.json`；22 维轨迹融合训练统计更新于 `2026-03-31 01:56:52`，见 `models/ml_selectors/trajectory_stats.json`（`31,040` 个带标注样本对、`18,873` 个正确样本、`22` 个特征、`6` 个数据集）。
 `2026-04-02 17:13:06` UTC 的 reflection dynamics follow-up 写入 `results/reflection_dynamics/summary.md`、`results/reflection_dynamics/threshold_sweep_summary.json`：将 reflection event 阈值从 `0.30` 调到 `0.20` 可把 `reflection_count_r` 的单特征 LOO 均值从 `71.1%` 提升到 `71.7%`。同一批分析还显示：reflection 与平均 `gini` 正相关、与平均 `entropy` 负相关，而 reflection event slice 上的 `confidence` 一阶/二阶离散变化幅度整体更低。
 新增 `extreme8-best` / `extreme8-worst` / `extreme8-mixed` 三个 pooled subset 选择器：训练阶段仅使用 `dc_z`、`dc_r`、`reflection_count_r` 三个强特征，保留 problem accuracy ∈ `[10%, 90%]` 的题目，每题随机采样 `256` 个 mixed 8-tuples；`2026-04-02 17:56:57` UTC 完成的 blind 64-run 评估对每题使用 `512` 个随机 8-tuples（构造 tuple 时不看 run 对错），`best-only` / `best+worst` / `worst-avoid` 的 6 数据集均值均为 `72.5%`，`worst-only` 的错误命中率为 `56.1%`。对应产物见 `models/ml_selectors/extreme8_best.pkl`、`models/ml_selectors/extreme8_worst.pkl`、`models/ml_selectors/extreme8_stats.json`、`results/extreme8_experiments/summary_20260402_112323.json`。注意：这轮 Extreme8 模型使用 `reflection_threshold=0.30` 训练；`0.20` 是随后由 follow-up threshold sweep 找到的更优单特征阈值，尚未回灌到本轮模型。
+
+**Extreme9 局部置信度扩展选择器**（11 维，需要训练，`extreme9_impl.py`）
+
+`extreme9-best` / `extreme9-worst` / `extreme9-mixed` 在 Extreme8 的 3 维强特征（`dc_z`、`dc_r`、`reflection_count_r`）基础上，加入 8 个来自 DeepConf 论文的局部 `tok_conf` 聚合特征，共 **11 维**：
+
+| 特征 | 计算方式 | 质量方向 |
+|------|---------|---------|
+| `tail_2k_r` | 末尾 min(2000,T) 个 token 的均值 tok_conf 排名 | 越低越好 |
+| `tail_q10_r` | 末尾 10% token 的均值 tok_conf 排名 | 越低越好 |
+| `lgc_512_r` | 最差滑窗均值（窗口 512）排名 | 越低越好 |
+| `lgc_2k_r` | 最差滑窗均值（窗口 2000）排名 | 越低越好 |
+| `bottom_q10_r` | tok_conf 第 10 百分位排名 | 越低越好 |
+| `head_tail_gap_r` | 首 10% 均值 − 尾 10% 均值排名（正值 = 尾部更自信） | 越高越好 |
+| `last_event_tail_conf_r` | 最后一次 reflection event 之后所有 token 的均值 tok_conf 排名 | 越低越好 |
+| `event_nonevent_gap_r` | event slice 均值 − non-event slice 均值排名 | 越低越好 |
+
+训练脚本：`python scripts/train_extreme9_selectors.py`。产物：`models/ml_selectors/extreme9_{best,worst}.pkl`。
+零训练基线 `local-conf-tail` 选最小 `tail_2k` 值的 run，可独立验证局部置信度信号方向。
+
+**图拓扑零训练基线**（`graph-degree`，`graph_topo_impl.py`）
+
+`graph-degree` 从 64-run Jaccard 距离矩阵构建相似图，以自适应 eps（off-diagonal 距离 30th 百分位）建立邻接关系，取**归一化度**（`norm_degree = degree / (n-1)`）最高的 run。高度 = 与最多其他 run 激活相似 = 倾向于处于共识正确簇中。用于在不训练模型的情况下验证图拓扑信号强度，与 `dc_r` / `dbscan-medoid` 对比。
+
+**Extreme10 图拓扑 + 误差质量扩展选择器**（17 维，需要训练，`extreme10_impl.py`）
+
+`extreme10-best` / `extreme10-worst` / `extreme10-mixed` 在 Extreme9 的 11 维基础上，再加入 **3 个图拓扑特征**（从 D 矩阵在 `select()` 中懒计算）和 **3 个误差质量特征**（在 `bind()` 中从 `tok_conf` 时序计算），共 **17 维**：
+
+**图拓扑特征（3 维，来自距离矩阵 D）**
+
+| 特征 | 计算方式 | 质量方向 |
+|------|---------|---------|
+| `local_cc_r` | 局部聚类系数 = 邻居间互为邻居的比例：`diag(A·A) / (d·(d−1))` | 越高越好 |
+| `norm_degree_r` | 归一化度 = `adj.sum(axis=1) / (n-1)` | 越高越好 |
+| `cluster_size_r` | DBSCAN 簇大小 / n；噪声点 = 1/n | 越高越好 |
+
+**误差质量与末尾稳定性特征（3 维，来自 tok_conf 时序）**
+
+| 特征 | 计算方式 | 质量方向 |
+|------|---------|---------|
+| `instability_mass_r` | `mean(arr > μ + 0.5σ)` — 高置信度波动 token 占比 | 越低越好 |
+| `tail_variance_r` | `var(arr[-max(1,T//10):])` — 末尾 10% token 方差 | 越低越好 |
+| `event_pre_post_delta_r` | `mean(event 前 2 slices) − mean(event 后所有 token)` — 反思后置信度恢复幅度 | 越高越好 |
+
+架构亮点：图拓扑 3 维在 `select(D, ...)` 时**懒计算并缓存**（每个问题组只算一次），避免 `bind()` 阶段无 D 可用的问题；训练脚本 `train_extreme10_selectors.py` 在 worker 内部用 `DistanceEngine(DistanceSpec("ja", num_threads=1)).dense_matrix(views)` 计算 D 并提前提取 `graph_raw`，通过 `payload["graph_raw"]` 传递到训练主进程（Option C 架构）。
+
+消融顺序：① `graph-degree` 零训练验证图信号 → ② Extreme9+图（14维）→ ③ Extreme9+误差质量（14维）→ ④ 完整 Extreme10（17维）。
+成功判据：Extreme10 在所有数据集上 Hit@1 ≥ Extreme9、SelAcc@10% ≥ Extreme9，无任何数据集回退。
+训练脚本：`python scripts/train_extreme10_selectors.py`。产物：`models/ml_selectors/extreme10_{best,worst}.pkl`。
 
 完整跨数据集精度对比见 [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md)。
 
@@ -372,7 +420,7 @@ Cache type `cache_neuron_output_1_*` = 1 token/row. Type `cache_neuron_output_2_
 
 ## Selectors
 
-Twenty-one built-in selector algorithms pick the most representative sample from each problem group.
+Thirty-five built-in selector algorithms pick the most representative sample from each problem group.
 
 **Base selectors**
 
@@ -454,6 +502,54 @@ Training script: `python scripts/train_trajectory_selectors.py`.
 Latest artifact snapshot (UTC): evaluation reports were generated on `2026-03-30` in `results/trajectory_experiments/accuracy_summary_20260330_112435.json`, `results/trajectory_experiments/trajectory_20260330_112435.json`, and `results/trajectory_experiments/layer_stratified_20260330_112435.json`; the 22-D trajectory-fusion training stats were refreshed on `2026-03-31 01:56:52` in `models/ml_selectors/trajectory_stats.json` (`31,040` labelled pairs, `18,873` correct, `22` features, `6` datasets).
 The `2026-04-02 17:13:06` UTC reflection-dynamics follow-up was written to `results/reflection_dynamics/summary.md` and `results/reflection_dynamics/threshold_sweep_summary.json`: lowering the reflection-event threshold from `0.30` to `0.20` improves the single-feature LOO mean of `reflection_count_r` from `71.1%` to `71.7%`. The same analysis also shows that reflection correlates positively with average `gini`, negatively with average `entropy`, and that reflection-event slices exhibit smaller first/second-order confidence changes overall.
 New pooled subset selectors `extreme8-best` / `extreme8-worst` / `extreme8-mixed` were added: training uses only the three strong features `dc_z`, `dc_r`, and `reflection_count_r`, keeps problems with empirical accuracy in `[10%, 90%]`, and samples `256` mixed 8-tuples per eligible problem. The `2026-04-02 17:56:57` UTC blind 64-run evaluation then samples `512` random 8-tuples per problem without looking at run correctness during tuple construction, yielding a 6-dataset mean of `72.5%` for `best-only` / `best+worst` / `worst-avoid`, while `worst-only` reaches `56.1%` error-hit rate. Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json`. Note that this Extreme8 run still used `reflection_threshold=0.30`; the improved `0.20` threshold was discovered afterwards by the follow-up sweep and has not yet been propagated into this model snapshot.
+
+**Extreme9 local-confidence expansion selectors** (11-dim, requires training, `extreme9_impl.py`)
+
+`extreme9-best` / `extreme9-worst` / `extreme9-mixed` extend Extreme8's 3-dim core (`dc_z`, `dc_r`, `reflection_count_r`) with 8 local `tok_conf` aggregation features derived from the DeepConf paper, totalling **11 dimensions**:
+
+| Feature | Formula | Quality direction |
+|---------|---------|-------------------|
+| `tail_2k_r` | Mean tok_conf of last min(2000,T) tokens, rank | Lower = better |
+| `tail_q10_r` | Mean tok_conf of last 10% tokens, rank | Lower = better |
+| `lgc_512_r` | Least-grouped-confidence, window=512, rank | Lower = better |
+| `lgc_2k_r` | Least-grouped-confidence, window=2000, rank | Lower = better |
+| `bottom_q10_r` | 10th-percentile tok_conf, rank | Lower = better |
+| `head_tail_gap_r` | mean(head 10%) − mean(tail 10%), rank (positive = tail more confident) | Higher = better |
+| `last_event_tail_conf_r` | Mean tok_conf after last reflection event slice, rank | Lower = better |
+| `event_nonevent_gap_r` | Event-slice mean − non-event-slice mean tok_conf, rank | Lower = better |
+
+Training script: `python scripts/train_extreme9_selectors.py`. Artifacts: `models/ml_selectors/extreme9_{best,worst}.pkl`.
+Zero-training baseline `local-conf-tail` selects the run with minimum `tail_2k` to validate the local confidence signal direction independently.
+
+**Graph topology zero-training baseline** (`graph-degree`, `graph_topo_impl.py`)
+
+`graph-degree` builds a 64-run similarity graph from the Jaccard distance matrix using an adaptive eps (30th percentile of off-diagonal distances) and selects the run with the highest **normalised degree** (`norm_degree = degree / (n-1)`). High degree means activation-similar to many other runs, which correlates with being in the consensus correct cluster. Used to validate graph topology signal strength before training Extreme10, benchmarked against `dc_r` and `dbscan-medoid`.
+
+**Extreme10 graph topology + error-mass expansion selectors** (17-dim, requires training, `extreme10_impl.py`)
+
+`extreme10-best` / `extreme10-worst` / `extreme10-mixed` extend Extreme9's 11 dimensions with **3 graph topology features** (lazy-computed from D in `select()`) and **3 error-mass / late-stage stability features** (computed from `tok_conf` time-series in `bind()`), totalling **17 dimensions**:
+
+**Graph topology features (3 dims, from distance matrix D)**
+
+| Feature | Formula | Quality direction |
+|---------|---------|-------------------|
+| `local_cc_r` | Local clustering coefficient = `diag(A·A) / (d·(d−1))` — fraction of neighbours that are mutual neighbours | Higher = better |
+| `norm_degree_r` | Normalised degree = `adj.sum(axis=1) / (n-1)` | Higher = better |
+| `cluster_size_r` | DBSCAN cluster size / n; noise points receive 1/n | Higher = better |
+
+**Error-mass + late-stage stability features (3 dims, from tok_conf time-series)**
+
+| Feature | Formula | Quality direction |
+|---------|---------|-------------------|
+| `instability_mass_r` | `mean(arr > μ + 0.5σ)` — fraction of high-volatility tokens | Lower = better |
+| `tail_variance_r` | `var(arr[-max(1,T//10):])` — variance of the last 10% of tokens | Lower = better |
+| `event_pre_post_delta_r` | `mean(2 slices before last event) − mean(after last event)` — confidence recovery after reflection | Higher = better |
+
+Architecture highlight: the 3 graph topology dimensions are **lazily computed and cached per group** inside `select(D, ...)` (D is not available at `bind()` time). The training script `train_extreme10_selectors.py` precomputes D inside each worker process using `DistanceEngine(DistanceSpec("ja", num_threads=1)).dense_matrix(views)` and extracts `graph_raw` upfront, passing it as `payload["graph_raw"]` to the training master process (Option C architecture — no extra inter-process round trips).
+
+Ablation order: ① `graph-degree` zero-training validates graph signal → ② Extreme9+graph (14-dim) → ③ Extreme9+error-mass (14-dim) → ④ Full Extreme10 (17-dim).
+Success criterion: Extreme10 ≥ Extreme9 on Hit@1 and SelAcc@10% across all datasets with no regression on any individual dataset.
+Training script: `python scripts/train_extreme10_selectors.py`. Artifacts: `models/ml_selectors/extreme10_{best,worst}.pkl`.
 
 Full cross-dataset accuracy results are in [`results/selector_comparison/selector_comparison.md`](results/selector_comparison/selector_comparison.md).
 

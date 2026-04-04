@@ -438,6 +438,196 @@
             }
         }
 
+        /* === Analysis Panel === */
+        #analysis-panel {
+            margin: 20px 0 0 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 2px solid #dee2e6;
+        }
+        #analysis-panel h3 {
+            margin: 0 0 14px 0;
+            color: #495057;
+            font-size: 1.1em;
+        }
+        .analysis-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .analysis-tab {
+            padding: 6px 16px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .analysis-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .analysis-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+        #scatter-container {
+            width: 100%;
+            height: 420px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        #knn-purity-bar {
+            font-size: 13px;
+            color: #495057;
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            display: inline-block;
+        }
+        #knn-table-header {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 6px;
+        }
+        #knn-selected-info {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #343a40;
+        }
+        #knn-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+        #knn-table th {
+            background: #667eea;
+            color: white;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        #knn-table td {
+            padding: 7px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        #knn-table tr:last-child td {
+            border-bottom: none;
+        }
+        .knn-correct { color: #28a745; font-weight: 600; }
+        .knn-incorrect { color: #dc3545; font-weight: 600; }
+        .analysis-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #dee2e6;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        /* === Selector Simulation Section === */
+        #selector-sim-section {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid #dee2e6;
+        }
+        #selector-sim-section h4 {
+            margin: 0 0 12px 0;
+            color: #495057;
+            font-size: 1em;
+        }
+        .selector-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        #selector-select {
+            padding: 6px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 220px;
+        }
+        #run-selector-btn {
+            padding: 6px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: opacity 0.2s;
+        }
+        #run-selector-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+        #selector-result-box {
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            display: none;
+        }
+        .sel-correct   { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .sel-incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        #selector-rank-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            display: none;
+        }
+        #selector-rank-table th {
+            background: #495057;
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        #selector-rank-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+        }
+        #selector-rank-table tr:last-child td { border-bottom: none; }
+        #selector-rank-table tr.row-selected td { background: #fff3cd; }
+        #selector-rank-table tr.row-selected td:first-child { font-weight: 700; }
+        .score-bar-cell {
+            min-width: 80px;
+        }
+        .score-bar {
+            display: inline-block;
+            height: 8px;
+            background: #667eea;
+            border-radius: 4px;
+            min-width: 2px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .view-run-btn {
+            padding: 2px 8px;
+            font-size: 11px;
+            background: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .view-run-btn:hover { background: #dee2e6; }
+
     </style>
     <script>
         // Base URL for API calls — handles JupyterHub reverse proxy prefix
@@ -615,6 +805,60 @@
                         <div class="stat-value" id="stat-accuracy">-</div>
                         <div class="stat-label">Accuracy</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- === Analysis Panel === -->
+            <div id="analysis-panel" style="display:none;">
+                <h3>Analysis <span id="analysis-spinner" class="analysis-spinner" style="display:none;"></span></h3>
+                <div class="analysis-tabs">
+                    <button class="analysis-tab active" id="tab-btn-feature" onclick="switchAnalysisTab('feature')">Feature Space</button>
+                    <button class="analysis-tab" id="tab-btn-mds" onclick="switchAnalysisTab('mds')">Activation MDS</button>
+                </div>
+                <div id="scatter-container"></div>
+                <div id="knn-purity-bar">KNN Purity Mean: —</div>
+                <div id="knn-table-header">Click a point in the scatter plot to view its 5 nearest neighbours.</div>
+                <div id="knn-selected-info" style="display:none;"></div>
+                <table id="knn-table" style="display:none;">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Sample ID</th>
+                            <th>Distance</th>
+                            <th>Correct</th>
+                            <th>dc_r</th>
+                            <th>rc_r</th>
+                        </tr>
+                    </thead>
+                    <tbody id="knn-tbody"></tbody>
+                </table>
+
+                <!-- === Selector Simulation === -->
+                <div id="selector-sim-section">
+                    <h4>🎯 Selector Simulation — which run does this algorithm pick?</h4>
+                    <div class="selector-controls">
+                        <select id="selector-select">
+                            <option value="">Loading selectors…</option>
+                        </select>
+                        <button id="run-selector-btn" disabled onclick="runSelectorSimulation()">Simulate</button>
+                        <span id="selector-spinner" class="analysis-spinner" style="display:none;"></span>
+                    </div>
+                    <div id="selector-result-box"></div>
+                    <table id="selector-rank-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Sample ID</th>
+                                <th id="score-col-header">Score</th>
+                                <th>Correct</th>
+                                <th>dc_r</th>
+                                <th>rc_r</th>
+                                <th>rc</th>
+                                <th>View</th>
+                            </tr>
+                        </thead>
+                        <tbody id="selector-rank-tbody"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -872,6 +1116,8 @@
             document.getElementById('loading-indicator').style.display = 'block';
             document.getElementById('plot-container').style.display = 'none';
             document.getElementById('stats-panel').style.display = 'none';
+            document.getElementById('analysis-panel').style.display = 'none';
+            lastSelectorResult = null;
 
             fetch(`${BASE_URL}/api/plotly_data/${encodeURIComponent(problemId)}?max_runs=${maxRuns}`)
                 .then(response => response.json())
@@ -896,6 +1142,7 @@
 
                         currentProblemId = problemId;
                         loadStatistics(problemId);
+                        loadScatterData(problemId);
                     } else {
                         showMessage(data.error || 'Failed to generate plot', 'error');
                     }
@@ -1739,6 +1986,328 @@
             setTimeout(() => {
                 container.innerHTML = '';
             }, 5000);
+        }
+
+        // =============================================================
+        // Selector Catalog — populate dropdown on page load
+        // =============================================================
+        let selectorCatalog = [];
+
+        function loadSelectorCatalog() {
+            fetch(BASE_URL + '/api/v1/selector_catalog')
+                .then(r => r.json())
+                .then(data => {
+                    selectorCatalog = data.selectors || [];
+                    const sel = document.getElementById('selector-select');
+                    // Group selectors
+                    const groups = {};
+                    selectorCatalog.forEach(s => {
+                        if (!groups[s.group]) groups[s.group] = [];
+                        groups[s.group].push(s);
+                    });
+                    sel.innerHTML = '';
+                    Object.entries(groups).forEach(([grp, items]) => {
+                        const og = document.createElement('optgroup');
+                        og.label = grp;
+                        items.forEach(s => {
+                            const opt = document.createElement('option');
+                            opt.value = s.id;
+                            opt.textContent = s.label;
+                            og.appendChild(opt);
+                        });
+                        sel.appendChild(og);
+                    });
+                    document.getElementById('run-selector-btn').disabled = false;
+                })
+                .catch(() => {
+                    document.getElementById('selector-select').innerHTML =
+                        '<option value="medoid">Medoid</option>';
+                    document.getElementById('run-selector-btn').disabled = false;
+                });
+        }
+
+        window.addEventListener('load', () => { loadSelectorCatalog(); });
+
+        // =============================================================
+        // Analysis Panel — Scatter / MDS / KNN
+        // =============================================================
+
+        let scatterData = null;          // cached JSON from last /api/v1/scatter_data call
+        let scatterTabMode = 'feature';  // 'feature' | 'mds'
+
+        function loadScatterData(problemId) {
+            const panel = document.getElementById('analysis-panel');
+            const spinner = document.getElementById('analysis-spinner');
+            panel.style.display = 'block';
+            spinner.style.display = 'inline-block';
+            scatterData = null;
+            document.getElementById('knn-purity-bar').textContent = 'KNN Purity Mean: —';
+            document.getElementById('knn-table').style.display = 'none';
+            document.getElementById('knn-selected-info').style.display = 'none';
+            document.getElementById('knn-table-header').textContent = 'Computing…';
+            Plotly.purge('scatter-container');
+
+            fetch(`${BASE_URL}/api/v1/scatter_data/${encodeURIComponent(problemId)}`)
+                .then(r => r.json())
+                .then(data => {
+                    spinner.style.display = 'none';
+                    if (!data.success) {
+                        document.getElementById('knn-table-header').textContent =
+                            'Analysis unavailable: ' + (data.error || 'unknown error');
+                        return;
+                    }
+                    scatterData = data;
+                    renderScatter(data, scatterTabMode);
+                    const purity = data.knn_purity_mean !== null
+                        ? (data.knn_purity_mean * 100).toFixed(1) + '%'
+                        : '—';
+                    document.getElementById('knn-purity-bar').textContent =
+                        `KNN Purity Mean (k=5): ${purity}   (n=${data.n_runs} runs)`;
+                    document.getElementById('knn-table-header').textContent =
+                        'Click a point in the scatter plot to view its 5 nearest neighbours.';
+                })
+                .catch(err => {
+                    spinner.style.display = 'none';
+                    document.getElementById('knn-table-header').textContent =
+                        'Analysis error: ' + err.message;
+                });
+        }
+
+        function switchAnalysisTab(mode) {
+            scatterTabMode = mode;
+            document.getElementById('tab-btn-feature').classList.toggle('active', mode === 'feature');
+            document.getElementById('tab-btn-mds').classList.toggle('active', mode === 'mds');
+            if (scatterData) renderScatter(scatterData, mode);
+        }
+
+        function renderScatter(data, mode) {
+            // Preserve selector highlight across tab switches
+            let starTrace = null;
+            if (lastSelectorResult) {
+                const sel = data.runs.find(r => r.sample_id === lastSelectorResult.selected_sample_id);
+                if (sel) {
+                    const sx = mode === 'mds' ? sel.mds_x : sel.dc_r;
+                    const sy = mode === 'mds' ? sel.mds_y : sel.reflection_count_r;
+                    starTrace = {
+                        x: [sx], y: [sy], mode: 'markers',
+                        name: 'Selected by selector',
+                        marker: { symbol: 'star', size: 18, color: 'gold', line: { color: '#c8860a', width: 2 } },
+                        text: [`⭐ Sample ${sel.sample_id} (selected)`],
+                        hoverinfo: 'text', type: 'scatter',
+                    };
+                }
+            }
+            renderScatterWithHighlight(data, mode, starTrace);
+        }
+
+        function updateKnnTable(run) {
+            const infoDiv = document.getElementById('knn-selected-info');
+            const table = document.getElementById('knn-table');
+            const tbody = document.getElementById('knn-tbody');
+            const header = document.getElementById('knn-table-header');
+
+            const purityCount = run.knn5.filter(n => n.correct).length;
+            const correct = run.correct ? '<span class="knn-correct">✓</span>' : '<span class="knn-incorrect">✗</span>';
+            infoDiv.innerHTML = `Selected: Sample&nbsp;${run.sample_id}&nbsp;${correct}&nbsp;&nbsp;|&nbsp;&nbsp;KNN Purity (k=5): ${purityCount}/5`;
+            infoDiv.style.display = 'block';
+            header.textContent = '';
+
+            tbody.innerHTML = run.knn5.map((nb, idx) => {
+                const c = nb.correct
+                    ? '<span class="knn-correct">✓</span>'
+                    : '<span class="knn-incorrect">✗</span>';
+                return `<tr>
+                    <td>${idx + 1}</td>
+                    <td>${nb.sample_id}</td>
+                    <td>${nb.distance.toFixed(4)}</td>
+                    <td>${c}</td>
+                    <td>${nb.dc_r.toFixed(3)}</td>
+                    <td>${nb.rc_r.toFixed(3)}</td>
+                </tr>`;
+            }).join('');
+
+            table.style.display = 'table';
+        }
+
+        // =============================================================
+        // Selector Simulation
+        // =============================================================
+
+        let lastSelectorResult = null;
+
+        function runSelectorSimulation() {
+            if (!currentProblemId) return;
+            const selectorId = document.getElementById('selector-select').value;
+            if (!selectorId) return;
+
+            const btn = document.getElementById('run-selector-btn');
+            const spinner = document.getElementById('selector-spinner');
+            const resultBox = document.getElementById('selector-result-box');
+            const rankTable = document.getElementById('selector-rank-table');
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            resultBox.style.display = 'none';
+            rankTable.style.display = 'none';
+
+            fetch(`${BASE_URL}/api/v1/selector_pick/${encodeURIComponent(currentProblemId)}?selector=${encodeURIComponent(selectorId)}`)
+                .then(r => r.json())
+                .then(data => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    if (!data.success) {
+                        resultBox.className = 'selector-result-box sel-incorrect';
+                        resultBox.textContent = '⚠ ' + (data.error || 'Selector failed');
+                        resultBox.style.display = 'block';
+                        return;
+                    }
+                    lastSelectorResult = data;
+                    renderSelectorResult(data);
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    resultBox.className = 'selector-result-box sel-incorrect';
+                    resultBox.textContent = '⚠ Error: ' + err.message;
+                    resultBox.style.display = 'block';
+                });
+        }
+
+        function renderSelectorResult(data) {
+            const resultBox = document.getElementById('selector-result-box');
+            const rankTable = document.getElementById('selector-rank-table');
+            const tbody = document.getElementById('selector-rank-tbody');
+            const scoreHeader = document.getElementById('score-col-header');
+
+            // Result summary box
+            const isCorrect = data.selected_correct;
+            const verdict = isCorrect ? '✓ CORRECT' : '✗ INCORRECT';
+            const boxClass = isCorrect ? 'sel-correct' : 'sel-incorrect';
+            resultBox.className = `selector-result-box ${boxClass}`;
+            resultBox.innerHTML =
+                `<strong>${data.selector}</strong> → Sample&nbsp;<strong>${data.selected_sample_id}</strong>&nbsp;<strong>${verdict}</strong>` +
+                `&nbsp;&nbsp;|&nbsp;&nbsp;n=${data.n_runs} runs`;
+            resultBox.style.display = 'block';
+
+            // Update score column header
+            scoreHeader.textContent = data.score_label || 'Score';
+
+            // Rank table
+            tbody.innerHTML = data.all_runs.map(run => {
+                const c = run.correct
+                    ? '<span class="knn-correct">✓</span>'
+                    : '<span class="knn-incorrect">✗</span>';
+                const rowClass = run.is_selected ? 'row-selected' : '';
+                const star = run.is_selected ? '⭐ ' : '';
+                const barW = Math.round(run.score * 80);
+                const scoreCell = `<span class="score-bar" style="width:${barW}px"></span>${run.score.toFixed(3)}`;
+                return `<tr class="${rowClass}">
+                    <td>${star}${run.rank + 1}</td>
+                    <td>${run.sample_id}</td>
+                    <td class="score-bar-cell">${scoreCell}</td>
+                    <td>${c}</td>
+                    <td>${run.dc_r.toFixed(3)}</td>
+                    <td>${run.reflection_count_r.toFixed(3)}</td>
+                    <td>${run.reflection_count}</td>
+                    <td><button class="view-run-btn" onclick="viewRunFromSelector(${run.sample_id})">View</button></td>
+                </tr>`;
+            }).join('');
+
+            rankTable.style.display = 'table';
+
+            // Highlight selected run in scatter plot with a gold star marker
+            highlightSelectedInScatter(data.selected_sample_id, data.all_runs);
+        }
+
+        function highlightSelectedInScatter(selectedSampleId, allRuns) {
+            if (!scatterData) return;
+            const run = scatterData.runs.find(r => r.sample_id === selectedSampleId);
+            if (!run) return;
+
+            // Add/update a "selected" trace on the scatter plot
+            const x = (scatterTabMode === 'mds') ? run.mds_x : run.dc_r;
+            const y = (scatterTabMode === 'mds') ? run.mds_y : run.reflection_count_r;
+            const starTrace = {
+                x: [x], y: [y],
+                mode: 'markers',
+                name: 'Selected by selector',
+                marker: { symbol: 'star', size: 18, color: 'gold', line: { color: '#c8860a', width: 2 } },
+                text: [`⭐ Sample ${selectedSampleId} (selected)`],
+                hoverinfo: 'text',
+                type: 'scatter',
+            };
+            // Re-render scatter with the star trace added
+            renderScatterWithHighlight(scatterData, scatterTabMode, starTrace);
+        }
+
+        function renderScatterWithHighlight(data, mode, extraTrace) {
+            const correctX = [], correctY = [], correctText = [], correctCustom = [];
+            const incorrectX = [], incorrectY = [], incorrectText = [], incorrectCustom = [];
+
+            data.runs.forEach(run => {
+                const x = mode === 'mds' ? run.mds_x : run.dc_r;
+                const y = mode === 'mds' ? run.mds_y : run.reflection_count_r;
+                const label = `Sample ${run.sample_id}<br>dc_r: ${run.dc_r}<br>rc_r: ${run.reflection_count_r}<br>rc: ${run.reflection_count}<br>${run.correct ? '✓ Correct' : '✗ Incorrect'}`;
+                if (run.correct) {
+                    correctX.push(x); correctY.push(y); correctText.push(label); correctCustom.push(run);
+                } else {
+                    incorrectX.push(x); incorrectY.push(y); incorrectText.push(label); incorrectCustom.push(run);
+                }
+            });
+
+            const xTitle = mode === 'mds' ? 'MDS dim 0' : 'dc_r (confidence rank)';
+            const yTitle = mode === 'mds' ? 'MDS dim 1' : 'reflection_count_r';
+            const titleStr = mode === 'mds' ? 'Activation MDS (Jaccard distance)' : 'Feature Space (dc_r vs reflection_count_r)';
+
+            const traces = [
+                {
+                    x: correctX, y: correctY, mode: 'markers', name: 'Correct',
+                    marker: { color: 'rgba(30,144,255,0.75)', size: 9, line: { width: 1, color: '#0050bb' } },
+                    text: correctText, hoverinfo: 'text', customdata: correctCustom, type: 'scatter',
+                },
+                {
+                    x: incorrectX, y: incorrectY, mode: 'markers', name: 'Incorrect',
+                    marker: { color: 'rgba(220,53,69,0.75)', size: 9, line: { width: 1, color: '#900' } },
+                    text: incorrectText, hoverinfo: 'text', customdata: incorrectCustom, type: 'scatter',
+                },
+            ];
+            if (extraTrace) traces.push(extraTrace);
+
+            const layout = {
+                title: { text: titleStr, font: { size: 14 } },
+                xaxis: { title: xTitle, zeroline: false },
+                yaxis: { title: yTitle, zeroline: false },
+                margin: { t: 40, l: 60, r: 20, b: 50 },
+                hovermode: 'closest',
+                legend: { orientation: 'h', y: -0.18 },
+                paper_bgcolor: 'white',
+                plot_bgcolor: '#fafafa',
+            };
+
+            Plotly.newPlot('scatter-container', traces, layout, { responsive: true, displayModeBar: false })
+                .then(gd => {
+                    gd.on('plotly_click', evt => {
+                        if (!evt.points || evt.points.length === 0) return;
+                        const pt = evt.points[0];
+                        const run = pt.customdata;
+                        if (run) updateKnnTable(run);
+                    });
+                });
+        }
+
+        function viewRunFromSelector(sampleId) {
+            // Find run data in window.plotData (already loaded for this problem)
+            if (!window.plotData) return;
+            const allRuns = (window.plotData.correct_runs || []).concat(window.plotData.incorrect_runs || []);
+            const run = allRuns.find(r => r.sample_id === sampleId);
+            if (run) {
+                currentRunData = run;
+                renderFullResponse(run, 0);
+                // Scroll to response box
+                document.querySelector('.response-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                showMessage(`Run ${sampleId} data not loaded — increase max-runs or reload.`, 'error');
+            }
         }
     </script>
 </body>

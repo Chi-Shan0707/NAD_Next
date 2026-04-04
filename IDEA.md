@@ -489,3 +489,670 @@ for i in range(len(labels) - 1):
 | 激活的微分怎么算？ | **Jaccard 距离 = 集合空间的速度**，再差分得加速度。不忽略，而是翻译成标量 |
 | 需要训练观测模型吗？ | **不需要。** 有 ground truth，直接验证特征与正确性的相关性 |
 | evaluate 怎么设计？ | 三层递进：手工规则快速验证 → 逻辑回归学权重 → transition 特征做序列编码 |
+
+---
+
+## 20260403 — Tuple 训练目标与 Best-of-N 任务对齐
+
+### 当前训练目标到底是什么
+
+结合 `scripts/train_extreme8_selectors.py`，当前 Extreme8 的训练并不是直接学习“64 个 run 的最终 submission 分数”，而是在学习一个**tuple 内局部判别目标**：
+
+- 先只保留 empirical accuracy 在 `[10%, 90%]` 的题
+- 对每题的 64 个 run 随机采样很多个 **mixed 8-tuples**
+  - `tuple_size = 8`
+  - 训练默认 `num_tuples = 256`
+  - `require_mixed=True`，即每个 tuple 里必须同时有 correct 和 incorrect
+- 对 tuple 内每个 run 提取相对特征：
+  - `dc_z`
+  - `dc_r`
+  - `reflection_count_r`
+
+然后训练两个 pointwise 模型：
+
+1. **best-model**
+   - 标签：`y_best = 该 run 是否 correct`
+   - 学的是：**“在这个 8 人小组里，这个 run 像不像好答案候选？”**
+
+2. **worst-model**
+   - 标签：`y_worst = 1 - y_best`
+   - 学的是：**“在这个 8 人小组里，这个 run 像不像坏答案候选？”**
+
+所以当前训练目标本质上是：
+- `P(run is correct | local tuple context)`
+- `P(run is incorrect | local tuple context)`
+
+而不是直接优化：
+- 64-way top-1 选择
+- listwise 排序质量
+- submission 的最终题内排序分数
+
+### 推理时是如何聚合的
+
+推理/评估阶段：
+- 对每题 64 个 run 采样很多个 blind random 8-tuples
+- 对每个 tuple：
+  - best-model 输出 `score_best`
+  - worst-model 输出 `score_worst`
+- 对每个 run，把它在所有出现过的 tuples 上的分数做平均
+- 最后得到：
+  - `score_best`
+  - `score_worst`
+  - `score_mix = score_best - score_worst`
+
+也就是说，当前方法本质上是一个：
+- **局部 tuple 判断** → **多次随机 tournament / voting** → **全局聚合排序**
+
+### 我觉得这套算法最聪明的地方
+
+1. **把 64-way 难排序拆成很多个 8-way 局部判断**
+   - 直接学 64 个候选谁第一很难
+   - 学 8 个候选里谁更像 best / worst 更稳定
+
+2. **它天然是相对学习，而不是绝对打分**
+   - 你现在的关键特征大量是 rank / z-score 型
+   - 这很符合 Best-of-N 的本质：只关心同题 64 个候选之间谁更好
+
+3. **best 和 worst 分开学是合理的**
+   - “像 best” 和 “像 worst” 不一定是同一条轴的两端
+   - `best - worst` 给了一个推高 + 拉低的双边信号
+
+### 但当前目标和最终任务之间还有一层偏差
+
+#### 问题 1：训练目标是 pointwise，最终任务是 ranking
+当前真正想优化的是：
+- top-1 选中率
+- pairwise ranking quality
+- listwise 排序质量
+- best / worst 的分离 margin
+
+但目前训练优化的是 pointwise binary classification。
+这意味着：**模型学到的是“局部正确性概率”，不一定是“全局排序最优 utility”。**
+
+#### 问题 2：训练 tuple 分布和测试 tuple 分布并不完全一致
+训练时：
+- tuple 强制 mixed
+
+测试时：
+- tuple 是 blind random sampling
+- 不要求 mixed
+
+所以训练看的是“高信息量 tuple”，测试要处理的是“真实 blind tuple”。
+这是一种 distribution mismatch。
+
+#### 问题 3：`score_best - score_worst` 默认假设两边可直接相减
+但 best-model 和 worst-model 是两个独立训练的 logistic 输出，
+它们不一定天然在同一个 calibration 尺度上。
+所以 `mix = best - worst` 很实用，但不一定是最优组合方式。
+
+#### 问题 4：聚合阶段有 Monte Carlo 噪声
+本质上你是在做随机 tuple tournament。
+1024 tuples 已经很多，但依然存在采样方差。
+
+### 结合任务要求，我的核心判断
+
+如果最终任务本质是：
+- 给 64 个 run 打 submission score
+- 重点是题内排序
+- 绝对值无所谓，只要顺序对
+
+那么真正需要对齐的不是“概率”，而是：
+- 排名稳定性
+- top-1 / top-k
+- pairwise accuracy
+- worst suppression
+
+也就是说，未来更值得优化的是：
+- **ranking objective**
+而不是继续执着于 pointwise probability fitting。
+
+### 我建议优先尝试的三个方向
+
+#### 方向 1：pairwise objective
+- 随机采样 tuple 内的 run 对
+- 直接学 correct run 是否应排在 incorrect run 前面
+- 目标更接近最终 ranking
+
+#### 方向 2：listwise objective
+- 在 tuple 内直接做 softmax / Plackett-Luce 式建模
+- 直接学：
+  - 哪个 run 最像 best
+  - 哪个 run 最像 worst
+- 这比当前 pointwise 更贴近“局部排序器”
+
+#### 方向 3：重新审视 `mix` 的组合方式
+除了 `best - worst`，值得试：
+- `best / (worst + eps)`
+- 学一个小的二次组合器，把：
+  - `score_best`
+  - `score_worst`
+  - `counts`
+  - 以及 reflection 类摘要特征
+  一起组合成最终 score
+
+### 如果只做一个最值当的 next step
+
+我会优先做：
+- **pointwise vs pairwise vs listwise 的最小对照实验**
+
+保持其他 pipeline 不变，只替换训练目标，再统一用 blind tuple aggregation 测：
+- Hit@1
+- Pairwise accuracy
+- `best_only`
+- `mix`
+
+这样可以最快回答一个关键问题：
+- **当前瓶颈到底在特征，还是在训练目标没有和最终任务对齐？**
+
+### 一句话结论
+
+我认为你这套方法的核心思路是对的：
+- 用 random tuple 把 64-way 排序拆成局部比较
+- 用 blind aggregation 做最终排序
+- 用 best / worst 双模型增强信号
+
+但它目前最大的潜在天花板，很可能不在特征本身，而在：
+- **训练目标和最终 Best-of-N 任务还没有完全对齐。**
+
+## 20260403 — Tuple 特征选择、Reflection 动态化与实施方案
+
+### 背景问题
+
+当前 Best-of-N / Extreme8 的核心问题不是“要不要继续用 tuple”，而是：
+- tuple 方法下，当前这组强特征是否已经足够？
+- `reflection_count_r` 这种 reflection 摘要特征，到底是在提供真正有用的动态信息，还是只是一个粗糙 proxy？
+- 如果要进一步增强 tuple 排序器，应该优先补什么类型的特征？
+
+这部分是针对这些问题的系统性判断与落地方案。
+
+---
+
+### 一、先给结论：当前 3 个 tuple 特征是合理 baseline，但不应视作最终版
+
+当前 Extreme8 使用的 3 个 tuple 特征是：
+- `dc_z`
+- `dc_r`
+- `reflection_count_r`
+
+结论：
+1. **这 3 个特征作为第一版 tuple baseline 是合理的。**
+   - 它们都能在 tuple 内形成稳定的局部相对比较。
+   - 其中 `dc_*` 提供“质量强弱”信号；`reflection_count_r` 提供“动态结构”方向上的补充信号。
+   - 现有 blind 64-run 结果已经说明，这不是随便拼出来的特征组，而是一组确实有效的强 baseline。
+
+2. **但这组特征更像“粗粒度排序信号”，不是最终精排特征组。**
+   - `dc_z` / `dc_r` 很像局部质量打分器。
+   - `reflection_count_r` 只是在表达“这个 run 的 reflection 次数在本组中偏多还是偏少”，本质仍然是一个计数 rank。
+   - 它有用，但还没有真正把 reflection 的“事件结构”“时间位置”“发生后是否恢复”等更高阶动态信息利用起来。
+
+3. **因此，下一步不是否定当前 3 特征，而是把它们当作 baseline3。**
+   - 保留 baseline3 作为比较基准。
+   - 后续所有新特征实验，都必须与 baseline3 做严格对照。
+
+---
+
+### 二、这些特征在代码里到底是什么意思
+
+结合 `nad/core/selectors/extreme8_impl.py`，当前 Extreme8 真正使用的是：
+
+#### 1. `dc_z`
+- 先对 run 计算 `DeepConf quality` 原始值（`dc_raw`）。
+- 再在当前 tuple（默认 8 个 run）内部做 z-score。
+- 含义：**这个 run 的 DeepConf 质量，在当前 tuple 中偏离组均值多少。**
+
+适用性：
+- `dc` 是连续质量分，做 z-score 合理。
+- 它能表达“比同组别人高出多少”，因此适合 tuple 排序。
+
+#### 2. `dc_r`
+- 同样从 `dc_raw` 出发。
+- 但不是做 z-score，而是做组内 rank，映射到 `[0, 1]`。
+- 含义：**这个 run 在当前 tuple 内的 DeepConf 相对名次。**
+
+适用性：
+- tuple 的本质是局部相对比较，不一定需要绝对刻度。
+- `dc_r` 对尺度漂移更稳健，因此适合 blind tuple aggregation。
+
+#### 3. `reflection_count_r`
+- 先为每个 run 提取 slice trajectory。
+- 对第 `t` 个 slice，计算它和所有**非相邻历史 slice** 的最大 Jaccard 相似度。
+- 当这个最大值超过阈值（当前训练模型是 `0.30`）时，记为一次 reflection event。
+- `reflection_count` = 该 run 中 reflection events 的总次数。
+- `reflection_count_r` = 在当前 tuple 内，把 `reflection_count` 做 rank 映射到 `[0, 1]`。
+
+含义：
+- 它不是“reflection 强度”的连续建模。
+- 它只是表达：**这个 run 在本组里，reflection 事件次数偏多还是偏少。**
+
+重要补充：
+- 当前代码里**没有** `reflection_z`。
+- 如果未来加 `reflection_z`，它的定义会是：tuple 内 `reflection_count` 的 z-score。
+- 但从方法特性上看，它未必比 `reflection_count_r` 更稳。
+
+---
+
+### 三、当前这组特征为什么适合 tuple
+
+tuple 方法的本质不是全局 calibrated probability，而是：
+- 在一个局部候选集合里做相对比较；
+- 然后通过多次随机 tuple 把局部判断聚合成全局排序。
+
+从这个角度看，好的 tuple 特征应满足：
+1. **组内可比**：放进同一个 tuple 后，能稳定分层。
+2. **对成员变化鲁棒**：tuple 换一组人，特征意义不要大幅漂移。
+3. **方向性明确**：值更高/更低，对好答案的意义足够稳定。
+4. **能和最终题内排序同向**：不是只在局部有用、全局却失真。
+
+当前三特征符合这几点：
+- `dc_z`：提供连续 margin 信息。
+- `dc_r`：提供稳健 rank 信息。
+- `reflection_count_r`：提供组内动态结构粗排序信息。
+
+所以：
+- **它们适合 tuple。**
+- 但它们更适合做“第一层分档”，还不够承担“最终精排”。
+
+---
+
+### 四、`reflection_r` 和未来可能的 `reflection_z`，哪个更适合 tuple
+
+我的判断是：
+- **对 reflection 这类离散计数型摘要，rank 往往比 z-score 更适合 tuple。**
+
+原因：
+1. `reflection_count` 是离散量，而且通常偏态。
+2. tuple 默认只有 8 个 run，样本很小，均值和方差很容易被极端值带偏。
+3. tuple 任务更关心“组内谁更靠前”，而不是这个计数的绝对尺度。
+4. reflection 还受长度等因素影响，rank 更容易缓解这些问题。
+
+因此：
+- `dc` 这种连续质量分：适合同时保留 `z + rank`
+- `reflection_count` 这种离散摘要：优先保留 `rank`
+- `reflection_z` 可以作为候选实验项，但**不应优先于 event-local 动态特征**
+
+一个更务实的排序是：
+1. 先保留 `reflection_count_r`
+2. 再尝试 event-local reflection features
+3. 最后才考虑 `reflection_z` 这类“同一摘要的另一种归一化”
+
+---
+
+### 五、我是否应该选择“有动态感觉”的指标？
+
+答案是：**应该，但要选对动态，不要为动态而动态。**
+
+现有实验已经说明：
+- 强信号：`reflection_count_r`
+- 也很强：`layer_entropy`、`layer_gini`、`deep_frac_z`
+- 明显偏弱：`mean_continuity`、`mean_novelty`、`max_reflection`
+
+这说明一个非常关键的事实：
+- **不是所有动态指标都好。**
+- 真正有效的不是“时序”这个标签本身，而是某类特定动态结构。
+
+换句话说：
+- 现在最强的新信号，确实来自动态结构分析。
+- 但这不意味着应该盲目把所有 trajectory 指标塞进 tuple。
+- 更应该做的是：**继续围绕 reflection 做更细的动态化建模。**
+
+---
+
+### 六、当前 reflection 特征的问题：它有用，但太粗
+
+`reflection_count_r` 已经证明 reflection 不是噪声。
+但它目前的局限也非常清楚：
+
+它只能回答：
+- 这个 run 的 reflection event 多不多？
+- 在本组里排前还是排后？
+
+它无法回答：
+- reflection 是在前期发生，还是后期发生？
+- reflection 是零散出现，还是 burst 式出现？
+- reflection 后模型是恢复、收敛，还是继续震荡？
+- 这些 reflection 是“有用反思”，还是“无效反刍”？
+
+所以现在的 reflection 特征更像：
+- **粗分档信号**
+
+而未来真正有价值的升级方向应该是：
+- **事件结构信号**
+- **事件后果信号**
+- **event vs non-event 差异信号**
+
+也就是说：
+- 当前 reflection 适合“划档”。
+- 下一步 reflection 应该服务于“精排”。
+
+---
+
+### 七、如果要在 reflection 上体现“动态感”，最值得做什么
+
+最值得做的不是再堆更多粗 trajectory summary，
+而是把 reflection 从“count”升级为“event-local structured features”。
+
+#### 优先候选特征
+
+##### A. 位置类
+1. `first_reflection_pos_r`
+   - 第一次 reflection event 出现的位置，占总 slices 的相对比例。
+   - 用途：区分“很早就回看”与“推理后段才重新审视”。
+
+2. `last_reflection_pos_r`
+   - 最后一次 reflection event 出现的位置，占总 slices 的相对比例。
+   - 用途：区分“后段持续回看”与“早期短暂回看”。
+
+##### B. 密度 / 形态类
+3. `reflection_event_ratio`
+   - reflection event 数 / 总 slice 数。
+   - 比纯 count 更稳，能更好消化长度差异。
+
+4. `reflection_burst_count`
+   - reflection 连续 burst 的段数。
+   - 用途：区分“零散小回看”和“多段结构性回看”。
+
+5. `max_reflection_burst_len`
+   - 最长连续 reflection burst 的长度。
+   - 用途：识别“长时间卡住式反刍”或“持续整理式回看”。
+
+##### C. 事件后果类
+6. `post_event_conf_recovery`
+   - reflection event 后窗口里，confidence 是否有恢复/回升。
+   - 这是最重要的候选之一。
+   - 因为它开始回答：**这个 reflection 之后，模型是否变得更确定？**
+
+7. `post_event_entropy_drop`
+   - reflection event 后窗口里，entropy 是否下降。
+   - 用途：检查 reflection 后是否出现“收束”。
+
+##### D. event vs non-event 对比类
+8. `event_vs_nonevent_conf_abs_d1_gap`
+   - reflection event slices 与非 event slices 在 confidence 一阶变化幅度上的差值。
+
+9. `event_vs_nonevent_conf_abs_d2_gap`
+   - reflection event slices 与非 event slices 在 confidence 二阶变化幅度上的差值。
+   - 从已有分析看，这个方向很有希望。
+
+10. `event_vs_nonevent_entropy_gap`
+   - reflection event 区域与非 event 区域的 entropy 平均差异。
+
+这些特征相比 `reflection_count_r` 的优势在于：
+- 不仅知道“发生了多少次”；
+- 还能知道“何时发生”“怎么发生”“发生后发生了什么”。
+
+---
+
+### 八、哪些动态特征不建议优先加入 tuple 主模型
+
+基于现有结果，以下特征不应作为第一优先级：
+- `mean_continuity`
+- `mean_novelty`
+- `max_reflection`
+
+原因：
+1. 它们在已有单特征对比中表现不够强。
+2. 它们是过度压缩后的全局 summary，可能把真正有用的事件结构信息抹掉了。
+3. 在 tuple 场景里，过于抽象的全局 summary 不一定比 event-local 特征更稳。
+
+所以：
+- 不要简单地因为“它们看起来更动态”就优先加入。
+- 反而应该优先做那些能刻画 reflection 事件结构的特征。
+
+---
+
+### 九、下一版 tuple 特征设计建议
+
+不要一次性加太多特征。
+应该采用“小步、可归因、可回退”的设计。
+
+#### 方案 A：保持 baseline3
+作为所有比较的基准：
+- `dc_z`
+- `dc_r`
+- `reflection_count_r`
+
+#### 方案 B：baseline3 + event2
+先只增加两个最有希望的 event-local 特征：
+- `dc_z`
+- `dc_r`
+- `reflection_count_r`
+- `first_reflection_pos_r`
+- `post_event_conf_recovery`
+
+理由：
+- 一个代表“事件何时发生”
+- 一个代表“事件后是否恢复”
+- 这两个维度最容易验证 reflection 是否真的在提供增量信息
+
+#### 方案 C：baseline3 + event4
+在方案 B 的基础上再补两个：
+- `reflection_event_ratio`
+- `event_vs_nonevent_conf_abs_d2_gap`
+
+完整特征组：
+- `dc_z`
+- `dc_r`
+- `reflection_count_r`
+- `reflection_event_ratio`
+- `first_reflection_pos_r`
+- `post_event_conf_recovery`
+- `event_vs_nonevent_conf_abs_d2_gap`
+
+理由：
+- 一个控制“总密度”
+- 一个刻画“局部动态平滑/重整”
+
+#### 暂不建议的方案
+- 不要直接把所有 trajectory 特征重新塞回 tuple 模型。
+- 不要一口气上 10+ 个 reflection 派生量。
+- 不要先做 `reflection_z` / `reflection_raw` / `reflection_count_log` 这种仅改变归一化方式的小改动，而忽略 event-local 新信息。
+
+---
+
+### 十、这些新特征在 tuple 中应该怎么归一化
+
+一个重要原则：
+- **先算 run 级原始值，再在 tuple 内做相对归一化。**
+
+建议做法：
+
+#### 1. 对连续质量分
+例如：
+- `dc_raw`
+- `post_event_conf_recovery`
+- `event_vs_nonevent_conf_abs_d2_gap`
+
+建议：
+- 同时保留 `z-score` 和 `rank`
+- 但不要默认两个都上，优先做小规模对比筛选
+
+#### 2. 对离散计数 / 比例 / 位置类
+例如：
+- `reflection_count`
+- `reflection_event_ratio`
+- `first_reflection_pos_r`
+- `reflection_burst_count`
+
+建议：
+- 优先使用 rank
+- 如需保留绝对尺度，再补一个原始值或 z-score 做实验
+
+#### 3. 对明显受长度影响的量
+例如：
+- reflection count
+- burst length
+
+建议：
+- 优先转换成 ratio / relative position / normalized count
+- 其次再考虑 tuple 内 rank
+
+总体原则：
+- 在 tuple 场景里，**稳定的相对秩序**通常比脆弱的绝对幅度更重要。
+
+---
+
+### 十一、建议的实施步骤
+
+下面给出最具体的落地顺序。
+
+#### Phase 1：先把 reflection 事件特征导出来
+
+**目标**
+- 不改训练框架，先把 run 级 event-local 特征落地。
+
+**建议修改位置**
+- `scripts/analyze_reflection_dynamics.py`
+- `nad/core/selectors/trajectory_impl.py`
+- 如有必要，新增一个小模块，例如：
+  - `nad/core/selectors/reflection_event_features.py`
+
+**需要导出的 run 级字段**
+- `reflection_count`
+- `reflection_event_ratio`
+- `first_reflection_pos_r`
+- `last_reflection_pos_r`
+- `reflection_burst_count`
+- `max_reflection_burst_len`
+- `post_event_conf_recovery`
+- `post_event_entropy_drop`
+- `event_vs_nonevent_conf_abs_d1_gap`
+- `event_vs_nonevent_conf_abs_d2_gap`
+
+**输出产物**
+- `results/reflection_dynamics/per_run_event_features.csv`
+- `results/reflection_dynamics/per_run_event_features.json`
+
+**验收标准**
+- 每个 run 都有可复现的 event-local 特征导出。
+- 缺失值处理方式明确，例如：
+  - 无 event 时设 `NaN`
+  - 后续在训练前统一 impute
+
+#### Phase 2：先做单特征和小组合筛选
+
+**目标**
+- 不要一开始就重训完整版 Extreme8。
+- 先判断哪些 reflection 动态特征本身值得进入 tuple 模型。
+
+**建议脚本**
+- 新建：`scripts/evaluate_reflection_event_features.py`
+
+**先比较的对象**
+1. 单特征：
+   - `reflection_count_r`
+   - `reflection_event_ratio`
+   - `first_reflection_pos_r`
+   - `post_event_conf_recovery`
+   - `event_vs_nonevent_conf_abs_d2_gap`
+2. 小组合：
+   - `reflection_count_r + first_reflection_pos_r`
+   - `reflection_count_r + post_event_conf_recovery`
+   - `reflection_count_r + first_reflection_pos_r + post_event_conf_recovery`
+
+**评估指标**
+- LOO mean
+- pooled mean
+- Pairwise accuracy
+- dataset-wise variance
+
+**验收标准**
+- 至少找出 2–3 个 event-local 特征，在稳定性和均值上有进入 tuple 模型的资格。
+
+#### Phase 3：把 tuple 特征组扩成 baseline3 / event2 / event4 三档
+
+**目标**
+- 在不改变训练目标的情况下，先回答“特征扩展本身有没有收益”。
+
+**建议修改位置**
+- `nad/core/selectors/extreme8_impl.py`
+- `scripts/train_extreme8_selectors.py`
+- `scripts/run_extreme8_experiments.py`
+
+**建议增加的参数**
+- `--feature-set baseline3`
+- `--feature-set baseline3_event2`
+- `--feature-set baseline3_event4`
+
+**每档定义**
+- `baseline3`: `dc_z`, `dc_r`, `reflection_count_r`
+- `baseline3_event2`: `baseline3 + first_reflection_pos_r + post_event_conf_recovery`
+- `baseline3_event4`: `baseline3 + reflection_event_ratio + first_reflection_pos_r + post_event_conf_recovery + event_vs_nonevent_conf_abs_d2_gap`
+
+**输出产物**
+- `models/ml_selectors/extreme8_<feature_set>_best.pkl`
+- `models/ml_selectors/extreme8_<feature_set>_worst.pkl`
+- `models/ml_selectors/extreme8_<feature_set>_stats.json`
+- `results/extreme8_experiments/<feature_set>_summary.json`
+
+**验收标准**
+- 至少有一档在 blind evaluation 的 `best_only`、`mix`、`pairwise_accuracy` 里有稳定收益。
+- 若无明显收益，则说明当前瓶颈可能不在特征，而在训练目标。
+
+#### Phase 4：若特征扩展收益有限，再去打训练目标
+
+**目标**
+- 判断问题到底出在特征不够，还是 pointwise tuple 目标本身已经触顶。
+
+**建议方向**
+- pairwise objective
+- listwise objective
+- `mix` 的可学习组合器
+
+**顺序建议**
+1. 先固定最好的一档 feature set
+2. 再做 `pointwise vs pairwise vs listwise` 最小对照
+3. 统一用 blind tuple aggregation 比较：
+   - Hit@1
+   - Hit@3
+   - Pairwise accuracy
+   - SelAcc@10%
+   - `best_only`
+   - `mix`
+
+---
+
+### 十二、优先级判断：什么最值得先做
+
+如果现在只做一件事，最值得做的是：
+- **把 reflection 从 count 升级为 event-local 特征，并先做 baseline3 vs event2 的最小对照。**
+
+原因：
+1. 这条路线保留了你现在已经验证过的 tuple 框架。
+2. 它不需要立刻重写训练目标。
+3. 它能最快验证：
+   - reflection 是否真的包含可进一步榨取的动态信息；
+   - 还是说 `reflection_count_r` 已经基本把有用信息吃完了。
+
+一个很实用的决策树是：
+- 如果 `baseline3_event2` 明显优于 `baseline3`：继续做 feature engineering
+- 如果 `baseline3_event2` 与 `baseline3` 基本持平：优先转向 pairwise / listwise objective
+- 如果 event-local 特征只在少数 dataset 有用：把 reflection 特征改为 dataset-conditional，而不是全局主特征
+
+---
+
+### 十三、最终判断
+
+我的总体判断是：
+
+1. **现在的 tuple 方法是对的。**
+   - random tuple + blind aggregation 的整体思路没有问题。
+
+2. **当前三特征也不是问题。**
+   - 它们是一个合理、有效、已经被实验支持的 baseline。
+
+3. **真正的问题是：reflection 目前只被当成“次数”使用。**
+   - 这让它更像一个粗分档特征，而不是高质量动态排序信号。
+
+4. **下一步最应该做的，不是泛泛地追求“更多动态指标”，而是把 reflection 做结构化。**
+   - 看什么时候发生
+   - 看如何发生
+   - 看发生后是否恢复
+   - 看 event 和 non-event 的局部动态差异
+
+5. **如果 event-local 特征补进去后仍然提升有限，那么下一步就应把重点转向训练目标对齐。**
+   - 即从 pointwise tuple classification，转向 pairwise / listwise ranking。
+
+一句话收束：
+- **当前 reflection 适合划档，下一步 reflection 应该服务于精排。**
+- **当前 tuple 特征选得对，但应该从“count-based reflection”升级为“event-structured reflection”。**
+

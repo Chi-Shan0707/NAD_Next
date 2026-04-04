@@ -17,6 +17,10 @@ from .ml_impl import LinearProbeSelector, LogisticSelector, IsotonicCalibratedSe
 from .temporal_impl import TemporalSliceSelector
 from .trajectory_impl import TrajectorySelector, LayerStratifiedSelector, TrajectoryFusionSelector
 from .extreme8_impl import Extreme8BestSelector, Extreme8WorstSelector, Extreme8MixedSelector
+from .local_conf_impl import LocalConfTailSelector
+from .extreme9_impl import Extreme9BestSelector, Extreme9WorstSelector, Extreme9MixedSelector
+from .graph_topo_impl import GraphDegreeSelector
+from .extreme10_impl import Extreme10BestSelector, Extreme10WorstSelector, Extreme10MixedSelector
 from .impl_legacy import (LegacyKNNMedoidSelector, LegacyMedoidSelector,
                          LegacyDBSCANMedoidSelector, LegacyConsensusMinSelector,
                          LegacyConsensusMaxSelector)
@@ -234,6 +238,75 @@ def build_selector(spec: SelectorSpec):
         )
     if lowered in ("extreme8-mixed", "extreme8_mixed"):
         return Extreme8MixedSelector(
+            best_model_path=params.get("best_model_path", None),
+            worst_model_path=params.get("worst_model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+
+    # LocalConf zero-training baseline
+    if lowered in ("local-conf-tail", "local_conf_tail"):
+        return LocalConfTailSelector(
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+
+    # Extreme9 selectors (local-conf feature expansion, 11-dim)
+    if lowered in ("extreme9-best", "extreme9_best"):
+        return Extreme9BestSelector(
+            model_path=params.get("model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+    if lowered in ("extreme9-worst", "extreme9_worst"):
+        return Extreme9WorstSelector(
+            model_path=params.get("model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+    if lowered in ("extreme9-mixed", "extreme9_mixed"):
+        return Extreme9MixedSelector(
+            best_model_path=params.get("best_model_path", None),
+            worst_model_path=params.get("worst_model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+
+    # Graph topology zero-training baseline
+    if lowered in ("graph-degree", "graph_degree"):
+        eps_raw = params.get("eps", None)
+        eps = None if (eps_raw is None or str(eps_raw).lower() == "auto") else float(eps_raw)
+        return GraphDegreeSelector(
+            eps=eps,
+            min_samples=int(params.get("min_samples", 3)),
+        )
+
+    # Extreme10 selectors (graph topology + error-mass, 17-dim)
+    if lowered in ("extreme10-best", "extreme10_best"):
+        return Extreme10BestSelector(
+            model_path=params.get("model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+    if lowered in ("extreme10-worst", "extreme10_worst"):
+        return Extreme10WorstSelector(
+            model_path=params.get("model_path", None),
+            tuple_size=int(params.get("tuple_size", 8)),
+            num_tuples=int(params.get("num_tuples", 1024)),
+            seed=int(params.get("seed", 42)),
+            reflection_threshold=float(params.get("reflection_threshold", 0.30)),
+        )
+    if lowered in ("extreme10-mixed", "extreme10_mixed"):
+        return Extreme10MixedSelector(
             best_model_path=params.get("best_model_path", None),
             worst_model_path=params.get("worst_model_path", None),
             tuple_size=int(params.get("tuple_size", 8)),

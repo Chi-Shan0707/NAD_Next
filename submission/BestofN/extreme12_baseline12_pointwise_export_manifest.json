@@ -1,0 +1,125 @@
+{
+  "experiment_dir": "results/extreme12_v2_experiments/20260403_105944",
+  "summary_path": "results/extreme12_v2_experiments/20260403_105944/summary.json",
+  "artifact_prefix": "baseline12_pointwise",
+  "selection": {
+    "baseline12": "baseline12_pointwise",
+    "best_aggregated": "aggregated_selacc10_s044",
+    "recommended": "baseline12_pointwise"
+  },
+  "run_row": {
+    "name": "baseline12_pointwise",
+    "objective": "pointwise",
+    "seed": 42,
+    "tuple_size": 12,
+    "tuple_rule": "2-10",
+    "best_hit1": 0.6764705882352942,
+    "best_hit3": 0.9705882352941176,
+    "best_pairwise": 0.7458650643776712,
+    "best_selacc10": 0.7599304365359412,
+    "mix_selacc10": 0.7599304365359412,
+    "all_best_selacc10": 0.8358623798076924,
+    "inner_tune_selacc10": null,
+    "search_trace_path": null,
+    "stats_path": "results/extreme12_v2_experiments/20260403_105944/models/baseline12_pointwise_stats.json",
+    "log_path": "results/extreme12_v2_experiments/20260403_105944/baseline12_pointwise.log",
+    "passes_guardrails": false,
+    "recommended": true
+  },
+  "stats_path": "results/extreme12_v2_experiments/20260403_105944/models/baseline12_pointwise_stats.json",
+  "model_paths": {
+    "best": "results/extreme12_v2_experiments/20260403_105944/models/baseline12_pointwise_best.pkl",
+    "worst": "results/extreme12_v2_experiments/20260403_105944/models/baseline12_pointwise_worst.pkl"
+  },
+  "export_config": {
+    "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_test",
+    "tuple_size": 12,
+    "num_tuples": 1024,
+    "reflection_threshold": 0.3,
+    "parallel_jobs": 4,
+    "grouping": "balanced_3plus3",
+    "scale_method": "rank",
+    "submission_prefix": "extreme12_baseline12_pointwise",
+    "max_caches": null,
+    "max_problems": null
+  },
+  "artifacts": {
+    "best_raw": "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
+    "mix_raw": "submission/BestofN/extreme12_baseline12_pointwise_mix_ref030_t1024.json",
+    "best_scaled": "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json",
+    "mix_scaled": "submission/BestofN/extreme12_baseline12_pointwise_mix_ref030_t1024_scale100_rank.json",
+    "recommended_submission": "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json"
+  },
+  "validation": {
+    "raw_best": {
+      "cache_keys": 12,
+      "problems": 970,
+      "samples": 62080
+    },
+    "raw_mix": {
+      "cache_keys": 12,
+      "problems": 970,
+      "samples": 62080
+    },
+    "scaled_best": {
+      "cache_keys": 12,
+      "problems": 970,
+      "samples": 62080
+    },
+    "scaled_mix": {
+      "cache_keys": 12,
+      "problems": 970,
+      "samples": 62080
+    }
+  },
+  "commands": {
+    "export": [
+      "/home/jovyan/work/NAD_Next/.venv/bin/python",
+      "/home/jovyan/work/NAD_Next/scripts/export_bestofn_submissions_parallel.py",
+      "--cache-root",
+      "/home/jovyan/public-ro/MUI_HUB/cache_test",
+      "--best-model",
+      "results/extreme12_v2_experiments/20260403_105944/models/baseline12_pointwise_best.pkl",
+      "--worst-model",
+      "results/extreme12_v2_experiments/20260403_105944/models/baseline12_pointwise_worst.pkl",
+      "--out-dir",
+      "submission/BestofN",
+      "--work-dir",
+      "/tmp/bestofn_parallel_work_extreme12",
+      "--parallel-jobs",
+      "4",
+      "--grouping",
+      "balanced_3plus3",
+      "--tuple-size",
+      "12",
+      "--num-tuples",
+      "1024",
+      "--reflection-threshold",
+      "0.30",
+      "--best-method-name",
+      "extreme12_baseline12_pointwise_best_only_ref030_t1024",
+      "--mix-method-name",
+      "extreme12_baseline12_pointwise_mix_ref030_t1024",
+      "--best-filename",
+      "extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
+      "--mix-filename",
+      "extreme12_baseline12_pointwise_mix_ref030_t1024.json"
+    ],
+    "rescale": [
+      [
+        "/home/jovyan/work/NAD_Next/.venv/bin/python",
+        "/home/jovyan/work/NAD_Next/scripts/rescale_bestofn_submission_scores.py",
+        "/home/jovyan/work/NAD_Next/submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
+        "--method",
+        "rank"
+      ],
+      [
+        "/home/jovyan/work/NAD_Next/.venv/bin/python",
+        "/home/jovyan/work/NAD_Next/scripts/rescale_bestofn_submission_scores.py",
+        "/home/jovyan/work/NAD_Next/submission/BestofN/extreme12_baseline12_pointwise_mix_ref030_t1024.json",
+        "--method",
+        "rank"
+      ]
+    ]
+  }
+}

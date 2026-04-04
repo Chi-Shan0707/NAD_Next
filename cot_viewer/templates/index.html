@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CoT Viewer</title>
+<script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; color: #222; }
@@ -182,6 +183,115 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 #neuron-controls .ctrl-label { font-weight: 600; color: #555; margin-right: 4px; }
 #neuron-chart-area { padding: 8px 0 12px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 #neuron-chart-area svg { display: block; min-width: 100%; }
+
+/* === Analysis panel === */
+#analysis-panel {
+  margin: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+}
+#analysis-panel.collapsed #analysis-body { display: none; }
+#analysis-header {
+  padding: 8px 16px; font-weight: 600; font-size: 13px; cursor: pointer;
+  background: #fafafa; border-bottom: 1px solid #eee; user-select: none;
+  display: flex; align-items: center; gap: 8px; border-radius: 6px;
+}
+#analysis-header .toggle-arrow { font-size: 10px; color: #888; }
+#analysis-body { padding: 12px 16px; }
+
+.atab-row { display: flex; gap: 6px; margin-bottom: 10px; }
+.atab {
+  padding: 4px 14px; border: 1px solid #ccc; background: #fff;
+  border-radius: 5px; cursor: pointer; font-size: 12px; transition: all .15s;
+}
+.atab.active { background: #1565c0; color: #fff; border-color: #1565c0; }
+.atab:hover:not(.active) { background: #f0f0f0; }
+
+#scatter-container { width: 100%; height: 380px; }
+
+#knn-purity-bar {
+  font-size: 12px; color: #555; padding: 5px 10px; margin: 8px 0;
+  background: #f5f5f5; border-radius: 5px; display: inline-block;
+}
+#knn-info-row { font-size: 12px; font-weight: 600; color: #333; margin: 6px 0; }
+
+#knn-table { width: 100%; border-collapse: collapse; font-size: 12px; display: none; }
+#knn-table th { background: #1565c0; color: #fff; padding: 6px 10px; text-align: left; }
+#knn-table td { padding: 5px 10px; border-bottom: 1px solid #f0f0f0; }
+#knn-table tr:last-child td { border-bottom: none; }
+.k-yes { color: #2e7d32; font-weight: 600; }
+.k-no  { color: #c62828; font-weight: 600; }
+
+/* Selector simulation section */
+#sel-sim { margin-top: 16px; padding-top: 14px; border-top: 1px solid #eee; }
+#sel-sim h4 { font-size: 13px; color: #444; margin-bottom: 10px; }
+.sel-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+#sel-select { padding: 4px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; min-width: 220px; }
+#sel-run-btn {
+  padding: 5px 16px; background: #1565c0; color: #fff; border: none;
+  border-radius: 4px; cursor: pointer; font-size: 13px;
+}
+#sel-run-btn:disabled { opacity: .5; cursor: not-allowed; }
+.a-spinner {
+  display: inline-block; width: 13px; height: 13px;
+  border: 2px solid #ddd; border-top-color: #1565c0;
+  border-radius: 50%; animation: aspin .7s linear infinite;
+}
+@keyframes aspin { to { transform: rotate(360deg); } }
+#sel-result-box {
+  padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 8px; display: none;
+}
+.sbox-ok  { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.sbox-err { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+#sel-rank-table { width: 100%; border-collapse: collapse; font-size: 12px; display: none; }
+#sel-rank-table th { background: #444; color: #fff; padding: 6px 10px; text-align: left; }
+#sel-rank-table td { padding: 5px 10px; border-bottom: 1px solid #f0f0f0; }
+#sel-rank-table tr.sel-row td { background: #fff9c4; }
+#sel-rank-table tr:last-child td { border-bottom: none; }
+.sbar { display: inline-block; height: 7px; background: #1565c0; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+.vbtn { padding: 2px 7px; font-size: 11px; background: #e9ecef; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; }
+.vbtn:hover { background: #ddd; }
+
+/* === Glossary === */
+#glossary-section {
+  margin-top: 18px; padding-top: 14px; border-top: 1px solid #eee;
+}
+#glossary-section summary {
+  font-size: 13px; font-weight: 600; color: #555; cursor: pointer;
+  user-select: none; list-style: none; display: flex; align-items: center; gap: 6px;
+}
+#glossary-section summary::-webkit-details-marker { display: none; }
+#glossary-section summary::before {
+  content: '▶'; font-size: 10px; color: #888; transition: transform .2s;
+}
+#glossary-section[open] summary::before { transform: rotate(90deg); }
+.glossary-body { margin-top: 10px; }
+.glossary-group { margin-bottom: 14px; }
+.glossary-group-title {
+  font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: 5px;
+}
+.glossary-table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+}
+.glossary-table td {
+  padding: 6px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: top;
+}
+.glossary-table tr:last-child td { border-bottom: none; }
+.glossary-table .g-term {
+  font-weight: 700; color: #1565c0; white-space: nowrap;
+  width: 130px; font-family: 'SF Mono', 'Consolas', monospace; font-size: 12px;
+}
+.glossary-table .g-full {
+  color: #888; font-size: 11px; white-space: nowrap; width: 200px;
+}
+.glossary-table .g-desc { color: #333; line-height: 1.5; }
+.g-tag {
+  display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px;
+  font-weight: 600; margin-right: 4px; vertical-align: middle;
+}
+.g-tag.pos { background: #d4edda; color: #155724; }
+.g-tag.neg { background: #f8d7da; color: #721c24; }
+.g-tag.neu { background: #e2e3e5; color: #383d41; }
 </style>
 </head>
 <body>
@@ -225,6 +335,184 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
   <div id="neuron-header"><span class="toggle-arrow">&#9654;</span> Neuron Activation</div>
   <div id="neuron-controls"></div>
   <div id="neuron-chart-area"></div>
+</div>
+
+<div id="analysis-panel" class="collapsed">
+  <div id="analysis-header">
+    <span class="toggle-arrow">&#9654;</span> Analysis
+    <span id="a-spinner" class="a-spinner" style="display:none;"></span>
+  </div>
+  <div id="analysis-body">
+    <!-- Scatter tabs -->
+    <div class="atab-row">
+      <button class="atab active" id="atab-feat" onclick="switchATab('feat')">Feature Space</button>
+      <button class="atab" id="atab-mds"  onclick="switchATab('mds')">Activation MDS</button>
+    </div>
+    <div id="scatter-container"></div>
+    <div id="knn-purity-bar">KNN Purity Mean: —</div>
+    <div id="knn-info-row" style="display:none;"></div>
+    <table id="knn-table">
+      <thead><tr><th>Rank</th><th>Sample ID</th><th>Distance</th><th>Correct</th><th>dc_r</th><th>rc_r</th></tr></thead>
+      <tbody id="knn-tbody"></tbody>
+    </table>
+
+    <!-- Selector Simulation -->
+    <div id="sel-sim">
+      <h4>🎯 Selector Simulation — which run does this algorithm pick?</h4>
+      <div class="sel-controls">
+        <select id="sel-select"><option>Loading…</option></select>
+        <button id="sel-run-btn" disabled onclick="runSel()">Simulate</button>
+        <span id="sel-spinner" class="a-spinner" style="display:none;"></span>
+      </div>
+      <div id="sel-result-box"></div>
+      <table id="sel-rank-table">
+        <thead><tr>
+          <th>Rank</th><th>Sample ID</th><th id="score-hdr">Score</th>
+          <th>Correct</th><th>dc_r</th><th>rc_r</th><th>rc</th><th>View</th>
+        </tr></thead>
+        <tbody id="sel-rank-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- ===================== Glossary ===================== -->
+    <details id="glossary-section">
+      <summary>📖 术语解释</summary>
+      <div class="glossary-body">
+
+        <div class="glossary-group">
+          <div class="glossary-group-title">📊 可视化</div>
+          <table class="glossary-table">
+            <tr>
+              <td class="g-term">MDS</td>
+              <td class="g-full">Multidimensional Scaling</td>
+              <td class="g-desc">多维缩放。把 N×N 的 Jaccard 距离矩阵压缩成二维坐标，让你在平面上直观看到 run 之间的相似关系。<strong>两点越近 = 激活模式越相似</strong>。注意：MDS 是近似，远近关系保留大趋势，不完全精确。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Jaccard 距离</td>
+              <td class="g-full">Jaccard Distance</td>
+              <td class="g-desc">衡量两个 run 激活了多少"不同"的神经元。公式：<code>1 − |A∩B| / |A∪B|</code>。<span class="g-tag neu">0</span> = 完全相同，<span class="g-tag neg">1</span> = 完全不同。这是 NAD 框架里最核心的距离度量。</td>
+            </tr>
+            <tr>
+              <td class="g-term">KNN Purity</td>
+              <td class="g-full">K-Nearest Neighbor Purity</td>
+              <td class="g-desc">KNN 纯度。对每个 run，找它在 Jaccard 空间中最近的 5 个邻居，统计其中 correct 的比例。<strong>均值 &gt; 50%</strong> = 距离有正确性信号；<strong>≈ 50%</strong> = 激活模式与正确性无关。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Feature Space</td>
+              <td class="g-full">特征空间散点图</td>
+              <td class="g-desc">以 <code>dc_r</code>（X 轴）和 <code>reflection_count_r</code>（Y 轴）为坐标画出所有 run。如果 correct（蓝）和 incorrect（红）能被一条线分开，说明这两个特征有判别力。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Activation MDS</td>
+              <td class="g-full">激活空间 MDS 投影</td>
+              <td class="g-desc">以 Jaccard 距离矩阵做 MDS，显示神经元激活模式的分布。如果 correct 和 incorrect 在 MDS 图中聚成不同的团，说明激活模式本身有判别力。</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="glossary-group">
+          <div class="glossary-group-title">🔢 特征</div>
+          <table class="glossary-table">
+            <tr>
+              <td class="g-term">dc_r</td>
+              <td class="g-full">DeepConf rank</td>
+              <td class="g-desc">DeepConf 置信度的组内排名，归一化到 [0, 1]。<span class="g-tag pos">1 = 最自信</span>，<span class="g-tag neg">0 = 最不确定</span>。底层是 <code>tok_conf</code>（token 级别置信度均值），值越低 = 模型越确定。</td>
+            </tr>
+            <tr>
+              <td class="g-term">dc_z</td>
+              <td class="g-full">DeepConf z-score</td>
+              <td class="g-desc">同 <code>dc_r</code>，但用 z-score（均值 0，标准差 1）归一化。适合比较绝对量级，而不只是组内排名。</td>
+            </tr>
+            <tr>
+              <td class="g-term">rc_r</td>
+              <td class="g-full">reflection_count_r</td>
+              <td class="g-desc">反思次数的组内排名，归一化到 [0, 1]。<span class="g-tag pos">1 = 反思最多</span>。"反思"指推理链中出现重启/修正信号（如 &lt;think&gt;、"wait"、"actually" 等模式）的次数，由轨迹分析提取。</td>
+            </tr>
+            <tr>
+              <td class="g-term">rc</td>
+              <td class="g-full">reflection_count</td>
+              <td class="g-desc">原始反思次数（未归一化的整数）。</td>
+            </tr>
+            <tr>
+              <td class="g-term">tok_conf</td>
+              <td class="g-full">Token Confidence</td>
+              <td class="g-desc">每个 token 的置信度指标（≈ 预测分布的熵的负数），<strong>值越小 = 模型越确定</strong>。注意方向：低 tok_conf → 高置信度。</td>
+            </tr>
+            <tr>
+              <td class="g-term">tok_neg_entropy</td>
+              <td class="g-full">Token Negative Entropy</td>
+              <td class="g-desc">每个 token 预测分布的负熵（Σ p log p ≤ 0）。<strong>越接近 0 = 越确定</strong>（单峰分布）；绝对值越大 = 越不确定（均匀分布）。</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="glossary-group">
+          <div class="glossary-group-title">🎯 Selector（选择算法）</div>
+          <table class="glossary-table">
+            <tr>
+              <td class="g-term">Medoid</td>
+              <td class="g-full">质心（几何中心）</td>
+              <td class="g-desc">选组内"最居中"的 run：到其他所有 run 的平均 Jaccard 距离最小的那个。代表<strong>共识最大的推理路径</strong>，理论上最"典型"。</td>
+            </tr>
+            <tr>
+              <td class="g-term">KNN-Medoid</td>
+              <td class="g-full">K-Nearest Neighbor Medoid</td>
+              <td class="g-desc">选与最近 k 个邻居激活相似度最高的 run。比 Medoid 更关注<strong>局部聚集</strong>，对孤立异常 run 更鲁棒。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Min-Activation</td>
+              <td class="g-full">最小激活</td>
+              <td class="g-desc">选激活神经元数量<strong>最少</strong>的 run（最"精简"的推理路径）。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Max-Activation</td>
+              <td class="g-full">最大激活</td>
+              <td class="g-desc">选激活神经元数量<strong>最多</strong>的 run（最"丰富"的推理路径）。</td>
+            </tr>
+            <tr>
+              <td class="g-term">DeepConf</td>
+              <td class="g-full">Deep Confidence</td>
+              <td class="g-desc">选 <code>tok_conf</code> 最低的 run（模型最确定的那条推理链）。核心假设：自信 = 正确。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Extreme8-Best</td>
+              <td class="g-full">Extreme 8-tuple Best</td>
+              <td class="g-desc">ML 模型。从所有 run 中随机采样大量 8-tuple（8 个 run 的组合），用训练好的模型预测每个 run 是"最好"的概率（<code>score_best</code>），取均值后选最高分。训练信号来自 <strong>band_reward</strong>。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Extreme8-Mixed</td>
+              <td class="g-full">Extreme 8-tuple Mixed</td>
+              <td class="g-desc">Best + Worst 双模型的混合版本，分数 = <code>score_best − score_worst</code>。既奖励"看起来好"，又惩罚"看起来差"，理论上更稳健。</td>
+            </tr>
+            <tr>
+              <td class="g-term">band_reward</td>
+              <td class="g-full">Band Reward（带奖励）</td>
+              <td class="g-desc">Extreme8 的训练信号。把 N 个 run 按某特征排序后分成 3 个 band（top/mid/bottom），统计每个 band 里 correct run 的数量，加权求和：<code>α×top + β×mid + γ×bottom</code>。前 band 中 correct 越多得分越高。这是 Extreme8 能否赢的核心假设。</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="glossary-group">
+          <div class="glossary-group-title">📐 分数列说明</div>
+          <table class="glossary-table">
+            <tr>
+              <td class="g-term">Score（归一化）</td>
+              <td class="g-full">Normalised Score</td>
+              <td class="g-desc">排名表中的 Score 列已归一化到 [0, 1]，<span class="g-tag pos">1 = 该 selector 最偏好</span>。注意：不同 selector 的 score 含义不同，只能在同一 selector 内比较，不能跨 selector 比较。</td>
+            </tr>
+            <tr>
+              <td class="g-term">Rank 1</td>
+              <td class="g-full">排名第 1</td>
+              <td class="g-desc">⭐ 标记的那行就是该 selector 最终会<strong>选中</strong>的 run。如果 Rank 1 是红色 ✗，说明这个 selector 在这道题上选错了。</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </details>
+    <!-- ==================== /Glossary ==================== -->
+
+  </div>
 </div>
 
 <div id="detail-panel">
@@ -279,11 +567,33 @@ function updateModeBadge() {
 async function loadDatasets() {
   const ds = await api('/api/datasets');
   selDS.innerHTML = '';
+
+  // Group by split label (extracted from "dataset  [split]" key format)
+  const groups = {};
   for (const [name, path] of Object.entries(ds).sort()) {
-    const o = document.createElement('option');
-    o.value = path; o.textContent = name;
-    selDS.appendChild(o);
+    const m = name.match(/\[(.+)\]$/);
+    const split = m ? m[1] : 'cache';
+    const label = m ? name.replace(/\s*\[.+\]$/, '') : name;
+    if (!groups[split]) groups[split] = [];
+    groups[split].push({ label, path });
   }
+
+  // Preferred display order for splits
+  const splitOrder = ['cache', 'cache_train', 'cache_test'];
+  const allSplits = [...new Set([...splitOrder, ...Object.keys(groups)])];
+
+  for (const split of allSplits) {
+    if (!groups[split]) continue;
+    const og = document.createElement('optgroup');
+    og.label = split;
+    for (const { label, path } of groups[split]) {
+      const o = document.createElement('option');
+      o.value = path; o.textContent = label;
+      og.appendChild(o);
+    }
+    selDS.appendChild(og);
+  }
+
   if (selDS.options.length) {
     currentCache = selDS.value;
     loadProblems();
@@ -303,7 +613,7 @@ async function loadProblems() {
     selProb.appendChild(o);
   }
   setStatus(`${probs.length} problems`);
-  if (selProb.options.length) loadRuns();
+  if (selProb.options.length) { loadRuns(); loadScatterData(selProb.value); }
 }
 
 // -- Runs (chip bar) ---------------------------------------------------------
@@ -1239,12 +1549,232 @@ function reloadAll() {
   loadAllPanels();
 }
 
+// =============================================================================
+// Analysis Panel — Scatter / MDS / KNN / Selector Simulation
+// =============================================================================
+
+// Collapse / expand toggle
+$('#analysis-header').addEventListener('click', () => {
+  const panel = $('#analysis-panel');
+  const arrow = panel.querySelector('.toggle-arrow');
+  const collapsed = panel.classList.toggle('collapsed');
+  arrow.innerHTML = collapsed ? '&#9654;' : '&#9660;';
+});
+
+let scatterData = null;
+let aTabMode = 'feat';
+let lastSelResult = null;
+
+async function loadScatterData(pid) {
+  const panel = $('#analysis-panel');
+  panel.classList.remove('collapsed');
+  $('#analysis-panel .toggle-arrow').innerHTML = '&#9660;';
+  $('#a-spinner').style.display = 'inline-block';
+  scatterData = null; lastSelResult = null;
+  $('#knn-purity-bar').textContent = 'KNN Purity Mean: —';
+  $('#knn-table').style.display = 'none';
+  $('#knn-info-row').style.display = 'none';
+  $('#sel-result-box').style.display = 'none';
+  $('#sel-rank-table').style.display = 'none';
+  if (typeof Plotly !== 'undefined') Plotly.purge('scatter-container');
+
+  try {
+    const data = await api('/api/scatter_data/' + encodeURIComponent(pid));
+    $('#a-spinner').style.display = 'none';
+    if (!data.success) {
+      $('#knn-purity-bar').textContent = 'Analysis unavailable: ' + (data.error || '');
+      return;
+    }
+    scatterData = data;
+    renderScatter(data, aTabMode);
+    const pm = data.knn_purity_mean !== null ? (data.knn_purity_mean * 100).toFixed(1) + '%' : '—';
+    $('#knn-purity-bar').textContent = `KNN Purity Mean (k=5): ${pm}  (n=${data.n_runs} runs)`;
+  } catch(e) {
+    $('#a-spinner').style.display = 'none';
+    $('#knn-purity-bar').textContent = 'Analysis error: ' + e.message;
+  }
+}
+
+function switchATab(mode) {
+  aTabMode = mode;
+  $('#atab-feat').classList.toggle('active', mode === 'feat');
+  $('#atab-mds').classList.toggle('active', mode === 'mds');
+  if (scatterData) renderScatter(scatterData, mode);
+}
+
+function _buildScatterTraces(data, mode, starRun) {
+  const cx = [], cy = [], ct = [], cc = [];
+  const ix = [], iy = [], it = [], ic = [];
+  data.runs.forEach(r => {
+    const x = mode === 'mds' ? r.mds_x : r.dc_r;
+    const y = mode === 'mds' ? r.mds_y : r.reflection_count_r;
+    const lbl = `Sample ${r.sample_id}<br>dc_r: ${r.dc_r}<br>rc_r: ${r.reflection_count_r}<br>rc: ${r.reflection_count}<br>${r.correct ? '✓ Correct' : '✗ Incorrect'}`;
+    if (r.correct) { cx.push(x); cy.push(y); ct.push(lbl); cc.push(r); }
+    else           { ix.push(x); iy.push(y); it.push(lbl); ic.push(r); }
+  });
+  const traces = [
+    { x: cx, y: cy, mode: 'markers', name: 'Correct',
+      marker: { color: 'rgba(30,144,255,.75)', size: 8, line: { width: 1, color: '#0050bb' } },
+      text: ct, hoverinfo: 'text', customdata: cc, type: 'scatter' },
+    { x: ix, y: iy, mode: 'markers', name: 'Incorrect',
+      marker: { color: 'rgba(220,53,69,.75)', size: 8, line: { width: 1, color: '#900' } },
+      text: it, hoverinfo: 'text', customdata: ic, type: 'scatter' },
+  ];
+  if (starRun) {
+    const sx = mode === 'mds' ? starRun.mds_x : starRun.dc_r;
+    const sy = mode === 'mds' ? starRun.mds_y : starRun.reflection_count_r;
+    traces.push({
+      x: [sx], y: [sy], mode: 'markers', name: 'Selected',
+      marker: { symbol: 'star', size: 17, color: 'gold', line: { color: '#c8860a', width: 2 } },
+      text: [`⭐ Sample ${starRun.sample_id}`], hoverinfo: 'text', type: 'scatter'
+    });
+  }
+  return traces;
+}
+
+function renderScatter(data, mode) {
+  if (typeof Plotly === 'undefined') return;
+  let starRun = null;
+  if (lastSelResult) starRun = data.runs.find(r => r.sample_id === lastSelResult.selected_sample_id) || null;
+  const traces = _buildScatterTraces(data, mode, starRun);
+  const xTitle = mode === 'mds' ? 'MDS dim 0' : 'dc_r';
+  const yTitle = mode === 'mds' ? 'MDS dim 1' : 'reflection_count_r';
+  const title  = mode === 'mds' ? 'Activation MDS (Jaccard)' : 'Feature Space (dc_r vs rc_r)';
+  const layout = {
+    title: { text: title, font: { size: 13 } },
+    xaxis: { title: xTitle, zeroline: false },
+    yaxis: { title: yTitle, zeroline: false },
+    margin: { t: 36, l: 52, r: 16, b: 44 },
+    hovermode: 'closest',
+    legend: { orientation: 'h', y: -0.16 },
+    paper_bgcolor: '#fff', plot_bgcolor: '#fafafa',
+  };
+  Plotly.newPlot('scatter-container', traces, layout, { responsive: true, displayModeBar: false })
+    .then(gd => {
+      gd.on('plotly_click', evt => {
+        if (!evt.points || !evt.points.length) return;
+        const run = evt.points[0].customdata;
+        if (run) showKnn(run);
+      });
+    });
+}
+
+function showKnn(run) {
+  const infoRow = $('#knn-info-row');
+  const table   = $('#knn-table');
+  const tbody   = $('#knn-tbody');
+  const purity  = run.knn5.filter(n => n.correct).length;
+  const mark = run.correct ? '<span class="k-yes">✓</span>' : '<span class="k-no">✗</span>';
+  infoRow.innerHTML = `Selected: Sample&nbsp;<strong>${run.sample_id}</strong>&nbsp;${mark}&nbsp;&nbsp;|&nbsp;&nbsp;KNN Purity: ${purity}/5`;
+  infoRow.style.display = 'block';
+  tbody.innerHTML = run.knn5.map((nb, i) => {
+    const c = nb.correct ? '<span class="k-yes">✓</span>' : '<span class="k-no">✗</span>';
+    return `<tr><td>${i+1}</td><td>${nb.sample_id}</td><td>${nb.distance.toFixed(4)}</td><td>${c}</td><td>${nb.dc_r.toFixed(3)}</td><td>${nb.rc_r.toFixed(3)}</td></tr>`;
+  }).join('');
+  table.style.display = 'table';
+}
+
+// -- Selector catalog --------------------------------------------------------
+async function loadSelCatalog() {
+  try {
+    const data = await api('/api/selector_catalog');
+    const sel = $('#sel-select');
+    const groups = {};
+    (data.selectors || []).forEach(s => { (groups[s.group] = groups[s.group] || []).push(s); });
+    sel.innerHTML = '';
+    Object.entries(groups).forEach(([g, items]) => {
+      const og = document.createElement('optgroup'); og.label = g;
+      items.forEach(s => {
+        const o = document.createElement('option'); o.value = s.id; o.textContent = s.label;
+        og.appendChild(o);
+      });
+      sel.appendChild(og);
+    });
+    $('#sel-run-btn').disabled = false;
+  } catch(e) {
+    $('#sel-select').innerHTML = '<option value="medoid">Medoid</option>';
+    $('#sel-run-btn').disabled = false;
+  }
+}
+
+async function runSel() {
+  const pid = selProb.value;
+  if (!pid) return;
+  const selId = $('#sel-select').value;
+  $('#sel-run-btn').disabled = true;
+  $('#sel-spinner').style.display = 'inline-block';
+  $('#sel-result-box').style.display = 'none';
+  $('#sel-rank-table').style.display = 'none';
+
+  try {
+    const data = await api('/api/selector_pick/' + encodeURIComponent(pid) + '?selector=' + encodeURIComponent(selId));
+    $('#sel-run-btn').disabled = false;
+    $('#sel-spinner').style.display = 'none';
+    if (!data.success) {
+      const box = $('#sel-result-box');
+      box.className = 'sbox-err'; box.textContent = '⚠ ' + data.error; box.style.display = 'block';
+      return;
+    }
+    lastSelResult = data;
+    renderSelResult(data);
+    if (scatterData) renderScatter(scatterData, aTabMode);  // update star
+  } catch(e) {
+    $('#sel-run-btn').disabled = false;
+    $('#sel-spinner').style.display = 'none';
+    const box = $('#sel-result-box');
+    box.className = 'sbox-err'; box.textContent = '⚠ ' + e.message; box.style.display = 'block';
+  }
+}
+
+function renderSelResult(data) {
+  const box = $('#sel-result-box');
+  const isOk = data.selected_correct;
+  box.className = isOk ? 'sbox-ok' : 'sbox-err';
+  const verdict = isOk ? '✓ CORRECT' : '✗ INCORRECT';
+  box.innerHTML = `<strong>${data.selector}</strong> → Sample&nbsp;<strong>${data.selected_sample_id}</strong>&nbsp;<strong>${verdict}</strong>&nbsp;&nbsp;|&nbsp;&nbsp;n=${data.n_runs}`;
+  box.style.display = 'block';
+  $('#score-hdr').textContent = data.score_label || 'Score';
+
+  const tbody = $('#sel-rank-tbody');
+  tbody.innerHTML = data.all_runs.map(r => {
+    const c = r.correct ? '<span class="k-yes">✓</span>' : '<span class="k-no">✗</span>';
+    const star = r.is_selected ? '⭐&nbsp;' : '';
+    const barW = Math.round(r.score * 72);
+    return `<tr class="${r.is_selected ? 'sel-row' : ''}">
+      <td>${star}${r.rank + 1}</td>
+      <td>${r.sample_id}</td>
+      <td><span class="sbar" style="width:${barW}px"></span>${r.score.toFixed(3)}</td>
+      <td>${c}</td>
+      <td>${r.dc_r.toFixed(3)}</td>
+      <td>${r.reflection_count_r.toFixed(3)}</td>
+      <td>${r.reflection_count}</td>
+      <td><button class="vbtn" onclick="viewRun(${r.sample_id})">View</button></td>
+    </tr>`;
+  }).join('');
+  $('#sel-rank-table').style.display = 'table';
+}
+
+function viewRun(sampleId) {
+  // Find run in allRuns and select it (reuses existing CoT mechanism)
+  const run = allRuns.find(r => r.sample_id === sampleId);
+  if (!run) { alert(`Run ${sampleId} not in current problem's run list.`); return; }
+  // If not already selected, toggle it on
+  if (!selectedRuns.find(s => s.sample_id === sampleId)) {
+    toggleRunSelection(run);
+  }
+  // Scroll to the cot panel for this run
+  const panel = cotArea.querySelector(`.cot-panel-wrap[data-sample-id="${sampleId}"]`);
+  if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  else cotArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // -- Events ------------------------------------------------------------------
 selDS.addEventListener('change', loadProblems);
-selProb.addEventListener('change', loadRuns);
+selProb.addEventListener('change', () => { loadRuns(); loadScatterData(selProb.value); });
 selMode.addEventListener('change', reloadAll);
 
 loadDatasets();
+loadSelCatalog();
 </script>
 </body>
 </html>

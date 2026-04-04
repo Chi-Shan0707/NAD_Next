@@ -1,0 +1,66 @@
+{
+  "config": {
+    "datasets": "gpqa",
+    "cache_root": "MUI_HUB/cache",
+    "train_extra_cache_root": "",
+    "val_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train",
+    "val_split": 0.2,
+    "split_seed": 42,
+    "reflection_threshold": "0.30",
+    "num_tuples": 256,
+    "num_tuples_val": 1024,
+    "num_tuples_tune": 256,
+    "tune_split": 0.2,
+    "tune_seed": 42,
+    "workers": 4,
+    "seed": 42,
+    "aggregate_seeds": [
+      42
+    ]
+  },
+  "runs": [
+    {
+      "name": "baseline12_pointwise",
+      "objective": "pointwise",
+      "seed": 42,
+      "tuple_size": 12,
+      "tuple_rule": "2-10",
+      "best_hit1": null,
+      "best_hit3": null,
+      "best_pairwise": null,
+      "best_selacc10": null,
+      "mix_selacc10": null,
+      "all_best_selacc10": 0.38461538461538464,
+      "inner_tune_selacc10": null,
+      "search_trace_path": null,
+      "stats_path": "results/extreme12_v2_experiments/20260403_094147/models/baseline12_pointwise_stats.json",
+      "log_path": "results/extreme12_v2_experiments/20260403_094147/baseline12_pointwise.log",
+      "passes_guardrails": false,
+      "recommended": true
+    },
+    {
+      "name": "aggregated_selacc10_s042",
+      "objective": "aggregated_selacc10",
+      "seed": 42,
+      "tuple_size": 12,
+      "tuple_rule": "2-10",
+      "best_hit1": null,
+      "best_hit3": null,
+      "best_pairwise": null,
+      "best_selacc10": null,
+      "mix_selacc10": null,
+      "all_best_selacc10": 0.5384615384615384,
+      "inner_tune_selacc10": 1.0,
+      "search_trace_path": "results/extreme12_v2_experiments/20260403_094147/models/aggregated_selacc10_s042_search_trace.json",
+      "stats_path": "results/extreme12_v2_experiments/20260403_094147/models/aggregated_selacc10_s042_stats.json",
+      "log_path": "results/extreme12_v2_experiments/20260403_094147/aggregated_selacc10_s042.log",
+      "passes_guardrails": true,
+      "recommended": false
+    }
+  ],
+  "selection": {
+    "baseline12": "baseline12_pointwise",
+    "best_aggregated": "aggregated_selacc10_s042",
+    "recommended": "baseline12_pointwise"
+  }
+}

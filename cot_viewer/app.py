@@ -12,16 +12,38 @@ from pathlib import Path
 import numpy as np
 from flask import Flask, jsonify, render_template, request
 
-from nad.core.views.reader import Agg, CacheReader
+from nad.core.views.reader import Agg, CacheReader, ViewSpec, CutSpec, CutType, Order
 from nad.io.loader import NadNextLoader
 from transformers import AutoTokenizer
+
+# ---------------------------------------------------------------------------
+# Optional analysis deps (scatter / MDS / selector simulation)
+# ---------------------------------------------------------------------------
+
+try:
+    from sklearn.manifold import MDS as _MDS
+    _HAS_MDS = True
+except ImportError:
+    _HAS_MDS = False
+
+try:
+    from nad.core.distance.engine import DistanceEngine, DistanceSpec
+    from nad.core.selectors.base import SelectorContext
+    from nad.core.selectors.extreme8_impl import (
+        extract_extreme8_raw_values,
+        build_extreme8_features,
+    )
+    _HAS_ANALYSIS = True
+except ImportError:
+    _HAS_ANALYSIS = False
 
 # ---------------------------------------------------------------------------
 # Global state
 # ---------------------------------------------------------------------------
 
-CACHE_BASE = Path("/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B")
-MODEL_PATH = "/home/jovyan/public-ro/model/DeepSeek-R1-0528-Qwen3-8B"
+MUI_HUB_ROOT = Path("/home/jovyan/public-ro/MUI_HUB")
+MODEL_NAME   = "DeepSeek-R1-0528-Qwen3-8B"
+MODEL_PATH   = "/home/jovyan/public-ro/model/DeepSeek-R1-0528-Qwen3-8B"
 
 DATASETS: dict[str, str] = {}      # name -> cache_dir path
 LOADERS: dict[str, NadNextLoader] = {}
@@ -30,18 +52,28 @@ EVAL_REPORTS: dict[str, dict] = {}
 META_CACHE: dict[str, dict] = {}
 TOKENIZER = None
 BOUNDARY_IDS: np.ndarray = None    # token IDs for \n . ? : — set at startup
+SCATTER_CACHE: dict = {}           # (problem_id, cache_path) -> {"result":…, "raw":…}
 
 
 def _scan_datasets():
-    """Find all datasets and pick the lexicographically last cache dir for each."""
-    for ds_dir in sorted(CACHE_BASE.iterdir()):
-        if not ds_dir.is_dir():
+    """Scan all cache* splits under MUI_HUB_ROOT for the configured model."""
+    for split_dir in sorted(MUI_HUB_ROOT.iterdir()):
+        if not split_dir.is_dir() or not split_dir.name.startswith("cache"):
             continue
-        cache_dirs = sorted(
-            [d for d in ds_dir.iterdir() if d.is_dir() and d.name.startswith("cache_neuron_")]
-        )
-        if cache_dirs:
-            DATASETS[ds_dir.name] = str(cache_dirs[-1])
+        model_dir = split_dir / MODEL_NAME
+        if not model_dir.is_dir():
+            continue
+        split_label = split_dir.name  # "cache", "cache_train", "cache_test"
+        for ds_dir in sorted(model_dir.iterdir()):
+            if not ds_dir.is_dir():
+                continue
+            cache_dirs = sorted(
+                [d for d in ds_dir.iterdir()
+                 if d.is_dir() and d.name.startswith("cache_neuron_")]
+            )
+            if cache_dirs:
+                key = f"{ds_dir.name}  [{split_label}]"
+                DATASETS[key] = str(cache_dirs[-1])
 
 
 def _get_loader(cache_path: str) -> NadNextLoader:
@@ -545,6 +577,278 @@ def api_neuron_heatmap(sample_id: int):
         },
         "jaccard": jaccard,
         "token_metrics": token_metrics,
+    })
+
+
+# ---------------------------------------------------------------------------
+# Analysis helpers — scatter / MDS / KNN / selector simulation
+# ---------------------------------------------------------------------------
+
+def _norm01(arr: np.ndarray) -> np.ndarray:
+    lo, hi = float(arr.min()), float(arr.max())
+    if hi - lo < 1e-12:
+        return np.zeros(len(arr), dtype=np.float64)
+    return (arr - lo) / (hi - lo)
+
+
+def _rank01_arr(arr: np.ndarray) -> np.ndarray:
+    n = len(arr)
+    if n <= 1:
+        return np.zeros(n, dtype=np.float64)
+    order = np.argsort(arr, kind="stable")
+    ranks = np.empty(n, dtype=np.float64)
+    ranks[order] = np.arange(n, dtype=np.float64) / (n - 1)
+    return ranks
+
+
+def _get_problem_run_ids(cache: str, problem_id: str):
+    """Return (run_ids, correct_labels) for a problem from meta + eval report."""
+    meta = _get_meta(cache)
+    report = _get_eval_report(cache)
+
+    correctness: dict[int, bool] = {}
+    if "results" in report:
+        for r in report["results"]:
+            if str(r["problem_id"]) == problem_id:
+                for run in r.get("runs", []):
+                    correctness[run["run_index"]] = bool(run.get("is_correct", False))
+                break
+
+    run_ids, correct_labels = [], []
+    for sample_id, s in enumerate(meta["samples"]):
+        if str(s["problem_id"]) == problem_id:
+            run_ids.append(sample_id)
+            correct_labels.append(correctness.get(s.get("run_index", 0), False))
+
+    return run_ids, correct_labels
+
+
+def _compute_scatter_for_problem(cache: str, problem_id: str):
+    """Compute MDS, Extreme8 features, and KNN purity. Returns (result, raw_data)."""
+    run_ids, correct_labels = _get_problem_run_ids(cache, problem_id)
+    n = len(run_ids)
+    empty = {"problem_id": problem_id, "runs": [], "n_runs": 0, "knn_purity_mean": None}
+    if n == 0:
+        return empty, {}
+
+    reader = _get_reader(cache)
+    vspec = ViewSpec(agg=Agg.MAX, cut=CutSpec(CutType.MASS, 0.98), order=Order.BY_KEY)
+    views = [reader.get_run_view(rid, vspec) for rid in run_ids]
+    lengths = [int(len(v.keys)) for v in views]
+
+    engine = DistanceEngine(DistanceSpec("ja", num_threads=4))
+    D = engine.dense_matrix(views).astype(np.float64)
+
+    mds_xy = np.zeros((n, 2), dtype=np.float64)
+    if _HAS_MDS and n >= 2:
+        try:
+            D_sym = np.clip((D + D.T) / 2.0, 0.0, None)
+            np.fill_diagonal(D_sym, 0.0)
+            mds_xy = _MDS(n_components=2, dissimilarity="precomputed",
+                          random_state=42, n_init=1, max_iter=300,
+                          normalized_stress="auto").fit_transform(D_sym)
+        except Exception:
+            pass
+
+    ctx = SelectorContext(cache=reader, problem_id=problem_id,
+                          run_ids=run_ids, views=views)
+    raw = extract_extreme8_raw_values(ctx)
+    feats = build_extreme8_features(raw)  # (n,3): dc_z, dc_r, reflection_count_r
+
+    k = min(5, n - 1)
+    runs_list, knn_sum = [], 0.0
+    for i in range(n):
+        di = D[i].copy(); di[i] = np.inf
+        nn = np.argsort(di)[:k]
+        knn5, hits = [], 0
+        for j in nn:
+            knn5.append({"sample_id": int(run_ids[j]),
+                          "distance": round(float(di[j]), 4),
+                          "correct": bool(correct_labels[j]),
+                          "dc_r": round(float(feats[j, 1]), 4),
+                          "rc_r": round(float(feats[j, 2]), 4)})
+            if correct_labels[j]: hits += 1
+        purity = hits / k if k > 0 else 0.0
+        knn_sum += purity
+        runs_list.append({
+            "sample_id": int(run_ids[i]),
+            "correct": bool(correct_labels[i]),
+            "dc_z": round(float(feats[i, 0]), 4),
+            "dc_r": round(float(feats[i, 1]), 4),
+            "reflection_count_r": round(float(feats[i, 2]), 4),
+            "reflection_count": round(float(raw["reflection_count"][i]), 1),
+            "mds_x": round(float(mds_xy[i, 0]), 4),
+            "mds_y": round(float(mds_xy[i, 1]), 4),
+            "knn5": knn5,
+            "knn_purity": round(purity, 2),
+        })
+
+    result = {"problem_id": problem_id, "runs": runs_list,
+              "n_runs": n, "knn_purity_mean": round(knn_sum / n, 3)}
+    raw_data = {"D": D, "feats": feats, "raw": raw,
+                "run_ids": run_ids, "correct_labels": correct_labels,
+                "lengths": lengths, "mds_xy": mds_xy,
+                "cache_path": cache, "problem_id": problem_id}
+    return result, raw_data
+
+
+_SELECTOR_CATALOG = [
+    {"id": "dc_r",               "label": "dc_r  (conf. rank)",         "group": "Feature"},
+    {"id": "reflection_count_r", "label": "reflection_count_r",         "group": "Feature"},
+    {"id": "deepconf",           "label": "DeepConf  (min tok_conf)",   "group": "Feature"},
+    {"id": "medoid",             "label": "Medoid  (Jaccard)",          "group": "Distance"},
+    {"id": "knn-medoid-3",       "label": "KNN-Medoid  k=3",            "group": "Distance"},
+    {"id": "knn-medoid-5",       "label": "KNN-Medoid  k=5",            "group": "Distance"},
+    {"id": "min-activation",     "label": "Min-Activation",             "group": "Baseline"},
+    {"id": "max-activation",     "label": "Max-Activation",             "group": "Baseline"},
+    {"id": "extreme8-best",      "label": "Extreme8-Best  (ML model)",  "group": "ML"},
+    {"id": "extreme8-mixed",     "label": "Extreme8-Mixed  (ML model)", "group": "ML"},
+]
+_SEL_NAME_MAP   = {"knn-medoid-3": "knn-medoid", "knn-medoid-5": "knn-medoid"}
+_SEL_PARAMS_MAP = {"knn-medoid-3": {"k": 3}, "knn-medoid-5": {"k": 5}}
+
+
+def _run_selector(raw_data: dict, selector_id: str) -> dict:
+    D = raw_data["D"];  feats = raw_data["feats"]
+    raw = raw_data["raw"];  run_ids = raw_data["run_ids"]
+    correct_labels = raw_data["correct_labels"];  lengths = raw_data["lengths"]
+    cache_path = raw_data["cache_path"];  problem_id = raw_data["problem_id"]
+    n = len(run_ids)
+    scores = np.zeros(n, dtype=np.float64)
+    sel_idx, score_label, error = 0, "score", None
+
+    try:
+        if selector_id == "dc_r":
+            scores = feats[:, 1].copy(); sel_idx = int(np.argmax(scores)); score_label = "dc_r"
+        elif selector_id == "reflection_count_r":
+            scores = feats[:, 2].copy(); sel_idx = int(np.argmax(scores)); score_label = "rc_r"
+        elif selector_id == "min-activation":
+            la = np.array(lengths, dtype=np.float64)
+            scores = _norm01(-la); sel_idx = int(np.argmin(la)); score_label = "−length (norm)"
+        elif selector_id == "max-activation":
+            la = np.array(lengths, dtype=np.float64)
+            scores = _norm01(la); sel_idx = int(np.argmax(la)); score_label = "length (norm)"
+        elif selector_id == "medoid":
+            md = D.mean(axis=1); scores = _norm01(-md)
+            sel_idx = int(np.argmin(md)); score_label = "−mean_dist (norm)"
+        elif selector_id in ("knn-medoid-3", "knn-medoid-5"):
+            kv = min(3 if selector_id == "knn-medoid-3" else 5, n - 1)
+            S = 1.0 - D
+            rs = np.array([np.mean(np.partition(np.delete(S[i], i), -kv)[-kv:])
+                           for i in range(n)])
+            scores = _norm01(rs); sel_idx = int(np.argmax(rs))
+            score_label = f"knn-sim k={kv} (norm)"
+        else:
+            from nad.core.selectors.registry import build_selector
+            from nad.core.selectors.base import SelectorSpec as _SS
+            sel_name = _SEL_NAME_MAP.get(selector_id, selector_id)
+            sel_params = _SEL_PARAMS_MAP.get(selector_id, {})
+            sel = build_selector(_SS(sel_name, sel_params))
+            reader = _get_reader(cache_path)
+            vspec = ViewSpec(agg=Agg.MAX, cut=CutSpec(CutType.MASS, 0.98), order=Order.BY_KEY)
+            views = [reader.get_run_view(rid, vspec) for rid in run_ids]
+            ctx = SelectorContext(cache=reader, problem_id=problem_id,
+                                  run_ids=run_ids, views=views)
+            sel.bind(ctx)
+            run_stats = {"lengths": np.array(lengths, dtype=np.int32)}
+            sel_idx = int(sel.select(D, run_stats))
+            if selector_id == "deepconf":
+                scores = _norm01(-raw["dc_raw"]); score_label = "deepconf quality (norm)"
+            elif selector_id in ("extreme8-best", "extreme8-mixed"):
+                scores = _norm01(feats[:, 1] + feats[:, 2]); score_label = "dc_r+rc_r proxy"
+            else:
+                scores[sel_idx] = 1.0
+    except Exception as exc:
+        error = str(exc)
+
+    return {"selected_idx": sel_idx,
+            "selected_sample_id": int(run_ids[sel_idx]),
+            "selected_correct": bool(correct_labels[sel_idx]),
+            "scores": scores, "score_label": score_label, "error": error}
+
+
+@app.route("/api/scatter_data/<problem_id>")
+def api_scatter_data(problem_id: str):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"success": False, "error": "invalid cache"}), 400
+    if not _HAS_ANALYSIS:
+        return jsonify({"success": False, "error": "analysis deps unavailable"}), 503
+
+    key = (problem_id, cache)
+    if key not in SCATTER_CACHE:
+        try:
+            result, raw_data = _compute_scatter_for_problem(cache, problem_id)
+            SCATTER_CACHE[key] = {"result": result, "raw": raw_data}
+        except Exception as exc:
+            return jsonify({"success": False, "error": str(exc)}), 500
+
+    return jsonify({"success": True, **SCATTER_CACHE[key]["result"]})
+
+
+@app.route("/api/selector_catalog")
+def api_selector_catalog():
+    return jsonify({"selectors": _SELECTOR_CATALOG})
+
+
+@app.route("/api/selector_pick/<problem_id>")
+def api_selector_pick(problem_id: str):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"success": False, "error": "invalid cache"}), 400
+    if not _HAS_ANALYSIS:
+        return jsonify({"success": False, "error": "analysis deps unavailable"}), 503
+
+    selector_id = request.args.get("selector", "medoid").strip()
+
+    key = (problem_id, cache)
+    if key not in SCATTER_CACHE:
+        try:
+            result, raw_data = _compute_scatter_for_problem(cache, problem_id)
+            SCATTER_CACHE[key] = {"result": result, "raw": raw_data}
+        except Exception as exc:
+            return jsonify({"success": False, "error": str(exc)}), 500
+
+    raw_data = SCATTER_CACHE[key]["raw"]
+    scatter_result = SCATTER_CACHE[key]["result"]
+    if not raw_data:
+        return jsonify({"success": False, "error": "no runs"}), 404
+
+    sim = _run_selector(raw_data, selector_id)
+    if sim["error"]:
+        return jsonify({"success": False, "error": sim["error"],
+                        "selector": selector_id}), 500
+
+    scores = sim["scores"]
+    order = np.argsort(-scores, kind="stable")
+    ranks = np.empty(len(scores), dtype=int); ranks[order] = np.arange(len(scores))
+
+    all_runs = []
+    for i, run_info in enumerate(scatter_result["runs"]):
+        all_runs.append({
+            "sample_id": run_info["sample_id"],
+            "correct": run_info["correct"],
+            "score": round(float(scores[i]), 4),
+            "rank": int(ranks[i]),
+            "is_selected": (i == sim["selected_idx"]),
+            "dc_r": run_info["dc_r"],
+            "dc_z": run_info["dc_z"],
+            "reflection_count_r": run_info["reflection_count_r"],
+            "reflection_count": run_info["reflection_count"],
+            "mds_x": run_info["mds_x"],
+            "mds_y": run_info["mds_y"],
+        })
+    all_runs.sort(key=lambda r: r["rank"])
+
+    return jsonify({
+        "success": True,
+        "problem_id": problem_id,
+        "selector": selector_id,
+        "selected_sample_id": sim["selected_sample_id"],
+        "selected_correct": sim["selected_correct"],
+        "score_label": sim["score_label"],
+        "n_runs": len(all_runs),
+        "all_runs": all_runs,
     })
 
 

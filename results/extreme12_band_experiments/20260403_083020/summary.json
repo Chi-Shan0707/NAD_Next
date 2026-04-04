@@ -1,0 +1,85 @@
+{
+  "config": {
+    "datasets": "gpqa",
+    "cache_root": "MUI_HUB/cache",
+    "train_extra_cache_root": "",
+    "val_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train",
+    "val_split": 0.2,
+    "split_seed": 42,
+    "reflection_threshold": "0.30",
+    "num_tuples": 256,
+    "num_tuples_val": 1024,
+    "workers": 4,
+    "seed": 42,
+    "beta_grid": [
+      0.35
+    ],
+    "gamma_grid": [
+      -0.5
+    ]
+  },
+  "runs": [
+    {
+      "name": "baseline8_pointwise",
+      "objective": "pointwise",
+      "tuple_size": 8,
+      "tuple_rule": "blind",
+      "alpha": 1.0,
+      "beta": 0.35,
+      "gamma": -0.5,
+      "best_hit1": null,
+      "best_hit3": null,
+      "best_pairwise": null,
+      "best_selacc10": null,
+      "mix_selacc10": null,
+      "all_best_selacc10": 0.38461538461538464,
+      "stats_path": "results/extreme12_band_experiments/20260403_083020/models/baseline8_pointwise_stats.json",
+      "log_path": "results/extreme12_band_experiments/20260403_083020/baseline8_pointwise.log",
+      "passes_guardrails": false,
+      "recommended": false
+    },
+    {
+      "name": "baseline12_pointwise",
+      "objective": "pointwise",
+      "tuple_size": 12,
+      "tuple_rule": "2-10",
+      "alpha": 1.0,
+      "beta": 0.35,
+      "gamma": -0.5,
+      "best_hit1": null,
+      "best_hit3": null,
+      "best_pairwise": null,
+      "best_selacc10": null,
+      "mix_selacc10": null,
+      "all_best_selacc10": 0.38461538461538464,
+      "stats_path": "results/extreme12_band_experiments/20260403_083020/models/baseline12_pointwise_stats.json",
+      "log_path": "results/extreme12_band_experiments/20260403_083020/baseline12_pointwise.log",
+      "passes_guardrails": false,
+      "recommended": true
+    },
+    {
+      "name": "band12_b035_g050m",
+      "objective": "band_reward",
+      "tuple_size": 12,
+      "tuple_rule": "2-10",
+      "alpha": 1.0,
+      "beta": 0.35,
+      "gamma": -0.5,
+      "best_hit1": null,
+      "best_hit3": null,
+      "best_pairwise": null,
+      "best_selacc10": null,
+      "mix_selacc10": null,
+      "all_best_selacc10": 0.46153846153846156,
+      "stats_path": "results/extreme12_band_experiments/20260403_083020/models/band12_b035_g050m_stats.json",
+      "log_path": "results/extreme12_band_experiments/20260403_083020/band12_b035_g050m.log",
+      "passes_guardrails": true,
+      "recommended": false
+    }
+  ],
+  "selection": {
+    "baseline12": "baseline12_pointwise",
+    "best_band": "band12_b035_g050m",
+    "recommended": "baseline12_pointwise"
+  }
+}
