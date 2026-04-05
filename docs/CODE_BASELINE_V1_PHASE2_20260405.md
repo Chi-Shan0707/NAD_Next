@@ -161,9 +161,9 @@ This reinforces two points:
 Submission artifacts after phase 2:
 
 - frozen baseline patch:
-  - `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json`
+  - `submission/BestofN/extreme12/patches/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json`
 - best-guarded experimental patch:
-  - `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_phase2_candidate_thr030_lb16_pf030_lcb_patch.json`
+  - `submission/BestofN/extreme12/patches/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_phase2_candidate_thr030_lb16_pf030_lcb_patch.json`
 
 The phase-2 experimental patch only replaces:
 

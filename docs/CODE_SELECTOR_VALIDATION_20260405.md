@@ -178,9 +178,9 @@ Frozen `code_baseline_v1` defaults:
 Submission export scope:
 
 - base submission:
-  - `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json`
+  - `submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json`
 - patched submission:
-  - `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json`
+  - `submission/BestofN/extreme12/patches/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json`
 - replacement scope:
   - only `DS-R1/lcb_v5`
   - only `Qwen3-4B/lcb_v5`

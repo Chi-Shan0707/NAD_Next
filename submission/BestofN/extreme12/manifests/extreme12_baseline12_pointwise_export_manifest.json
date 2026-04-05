@@ -44,11 +44,11 @@
     "max_problems": null
   },
   "artifacts": {
-    "best_raw": "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
-    "mix_raw": "submission/BestofN/extreme12_baseline12_pointwise_mix_ref030_t1024.json",
-    "best_scaled": "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json",
-    "mix_scaled": "submission/BestofN/extreme12_baseline12_pointwise_mix_ref030_t1024_scale100_rank.json",
-    "recommended_submission": "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json"
+    "best_raw": "submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
+    "mix_raw": "submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_mix_ref030_t1024.json",
+    "best_scaled": "submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json",
+    "mix_scaled": "submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_mix_ref030_t1024_scale100_rank.json",
+    "recommended_submission": "submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json"
   },
   "validation": {
     "raw_best": {
@@ -109,14 +109,14 @@
       [
         "/home/jovyan/work/NAD_Next/.venv/bin/python",
         "/home/jovyan/work/NAD_Next/scripts/rescale_bestofn_submission_scores.py",
-        "/home/jovyan/work/NAD_Next/submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
+        "/home/jovyan/work/NAD_Next/submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024.json",
         "--method",
         "rank"
       ],
       [
         "/home/jovyan/work/NAD_Next/.venv/bin/python",
         "/home/jovyan/work/NAD_Next/scripts/rescale_bestofn_submission_scores.py",
-        "/home/jovyan/work/NAD_Next/submission/BestofN/extreme12_baseline12_pointwise_mix_ref030_t1024.json",
+        "/home/jovyan/work/NAD_Next/submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_mix_ref030_t1024.json",
         "--method",
         "rank"
       ]

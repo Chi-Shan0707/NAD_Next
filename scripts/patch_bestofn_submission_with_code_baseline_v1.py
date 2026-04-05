@@ -26,8 +26,8 @@ from nad.ops.bestofn_extreme8 import (
     validate_submission_payload,
 )
 
-BASE_SUBMISSION = REPO_ROOT / "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json"
-DEFAULT_OUT = REPO_ROOT / "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json"
+BASE_SUBMISSION = REPO_ROOT / "submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json"
+DEFAULT_OUT = REPO_ROOT / "submission/BestofN/extreme12/patches/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json"
 DEFAULT_CACHE_ROOT = Path("/home/jovyan/public-ro/MUI_HUB/cache_test")
 TARGET_CACHE_KEYS = ("DS-R1/lcb_v5", "Qwen3-4B/lcb_v5")
 DEFAULT_METHOD_NAME = "extreme12_baseline12_pointwise_best_only_ref030_t1024__code_baseline_v1_lcb_patch"

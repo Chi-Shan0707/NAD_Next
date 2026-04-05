@@ -2,7 +2,7 @@
 
 > 日期 / Date: 2026-04-04
 > 模型 / Model: baseline12_pointwise (Extreme8: 3-D features)
-> 提交 / Submission: `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json`
+> 提交 / Submission: `submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank.json`
 
 ## Per-Cache 测试指标 / Per-Cache Test Metrics
 

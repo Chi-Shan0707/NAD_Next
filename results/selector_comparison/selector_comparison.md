@@ -257,7 +257,7 @@ worst-avoid             83.3%     76.7%     86.7%     63.1%     66.7%     58.7% 
 - Blind `best-only` reaches a **72.5%** 6-dataset mean using only three features.
 - `best+worst` does **not** improve over `best-only` in this run; the learned `worst` signal is not additive here.
 - `worst-avoid` collapses to the same choices as `best-only` in this snapshot.
-- Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json`, `results/extreme8_experiments/details_20260402_112323.json`.
+- Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/20260402_112323/summary_20260402_112323.json`, `results/extreme8_experiments/20260402_112323/details_20260402_112323.json`.
 
 ---
 

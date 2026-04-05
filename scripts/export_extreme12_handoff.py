@@ -59,7 +59,7 @@ def main() -> None:
         default="/home/jovyan/public-ro/MUI_HUB/cache_test",
         help="cache_test root used for final blind export",
     )
-    ap.add_argument("--out-dir", default="submission/BestofN", help="Output directory for submission JSONs")
+    ap.add_argument("--out-dir", default="submission/BestofN/extreme12/base", help="Output directory for submission JSONs")
     ap.add_argument("--work-dir", default="/tmp/bestofn_parallel_work_extreme12", help="Temporary shard workspace")
     ap.add_argument("--parallel-jobs", type=int, default=4, help="Parallel shard workers")
     ap.add_argument("--grouping", choices=("balanced_3plus3", "chunked"), default="balanced_3plus3", help="Shard grouping policy")

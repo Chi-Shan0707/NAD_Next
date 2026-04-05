@@ -19,8 +19,8 @@ from nad.ops.bestofn_extreme8 import discover_cache_entries
 
 
 DEFAULT_INPUTS = [
-    "submission/BestofN/best_only_ref030_t1024_scale100_rank.json",
-    "submission/BestofN/mix_ref030_t1024_scale100_rank.json",
+    "submission/BestofN/extreme8/base/best_only_ref030_t1024_scale100_rank.json",
+    "submission/BestofN/extreme8/base/mix_ref030_t1024_scale100_rank.json",
 ]
 DEFAULT_CACHE_ROOT = "/home/jovyan/public-ro/MUI_HUB/cache_test"
 DEFAULT_INSERT_TOPK_VALUES = list(range(4, 14))

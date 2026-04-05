@@ -15,7 +15,7 @@ Core files:
 
 Primary validation note:
 
-- `docs/CODE_SELECTOR_VALIDATION_20260405.md`
+- `../../CODE_SELECTOR_VALIDATION_20260405.md`
 
 Validation artifacts:
 

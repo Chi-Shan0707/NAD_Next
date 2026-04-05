@@ -6,6 +6,13 @@
 
 ## 中文
 
+### Workspace 导航
+
+- 仓库整体布局见 `WORKSPACE_LAYOUT.md`
+- 文档索引见 `docs/README.md`
+- 实验结果索引见 `results/README.md`
+- 提交 JSON 索引见 `submission/README.md`
+
 神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 24 种选择算法（含 ML、时序折扣和轨迹分析）为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
 
 ### 快速开始
@@ -139,7 +146,7 @@ NPZ 分片 --> cache-build-fast --> 二进制缓存（CSR + mmap）
 训练脚本：`python scripts/train_trajectory_selectors.py`。
 最新产物快照（UTC）：评估报告生成于 `2026-03-30`，见 `results/trajectory_experiments/accuracy_summary_20260330_112435.json`、`results/trajectory_experiments/trajectory_20260330_112435.json`、`results/trajectory_experiments/layer_stratified_20260330_112435.json`；22 维轨迹融合训练统计更新于 `2026-03-31 01:56:52`，见 `models/ml_selectors/trajectory_stats.json`（`31,040` 个带标注样本对、`18,873` 个正确样本、`22` 个特征、`6` 个数据集）。
 `2026-04-02 17:13:06` UTC 的 reflection dynamics follow-up 写入 `results/reflection_dynamics/summary.md`、`results/reflection_dynamics/threshold_sweep_summary.json`：将 reflection event 阈值从 `0.30` 调到 `0.20` 可把 `reflection_count_r` 的单特征 LOO 均值从 `71.1%` 提升到 `71.7%`。同一批分析还显示：reflection 与平均 `gini` 正相关、与平均 `entropy` 负相关，而 reflection event slice 上的 `confidence` 一阶/二阶离散变化幅度整体更低。
-新增 `extreme8-best` / `extreme8-worst` / `extreme8-mixed` 三个 pooled subset 选择器：训练阶段仅使用 `dc_z`、`dc_r`、`reflection_count_r` 三个强特征，保留 problem accuracy ∈ `[10%, 90%]` 的题目，每题随机采样 `256` 个 mixed 8-tuples；`2026-04-02 17:56:57` UTC 完成的 blind 64-run 评估对每题使用 `512` 个随机 8-tuples（构造 tuple 时不看 run 对错），`best-only` / `best+worst` / `worst-avoid` 的 6 数据集均值均为 `72.5%`，`worst-only` 的错误命中率为 `56.1%`。对应产物见 `models/ml_selectors/extreme8_best.pkl`、`models/ml_selectors/extreme8_worst.pkl`、`models/ml_selectors/extreme8_stats.json`、`results/extreme8_experiments/summary_20260402_112323.json`。注意：这轮 Extreme8 模型使用 `reflection_threshold=0.30` 训练；`0.20` 是随后由 follow-up threshold sweep 找到的更优单特征阈值，尚未回灌到本轮模型。
+新增 `extreme8-best` / `extreme8-worst` / `extreme8-mixed` 三个 pooled subset 选择器：训练阶段仅使用 `dc_z`、`dc_r`、`reflection_count_r` 三个强特征，保留 problem accuracy ∈ `[10%, 90%]` 的题目，每题随机采样 `256` 个 mixed 8-tuples；`2026-04-02 17:56:57` UTC 完成的 blind 64-run 评估对每题使用 `512` 个随机 8-tuples（构造 tuple 时不看 run 对错），`best-only` / `best+worst` / `worst-avoid` 的 6 数据集均值均为 `72.5%`，`worst-only` 的错误命中率为 `56.1%`。对应产物见 `models/ml_selectors/extreme8_best.pkl`、`models/ml_selectors/extreme8_worst.pkl`、`models/ml_selectors/extreme8_stats.json`、`results/extreme8_experiments/20260402_112323/summary_20260402_112323.json`。注意：这轮 Extreme8 模型使用 `reflection_threshold=0.30` 训练；`0.20` 是随后由 follow-up threshold sweep 找到的更优单特征阈值，尚未回灌到本轮模型。
 
 **Extreme9 局部置信度扩展选择器**（11 维，需要训练，`extreme9_impl.py`）
 
@@ -227,6 +234,13 @@ python3 scripts/rank_selectors.py \
 ---
 
 ## English
+
+### Workspace Navigation
+
+- Workspace map: `WORKSPACE_LAYOUT.md`
+- Documentation index: `docs/README.md`
+- Experiment/result index: `results/README.md`
+- Submission JSON index: `submission/README.md`
 
 A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies a broad selector suite (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 
@@ -501,7 +515,7 @@ Single-feature ablation found `reflection_count_r` (reflection count rank) at 71
 Training script: `python scripts/train_trajectory_selectors.py`.
 Latest artifact snapshot (UTC): evaluation reports were generated on `2026-03-30` in `results/trajectory_experiments/accuracy_summary_20260330_112435.json`, `results/trajectory_experiments/trajectory_20260330_112435.json`, and `results/trajectory_experiments/layer_stratified_20260330_112435.json`; the 22-D trajectory-fusion training stats were refreshed on `2026-03-31 01:56:52` in `models/ml_selectors/trajectory_stats.json` (`31,040` labelled pairs, `18,873` correct, `22` features, `6` datasets).
 The `2026-04-02 17:13:06` UTC reflection-dynamics follow-up was written to `results/reflection_dynamics/summary.md` and `results/reflection_dynamics/threshold_sweep_summary.json`: lowering the reflection-event threshold from `0.30` to `0.20` improves the single-feature LOO mean of `reflection_count_r` from `71.1%` to `71.7%`. The same analysis also shows that reflection correlates positively with average `gini`, negatively with average `entropy`, and that reflection-event slices exhibit smaller first/second-order confidence changes overall.
-New pooled subset selectors `extreme8-best` / `extreme8-worst` / `extreme8-mixed` were added: training uses only the three strong features `dc_z`, `dc_r`, and `reflection_count_r`, keeps problems with empirical accuracy in `[10%, 90%]`, and samples `256` mixed 8-tuples per eligible problem. The `2026-04-02 17:56:57` UTC blind 64-run evaluation then samples `512` random 8-tuples per problem without looking at run correctness during tuple construction, yielding a 6-dataset mean of `72.5%` for `best-only` / `best+worst` / `worst-avoid`, while `worst-only` reaches `56.1%` error-hit rate. Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json`. Note that this Extreme8 run still used `reflection_threshold=0.30`; the improved `0.20` threshold was discovered afterwards by the follow-up sweep and has not yet been propagated into this model snapshot.
+New pooled subset selectors `extreme8-best` / `extreme8-worst` / `extreme8-mixed` were added: training uses only the three strong features `dc_z`, `dc_r`, and `reflection_count_r`, keeps problems with empirical accuracy in `[10%, 90%]`, and samples `256` mixed 8-tuples per eligible problem. The `2026-04-02 17:56:57` UTC blind 64-run evaluation then samples `512` random 8-tuples per problem without looking at run correctness during tuple construction, yielding a 6-dataset mean of `72.5%` for `best-only` / `best+worst` / `worst-avoid`, while `worst-only` reaches `56.1%` error-hit rate. Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/20260402_112323/summary_20260402_112323.json`. Note that this Extreme8 run still used `reflection_threshold=0.30`; the improved `0.20` threshold was discovered afterwards by the follow-up sweep and has not yet been propagated into this model snapshot.
 
 **Extreme9 local-confidence expansion selectors** (11-dim, requires training, `extreme9_impl.py`)
 

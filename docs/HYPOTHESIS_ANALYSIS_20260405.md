@@ -8,12 +8,12 @@ This note consolidates the finished work from:
 
 - `result/all_model_20260404_155232/summary.json`
 - `result/position_ablation_20260404_155548/position_ablation_summary.json`
-- `selector_rankings_20260404_155549.json`
-- `selector_rankings_20260404_160200.json`
+- `results/selector_rankings/20260404/selector_rankings_20260404_155549.json`
+- `results/selector_rankings/20260404/selector_rankings_20260404_160200.json`
 - `result/structural_baselines/*/structural_accuracy.json`
-- `results/extreme8_experiments/summary_20260402_112323.json`
+- `results/extreme8_experiments/20260402_112323/summary_20260402_112323.json`
 - `results/reflection_dynamics/threshold_sweep_summary.json`
-- `results/lcb_knn_scan.json`
+- `results/scans/lcb/lcb_knn_scan.json`
 - `docs/EXTREME12_TEST_ANALYSIS.md`
 - `docs/EXTREME12_V2_EXPERIMENT.md`
 
@@ -52,7 +52,7 @@ The highest-ROI next step is **not** more visualization and **not** graph-heavy 
 
 ### Evidence
 
-- In `selector_rankings_20260404_160200.json`, the best non-oracle selector differs by category:
+- In `results/selector_rankings/20260404/selector_rankings_20260404_160200.json`, the best non-oracle selector differs by category:
   - `global`: `tournament-copeland` is the best implementable selector (`micro_accuracy ≈ 67.8%`)
   - `programming`: `min-confidence` ranks first (`micro_accuracy ≈ 59.9%`)
   - `math`: `tournament-copeland` ranks first among implementable selectors (`micro_accuracy ≈ 70.0%`)
@@ -158,7 +158,7 @@ Operationally:
   - best single-feature LOO mean improves to `71.7%`
 - The existing docs already identified `reflection_count_r` as one of the strongest single features.
 - Extreme8 blind evaluation remains strong:
-  - `results/extreme8_experiments/summary_20260402_112323.json`
+  - `results/extreme8_experiments/20260402_112323/summary_20260402_112323.json`
   - `best_only` mean accuracy `≈ 72.52%`
   - same mean for `best_plus_worst` and `worst_avoid`, which implies the useful signal is concentrated in the “best” direction
 - Extreme9 helps on global/math/science inner-tune AUROC, which is consistent with the idea that **tail quality / local worst-window / post-reflection stability** add useful information beyond the original three Extreme8 features.
@@ -176,7 +176,7 @@ Operationally:
   - `knn-medoid`: 4 wins/ties
   - `dbscan-medoid`: 2 wins/ties
   - `graph-degree`: only 1 tie (`hmmt25`)
-- `results/lcb_knn_scan.json` reinforces this on coding:
+- `results/scans/lcb/lcb_knn_scan.json` reinforces this on coding:
   - `graph_deg25`: `SelAcc@10 = 60.49%`, but `pairwise = 48.68%`
   - `graph_deg30`: `SelAcc@10 = 60.39%`, `pairwise = 48.36%`
   - `graph_deg40`: `SelAcc@10 = 59.83%`, `pairwise = 48.46%`

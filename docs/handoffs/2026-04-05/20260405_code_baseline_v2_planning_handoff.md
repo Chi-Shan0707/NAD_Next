@@ -25,9 +25,9 @@ Primary result directory:
 
 Primary docs:
 
-- `docs/CODE_SELECTOR_VALIDATION_20260405.md`
-- `docs/CODE_BASELINE_V1_PHASE2_20260405.md`
-- `20260405_code_baseline_v1_submission_handoff.md`
+- `../../CODE_SELECTOR_VALIDATION_20260405.md`
+- `../../CODE_BASELINE_V1_PHASE2_20260405.md`
+- `./20260405_code_baseline_v1_submission_handoff.md`
 
 Relevant implementation files:
 
@@ -170,10 +170,10 @@ If these conditions are not met:
 
 Frozen coding patch:
 
-- `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json`
+- `submission/BestofN/extreme12/patches/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json`
 
 Experimental phase-2 coding patch:
 
-- `submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_phase2_candidate_thr030_lb16_pf030_lcb_patch.json`
+- `submission/BestofN/extreme12/patches/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_phase2_candidate_thr030_lb16_pf030_lcb_patch.json`
 
 The experimental patch is the correct starting point if someone wants to inspect coding-only submission deltas without changing the frozen baseline definition.

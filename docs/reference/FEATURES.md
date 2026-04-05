@@ -203,7 +203,7 @@ Latest experiment snapshot (UTC):
 - Evaluation reports generated on `2026-03-30`: `results/trajectory_experiments/accuracy_summary_20260330_112435.json`, `results/trajectory_experiments/trajectory_20260330_112435.json`, `results/trajectory_experiments/layer_stratified_20260330_112435.json`
 - 22-D trajectory-fusion training stats refreshed on `2026-03-31 01:56:52`: `models/ml_selectors/trajectory_stats.json` (`31,040` labelled pairs, `18,873` correct, `22` features across `6` datasets)
 - Reflection-dynamics follow-up generated on `2026-04-02 17:13:06`: `results/reflection_dynamics/summary.md`, `results/reflection_dynamics/threshold_sweep_summary.json` (best single-feature reflection threshold `0.20`, LOO `71.7%`, vs `71.1%` at `0.30`)
-- Extreme8 pooled-selector artifacts generated on `2026-04-02 17:56:57`: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json` (train-time features only `dc_z`, `dc_r`, `reflection_count_r`; blind `512 × 8` evaluation mean `72.5%` for `best-only` / `best+worst`)
+- Extreme8 pooled-selector artifacts generated on `2026-04-02 17:56:57`: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/20260402_112323/summary_20260402_112323.json` (train-time features only `dc_z`, `dc_r`, `reflection_count_r`; blind `512 × 8` evaluation mean `72.5%` for `best-only` / `best+worst`)
 
 All selectors share a common contract: given a pairwise distance matrix `D` (n × n) and per-run statistics, return a **group-local index** (0 to n−1). The pipeline maps that index to the global `run_id`.
 

@@ -2,7 +2,7 @@
 
 > 日期 / Date: 2026-04-03
 > 实验目录 / Directory: `results/extreme12_v2_experiments/20260403_105944/`
-> 提交 / Submission: `submission/BestofN/extreme12_baseline12_pointwise_*_scale100_rank.json`
+> 提交 / Submission: `submission/BestofN/extreme12/base/extreme12_baseline12_pointwise_*_scale100_rank.json`
 
 ## 实验动机 / Motivation
 
