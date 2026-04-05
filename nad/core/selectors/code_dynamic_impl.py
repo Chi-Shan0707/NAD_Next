@@ -269,6 +269,97 @@ def build_code_dynamic_rank_features(
     return np.column_stack(cols).astype(np.float64), raw
 
 
+def compute_code_dynamic_primary_scores(
+    context: SelectorContext,
+    *,
+    weights: dict[str, float] | None = None,
+    reflection_threshold: float = DEFAULT_CODE_DYNAMIC_REFLECTION_THRESHOLD,
+    reflection_lookback_slices: int = DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK,
+    prefix_fraction: float = 0.20,
+    prefix_window_tokens: int = 128,
+) -> tuple[np.ndarray, np.ndarray, dict[str, np.ndarray]]:
+    feat, raw = build_code_dynamic_rank_features(
+        context,
+        reflection_threshold=reflection_threshold,
+        reflection_lookback_slices=reflection_lookback_slices,
+        prefix_fraction=prefix_fraction,
+        prefix_window_tokens=prefix_window_tokens,
+    )
+    use_weights = dict(DEFAULT_CODE_DYNAMIC_WEIGHTS)
+    if weights:
+        use_weights.update(weights)
+    scores = (
+        use_weights["prefix_best_window_quality"] * feat[:, 0]
+        + use_weights["head_tail_gap"] * feat[:, 1]
+        + use_weights["reflection_density"] * feat[:, 2]
+        + use_weights["tail_variance"] * feat[:, 3]
+        + use_weights["post_reflection_recovery"] * feat[:, 4]
+    )
+    return np.asarray(scores, dtype=np.float64), feat, raw
+
+
+def order_code_dynamic_group_indices(
+    scores: np.ndarray,
+    D: np.ndarray,
+    *,
+    run_ids: Iterable[int] | None = None,
+    atol: float = 1e-9,
+) -> np.ndarray:
+    scores_arr = np.asarray(scores, dtype=np.float64)
+    n = int(scores_arr.size)
+    if n == 0:
+        return np.zeros(0, dtype=np.int64)
+    if run_ids is None:
+        run_id_arr = np.arange(n, dtype=np.int64)
+    else:
+        run_id_arr = np.asarray(list(run_ids), dtype=np.int64)
+        if run_id_arr.size != n:
+            raise ValueError("run_ids size must match score count")
+
+    base_order = np.argsort(-scores_arr, kind="mergesort")
+    final_order: list[int] = []
+    start = 0
+    while start < n:
+        anchor_idx = int(base_order[start])
+        anchor_score = float(scores_arr[anchor_idx])
+        end = start + 1
+        while end < n and np.isclose(
+            float(scores_arr[int(base_order[end])]),
+            anchor_score,
+            atol=atol,
+            rtol=0.0,
+        ):
+            end += 1
+
+        block = np.asarray(base_order[start:end], dtype=np.int64)
+        if block.size > 1:
+            tie_dsums = np.asarray(D[block][:, block].sum(axis=1), dtype=np.float64)
+            block_order = np.lexsort((run_id_arr[block], tie_dsums))
+            block = block[block_order]
+        final_order.extend(int(idx) for idx in block.tolist())
+        start = end
+
+    return np.asarray(final_order, dtype=np.int64)
+
+
+def select_code_dynamic_best_index(
+    scores: np.ndarray,
+    D: np.ndarray,
+    *,
+    run_ids: Iterable[int] | None = None,
+    atol: float = 1e-9,
+) -> int:
+    order = order_code_dynamic_group_indices(
+        scores,
+        D,
+        run_ids=run_ids,
+        atol=atol,
+    )
+    if order.size == 0:
+        return 0
+    return int(order[0])
+
+
 def compute_code_dynamic_score_series(
     cache,
     run_id: int,

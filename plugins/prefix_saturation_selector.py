@@ -23,7 +23,8 @@ from nad.core.selectors.code_dynamic_impl import (
     DEFAULT_CODE_DYNAMIC_WEIGHTS,
     DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK,
     DEFAULT_CODE_DYNAMIC_REFLECTION_THRESHOLD,
-    build_code_dynamic_rank_features,
+    compute_code_dynamic_primary_scores,
+    select_code_dynamic_best_index,
 )
 
 
@@ -64,25 +65,22 @@ class PrefixSaturationSelector(Selector):
         if n <= 1:
             return 0
 
-        feat, _ = build_code_dynamic_rank_features(
+        scores, _, _ = compute_code_dynamic_primary_scores(
             self._context,
+            weights={
+                "prefix_best_window_quality": self.w_prefix,
+                "head_tail_gap": self.w_settle,
+                "reflection_density": self.w_refl,
+                "tail_variance": self.w_tail,
+                "post_reflection_recovery": self.w_recovery,
+            },
             reflection_threshold=self.reflection_threshold,
             reflection_lookback_slices=self.reflection_lookback_slices,
             prefix_fraction=self.prefix_fraction,
             prefix_window_tokens=self.prefix_window_tokens,
         )
-        scores = (
-            self.w_prefix * feat[:, 0]
-            + self.w_settle * feat[:, 1]
-            + self.w_refl * feat[:, 2]
-            + self.w_tail * feat[:, 3]
-            + self.w_recovery * feat[:, 4]
+        return select_code_dynamic_best_index(
+            scores,
+            D,
+            run_ids=self._context.run_ids,
         )
-
-        best_score = float(np.max(scores))
-        ties = np.where(np.isclose(scores, best_score, atol=1e-9))[0]
-        if ties.size == 1:
-            return int(ties[0])
-
-        tie_dsums = D[ties][:, ties].sum(axis=1)
-        return int(ties[np.argmin(tie_dsums)])
