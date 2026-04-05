@@ -2,6 +2,12 @@
 
 Date: `2026-04-05`
 
+> Follow-up note:
+> - phase-2 leave-one-out, grid, transfer, and disagreement results are recorded in:
+>   - `docs/CODE_BASELINE_V1_PHASE2_20260405.md`
+> - `code_baseline_v1` remains the frozen baseline
+> - the best guarded phase-2 candidate is `thr=0.30 / lb=16 / pf=0.30`
+
 ## Summary
 
 This note records the completion of the code-oriented selector slice that was previously only in handoff state.
@@ -224,3 +230,9 @@ without failing the guardrails:
 
 - `Pairwise`
 - `Hit@1`
+
+Phase-2 follow-up keeps that validation intact while clarifying the next step:
+
+- keep `code_baseline_v1` frozen
+- use phase-2 only to identify the next coding-specific feature move
+- keep graph out of scope until the current coding line is exhausted

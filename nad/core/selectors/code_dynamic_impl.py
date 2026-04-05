@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import Iterable, Optional
+from typing import Any, Iterable, Optional
 
 import numpy as np
 
@@ -31,6 +31,7 @@ DEFAULT_CODE_DYNAMIC_WEIGHTS = {
 
 DEFAULT_CODE_DYNAMIC_REFLECTION_THRESHOLD = DEFAULT_REFLECTION_THRESHOLD
 DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK = 16
+CODE_DYNAMIC_WEIGHT_NAMES = list(DEFAULT_CODE_DYNAMIC_WEIGHTS.keys())
 
 
 def _get_slice_token_boundaries(cache, run_id: int) -> Optional[np.ndarray]:
@@ -47,6 +48,25 @@ def _get_slice_token_boundaries(cache, run_id: int) -> Optional[np.ndarray]:
     offsets = np.asarray(rows_trp[row_start:row_end + 1], dtype=np.int64)
     base = int(offsets[0])
     return offsets - base
+
+
+def prepare_code_dynamic_run_state(
+    cache,
+    run_id: int,
+    token_view=None,
+) -> dict[str, Any]:
+    if token_view is None:
+        token_view = cache.get_token_view(int(run_id))
+    if token_view is not None and token_view.tok_conf is not None:
+        tok_conf = np.asarray(token_view.tok_conf, dtype=np.float64)
+    else:
+        tok_conf = np.zeros(0, dtype=np.float64)
+    return {
+        "run_id": int(run_id),
+        "tok_conf": tok_conf,
+        "slice_keysets": _extract_slice_keysets(cache, int(run_id)),
+        "boundaries": _get_slice_token_boundaries(cache, int(run_id)),
+    }
 
 
 def _sliding_window_min_mean(arr: np.ndarray, window_tokens: int) -> float:
@@ -73,6 +93,21 @@ def _safe_feature_array(values: np.ndarray, *, lower_is_better: bool, fill: floa
     filled = np.where(valid, arr, median_val)
     ranked = _rank01(-filled if lower_is_better else filled)
     return np.asarray(ranked, dtype=np.float64)
+
+
+def resolve_code_dynamic_weights(
+    weights: dict[str, float] | None = None,
+    *,
+    disabled_features: Iterable[str] | None = None,
+) -> dict[str, float]:
+    use_weights = dict(DEFAULT_CODE_DYNAMIC_WEIGHTS)
+    if weights:
+        use_weights.update({str(k): float(v) for k, v in weights.items()})
+    for feat_name in list(disabled_features or []):
+        if feat_name not in use_weights:
+            raise KeyError(f"Unknown code-dynamic feature name: {feat_name}")
+        use_weights[feat_name] = 0.0
+    return use_weights
 
 
 def _compute_bounded_reflection_stats(
@@ -117,10 +152,8 @@ def _compute_bounded_reflection_stats(
     return reflection_count, last_event_slice
 
 
-def extract_code_dynamic_raw(
-    cache,
-    run_id: int,
-    token_view=None,
+def extract_code_dynamic_raw_from_state(
+    run_state: dict[str, Any],
     *,
     token_limit: int | None = None,
     slice_limit: int | None = None,
@@ -129,24 +162,7 @@ def extract_code_dynamic_raw(
     prefix_fraction: float = 0.20,
     prefix_window_tokens: int = 128,
 ) -> dict[str, float]:
-    """
-    Extract code-oriented dynamic structure features for one run or one observed prefix.
-
-    Quality directions:
-      - prefix_best_window_quality: lower is better
-      - head_tail_gap: higher is better
-      - reflection_density: lower is better
-      - tail_variance: lower is better
-      - post_reflection_recovery: higher is better
-    """
-    if token_view is None:
-        token_view = cache.get_token_view(int(run_id))
-
-    if token_view is not None and token_view.tok_conf is not None:
-        arr = np.asarray(token_view.tok_conf, dtype=np.float64)
-    else:
-        arr = np.zeros(0, dtype=np.float64)
-
+    arr = np.asarray(run_state.get("tok_conf", np.zeros(0, dtype=np.float64)), dtype=np.float64)
     if token_limit is not None:
         arr = arr[: max(0, int(token_limit))]
 
@@ -165,10 +181,11 @@ def extract_code_dynamic_raw(
         head_tail_gap = head_mean - tail_mean
         tail_variance = float(np.var(arr[-seg_len:]))
 
-    slice_keysets = _extract_slice_keysets(cache, int(run_id))
-    boundaries = _get_slice_token_boundaries(cache, int(run_id))
-    if slice_limit is not None and slice_keysets:
-        slice_keysets = slice_keysets[: max(0, int(slice_limit))]
+    raw_slice_keysets = list(run_state.get("slice_keysets", []) or [])
+    slice_keysets = raw_slice_keysets[: max(0, int(slice_limit))] if slice_limit is not None else raw_slice_keysets
+    boundaries = run_state.get("boundaries")
+    if boundaries is not None:
+        boundaries = np.asarray(boundaries, dtype=np.int64)
     if boundaries is not None and slice_limit is not None:
         end = min(len(boundaries), max(1, int(slice_limit)) + 1)
         boundaries = np.asarray(boundaries[:end], dtype=np.int64)
@@ -209,6 +226,44 @@ def extract_code_dynamic_raw(
         "num_slices": float(n_slices),
         "num_tokens": float(arr.size),
     }
+
+
+def extract_code_dynamic_raw(
+    cache,
+    run_id: int,
+    token_view=None,
+    *,
+    token_limit: int | None = None,
+    slice_limit: int | None = None,
+    reflection_threshold: float = DEFAULT_CODE_DYNAMIC_REFLECTION_THRESHOLD,
+    reflection_lookback_slices: int = DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK,
+    prefix_fraction: float = 0.20,
+    prefix_window_tokens: int = 128,
+) -> dict[str, float]:
+    """
+    Extract code-oriented dynamic structure features for one run or one observed prefix.
+
+    Quality directions:
+      - prefix_best_window_quality: lower is better
+      - head_tail_gap: higher is better
+      - reflection_density: lower is better
+      - tail_variance: lower is better
+      - post_reflection_recovery: higher is better
+    """
+    run_state = prepare_code_dynamic_run_state(
+        cache,
+        int(run_id),
+        token_view=token_view,
+    )
+    return extract_code_dynamic_raw_from_state(
+        run_state,
+        token_limit=token_limit,
+        slice_limit=slice_limit,
+        reflection_threshold=reflection_threshold,
+        reflection_lookback_slices=reflection_lookback_slices,
+        prefix_fraction=prefix_fraction,
+        prefix_window_tokens=prefix_window_tokens,
+    )
 
 
 def extract_code_dynamic_raw_matrix(
@@ -269,10 +324,45 @@ def build_code_dynamic_rank_features(
     return np.column_stack(cols).astype(np.float64), raw
 
 
+def build_code_dynamic_rank_features_from_raw(
+    raw: dict[str, np.ndarray],
+) -> np.ndarray:
+    cols = [
+        _safe_feature_array(np.asarray(raw["prefix_best_window_quality"], dtype=np.float64), lower_is_better=True, fill=0.0),
+        _safe_feature_array(np.asarray(raw["head_tail_gap"], dtype=np.float64), lower_is_better=False, fill=0.0),
+        _safe_feature_array(np.asarray(raw["reflection_density"], dtype=np.float64), lower_is_better=True, fill=0.0),
+        _safe_feature_array(np.asarray(raw["tail_variance"], dtype=np.float64), lower_is_better=True, fill=0.0),
+        _safe_feature_array(np.asarray(raw["post_reflection_recovery"], dtype=np.float64), lower_is_better=False, fill=0.0),
+    ]
+    return np.column_stack(cols).astype(np.float64)
+
+
+def compute_code_dynamic_primary_scores_from_raw(
+    raw: dict[str, np.ndarray],
+    *,
+    weights: dict[str, float] | None = None,
+    disabled_features: Iterable[str] | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    feat = build_code_dynamic_rank_features_from_raw(raw)
+    use_weights = resolve_code_dynamic_weights(
+        weights,
+        disabled_features=disabled_features,
+    )
+    scores = (
+        use_weights["prefix_best_window_quality"] * feat[:, 0]
+        + use_weights["head_tail_gap"] * feat[:, 1]
+        + use_weights["reflection_density"] * feat[:, 2]
+        + use_weights["tail_variance"] * feat[:, 3]
+        + use_weights["post_reflection_recovery"] * feat[:, 4]
+    )
+    return np.asarray(scores, dtype=np.float64), feat
+
+
 def compute_code_dynamic_primary_scores(
     context: SelectorContext,
     *,
     weights: dict[str, float] | None = None,
+    disabled_features: Iterable[str] | None = None,
     reflection_threshold: float = DEFAULT_CODE_DYNAMIC_REFLECTION_THRESHOLD,
     reflection_lookback_slices: int = DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK,
     prefix_fraction: float = 0.20,
@@ -285,15 +375,10 @@ def compute_code_dynamic_primary_scores(
         prefix_fraction=prefix_fraction,
         prefix_window_tokens=prefix_window_tokens,
     )
-    use_weights = dict(DEFAULT_CODE_DYNAMIC_WEIGHTS)
-    if weights:
-        use_weights.update(weights)
-    scores = (
-        use_weights["prefix_best_window_quality"] * feat[:, 0]
-        + use_weights["head_tail_gap"] * feat[:, 1]
-        + use_weights["reflection_density"] * feat[:, 2]
-        + use_weights["tail_variance"] * feat[:, 3]
-        + use_weights["post_reflection_recovery"] * feat[:, 4]
+    scores, feat = compute_code_dynamic_primary_scores_from_raw(
+        raw,
+        weights=weights,
+        disabled_features=disabled_features,
     )
     return np.asarray(scores, dtype=np.float64), feat, raw
 

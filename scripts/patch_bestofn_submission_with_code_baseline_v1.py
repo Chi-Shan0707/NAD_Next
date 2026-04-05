@@ -30,6 +30,8 @@ BASE_SUBMISSION = REPO_ROOT / "submission/BestofN/extreme12_baseline12_pointwise
 DEFAULT_OUT = REPO_ROOT / "submission/BestofN/extreme12_baseline12_pointwise_best_only_ref030_t1024_scale100_rank__code_baseline_v1_lcb_patch.json"
 DEFAULT_CACHE_ROOT = Path("/home/jovyan/public-ro/MUI_HUB/cache_test")
 TARGET_CACHE_KEYS = ("DS-R1/lcb_v5", "Qwen3-4B/lcb_v5")
+DEFAULT_METHOD_NAME = "extreme12_baseline12_pointwise_best_only_ref030_t1024__code_baseline_v1_lcb_patch"
+DEFAULT_LCB_OVERRIDE = "code_baseline_v1=PrefixSaturationSelector@ja_mass1.0"
 DEFAULT_VIEW = ViewSpec(
     agg=Agg.MAX,
     cut=CutSpec(CutType.MASS, 1.0),
@@ -127,6 +129,12 @@ def main() -> None:
     ap.add_argument("--reflection-lookback-slices", type=int, default=DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK)
     ap.add_argument("--prefix-fraction", type=float, default=0.20)
     ap.add_argument("--prefix-window-tokens", type=int, default=128)
+    ap.add_argument("--method-name", default=DEFAULT_METHOD_NAME, help="method_name stored in submission JSON")
+    ap.add_argument(
+        "--lcb-override-note",
+        default=DEFAULT_LCB_OVERRIDE,
+        help="score_postprocess.lcb_override metadata string",
+    )
     args = ap.parse_args()
 
     base_submission = Path(args.base_submission)
@@ -160,10 +168,17 @@ def main() -> None:
     for cache_key, problem_scores in patched_scores.items():
         patched_payload["scores"][cache_key] = problem_scores
 
-    patched_payload["method_name"] = (
-        "extreme12_baseline12_pointwise_best_only_ref030_t1024__code_baseline_v1_lcb_patch"
-    )
-    patched_payload.setdefault("score_postprocess", {})["lcb_override"] = "code_baseline_v1=PrefixSaturationSelector@ja_mass1.0"
+    patched_payload["method_name"] = str(args.method_name)
+    patched_payload.setdefault("score_postprocess", {})["lcb_override"] = str(args.lcb_override_note)
+    patched_payload["score_postprocess"]["lcb_patch_params"] = {
+        "distance": str(args.distance),
+        "distance_threads": int(args.distance_threads),
+        "reflection_threshold": float(args.reflection_threshold),
+        "reflection_lookback_slices": int(args.reflection_lookback_slices),
+        "prefix_fraction": float(args.prefix_fraction),
+        "prefix_window_tokens": int(args.prefix_window_tokens),
+        "target_cache_keys": list(TARGET_CACHE_KEYS),
+    }
 
     summary = validate_submission_payload(patched_payload, expected_cache_keys=base_keys)
     out_path.parent.mkdir(parents=True, exist_ok=True)
