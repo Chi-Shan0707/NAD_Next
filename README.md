@@ -12,6 +12,8 @@
 - 文档索引见 `docs/README.md`
 - 实验结果索引见 `results/README.md`
 - 提交 JSON 索引见 `submission/README.md`
+- 脚本入口索引见 `scripts/README.md`
+- 模型产物索引见 `models/README.md`
 
 神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 24 种选择算法（含 ML、时序折扣和轨迹分析）为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
 
@@ -241,6 +243,8 @@ python3 scripts/rank_selectors.py \
 - Documentation index: `docs/README.md`
 - Experiment/result index: `results/README.md`
 - Submission JSON index: `submission/README.md`
+- Script entrypoint index: `scripts/README.md`
+- Model artifact index: `models/README.md`
 
 A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies a broad selector suite (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 

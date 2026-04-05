@@ -5,9 +5,10 @@ This file is the quick map for the NAD_Next workspace after cleanup on 2026-04-0
 ## Source code
 - `nad/`: core package, CLI, pipeline, ops, IO, selectors.
 - `plugins/`: custom selector implementations and experiments.
-- `scripts/`: one-off runners, export helpers, ranking utilities.
+- `scripts/`: executable entrypoints; see `scripts/README.md` for grouping.
 - `tools/`: standalone utilities.
 - `cookbook/`: reproducible workflows and setup helpers.
+- `models/`: trained artifact storage; see `models/README.md` for layout.
 - `cot_viewer/`, `minimal_visualization_next/`: local visualization apps.
 
 ## Documentation
