@@ -244,7 +244,7 @@ Artifacts: `results/reflection_dynamics/summary.md`, `results/reflection_dynamic
 
 ### 2026-04-02 Follow-up: Extreme8 Blind Subset Selector
 
-Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/summary_20260402_112323.json`
+Artifacts: `models/ml_selectors/extreme8_best.pkl`, `models/ml_selectors/extreme8_worst.pkl`, `models/ml_selectors/extreme8_stats.json`, `results/extreme8_experiments/20260402_112323/summary_20260402_112323.json`
 
 **Training setup**
 - Features restricted to `dc_z`, `dc_r`, `reflection_count_r`

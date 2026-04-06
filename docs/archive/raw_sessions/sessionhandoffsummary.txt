@@ -1,0 +1,65 @@
+
+  # Session Handoff Plan
+
+  ## Summary
+
+  - Best path: open a new Codex terminal/session and give it a compact handoff prompt plus a short list of files to read.
+  - I cannot reliably “shrink” the current session’s full conversational state in place; the safe approach is a fresh session + explicit handoff.
+  - Keep this current session open only as fallback/reference; do the next real work in the new session.
+
+  ## Handoff Bundle
+
+  - Tell the new session to read these first:
+      - /home/jovyan/.codex/memories/nad_next_runtime_notes_2026-04-03.md
+      - /home/jovyan/work/NAD_Next/results/reflection_dynamics/followup_todo_20260403.md
+      - submission/BestofN/extreme8/base/best_only_ref030_t1024.json
+      - submission/BestofN/extreme8/base/mix_ref030_t1024.json
+      - submission/BestofN/extreme8/base/best_only_ref030_t1024_scale100_rank.json
+      - submission/BestofN/extreme8/base/mix_ref030_t1024_scale100_rank.json
+  - Tell it the latest tooling changes already present:
+      - scripts/export_bestofn_submissions_parallel.py now defaults to balanced 3+3 grouping
+      - scripts/rescale_bestofn_submission_scores.py rescales final JSONs to 1–100
+  - Tell it the environment constraint:
+      - sandboxed commands often hit the bwrap ... user namespaces failure here, so important commands should usually run with escalation
+
+  ## Paste Prompt
+
+  - Use this as the first message in the new terminal:
+
+  Repo: /home/jovyan/work/NAD_Next
+
+  Please first read these files for context:
+  1. /home/jovyan/.codex/memories/nad_next_runtime_notes_2026-04-03.md
+  2. /home/jovyan/work/NAD_Next/LOCAL_CODEX_NOTES.md
+  3. /home/jovyan/work/NAD_Next/IDEA.md
+  4. /home/jovyan/work/NAD_Next/results/reflection_dynamics/followup_todo_20260403.md
+
+  Current completed outputs:
+  - submission/BestofN/extreme8/base/best_only_ref030_t1024.json
+  - submission/BestofN/extreme8/base/mix_ref030_t1024.json
+  - submission/BestofN/extreme8/base/best_only_ref030_t1024_scale100_rank.json
+  - submission/BestofN/extreme8/base/mix_ref030_t1024_scale100_rank.json
+
+  Important repo state:
+  - export runner now defaults to balanced 3+3 grouping:
+    - gpqa + aime24 + aime25
+    - lcb_v5 + brumo25 + hmmt25
+  - reflection TODO summary is already written
+  - tuple-training-objective analysis is already appended to IDEA.md
+  - this environment often blocks sandboxed shell commands with a bwrap/user-namespace error; prefer escalated commands for anything important
+
+  Please summarize what you read, then continue from my next instruction without redoing finished submission exports unless I explicitly ask.
+
+  ## Test / Validation
+
+  - In the new session, first verify:
+      - the four context files exist and are readable
+      - the four submission JSONs exist
+      - scripts/export_bestofn_submissions_parallel.py contains the balanced 3+3 grouping
+  - After that, the new session should reply with a short “state summary” before doing any new work.
+
+  ## Assumptions
+
+  - Default assumption: you want continuity with minimal token waste, not a rerun of completed exports.
+  - Default assumption: the new session should treat the current submission artifacts as done and only build on top of them.
+  - If you want, you can also paste just the “Paste Prompt” above and skip copying any long conversational history
