@@ -10,8 +10,9 @@ Usage (CLI):
         --selectors "file:plugins/gpqa_pairwise_selector.py:GPQAPairwiseSelector" \
         --out result.json
 
-The selector loads the model from models/ml_selectors/gpqa_pairwise_round1.pkl
-by default.  Pass model_path= to override.
+The selector loads `models/ml_selectors/gpqa_pairwise_v1.pkl` when present,
+otherwise falls back to `models/ml_selectors/gpqa_pairwise_round1.pkl`.
+Pass `model_path=` to override.
 
 Requires the model to have been trained first:
     python scripts/run_gpqa_pairwise_round1.py --cache-root <gpqa_cache> --out ...
@@ -26,16 +27,17 @@ import numpy as np
 from nad.core.selectors.base import Selector, SelectorContext
 from nad.core.selectors.gpqa_pairwise_impl import (
     GPQAPairwiseScorer,
-    build_gpqa_pairwise_features,
+    build_gpqa_pairwise_features_configurable,
     extract_gpqa_pairwise_raw,
 )
 
-_DEFAULT_MODEL_PATH = (
-    Path(__file__).resolve().parent.parent
-    / "models"
-    / "ml_selectors"
-    / "gpqa_pairwise_round1.pkl"
-)
+
+def _default_model_path() -> Path:
+    models_dir = Path(__file__).resolve().parent.parent / "models" / "ml_selectors"
+    v1_path = models_dir / "gpqa_pairwise_v1.pkl"
+    if v1_path.exists():
+        return v1_path
+    return models_dir / "gpqa_pairwise_round1.pkl"
 
 
 class GPQAPairwiseSelector(Selector):
@@ -47,7 +49,7 @@ class GPQAPairwiseSelector(Selector):
     """
 
     def __init__(self, model_path: Optional[str | Path] = None) -> None:
-        path = Path(model_path) if model_path is not None else _DEFAULT_MODEL_PATH
+        path = Path(model_path) if model_path is not None else _default_model_path()
         self._scorer: GPQAPairwiseScorer = GPQAPairwiseScorer.load(path)
         self._context: Optional[SelectorContext] = None
 
@@ -65,7 +67,11 @@ class GPQAPairwiseSelector(Selector):
             return 0
 
         raw = extract_gpqa_pairwise_raw(self._context)
-        X = build_gpqa_pairwise_features(raw)
+        X = build_gpqa_pairwise_features_configurable(
+            raw,
+            include_margin=bool(getattr(self._scorer, "include_margin", False)),
+            include_dominance=bool(getattr(self._scorer, "include_dominance", False)),
+        )
         scores = self._scorer.score_group(X)
 
         return int(np.argmax(scores))

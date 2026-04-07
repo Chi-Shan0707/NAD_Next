@@ -57,6 +57,21 @@ def _safe_rank01(values: np.ndarray) -> np.ndarray:
     return _rank01(filled)
 
 
+def _stable_rank_feature(values: np.ndarray, *, higher_is_better: bool) -> np.ndarray:
+    """Rank-normalize with neutral output for constant / degenerate arrays."""
+    arr = np.asarray(values, dtype=np.float64)
+    valid = np.isfinite(arr)
+    if not valid.any() or valid.sum() <= 1:
+        return np.full(arr.shape, 0.5, dtype=np.float64)
+    fill = float(np.mean(arr[valid]))
+    filled = np.where(valid, arr, fill)
+    if np.allclose(filled, filled[0], atol=1e-12, rtol=0.0):
+        return np.full(arr.shape, 0.5, dtype=np.float64)
+    if not higher_is_better:
+        filled = -filled
+    return np.asarray(_rank01(filled), dtype=np.float64)
+
+
 # ── public API ────────────────────────────────────────────────────────────────
 
 def extract_gpqa_pairwise_raw(context: SelectorContext) -> dict[str, np.ndarray]:
@@ -88,6 +103,33 @@ def extract_gpqa_pairwise_raw(context: SelectorContext) -> dict[str, np.ndarray]
     }
 
 
+def build_gpqa_pairwise_margin_feature(recency_conf_mean: np.ndarray) -> np.ndarray:
+    """Leader-margin feature from recency rank; smaller gap to leader is better."""
+    recency_rank = _safe_rank01(np.asarray(recency_conf_mean, dtype=np.float64))
+    margin = float(np.max(recency_rank)) - recency_rank
+    return _stable_rank_feature(margin, higher_is_better=False)
+
+
+def build_gpqa_pairwise_dominance_feature(recency_conf_mean: np.ndarray) -> np.ndarray:
+    """Count strict recency wins vs other runs, then rank-normalize."""
+    recency = np.asarray(recency_conf_mean, dtype=np.float64)
+    dominance = (recency[:, None] > recency[None, :]).sum(axis=1).astype(np.float64)
+    return _stable_rank_feature(dominance, higher_is_better=True)
+
+
+def get_gpqa_pairwise_feature_names(
+    *,
+    include_margin: bool = False,
+    include_dominance: bool = False,
+) -> list[str]:
+    names = list(GPQA_PAIRWISE_FEATURE_NAMES)
+    if include_margin:
+        names.append("recency_margin_r")
+    if include_dominance:
+        names.append("recency_dominance_r")
+    return names
+
+
 def build_gpqa_pairwise_features(raw: dict[str, np.ndarray]) -> np.ndarray:
     """Build the 6-dim group-normalised feature matrix from raw values.
 
@@ -101,20 +143,38 @@ def build_gpqa_pairwise_features(raw: dict[str, np.ndarray]) -> np.ndarray:
         np.ndarray of shape (N, 6), dtype float64.
         Columns correspond to GPQA_PAIRWISE_FEATURE_NAMES.
     """
+    return build_gpqa_pairwise_features_configurable(
+        raw,
+        include_margin=False,
+        include_dominance=False,
+    )
+
+
+def build_gpqa_pairwise_features_configurable(
+    raw: dict[str, np.ndarray],
+    *,
+    include_margin: bool = False,
+    include_dominance: bool = False,
+) -> np.ndarray:
     dc_raw = np.asarray(raw["dc_raw"], dtype=np.float64)
     reflection_count = np.asarray(raw["reflection_count"], dtype=np.float64)
     prefix_conf_mean = np.asarray(raw["prefix_conf_mean"], dtype=np.float64)
     recency_conf_mean = np.asarray(raw["recency_conf_mean"], dtype=np.float64)
     late_recovery = np.asarray(raw["late_recovery"], dtype=np.float64)
 
-    return np.column_stack([
+    cols: list[np.ndarray] = [
         _zscore(dc_raw),                    # 0  dc_z
         _rank01(dc_raw),                    # 1  dc_r
         _rank01(reflection_count),          # 2  reflection_count_r
         _safe_rank01(prefix_conf_mean),     # 3  prefix_conf_mean_r
         _safe_rank01(recency_conf_mean),    # 4  recency_conf_mean_r
         _safe_rank01(late_recovery),        # 5  late_recovery_r
-    ]).astype(np.float64)
+    ]
+    if include_margin:
+        cols.append(build_gpqa_pairwise_margin_feature(recency_conf_mean))
+    if include_dominance:
+        cols.append(build_gpqa_pairwise_dominance_feature(recency_conf_mean))
+    return np.column_stack(cols).astype(np.float64)
 
 
 def build_pairwise_training_pairs(
@@ -178,8 +238,17 @@ class GPQAPairwiseScorer:
         scorer = GPQAPairwiseScorer.load(path)
     """
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        C: float = 1.0,
+        include_margin: bool = False,
+        include_dominance: bool = False,
+    ) -> None:
         self.pipeline: Optional[object] = None
+        self.C = float(C)
+        self.include_margin = bool(include_margin)
+        self.include_dominance = bool(include_dominance)
 
     def fit(self, X_pairs: np.ndarray, y_pairs: np.ndarray) -> None:
         """Fit StandardScaler + LogisticRegression on pairwise difference features.
@@ -194,7 +263,7 @@ class GPQAPairwiseScorer:
 
         self.pipeline = Pipeline([
             ("scaler", StandardScaler()),
-            ("clf", LogisticRegression(C=1.0, max_iter=1000, random_state=42)),
+            ("clf", LogisticRegression(C=self.C, max_iter=1000, random_state=42)),
         ])
         self.pipeline.fit(
             np.asarray(X_pairs, dtype=np.float64),
