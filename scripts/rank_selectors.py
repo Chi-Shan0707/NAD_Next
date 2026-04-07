@@ -449,7 +449,7 @@ def main():
     parser.add_argument(
         "--compute-categories",
         action="store_true",
-        help="Compute category-specific sub-rankings (programming, math_science)"
+        help="Compute category-specific sub-rankings (programming, math, science)"
     )
 
     # Position window-specific rankings
@@ -824,15 +824,19 @@ def main():
             tasks_in_category = stats.get('tasks_count', 0)
 
             # Check if this is a window+category combination
-            if '_programming' in category_key or '_math_science' in category_key:
+            if '_programming' in category_key or '_math' in category_key or '_science' in category_key:
                 # Extract window and category parts
-                # Handle cases like "window_0-1_programming"
+                # Handle cases like "window_0-1_programming", "window_0-1_math", "window_0-1_science"
                 if '_programming' in category_key:
                     window_part = category_key.replace('_programming', '')
                     cat_part = 'programming'
-                elif '_math_science' in category_key:
-                    window_part = category_key.replace('_math_science', '')
-                    cat_part = 'math_science'
+                elif '_science' in category_key:
+                    # Check _science before _math to avoid matching "math" in "math_science" (legacy)
+                    window_part = category_key.replace('_science', '')
+                    cat_part = 'science'
+                elif '_math' in category_key:
+                    window_part = category_key.replace('_math', '')
+                    cat_part = 'math'
                 else:
                     parts = category_key.rsplit('_', 1)  # Split from the right
                     window_part = parts[0]
@@ -841,8 +845,10 @@ def main():
                 window_label = window_part.replace('window_', 'Position ').replace('-', ' to ')
                 if cat_part == 'programming':
                     cat_label = 'Programming'
-                elif cat_part == 'math_science':
-                    cat_label = 'Math/Science'
+                elif cat_part == 'math':
+                    cat_label = 'Math'
+                elif cat_part == 'science':
+                    cat_label = 'Science'
                 else:
                     cat_label = cat_part.replace('_', '/')
 
@@ -874,7 +880,7 @@ def main():
 
     # Print category-specific rankings if computed
     if args.compute_categories:
-        for category_name in ['programming', 'math_science']:
+        for category_name in ['programming', 'math', 'science']:
             if category_name in all_rankings:
                 cat_ci = all_ci_results.get(category_name) if not args.no_bootstrap else None
                 if cat_ci is not None and not cat_ci.empty:
@@ -909,7 +915,7 @@ def main():
 
                 # Print category-specific rankings for this window
                 if args.compute_categories:
-                    for category_name in ['programming', 'math_science']:
+                    for category_name in ['programming', 'math', 'science']:
                         combined_key = f"{window_name}_{category_name}"
                         if combined_key in all_rankings:
                             win_cat_ci = all_ci_results.get(combined_key) if not args.no_bootstrap else None

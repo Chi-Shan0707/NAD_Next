@@ -184,6 +184,57 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
 #neuron-chart-area { padding: 8px 0 12px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 #neuron-chart-area svg { display: block; min-width: 100%; }
 
+/* Group Compare panel */
+#gc-panel {
+  margin: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+}
+#gc-panel.collapsed #gc-body { display: none; }
+#gc-header {
+  padding: 8px 16px; font-weight: 600; font-size: 13px; cursor: pointer;
+  background: #fafafa; border-bottom: 1px solid #eee; user-select: none;
+  display: flex; align-items: center; gap: 8px;
+}
+#gc-header .toggle-arrow { font-size: 10px; color: #888; }
+#gc-controls {
+  padding: 8px 16px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #f0f0f0; font-size: 12px;
+}
+#gc-controls label { font-weight: 600; color: #555; }
+#gc-controls select { font-size: 12px; padding: 2px 6px; border: 1px solid #ccc; border-radius: 4px; }
+#gc-controls button { font-size: 12px; padding: 3px 12px; border: 1px solid #1565c0; border-radius: 4px; background: #1565c0; color: #fff; cursor: pointer; }
+#gc-controls button:hover { background: #0d47a1; }
+#gc-spinner { display: none; width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #1565c0; border-radius: 50%; animation: spin 0.6s linear infinite; }
+#gc-chart-area { padding: 8px 0 12px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+#gc-chart-area svg { display: block; min-width: 100%; }
+#gc-legend { padding: 4px 16px 10px; font-size: 11px; display: flex; gap: 20px; flex-wrap: wrap; }
+.gc-legend-item { display: flex; align-items: center; gap: 5px; }
+.gc-legend-swatch { width: 24px; height: 3px; display: inline-block; border-radius: 2px; }
+
+/* Neuron Group Compare panel */
+#ngc-panel {
+  margin: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
+}
+#ngc-panel.collapsed #ngc-body { display: none; }
+#ngc-header {
+  padding: 8px 16px; font-weight: 600; font-size: 13px; cursor: pointer;
+  background: #fafafa; border-bottom: 1px solid #eee; user-select: none;
+  display: flex; align-items: center; gap: 8px;
+}
+#ngc-header .toggle-arrow { font-size: 10px; color: #888; }
+#ngc-toolbar {
+  padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #f0f0f0; font-size: 12px;
+}
+#ngc-toolbar button.ngc-load { font-size: 12px; padding: 3px 12px; border: 1px solid #1565c0; border-radius: 4px; background: #1565c0; color: #fff; cursor: pointer; }
+#ngc-toolbar button.ngc-load:hover { background: #0d47a1; }
+.ngc-tab { padding: 3px 12px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.ngc-tab.active { background: #37474f; color: #fff; border-color: #37474f; }
+.ngc-tab:hover:not(.active) { background: #f0f0f0; }
+#ngc-spinner { display: none; width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #37474f; border-radius: 50%; animation: spin 0.6s linear infinite; }
+#ngc-chart-area { padding: 8px 16px 14px; overflow-x: auto; overflow-y: hidden; }
+#ngc-chart-area svg { display: block; }
+#ngc-info { font-size: 11px; color: #888; padding: 0 16px 8px; }
+
 /* === Analysis panel === */
 #analysis-panel {
   margin: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px;
@@ -329,6 +380,48 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; c
   <div id="deriv-header"><span class="toggle-arrow">&#9654;</span> Derivatives</div>
   <div id="deriv-controls"></div>
   <div id="deriv-chart-area"></div>
+</div>
+
+<div id="gc-panel" class="collapsed">
+  <div id="gc-header"><span class="toggle-arrow">&#9654;</span> Group Compare — Correct vs Incorrect</div>
+  <div id="gc-body">
+    <div id="gc-controls">
+      <label>Metric:
+        <select id="gc-metric">
+          <option value="entropy">entropy</option>
+          <option value="conf">conf</option>
+          <option value="gini">gini</option>
+          <option value="selfcert">selfcert</option>
+          <option value="logprob">logprob</option>
+        </select>
+      </label>
+      <label>Mode:
+        <select id="gc-mode">
+          <option value="fixed">fixed</option>
+          <option value="smart">smart</option>
+        </select>
+      </label>
+      <button id="gc-load-btn" onclick="loadGroupCompare()">Load</button>
+      <div id="gc-spinner"></div>
+    </div>
+    <div id="gc-chart-area"></div>
+    <div id="gc-legend"></div>
+  </div>
+</div>
+
+<div id="ngc-panel" class="collapsed">
+  <div id="ngc-header"><span class="toggle-arrow">&#9654;</span> Neuron Group Compare — Correct vs Incorrect</div>
+  <div id="ngc-body">
+    <div id="ngc-toolbar">
+      <button class="ngc-load" onclick="loadNgc()">Load</button>
+      <div id="ngc-spinner"></div>
+      <button class="ngc-tab active" data-tab="density" onclick="switchNgcTab('density')">A · Layer Density</button>
+      <button class="ngc-tab" data-tab="jaccard" onclick="switchNgcTab('jaccard')">B · Jaccard Heatmap</button>
+      <button class="ngc-tab" data-tab="venn" onclick="switchNgcTab('venn')">C · Layer Venn</button>
+    </div>
+    <div id="ngc-info"></div>
+    <div id="ngc-chart-area"></div>
+  </div>
 </div>
 
 <div id="neuron-panel" class="collapsed">
@@ -613,6 +706,8 @@ async function loadProblems() {
     selProb.appendChild(o);
   }
   setStatus(`${probs.length} problems`);
+  gcClear();
+  ngcClear();
   if (selProb.options.length) { loadRuns(); loadScatterData(selProb.value); }
 }
 
@@ -1156,6 +1251,428 @@ function attachDerivClickHandlers() {
       }
     });
   });
+}
+
+// -- Neuron Group Compare -----------------------------------------------------
+const ngcPanel = $('#ngc-panel'), ngcHeader = $('#ngc-header');
+const ngcChartArea = $('#ngc-chart-area'), ngcInfo = $('#ngc-info');
+const ngcSpinner = $('#ngc-spinner');
+let ngcData = null;
+let ngcTab = 'density';
+
+ngcHeader.addEventListener('click', () => {
+  ngcPanel.classList.toggle('collapsed');
+  ngcHeader.querySelector('.toggle-arrow').innerHTML = ngcPanel.classList.contains('collapsed') ? '&#9654;' : '&#9660;';
+});
+
+function ngcClear() {
+  ngcPanel.classList.add('collapsed');
+  ngcHeader.querySelector('.toggle-arrow').innerHTML = '&#9654;';
+  ngcData = null;
+  ngcChartArea.innerHTML = '';
+  ngcInfo.textContent = '';
+}
+
+function switchNgcTab(tab) {
+  ngcTab = tab;
+  document.querySelectorAll('.ngc-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  if (ngcData) renderNgc();
+}
+
+async function loadNgc() {
+  const pid = selProb ? selProb.value : null;
+  if (!pid || !currentCache) return;
+  ngcSpinner.style.display = 'inline-block';
+  ngcChartArea.innerHTML = '';
+  ngcInfo.textContent = '';
+  try {
+    ngcData = await api(`/api/neuron_group_compare/${encodeURIComponent(pid)}`);
+    ngcInfo.textContent = `Correct: ${ngcData.n_correct} runs  |  Incorrect: ${ngcData.n_incorrect} runs  |  Layers: ${ngcData.layers.length}`;
+    renderNgc();
+    if (ngcPanel.classList.contains('collapsed')) {
+      ngcPanel.classList.remove('collapsed');
+      ngcHeader.querySelector('.toggle-arrow').innerHTML = '&#9660;';
+    }
+  } catch (e) {
+    ngcChartArea.innerHTML = `<div class="empty-msg">Error: ${e.message}</div>`;
+  } finally {
+    ngcSpinner.style.display = 'none';
+  }
+}
+
+function renderNgc() {
+  if (!ngcData) return;
+  if (ngcTab === 'density') renderNgcDensity();
+  else if (ngcTab === 'jaccard') renderNgcJaccard();
+  else renderNgcVenn();
+}
+
+// A: Layer Density line chart with ±1σ band
+function renderNgcDensity() {
+  const d = ngcData;
+  const layers = d.layers;
+  const nL = layers.length;
+  if (!nL) { ngcChartArea.innerHTML = '<div class="empty-msg">No layer data.</div>'; return; }
+
+  const H = 260, PAD_L = 55, PAD_R = 20, PAD_T = 18, PAD_B = 30;
+  const W = Math.max(ngcChartArea.clientWidth || 800, PAD_L + PAD_R + nL * 18);
+  const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+  const cm = d.layer_density.correct.mean,   cs = d.layer_density.correct.std;
+  const im = d.layer_density.incorrect.mean, is_ = d.layer_density.incorrect.std;
+
+  // Y range: cover mean ± std
+  let yMin = Infinity, yMax = -Infinity;
+  for (let i = 0; i < nL; i++) {
+    yMin = Math.min(yMin, cm[i]-cs[i], im[i]-is_[i]);
+    yMax = Math.max(yMax, cm[i]+cs[i], im[i]+is_[i]);
+  }
+  yMin = Math.max(0, yMin - (yMax-yMin)*0.05);
+  yMax += (yMax - yMin) * 0.05;
+  if (yMin === yMax) { yMax = yMin + 1; }
+
+  const xScale = i => PAD_L + (i / Math.max(nL - 1, 1)) * plotW;
+  const yScale = v => PAD_T + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+
+  let svg = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Y axis labels
+  svg += `<text x="${PAD_L-4}" y="${PAD_T+4}" text-anchor="end" font-size="9" fill="#999">${yMax.toFixed(0)}</text>`;
+  svg += `<text x="${PAD_L-4}" y="${H-PAD_B+4}" text-anchor="end" font-size="9" fill="#999">${yMin.toFixed(0)}</text>`;
+  svg += `<line x1="${PAD_L}" y1="${PAD_T}" x2="${PAD_L}" y2="${H-PAD_B}" stroke="#ddd" stroke-width="1"/>`;
+  svg += `<line x1="${PAD_L}" y1="${H-PAD_B}" x2="${W-PAD_R}" y2="${H-PAD_B}" stroke="#ddd" stroke-width="1"/>`;
+
+  // X axis (layer labels — show every Nth)
+  const step = nL > 20 ? Math.ceil(nL / 14) : 1;
+  for (let i = 0; i < nL; i += step) {
+    svg += `<text x="${xScale(i)}" y="${H-PAD_B+12}" text-anchor="middle" font-size="9" fill="#999">${layers[i]}</text>`;
+  }
+  svg += `<text x="${W/2}" y="${H-2}" text-anchor="middle" font-size="9" fill="#aaa">Layer</text>`;
+
+  // Helper: build band polygon (upper edge + reversed lower edge)
+  const band = (means, stds, color) => {
+    const upper = means.map((v, i) => `${xScale(i)},${yScale(v + stds[i])}`).join(' ');
+    const lower = means.map((v, i) => `${xScale(i)},${yScale(Math.max(yMin, v - stds[i]))}`).reverse().join(' ');
+    svg += `<polygon points="${upper} ${lower}" fill="${color}" opacity="0.15"/>`;
+  };
+  // Helper: build polyline
+  const line = (means, color, width) => {
+    const pts = means.map((v, i) => `${xScale(i)},${yScale(v)}`).join(' ');
+    svg += `<polyline points="${pts}" stroke="${color}" stroke-width="${width}" fill="none"/>`;
+    // Dots
+    for (let i = 0; i < means.length; i++) {
+      svg += `<circle cx="${xScale(i)}" cy="${yScale(means[i])}" r="2.5" fill="${color}"/>`;
+    }
+  };
+
+  band(im, is_, '#c62828');
+  band(cm, cs,  '#1565c0');
+  line(im, '#c62828', 2);
+  line(cm, '#1565c0', 2);
+
+  // Legend
+  const legX = W - PAD_R - 6, legY = PAD_T + 10;
+  svg += `<rect x="${legX-80}" y="${legY-10}" width="84" height="42" fill="white" opacity="0.85" rx="3"/>`;
+  svg += `<line x1="${legX-76}" y1="${legY}" x2="${legX-56}" y2="${legY}" stroke="#1565c0" stroke-width="2"/>`;
+  svg += `<text x="${legX-52}" y="${legY+4}" font-size="10" fill="#333">Correct (n=${d.n_correct})</text>`;
+  svg += `<line x1="${legX-76}" y1="${legY+18}" x2="${legX-56}" y2="${legY+18}" stroke="#c62828" stroke-width="2"/>`;
+  svg += `<text x="${legX-52}" y="${legY+22}" font-size="10" fill="#333">Incorrect (n=${d.n_incorrect})</text>`;
+
+  svg += '</svg>';
+  ngcChartArea.innerHTML = svg;
+}
+
+// B: Jaccard distance heatmap (correct first, then incorrect)
+function renderNgcJaccard() {
+  const jm = ngcData.jaccard_matrix;
+  const n = jm.labels.length;
+  if (!n) { ngcChartArea.innerHTML = '<div class="empty-msg">No data.</div>'; return; }
+
+  const CELL = Math.max(6, Math.min(28, Math.floor(480 / n)));
+  const PAD_L = 50, PAD_T = 50;
+  const W = PAD_L + n * CELL + 20;
+  const H = PAD_T + n * CELL + 30;
+
+  const nCorrect = ngcData.n_correct;
+
+  // Color scale: 0 (same) = white, 1 (different) = dark
+  const colorJac = v => {
+    // white → #1a237e for correct-zone, white → #b71c1c for incorrect-zone blended
+    const t = Math.min(1, Math.max(0, v));
+    const r = Math.round(255 * (1 - t * 0.8));
+    const g = Math.round(255 * (1 - t * 0.9));
+    const b = Math.round(255 * (1 - t * 0.6));
+    return `rgb(${r},${g},${b})`;
+  };
+
+  let svg = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Cells
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const v = jm.matrix[i][j];
+      const x = PAD_L + j * CELL, y = PAD_T + i * CELL;
+      svg += `<rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" fill="${colorJac(v)}">`;
+      if (CELL >= 16) svg += `<title>row=${jm.sample_ids[i]} col=${jm.sample_ids[j]} Jac=${v.toFixed(3)}</title>`;
+      svg += `</rect>`;
+    }
+  }
+
+  // Separator line between correct and incorrect blocks
+  if (nCorrect > 0 && nCorrect < n) {
+    const sep = PAD_L + nCorrect * CELL;
+    svg += `<line x1="${sep}" y1="${PAD_T}" x2="${sep}" y2="${PAD_T + n*CELL}" stroke="#333" stroke-width="1.5"/>`;
+    svg += `<line x1="${PAD_L}" y1="${PAD_T + nCorrect*CELL}" x2="${PAD_L + n*CELL}" y2="${PAD_T + nCorrect*CELL}" stroke="#333" stroke-width="1.5"/>`;
+  }
+
+  // Row/col labels (abbreviated)
+  if (CELL >= 10) {
+    const lblStep = CELL >= 16 ? 1 : Math.ceil(10 / CELL);
+    for (let i = 0; i < n; i += lblStep) {
+      const color = jm.labels[i] === 'C' ? '#1565c0' : '#c62828';
+      const y = PAD_T + i * CELL + CELL * 0.5 + 3;
+      svg += `<text x="${PAD_L-4}" y="${y}" text-anchor="end" font-size="${Math.min(9, CELL-1)}" fill="${color}">${jm.labels[i]}${jm.sample_ids[i]}</text>`;
+    }
+  }
+
+  // Block labels on top
+  const midC = PAD_L + nCorrect * CELL / 2;
+  const midI = PAD_L + nCorrect * CELL + (n - nCorrect) * CELL / 2;
+  svg += `<text x="${midC}" y="${PAD_T-6}" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="600">Correct (${nCorrect})</text>`;
+  if (n - nCorrect > 0) svg += `<text x="${midI}" y="${PAD_T-6}" text-anchor="middle" font-size="10" fill="#c62828" font-weight="600">Incorrect (${n - nCorrect})</text>`;
+
+  // Color bar legend
+  const barX = PAD_L + n*CELL + 8, barY = PAD_T, barH = n*CELL, barW = 12;
+  const steps = 20;
+  for (let s = 0; s < steps; s++) {
+    const v = s / (steps - 1);
+    const y = barY + (barH / steps) * s;
+    svg += `<rect x="${barX}" y="${y}" width="${barW}" height="${barH/steps + 1}" fill="${colorJac(v)}"/>`;
+  }
+  svg += `<text x="${barX+barW+2}" y="${barY+8}" font-size="8" fill="#888">1.0</text>`;
+  svg += `<text x="${barX+barW+2}" y="${barY+barH}" font-size="8" fill="#888">0.0</text>`;
+  svg += `<text x="${barX}" y="${barY+barH+14}" font-size="8" fill="#aaa">Jac</text>`;
+
+  svg += '</svg>';
+  ngcChartArea.innerHTML = svg;
+}
+
+// C: Per-layer stacked bar — only_correct (blue) / shared (gray) / only_incorrect (red)
+function renderNgcVenn() {
+  const d = ngcData;
+  const layers = d.layers;
+  const nL = layers.length;
+  if (!nL) { ngcChartArea.innerHTML = '<div class="empty-msg">No layer data.</div>'; return; }
+
+  const oc = d.layer_venn.only_correct;
+  const sh = d.layer_venn.shared;
+  const oi = d.layer_venn.only_incorrect;
+
+  const H = 280, PAD_L = 60, PAD_R = 20, PAD_T = 18, PAD_B = 36;
+  const BAR_GAP = 1;
+  const minW = PAD_L + PAD_R + nL * 10;
+  const W = Math.max(ngcChartArea.clientWidth || 800, minW);
+  const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+  const barW = Math.max(4, plotW / nL - BAR_GAP);
+
+  const yMax = Math.max(...oc.map((v, i) => v + sh[i] + oi[i])) * 1.05 || 1;
+  const yScale = v => PAD_T + (1 - v / yMax) * plotH;
+  const xBar = i => PAD_L + (i / nL) * plotW + BAR_GAP / 2;
+
+  let svg = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Y axis
+  svg += `<line x1="${PAD_L}" y1="${PAD_T}" x2="${PAD_L}" y2="${H-PAD_B}" stroke="#ddd" stroke-width="1"/>`;
+  svg += `<line x1="${PAD_L}" y1="${H-PAD_B}" x2="${W-PAD_R}" y2="${H-PAD_B}" stroke="#ddd" stroke-width="1"/>`;
+  const nTicks = 4;
+  for (let t = 0; t <= nTicks; t++) {
+    const v = yMax * t / nTicks;
+    const y = yScale(v);
+    svg += `<text x="${PAD_L-4}" y="${y+3}" text-anchor="end" font-size="9" fill="#999">${Math.round(v)}</text>`;
+    svg += `<line x1="${PAD_L}" y1="${y}" x2="${W-PAD_R}" y2="${y}" stroke="#f0f0f0" stroke-width="0.5"/>`;
+  }
+
+  // Bars
+  for (let i = 0; i < nL; i++) {
+    const x = xBar(i);
+    let bottom = H - PAD_B;
+
+    // Stack from bottom: only_correct, shared, only_incorrect
+    const drawBar = (val, color) => {
+      if (!val) return;
+      const bH = (val / yMax) * plotH;
+      const y = bottom - bH;
+      svg += `<rect x="${x}" y="${y}" width="${barW}" height="${bH}" fill="${color}"><title>Layer ${layers[i]}: ${val}</title></rect>`;
+      bottom = y;
+    };
+    drawBar(oc[i], '#1565c0');
+    drawBar(sh[i], '#90a4ae');
+    drawBar(oi[i], '#c62828');
+  }
+
+  // X axis labels
+  const step = nL > 20 ? Math.ceil(nL / 14) : 1;
+  for (let i = 0; i < nL; i += step) {
+    svg += `<text x="${xBar(i) + barW/2}" y="${H-PAD_B+12}" text-anchor="middle" font-size="9" fill="#999">${layers[i]}</text>`;
+  }
+  svg += `<text x="${W/2}" y="${H-2}" text-anchor="middle" font-size="9" fill="#aaa">Layer</text>`;
+
+  // Legend
+  const legItems = [
+    ['#1565c0', `Only Correct`],
+    ['#90a4ae', `Shared`],
+    ['#c62828', `Only Incorrect`],
+  ];
+  let legX = PAD_L + 8, legY = PAD_T + 6;
+  svg += `<rect x="${legX-2}" y="${legY-10}" width="210" height="18" fill="white" opacity="0.85" rx="2"/>`;
+  for (const [color, label] of legItems) {
+    svg += `<rect x="${legX}" y="${legY-8}" width="12" height="10" fill="${color}"/>`;
+    svg += `<text x="${legX+16}" y="${legY}" font-size="10" fill="#333">${label}</text>`;
+    legX += 72;
+  }
+
+  svg += '</svg>';
+  ngcChartArea.innerHTML = svg;
+}
+
+// -- Group Compare ------------------------------------------------------------
+const gcPanel = $('#gc-panel'), gcHeader = $('#gc-header');
+const gcChartArea = $('#gc-chart-area'), gcLegend = $('#gc-legend');
+const gcSpinner = $('#gc-spinner');
+
+gcHeader.addEventListener('click', () => {
+  gcPanel.classList.toggle('collapsed');
+  gcHeader.querySelector('.toggle-arrow').innerHTML = gcPanel.classList.contains('collapsed') ? '&#9654;' : '&#9660;';
+});
+
+function gcClear() {
+  gcPanel.classList.add('collapsed');
+  gcHeader.querySelector('.toggle-arrow').innerHTML = '&#9654;';
+  gcChartArea.innerHTML = '';
+  gcLegend.innerHTML = '';
+}
+
+async function loadGroupCompare() {
+  const pid = selProb ? selProb.value : null;
+  if (!pid || !currentCache) return;
+  const metric = $('#gc-metric').value;
+  const mode = $('#gc-mode').value;
+  gcSpinner.style.display = 'inline-block';
+  gcChartArea.innerHTML = '';
+  gcLegend.innerHTML = '';
+  try {
+    const data = await api(`/api/group_compare/${encodeURIComponent(pid)}?metric=${metric}&mode=${mode}`);
+    renderGroupCompare(data);
+  } catch (e) {
+    gcChartArea.innerHTML = `<div class="empty-msg">Error: ${e.message}</div>`;
+  } finally {
+    gcSpinner.style.display = 'none';
+  }
+}
+
+$('#gc-metric').addEventListener('change', () => {
+  if (!gcPanel.classList.contains('collapsed')) loadGroupCompare();
+});
+$('#gc-mode').addEventListener('change', () => {
+  if (!gcPanel.classList.contains('collapsed')) loadGroupCompare();
+});
+
+function renderGroupCompare(data) {
+  const H = 240, PAD_L = 50, PAD_R = 20, PAD_T = 14, PAD_B = 24;
+  const MIN_PX_PER_POINT = 40;
+  const maxSlices = data.max_slices || 1;
+  const containerW = gcChartArea.clientWidth || 800;
+  const neededW = PAD_L + PAD_R + Math.max(maxSlices - 1, 1) * MIN_PX_PER_POINT;
+  const W = Math.max(containerW, neededW);
+  const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+  // Collect all values for global Y scale
+  let allVals = [];
+  const collectVals = (group) => {
+    for (const run of group.runs) run.forEach(v => { if (v !== null) allVals.push(v); });
+    group.mean.forEach(v => { if (v !== null) allVals.push(v); });
+  };
+  collectVals(data.correct);
+  collectVals(data.incorrect);
+
+  if (!allVals.length) {
+    gcChartArea.innerHTML = '<div class="empty-msg">No data.</div>';
+    return;
+  }
+
+  let yMin = Math.min(...allVals), yMax = Math.max(...allVals);
+  if (yMin === yMax) { yMin -= 0.5; yMax += 0.5; }
+  const yPad = (yMax - yMin) * 0.06;
+  yMin -= yPad; yMax += yPad;
+
+  const xScale = i => PAD_L + (i / Math.max(maxSlices - 1, 1)) * plotW;
+  const yScale = v => PAD_T + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+
+  let svg = `<svg width="${W}px" height="${H}px" style="min-width:${W}px" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Y axis labels
+  svg += `<text x="${PAD_L - 4}" y="${PAD_T + 4}" text-anchor="end" class="axis-label">${yMax.toFixed(3)}</text>`;
+  svg += `<text x="${PAD_L - 4}" y="${H - PAD_B + 4}" text-anchor="end" class="axis-label">${yMin.toFixed(3)}</text>`;
+
+  // X axis labels
+  const pxPerPt = plotW / Math.max(maxSlices - 1, 1);
+  const step = pxPerPt >= 30 ? 1 : pxPerPt >= 15 ? 2 : Math.max(1, Math.ceil(30 / pxPerPt));
+  for (let i = 0; i < maxSlices; i += step) {
+    svg += `<text x="${xScale(i)}" y="${H - 2}" text-anchor="middle" class="axis-label">${i}</text>`;
+  }
+
+  // Helper: draw a set of thin runs
+  const drawThinRuns = (runs, stroke, opacity) => {
+    for (const run of runs) {
+      let segs = [], cur = [];
+      for (let i = 0; i < run.length; i++) {
+        if (run[i] === null) { if (cur.length) { segs.push(cur); cur = []; } }
+        else cur.push({i, v: run[i]});
+      }
+      if (cur.length) segs.push(cur);
+      for (const seg of segs) {
+        const pts = seg.map(p => `${xScale(p.i)},${yScale(p.v)}`).join(' ');
+        svg += `<polyline points="${pts}" stroke="${stroke}" stroke-width="0.8" opacity="${opacity}" fill="none"/>`;
+      }
+    }
+  };
+
+  // Helper: draw a mean line
+  const drawMeanLine = (mean, stroke) => {
+    let segs = [], cur = [];
+    for (let i = 0; i < mean.length; i++) {
+      if (mean[i] === null) { if (cur.length) { segs.push(cur); cur = []; } }
+      else cur.push({i, v: mean[i]});
+    }
+    if (cur.length) segs.push(cur);
+    for (const seg of segs) {
+      const pts = seg.map(p => `${xScale(p.i)},${yScale(p.v)}`).join(' ');
+      svg += `<polyline points="${pts}" stroke="${stroke}" stroke-width="2.5" opacity="1.0" fill="none"/>`;
+    }
+  };
+
+  // Draw order: incorrect thin → correct thin → incorrect mean → correct mean
+  drawThinRuns(data.incorrect.runs, '#ef9a9a', 0.25);
+  drawThinRuns(data.correct.runs,   '#90caf9', 0.25);
+  drawMeanLine(data.incorrect.mean, '#c62828');
+  drawMeanLine(data.correct.mean,   '#1565c0');
+
+  svg += '</svg>';
+  gcChartArea.innerHTML = svg;
+
+  // Legend
+  gcLegend.innerHTML = `
+    <div class="gc-legend-item"><span class="gc-legend-swatch" style="background:#1565c0;height:3px;"></span> Correct mean (n=${data.correct.n})</div>
+    <div class="gc-legend-item"><span class="gc-legend-swatch" style="background:#c62828;height:3px;"></span> Incorrect mean (n=${data.incorrect.n})</div>
+    <div class="gc-legend-item"><span class="gc-legend-swatch" style="background:#90caf9;height:2px;opacity:0.7;"></span> Correct runs</div>
+    <div class="gc-legend-item"><span class="gc-legend-swatch" style="background:#ef9a9a;height:2px;opacity:0.7;"></span> Incorrect runs</div>
+  `;
+
+  // Expand panel if collapsed
+  if (gcPanel.classList.contains('collapsed')) {
+    gcPanel.classList.remove('collapsed');
+    gcHeader.querySelector('.toggle-arrow').innerHTML = '&#9660;';
+  }
 }
 
 // -- Neuron Activation heatmap ------------------------------------------------

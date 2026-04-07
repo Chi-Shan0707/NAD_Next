@@ -31,17 +31,18 @@ logger = logging.getLogger(__name__)
 # -----------------------------
 
 TASK_CATEGORIES = {
-    'programming': ['mbpp', 'humaneval', 'livecodebench'],
-    'math_science': ['aime24', 'aime25', 'gpqa']
+    'programming': ['mbpp', 'humaneval', 'livecodebench', 'livecodebench_v5'],
+    'math': ['aime24', 'aime25', 'brumo25', 'hmmt25'],
+    'science': ['gpqa']
 }
 
 def filter_tasks_by_category(df: pd.DataFrame, category: str) -> pd.DataFrame:
     """
-    Filter tasks DataFrame by category (programming, math_science, or all).
+    Filter tasks DataFrame by category (programming, math, science, or all).
 
     Args:
         df: DataFrame with columns including 'dataset' or 'task_id'
-        category: Category name ('all', 'programming', 'math_science')
+        category: Category name ('all', 'programming', 'math', 'science')
 
     Returns:
         Filtered DataFrame containing only tasks from the specified category
@@ -50,7 +51,7 @@ def filter_tasks_by_category(df: pd.DataFrame, category: str) -> pd.DataFrame:
         return df
 
     if category not in TASK_CATEGORIES:
-        raise ValueError(f"Unknown category: {category}. Valid options: all, programming, math_science")
+        raise ValueError(f"Unknown category: {category}. Valid options: all, programming, math, science")
 
     datasets_in_category = TASK_CATEGORIES[category]
 

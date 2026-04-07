@@ -53,6 +53,8 @@ META_CACHE: dict[str, dict] = {}
 TOKENIZER = None
 BOUNDARY_IDS: np.ndarray = None    # token IDs for \n . ? : — set at startup
 SCATTER_CACHE: dict = {}           # (problem_id, cache_path) -> {"result":…, "raw":…}
+GROUP_COMPARE_CACHE: dict = {}     # (problem_id, cache_path, metric, mode) -> response dict
+NGC_CACHE: dict = {}               # (problem_id, cache_path) -> neuron_group_compare response
 
 
 def _scan_datasets():
@@ -850,6 +852,232 @@ def api_selector_pick(problem_id: str):
         "n_runs": len(all_runs),
         "all_runs": all_runs,
     })
+
+
+# ---------------------------------------------------------------------------
+# Group Compare
+# ---------------------------------------------------------------------------
+
+def _compute_group_mean(runs_data):
+    if not runs_data:
+        return []
+    max_len = max(len(r) for r in runs_data)
+    result = []
+    for i in range(max_len):
+        vals = [r[i] for r in runs_data if i < len(r) and r[i] is not None]
+        result.append(round(float(np.mean(vals)), 6) if vals else None)
+    return result
+
+
+@app.route("/api/group_compare/<problem_id>")
+def api_group_compare(problem_id: str):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"error": "invalid cache"}), 400
+
+    metric = request.args.get("metric", "entropy")
+    mode = request.args.get("mode", "fixed")
+
+    cache_key = (problem_id, cache, metric, mode)
+    if cache_key in GROUP_COMPARE_CACHE:
+        return jsonify(GROUP_COMPARE_CACHE[cache_key])
+
+    meta = _get_meta(cache)
+    report = _get_eval_report(cache)
+
+    # Build correctness lookup for this problem
+    correctness: dict[int, bool] = {}
+    if "results" in report:
+        for r in report["results"]:
+            if str(r["problem_id"]) == problem_id:
+                for run in r.get("runs", []):
+                    correctness[run["run_index"]] = bool(run.get("is_correct", False))
+                break
+
+    correct_runs, incorrect_runs = [], []
+    for sample_id, s in enumerate(meta["samples"]):
+        if str(s["problem_id"]) != problem_id:
+            continue
+        slices, tv = _get_slices(sample_id, mode, cache)
+        if not slices:
+            continue
+        avgs = _slice_averages(tv, slices)
+        vals = avgs.get(metric, [])
+        is_correct = correctness.get(s.get("run_index", 0), False)
+        if is_correct:
+            correct_runs.append(vals)
+        else:
+            incorrect_runs.append(vals)
+
+    max_slices = max(
+        (max((len(r) for r in correct_runs), default=0)),
+        (max((len(r) for r in incorrect_runs), default=0)),
+    )
+
+    response = {
+        "problem_id": problem_id,
+        "metric": metric,
+        "correct": {
+            "runs": correct_runs,
+            "mean": _compute_group_mean(correct_runs),
+            "n": len(correct_runs),
+        },
+        "incorrect": {
+            "runs": incorrect_runs,
+            "mean": _compute_group_mean(incorrect_runs),
+            "n": len(incorrect_runs),
+        },
+        "max_slices": max_slices,
+    }
+    GROUP_COMPARE_CACHE[cache_key] = response
+    return jsonify(response)
+
+
+# ---------------------------------------------------------------------------
+# Neuron Group Compare
+# ---------------------------------------------------------------------------
+
+@app.route("/api/neuron_group_compare/<problem_id>")
+def api_neuron_group_compare(problem_id: str):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"error": "invalid cache"}), 400
+
+    ngc_key = (problem_id, cache)
+    if ngc_key in NGC_CACHE:
+        return jsonify(NGC_CACHE[ngc_key])
+
+    run_ids, correct_labels = _get_problem_run_ids(cache, problem_id)
+    n = len(run_ids)
+    if n == 0:
+        return jsonify({"error": "no runs"}), 404
+
+    reader = _get_reader(cache)
+    rows_srp = reader.rows_sample_row_ptr
+    rows_rp  = reader.rows_row_ptr
+    rows_keys = reader.rows_keys
+
+    if rows_srp is None or rows_rp is None or rows_keys is None:
+        return jsonify({"error": "no rows/ bank in this cache"}), 404
+
+    # For each run: collect aggregate key set and per-layer neuron sets
+    run_key_sets   = []   # list[set[int]]  — full encoded keys (layer<<16|neuron)
+    run_layer_sets = []   # list[dict[int, set[int]]]  — {layer: {neuron_ids}}
+    all_layers: set[int] = set()
+
+    for sample_id in run_ids:
+        row_start = int(rows_srp[sample_id])
+        row_end   = int(rows_srp[sample_id + 1])
+
+        full_set: set[int] = set()
+        layer_sets: dict[int, set[int]] = {}
+
+        for row_idx in range(row_start, row_end):
+            k_start = int(rows_rp[row_idx])
+            k_end   = int(rows_rp[row_idx + 1])
+            if k_start == k_end:
+                continue
+            keys = rows_keys[k_start:k_end]
+            full_set.update(keys.tolist())
+            layers_arr  = (keys >> 16).astype(np.int32)
+            neurons_arr = (keys & 0xFFFF).astype(np.int32)
+            for lay, neu in zip(layers_arr.tolist(), neurons_arr.tolist()):
+                if lay not in layer_sets:
+                    layer_sets[lay] = set()
+                layer_sets[lay].add(neu)
+                all_layers.add(lay)
+
+        run_key_sets.append(full_set)
+        run_layer_sets.append(layer_sets)
+
+    layers_sorted = sorted(all_layers)
+    n_correct   = sum(correct_labels)
+    n_incorrect = n - n_correct
+
+    # --- A: Layer activation density (unique neurons per layer per run) ---
+    correct_dens   = {l: [] for l in layers_sorted}
+    incorrect_dens = {l: [] for l in layers_sorted}
+    for layer_sets, is_correct in zip(run_layer_sets, correct_labels):
+        target = correct_dens if is_correct else incorrect_dens
+        for l in layers_sorted:
+            target[l].append(len(layer_sets.get(l, set())))
+
+    def _mean_std(vals):
+        if not vals:
+            return 0.0, 0.0
+        a = np.array(vals, dtype=np.float64)
+        return round(float(a.mean()), 2), round(float(a.std()), 2)
+
+    layer_density = {"correct": {"mean": [], "std": []},
+                     "incorrect": {"mean": [], "std": []}}
+    for l in layers_sorted:
+        cm, cs = _mean_std(correct_dens[l])
+        im, is_ = _mean_std(incorrect_dens[l])
+        layer_density["correct"]["mean"].append(cm)
+        layer_density["correct"]["std"].append(cs)
+        layer_density["incorrect"]["mean"].append(im)
+        layer_density["incorrect"]["std"].append(is_)
+
+    # --- B: Pairwise Jaccard distance matrix (sort: correct first) ---
+    # Reorder so correct runs come first
+    order = [i for i, c in enumerate(correct_labels) if c] + \
+            [i for i, c in enumerate(correct_labels) if not c]
+    ord_run_ids  = [run_ids[i]  for i in order]
+    ord_keys     = [run_key_sets[i] for i in order]
+    ord_labels   = ["C" if correct_labels[i] else "I" for i in order]
+
+    matrix = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            if i == j:
+                row.append(0.0)
+            elif j < i:
+                row.append(matrix[j][i])
+            else:
+                a, b = ord_keys[i], ord_keys[j]
+                union = len(a | b)
+                jac = round(1.0 - len(a & b) / union, 4) if union else 1.0
+                row.append(jac)
+        matrix.append(row)
+
+    # --- C: Per-layer Venn (union of activated neurons across group) ---
+    correct_union   = {}   # {layer: set of neuron ids}
+    incorrect_union = {}
+    for layer_sets, is_correct in zip(run_layer_sets, correct_labels):
+        target = correct_union if is_correct else incorrect_union
+        for l, neurons in layer_sets.items():
+            if l not in target:
+                target[l] = set()
+            target[l].update(neurons)
+
+    only_correct, shared, only_incorrect = [], [], []
+    for l in layers_sorted:
+        c_set = correct_union.get(l, set())
+        i_set = incorrect_union.get(l, set())
+        only_correct.append(len(c_set - i_set))
+        shared.append(len(c_set & i_set))
+        only_incorrect.append(len(i_set - c_set))
+
+    response = {
+        "problem_id": problem_id,
+        "layers": layers_sorted,
+        "n_correct": n_correct,
+        "n_incorrect": n_incorrect,
+        "layer_density": layer_density,
+        "jaccard_matrix": {
+            "matrix": matrix,
+            "labels": ord_labels,
+            "sample_ids": ord_run_ids,
+        },
+        "layer_venn": {
+            "only_correct": only_correct,
+            "shared": shared,
+            "only_incorrect": only_incorrect,
+        },
+    }
+    NGC_CACHE[ngc_key] = response
+    return jsonify(response)
 
 
 # ---------------------------------------------------------------------------
