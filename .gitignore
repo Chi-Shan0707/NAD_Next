@@ -11,6 +11,8 @@ build/
 
 # Results (generated output)
 result/
+results/scans/
+results/selector_rankings/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -31,3 +33,12 @@ MUI_HUB
 
 # PID files
 /tmp/nad_*.pid
+
+# Generated experiment models
+models/ml_selectors/*.pkl
+
+# Generated submission smoke outputs
+submission/EarlyStop/*.json
+
+# Local scratch files
+=
