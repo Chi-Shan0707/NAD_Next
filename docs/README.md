@@ -30,6 +30,7 @@
 
 ## Status snapshots
 - `GPQA_RANKSVM_MATH_SVM_STATUS_20260408.md`
+- `WORK_SUMMARY_0408_06.md`
 
 ## Handoffs
 - `handoffs/2026-04-05/`: dated handoff sequence for the coding-selector work.
@@ -72,6 +73,7 @@
 
 ## 状态快照
 - `GPQA_RANKSVM_MATH_SVM_STATUS_20260408.md`
+- `WORK_SUMMARY_0408_06.md`
 
 ## 交接文档
 - `handoffs/2026-04-05/`：coding-selector 相关的日期化交接记录。
