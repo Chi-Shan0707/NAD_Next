@@ -22,6 +22,9 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_gpqa_pairwise_round2.py`: round-2 no-promote recency-family follow-up.
 - `run_science_hybrid_round3.py`: current promoted science patch search and proxy evaluation.
 - `run_gpqa_deepsets_round1.py`: minimal full-group contextual GPQA DeepSets study.
+- `run_code_deepsets_round1.py`: minimal full-group contextual coding DeepSets study.
+- `run_math_deepsets_round1.py`: minimal full-group contextual math DeepSets study.
+- `patch_bestofn_submission_with_math_deepsets_round1.py`: export the promoted BestofN math patch on top of the current stack.
 
 ## Note
 - New local-only experiments should prefer subfolders conceptually, but stable user-facing entry scripts remain in `scripts/` for backwards compatibility.
@@ -52,6 +55,9 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_gpqa_pairwise_round2.py`：round-2、无 promote 的 recency 家族后续实验。
 - `run_science_hybrid_round3.py`：当前 promoted science patch 搜索与 proxy 评估。
 - `run_gpqa_deepsets_round1.py`：最小 full-group contextual GPQA DeepSets 实验。
+- `run_code_deepsets_round1.py`：最小 full-group contextual coding DeepSets 实验。
+- `run_math_deepsets_round1.py`：最小 full-group contextual math DeepSets 实验。
+- `patch_bestofn_submission_with_math_deepsets_round1.py`：在当前 stack 上导出 promoted BestofN 数学补丁。
 
 ## 说明
 - 新的纯本地实验从概念上更适合放子目录，但稳定、面向用户的入口脚本仍保留在 `scripts/` 顶层，以兼容既有调用方式。

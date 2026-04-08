@@ -2,5 +2,5 @@
 
 ## Folders
 - `base/`: stable Extreme12 baseline exports.
-- `patches/`: coding-only or LCB-specific patched submissions.
+- `patches/`: coding / science / math patched submissions, including current full-stack patched exports.
 - `manifests/`: export metadata and provenance.

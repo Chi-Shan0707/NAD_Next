@@ -12,6 +12,14 @@ This folder stores trained selector artifacts and related metadata.
 - `ml_selectors/gpqa_deepsets_round1_max.pkl`
 - `ml_selectors/gpqa_deepsets_round1_max_pairaux0p25.pkl`
 - `ml_selectors/gpqa_deepsets_round1_max_pairaux0p50.pkl`
+- `ml_selectors/code_deepsets_round1.pkl`: coding DeepSets round-1 reference artifact; line remains `NO-PROMOTE`.
+- `ml_selectors/code_deepsets_round1_mean.pkl`
+- `ml_selectors/code_deepsets_round1_max.pkl`
+- `ml_selectors/code_deepsets_round1_max_pairaux0p25.pkl`
+- `ml_selectors/math_deepsets_round1.pkl`: promoted math DeepSets round-1 reference artifact, pointed at `max_pairaux0p25`.
+- `ml_selectors/math_deepsets_round1_mean.pkl`
+- `ml_selectors/math_deepsets_round1_max.pkl`
+- `ml_selectors/math_deepsets_round1_max_pairaux0p25.pkl`
 
 ## Organization rule
 - Keep stable, code-referenced model files in predictable paths.
@@ -33,6 +41,14 @@ This folder stores trained selector artifacts and related metadata.
 - `ml_selectors/gpqa_deepsets_round1_max.pkl`
 - `ml_selectors/gpqa_deepsets_round1_max_pairaux0p25.pkl`
 - `ml_selectors/gpqa_deepsets_round1_max_pairaux0p50.pkl`
+- `ml_selectors/code_deepsets_round1.pkl`：coding DeepSets round-1 参考产物；该主线结论仍是 `NO-PROMOTE`。
+- `ml_selectors/code_deepsets_round1_mean.pkl`
+- `ml_selectors/code_deepsets_round1_max.pkl`
+- `ml_selectors/code_deepsets_round1_max_pairaux0p25.pkl`
+- `ml_selectors/math_deepsets_round1.pkl`：已 promote 的 math DeepSets round-1 参考产物，当前指向 `max_pairaux0p25`。
+- `ml_selectors/math_deepsets_round1_mean.pkl`
+- `ml_selectors/math_deepsets_round1_max.pkl`
+- `ml_selectors/math_deepsets_round1_max_pairaux0p25.pkl`
 
 ## 组织规则
 - 代码稳定引用的模型文件应保留在可预测路径中。

@@ -19,10 +19,12 @@
 - `result/gpqa_deepsets_round1_20260407_run1/`
 - `result/gpqa_deepsets_round1_20260407_run2/`
 - `result/gpqa_deepsets_round1_20260408_run3/`
+- `result/code_deepsets_round1_20260408_run2/`
+- `result/math_deepsets_round1_main_20260408_run1/`
 
-These three `result/` bundles are intentionally tracked because the corresponding
-`GPQA_DEEPSETS_ROUND1_RESULTS_20260407.md` report compares the first pass, the
-official best round-1 pass, and one final tiny auxiliary ablation.
+These `result/` bundles are intentionally tracked because the corresponding
+DeepSets result reports cite them as the official minimal reproducibility payloads
+for the documented GPQA / coding / math studies.
 
 ---
 
@@ -47,10 +49,8 @@ official best round-1 pass, and one final tiny auxiliary ablation.
 - `result/gpqa_deepsets_round1_20260407_run1/`
 - `result/gpqa_deepsets_round1_20260407_run2/`
 - `result/gpqa_deepsets_round1_20260408_run3/`
+- `result/code_deepsets_round1_20260408_run2/`
+- `result/math_deepsets_round1_main_20260408_run1/`
 
-这三个 `result/` 目录之所以被跟踪，是因为
-`GPQA_DEEPSETS_ROUND1_RESULTS_20260407.md` 需要并列引用：
-
-- 第一轮基础结果
-- 官方锁定的最佳 round-1 结果
-- 最后一个极小辅助消融
+这些 `result/` 目录之所以被跟踪，是因为对应的 DeepSets 结果文档把它们当作
+GPQA / coding / math 三条研究线的最小可复现正式结果载荷。
