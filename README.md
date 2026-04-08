@@ -15,6 +15,14 @@
 - 脚本入口索引见 `scripts/README.md`
 - 模型产物索引见 `models/README.md`
 
+### 当前研究主线（2026-04-08）
+
+- `code_v2` 已是当前 promoted coding default，详见 `docs/CODE_V2_EXHAUSTIVE_20260406.md`
+- `science_hybrid_round3` 是当前 promoted science patch，详见 `docs/SCIENCE_HYBRID_ROUND3_RESULTS_20260406.md`
+- `gpqa_pairwise_round2` 结论仍为 `NO-PROMOTE`，详见 `docs/GPQA_PAIRWISE_ROUND2_RESULTS_20260406.md`
+- `gpqa_deepsets_round1` 已完成最小 full-group contextual 试验，但结论仍为 `NO-PROMOTE`，详见 `docs/GPQA_DEEPSETS_ROUND1_RESULTS_20260407.md`
+- 当前 science 新研究线优先级：小型 contextual model / top-slot calibration，而不是 graph-heavy 扩展或新的 monotonic recency feature family
+
 神经元激活分布（NAD Next）是一个用于分析神经网络激活的框架，通过二进制 CSR 缓存、选择器算法和可复现的实验手册进行分析。NAD Next 将原始 NPZ 激活分片转换为高效的内存映射缓存（CSR 格式，带 Roaring Bitmap 索引），应用 24 种选择算法（含 ML、时序折扣和轨迹分析）为每道题目挑选最具代表性的样本，并跨模型和数据集评估选择器精度。
 
 ### 快速开始
@@ -245,6 +253,14 @@ python3 scripts/rank_selectors.py \
 - Submission JSON index: `submission/README.md`
 - Script entrypoint index: `scripts/README.md`
 - Model artifact index: `models/README.md`
+
+### Current Research Snapshot (2026-04-08)
+
+- `code_v2` is the current promoted coding default; see `docs/CODE_V2_EXHAUSTIVE_20260406.md`
+- `science_hybrid_round3` is the current promoted science patch; see `docs/SCIENCE_HYBRID_ROUND3_RESULTS_20260406.md`
+- `gpqa_pairwise_round2` remains `NO-PROMOTE`; see `docs/GPQA_PAIRWISE_ROUND2_RESULTS_20260406.md`
+- `gpqa_deepsets_round1` completed the first minimal full-group contextual study, but also remains `NO-PROMOTE`; see `docs/GPQA_DEEPSETS_ROUND1_RESULTS_20260407.md`
+- The current science research priority is small contextual models / top-slot calibration, not graph-heavy expansion and not a new monotonic recency feature family
 
 A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies a broad selector suite (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 
