@@ -1,0 +1,51 @@
+Submission #91
+Early Stop — earlystop_from_bestofn_svm_bridge_v1
+
+Submission Info
+Task
+early_stop
+Method
+earlystop_from_bestofn_svm_bridge_v1
+File
+earlystop_from_bestofn_svm_bridge_v1.json
+Submitted
+2026-04-08 06:24:19 UTC
+Status
+Not best
+Primary Score
+5.5312
+Average Rank (lower is better)
+All Metrics
+0.6304
+AUC of AUROC
+0.7783
+AUC of SelAcc
+10%
+Earliest >0.6
+62080
+Samples
+Metrics by Position
+Position	AUROC	Selective Acc @10%	Stop Acc (Hit@1)
+10%	0.6175	0.8053	0.6467
+20%	0.6422	0.8441	0.6303
+30%	0.6665	0.8579	0.6499
+40%	0.6861	0.8710	0.6722
+50%	0.6969	0.8671	0.6661
+60%	0.7068	0.8661	0.6675
+70%	0.7196	0.8677	0.6856
+80%	0.7324	0.8714	0.6926
+90%	0.7501	0.8814	0.7111
+100%	0.7882	0.9073	0.7213
+Cache	AUC of AUROC	AUC of SelAcc	Earliest >0.6	Samples
+DS-R1/aime24	0.6681	0.8706	10%	1920
+DS-R1/aime25	0.6628	0.8154	10%	1920
+DS-R1/brumo25	0.6933	0.8953	10%	1920
+DS-R1/gpqa	0.6493	0.8424	10%	12672
+DS-R1/hmmt25	0.7159	0.7779	10%	1920
+DS-R1/lcb_v5	0.4699	0.5300	N/A	10688
+Qwen3-4B/aime24	0.6872	0.8544	20%	1920
+Qwen3-4B/aime25	0.6506	0.8096	10%	1920
+Qwen3-4B/brumo25	0.6418	0.8674	10%	1920
+Qwen3-4B/gpqa	0.5935	0.8215	30%	12672
+Qwen3-4B/hmmt25	0.6841	0.6781	10%	1920
+Qwen3-4B/lcb_v5	0.4478	0.5771	N/A	10688
