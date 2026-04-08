@@ -42,6 +42,7 @@ DEFAULT_METHOD_NAME = (
 )
 DEFAULT_MATH_OVERRIDE = "math_deepsets_round1=MathDeepSetsSelector@ja_mass0.98"
 MATH_DATASETS = {"aime24", "aime25", "brumo25", "hmmt25"}
+MATH_MODELS = {"DS-R1", "Qwen3-4B"}
 DEFAULT_VIEW = ViewSpec(
     agg=Agg.MAX,
     cut=CutSpec(CutType.MASS, 0.98),
@@ -65,6 +66,12 @@ def _problem_sort_key(problem_id: str) -> tuple[int, str]:
         return (1, text)
 
 
+def _parse_csv(raw: str | None) -> list[str]:
+    if not raw:
+        return []
+    return [item.strip() for item in str(raw).split(",") if item.strip()]
+
+
 def _rank_scale_desc(order: np.ndarray, run_ids: list[int], lo: float = 1.0, hi: float = 100.0) -> dict[str, float]:
     n = len(run_ids)
     if n == 0:
@@ -78,15 +85,53 @@ def _rank_scale_desc(order: np.ndarray, run_ids: list[int], lo: float = 1.0, hi:
     }
 
 
-def _load_target_entries(cache_root: Path, *, allowed_cache_keys: set[str]) -> list:
-    entries = [
-        entry
-        for entry in discover_cache_entries(cache_root)
-        if entry.dataset_name in MATH_DATASETS and entry.cache_key in allowed_cache_keys
-    ]
+def resolve_math_patch_entries(
+    cache_root: Path,
+    *,
+    allowed_cache_keys: set[str],
+    requested_cache_keys: set[str] | None = None,
+    patch_datasets: set[str] | None = None,
+    patch_models: set[str] | None = None,
+) -> list:
+    allowed_math_cache_keys = {
+        cache_key
+        for cache_key in allowed_cache_keys
+        if "/" in str(cache_key) and str(cache_key).split("/", 1)[1] in MATH_DATASETS
+    }
+    if requested_cache_keys:
+        invalid_cache_keys = sorted(set(requested_cache_keys) - allowed_math_cache_keys)
+        if invalid_cache_keys:
+            raise SystemExit(
+                "Requested math patch cache keys are invalid for this base submission: "
+                f"{invalid_cache_keys}"
+            )
+
+    if patch_datasets:
+        invalid_datasets = sorted(set(patch_datasets) - set(MATH_DATASETS))
+        if invalid_datasets:
+            raise SystemExit(f"Unknown math datasets in --patch-datasets: {invalid_datasets}")
+
+    if patch_models:
+        invalid_models = sorted(set(patch_models) - set(MATH_MODELS))
+        if invalid_models:
+            raise SystemExit(f"Unknown models in --patch-models: {invalid_models}")
+
+    entries = []
+    for entry in discover_cache_entries(cache_root):
+        if entry.cache_key not in allowed_math_cache_keys:
+            continue
+        if requested_cache_keys is not None and requested_cache_keys:
+            if entry.cache_key not in requested_cache_keys:
+                continue
+        else:
+            if patch_datasets and entry.dataset_name not in patch_datasets:
+                continue
+            if patch_models and entry.cache_key.split("/", 1)[0] not in patch_models:
+                continue
+        entries.append(entry)
     entries.sort(key=lambda entry: entry.cache_key)
     if not entries:
-        raise SystemExit("No cache_test math entries matched the requested base submission.")
+        raise SystemExit("No math entries matched the requested patch selection.")
     return entries
 
 
@@ -143,6 +188,21 @@ def main() -> None:
     ap.add_argument("--distance-threads", type=int, default=8)
     ap.add_argument("--method-name", default=DEFAULT_METHOD_NAME)
     ap.add_argument("--math-override-note", default=DEFAULT_MATH_OVERRIDE)
+    ap.add_argument(
+        "--patch-cache-keys",
+        default="",
+        help="Optional comma-separated exact cache keys to patch; overrides dataset/model filters",
+    )
+    ap.add_argument(
+        "--patch-datasets",
+        default="",
+        help="Optional comma-separated math datasets to patch, e.g. aime25,brumo25",
+    )
+    ap.add_argument(
+        "--patch-models",
+        default="",
+        help="Optional comma-separated model tags to patch, e.g. DS-R1,Qwen3-4B",
+    )
     args = ap.parse_args()
 
     base_submission = Path(args.base_submission)
@@ -156,7 +216,16 @@ def main() -> None:
         raise SystemExit(f"Base submission has no scores: {_display_path(base_submission)}")
 
     scorer = MathDeepSetsScorer.load(model_path)
-    entries = _load_target_entries(cache_root, allowed_cache_keys=set(base_keys))
+    requested_cache_keys = set(_parse_csv(args.patch_cache_keys)) or None
+    patch_datasets = set(_parse_csv(args.patch_datasets)) or None
+    patch_models = set(_parse_csv(args.patch_models)) or None
+    entries = resolve_math_patch_entries(
+        cache_root,
+        allowed_cache_keys=set(base_keys),
+        requested_cache_keys=requested_cache_keys,
+        patch_datasets=patch_datasets,
+        patch_models=patch_models,
+    )
     patched_scores: dict[str, dict[str, dict[str, float]]] = {}
     for entry in entries:
         print(f"[patch] {entry.cache_key} <- {_display_path(entry.cache_root)}")
@@ -183,6 +252,11 @@ def main() -> None:
         "normalize_l1": True,
         "patched_cache_keys": [entry.cache_key for entry in entries],
         "math_datasets": sorted(MATH_DATASETS),
+        "selection": {
+            "patch_cache_keys": sorted(requested_cache_keys) if requested_cache_keys else [],
+            "patch_datasets": sorted(patch_datasets) if patch_datasets else [],
+            "patch_models": sorted(patch_models) if patch_models else [],
+        },
     }
 
     summary = validate_submission_payload(patched_payload, expected_cache_keys=base_keys)

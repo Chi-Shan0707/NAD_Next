@@ -24,6 +24,10 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_gpqa_deepsets_round1.py`: minimal full-group contextual GPQA DeepSets study.
 - `run_code_deepsets_round1.py`: minimal full-group contextual coding DeepSets study.
 - `run_math_deepsets_round1.py`: minimal full-group contextual math DeepSets study.
+- `run_bestofn_score_recovery_20260408.py`: conservative Best-of-N math-patch rollback / selective recovery search.
+- `run_math_bestofn_research_round2.py`: continue Best-of-N math research with LambdaSVM / DeepSets / SetTransformerLite.
+- `run_gpqa_bestofn_research_round2.py`: continue Best-of-N GPQA research with LambdaSVM / DeepSets / SetTransformerLite.
+- `run_code_bestofn_research_round2.py`: continue Best-of-N coding research with LambdaSVM / DeepSets / SetTransformerLite.
 - `patch_bestofn_submission_with_math_deepsets_round1.py`: export the promoted BestofN math patch on top of the current stack.
 
 ## Note
@@ -57,6 +61,10 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_gpqa_deepsets_round1.py`：最小 full-group contextual GPQA DeepSets 实验。
 - `run_code_deepsets_round1.py`：最小 full-group contextual coding DeepSets 实验。
 - `run_math_deepsets_round1.py`：最小 full-group contextual math DeepSets 实验。
+- `run_bestofn_score_recovery_20260408.py`：保守的 Best-of-N math patch 回滚 / selective recovery 搜索。
+- `run_math_bestofn_research_round2.py`：继续 Best-of-N math 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
+- `run_gpqa_bestofn_research_round2.py`：继续 Best-of-N GPQA 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
+- `run_code_bestofn_research_round2.py`：继续 Best-of-N coding 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `patch_bestofn_submission_with_math_deepsets_round1.py`：在当前 stack 上导出 promoted BestofN 数学补丁。
 
 ## 说明

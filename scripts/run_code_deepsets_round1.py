@@ -155,6 +155,7 @@ def _preload_code_deepsets_problems(
     *,
     distance_threads: int,
     prefix_window_tokens: int,
+    max_problems: int = 0,
 ) -> list[CodeDeepSetsProblemData]:
     meta = json.loads((cache_root / "meta.json").read_text(encoding="utf-8"))
     groups = build_problem_groups(meta)
@@ -164,6 +165,8 @@ def _preload_code_deepsets_problems(
 
     problems: list[CodeDeepSetsProblemData] = []
     for idx, (problem_id, run_ids) in enumerate(sorted(groups.items(), key=lambda kv: _problem_sort_key(kv[0]))):
+        if int(max_problems) > 0 and len(problems) >= int(max_problems):
+            break
         if idx % 20 == 0:
             print(f"[code-deepsets-preload] problem {idx + 1}/{len(groups)}", flush=True)
         run_ids = list(map(int, run_ids))

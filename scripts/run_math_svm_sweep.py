@@ -142,11 +142,19 @@ def _extract_cache_problems(
     return out
 
 
-def _extract_all_problems(profile: str, *, distance_threads: int) -> list[_MathProblemData]:
+def _extract_all_problems(profile: str, *, distance_threads: int, max_problems: int = 0) -> list[_MathProblemData]:
     all_problems: list[_MathProblemData] = []
     for dataset, cache_root in _resolve_profile_entries(profile):
         print(f"[math-svm] extracting {dataset} from {cache_root}", flush=True)
-        all_problems.extend(_extract_cache_problems(dataset, cache_root, distance_threads=distance_threads))
+        dataset_problems = _extract_cache_problems(dataset, cache_root, distance_threads=distance_threads)
+        if int(max_problems) > 0:
+            remaining = int(max_problems) - len(all_problems)
+            if remaining <= 0:
+                break
+            dataset_problems = dataset_problems[:remaining]
+        all_problems.extend(dataset_problems)
+        if int(max_problems) > 0 and len(all_problems) >= int(max_problems):
+            break
     return all_problems
 
 

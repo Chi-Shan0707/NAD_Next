@@ -141,6 +141,7 @@ def _extract_all_problems(
     *,
     distance_threads: int,
     workers: int,
+    max_problems: int = 0,
 ) -> list[_ProblemData]:
     """Parallel extraction using multiprocessing.Pool (bypasses the GIL).
 
@@ -155,6 +156,8 @@ def _extract_all_problems(
     correctness = _load_ground_truth(cache_root)
 
     sorted_problems = sorted(groups.items(), key=lambda kv: _problem_sort_key(kv[0]))
+    if int(max_problems) > 0:
+        sorted_problems = sorted_problems[: int(max_problems)]
     n_total = len(sorted_problems)
     tasks = [(str(pid), list(map(int, rids))) for pid, rids in sorted_problems]
 
