@@ -49,6 +49,7 @@ from nad.ops.earlystop_svd import (
     _auroc,
     _build_representation,
     _cv_auroc_baseline,
+    extract_earlystop_signals_for_positions,
     _fit_svd_lr_model,
     _predict_svd_lr,
     _rank_transform_matrix,
@@ -248,159 +249,15 @@ def extract_signals_for_sample_at_positions(
     run_id: int,
     positions: tuple[float, ...],
     required_features: Optional[set[str]] = None,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
 ) -> dict[str, list[float]]:
-    req = set(FULL_FEATURE_NAMES) if required_features is None else set(required_features)
-    token_view = reader.get_token_view(int(run_id))
-    if token_view is None:
-        return _empty_signal_map(positions)
-
-    need_tok_conf = bool(req & {"tok_conf_prefix", "tok_conf_recency", "has_tok_conf"})
-    need_tok_gini = bool(req & {"tok_gini_prefix", "tok_gini_tail", "tok_gini_slope", "has_tok_gini"})
-    need_tok_neg_entropy = bool(req & {"tok_neg_entropy_prefix", "tok_neg_entropy_recency", "has_tok_neg_entropy"})
-    need_tok_selfcert = bool(req & {"tok_selfcert_prefix", "tok_selfcert_recency", "has_tok_selfcert"})
-    need_tok_logprob = bool(req & {"tok_logprob_prefix", "tok_logprob_recency", "has_tok_logprob"})
-    need_traj = bool(req & set(TRAJ_FEATURES))
-    need_self_similarity = "self_similarity" in req
-    need_ncount = bool(req & {"nc_mean", "nc_slope"})
-    need_has_rows = "has_rows_bank" in req
-
-    tok_conf_arr = None
-    tok_gini_arr = None
-    tok_neg_entropy_arr = None
-    tok_selfcert_arr = None
-    tok_logprob_arr = None
-    if need_tok_conf and token_view.tok_conf is not None:
-        tok_conf_arr = np.asarray(token_view.tok_conf, dtype=np.float64)
-    if need_tok_gini and token_view.tok_gini is not None:
-        tok_gini_arr = np.asarray(token_view.tok_gini, dtype=np.float64)
-    if need_tok_neg_entropy and token_view.tok_neg_entropy is not None:
-        tok_neg_entropy_arr = np.asarray(token_view.tok_neg_entropy, dtype=np.float64)
-    if need_tok_selfcert and token_view.tok_selfcert is not None:
-        tok_selfcert_arr = np.asarray(token_view.tok_selfcert, dtype=np.float64)
-    if need_tok_logprob and token_view.tok_logprob is not None:
-        tok_logprob_arr = np.asarray(token_view.tok_logprob, dtype=np.float64)
-
-    rows_srp = reader.rows_sample_row_ptr
-    rows_rp = reader.rows_row_ptr
-    row_start = -1
-    row_end = -1
-    if rows_srp is not None and int(run_id) < len(rows_srp) - 1:
-        row_start = int(rows_srp[int(run_id)])
-        row_end = int(rows_srp[int(run_id) + 1])
-
-    slices: list[Any] = []
-    n_slices = 0
-    if need_traj or need_self_similarity:
-        slices = _extract_slice_keysets_fast(reader, int(run_id))
-        n_slices = len(slices)
-    elif row_start >= 0 and row_end >= 0:
-        n_slices = max(0, row_end - row_start)
-    has_rows_bank = 1.0 if n_slices > 0 else 0.0
-
-    nc_all: Optional[np.ndarray] = None
-    if need_ncount and rows_rp is not None and row_start >= 0 and row_end > row_start:
-        try:
-            rp_seg = np.asarray(rows_rp[row_start:row_end + 1], dtype=np.int64)
-            nc_all = np.diff(rp_seg).astype(np.float64)
-        except Exception:
-            nc_all = None
-
-    self_similarity = 0.0
-    if need_self_similarity and n_slices > 1:
-        half = n_slices // 2
-        try:
-            first = set()
-            for s in slices[:half]:
-                first.update(int(k) for k in s)
-            second = set()
-            for s in slices[half:]:
-                second.update(int(k) for k in s)
-            inter = len(first & second)
-            union = len(first | second)
-            self_similarity = float(inter / union) if union > 0 else 0.0
-        except Exception:
-            self_similarity = 0.0
-
-    signals = _empty_signal_map(positions)
-    has_tok_conf = 1.0 if tok_conf_arr is not None and len(tok_conf_arr) > 0 else 0.0
-    has_tok_gini = 1.0 if tok_gini_arr is not None and len(tok_gini_arr) > 0 else 0.0
-    has_tok_neg_entropy = 1.0 if tok_neg_entropy_arr is not None and len(tok_neg_entropy_arr) > 0 else 0.0
-    has_tok_selfcert = 1.0 if tok_selfcert_arr is not None and len(tok_selfcert_arr) > 0 else 0.0
-    has_tok_logprob = 1.0 if tok_logprob_arr is not None and len(tok_logprob_arr) > 0 else 0.0
-
-    traj_by_cut: dict[int, dict[str, float]] = {}
-    if need_traj and n_slices > 0:
-        traj_by_cut = _compute_trajectory_scores_for_prefix_counts(
-            slices,
-            [max(1, int(float(p) * n_slices)) for p in positions],
-            reflection_threshold=DEFAULT_REFLECTION_THRESHOLD,
-        )
-
-    for pos_i, p in enumerate(positions):
-        if "tok_conf_prefix" in req:
-            signals["tok_conf_prefix"][pos_i] = _prefix_mean(tok_conf_arr, p)
-        if "tok_conf_recency" in req:
-            signals["tok_conf_recency"][pos_i] = _prefix_recency(tok_conf_arr, p)
-
-        if "tok_gini_prefix" in req:
-            signals["tok_gini_prefix"][pos_i] = _prefix_mean(tok_gini_arr, p)
-        if "tok_gini_tail" in req:
-            signals["tok_gini_tail"][pos_i] = _prefix_tail_mean(tok_gini_arr, p)
-        if "tok_gini_slope" in req:
-            signals["tok_gini_slope"][pos_i] = _prefix_half_slope(tok_gini_arr, p)
-
-        if "tok_neg_entropy_prefix" in req:
-            signals["tok_neg_entropy_prefix"][pos_i] = _prefix_mean(tok_neg_entropy_arr, p)
-        if "tok_neg_entropy_recency" in req:
-            signals["tok_neg_entropy_recency"][pos_i] = _prefix_recency(tok_neg_entropy_arr, p)
-
-        if "tok_selfcert_prefix" in req:
-            signals["tok_selfcert_prefix"][pos_i] = _prefix_mean(tok_selfcert_arr, p)
-        if "tok_selfcert_recency" in req:
-            signals["tok_selfcert_recency"][pos_i] = _prefix_recency(tok_selfcert_arr, p)
-
-        if "tok_logprob_prefix" in req:
-            signals["tok_logprob_prefix"][pos_i] = _prefix_mean(tok_logprob_arr, p)
-        if "tok_logprob_recency" in req:
-            signals["tok_logprob_recency"][pos_i] = _prefix_recency(tok_logprob_arr, p)
-
-        if need_traj and n_slices > 0:
-            k = max(1, int(float(p) * n_slices))
-            traj = traj_by_cut[k]
-            if "traj_continuity" in req:
-                signals["traj_continuity"][pos_i] = float(traj["mean_continuity"])
-            if "traj_reflection_count" in req:
-                signals["traj_reflection_count"][pos_i] = -float(traj["reflection_count"])
-            if "traj_novelty" in req:
-                signals["traj_novelty"][pos_i] = float(traj["mean_novelty"])
-            if "traj_max_reflection" in req:
-                signals["traj_max_reflection"][pos_i] = -float(traj["max_reflection"])
-            if "traj_late_convergence" in req:
-                signals["traj_late_convergence"][pos_i] = float(traj["late_convergence"])
-
-        if need_ncount and nc_all is not None and len(nc_all) > 0:
-            k = max(1, int(float(p) * len(nc_all)))
-            if "nc_mean" in req:
-                signals["nc_mean"][pos_i] = float(np.mean(nc_all[:k]))
-            if "nc_slope" in req:
-                signals["nc_slope"][pos_i] = _prefix_count_slope(nc_all, k)
-
-        if "has_tok_conf" in req:
-            signals["has_tok_conf"][pos_i] = has_tok_conf
-        if "has_tok_gini" in req:
-            signals["has_tok_gini"][pos_i] = has_tok_gini
-        if "has_tok_neg_entropy" in req:
-            signals["has_tok_neg_entropy"][pos_i] = has_tok_neg_entropy
-        if "has_tok_selfcert" in req:
-            signals["has_tok_selfcert"][pos_i] = has_tok_selfcert
-        if "has_tok_logprob" in req:
-            signals["has_tok_logprob"][pos_i] = has_tok_logprob
-        if need_has_rows:
-            signals["has_rows_bank"][pos_i] = has_rows_bank
-        if need_self_similarity:
-            signals["self_similarity"][pos_i] = self_similarity
-
-    return signals
+    return extract_earlystop_signals_for_positions(
+        reader=reader,
+        run_id=int(run_id),
+        positions=tuple(float(p) for p in positions),
+        required_features=required_features,
+        reflection_threshold=float(reflection_threshold),
+    )
 
 
 def _empty_feature_tensor(n_runs: int, positions: tuple[float, ...]) -> np.ndarray:
@@ -412,6 +269,7 @@ def _extract_entry_feature_payload(
     positions: tuple[float, ...],
     required_feature_names: set[str],
     max_problems_per_cache: Optional[int],
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
     problem_start: int = 0,
     problem_end: Optional[int] = None,
 ) -> dict[str, Any]:
@@ -451,6 +309,7 @@ def _extract_entry_feature_payload(
                 int(sample_id),
                 positions=positions,
                 required_features=required_feature_names,
+                reflection_threshold=float(reflection_threshold),
             )
             for f_idx, feature_name in enumerate(FULL_FEATURE_NAMES):
                 problem_tensor[row_idx, :, f_idx] = np.asarray(signal_map[feature_name], dtype=np.float64)
@@ -497,20 +356,46 @@ def build_feature_store(
     max_problems_per_cache: Optional[int] = None,
     max_workers: int = 1,
     chunk_problems: int = DEFAULT_FEATURE_CHUNK_PROBLEMS,
+    include_cache_keys: Optional[set[str]] = None,
+    exclude_cache_keys: Optional[set[str]] = None,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
 ) -> list[dict[str, Any]]:
     entries = discover_cache_entries(cache_root)
     payload_chunks: list[dict[str, Any]] = []
+    chunk_specs: list[tuple[CacheEntry, int, int, int, int]] = []
+    for entry in entries:
+        cache_key = str(entry.cache_key)
+        if include_cache_keys is not None and cache_key not in include_cache_keys:
+            continue
+        if exclude_cache_keys is not None and cache_key in exclude_cache_keys:
+            continue
+        n_problems_total = len(_parse_meta_groups(entry))
+        if max_problems_per_cache is not None:
+            n_problems_total = min(n_problems_total, int(max_problems_per_cache))
+        chunk = max(1, int(chunk_problems))
+        n_chunks = max(1, int(math.ceil(n_problems_total / float(chunk))))
+        for chunk_idx, start in enumerate(range(0, max(1, n_problems_total), chunk), start=1):
+            end = min(n_problems_total, start + chunk)
+            chunk_specs.append((entry, int(chunk_idx), int(n_chunks), int(start), int(end)))
 
-    with ProcessPoolExecutor(max_workers=max(1, int(max_workers))) as executor:
-        future_map = {}
-        for entry in entries:
-            n_problems_total = len(_parse_meta_groups(entry))
-            if max_problems_per_cache is not None:
-                n_problems_total = min(n_problems_total, int(max_problems_per_cache))
-            chunk = max(1, int(chunk_problems))
-            n_chunks = max(1, int(math.ceil(n_problems_total / float(chunk))))
-            for chunk_idx, start in enumerate(range(0, max(1, n_problems_total), chunk), start=1):
-                end = min(n_problems_total, start + chunk)
+    if int(max_workers) <= 1:
+        for entry, chunk_idx, n_chunks, start, end in chunk_specs:
+            print(f"[features] run   cache={entry.cache_key} chunk={chunk_idx}/{n_chunks} problems={start}:{end}")
+            payload = _extract_entry_feature_payload(
+                entry,
+                positions,
+                required_feature_names,
+                max_problems_per_cache,
+                float(reflection_threshold),
+                start,
+                end,
+            )
+            print(f"[features] done  cache={entry.cache_key} chunk={chunk_idx}/{n_chunks} samples={payload['samples']}")
+            payload_chunks.append(payload)
+    else:
+        with ProcessPoolExecutor(max_workers=max(1, int(max_workers))) as executor:
+            future_map = {}
+            for entry, chunk_idx, n_chunks, start, end in chunk_specs:
                 print(f"[features] queue cache={entry.cache_key} chunk={chunk_idx}/{n_chunks} problems={start}:{end}")
                 future = executor.submit(
                     _extract_entry_feature_payload,
@@ -518,16 +403,17 @@ def build_feature_store(
                     positions,
                     required_feature_names,
                     max_problems_per_cache,
+                    float(reflection_threshold),
                     start,
                     end,
                 )
                 future_map[future] = (str(entry.cache_key), int(chunk_idx), int(n_chunks))
 
-        for future in as_completed(future_map):
-            payload = future.result()
-            cache_key, chunk_idx, n_chunks = future_map[future]
-            print(f"[features] done cache={cache_key} chunk={chunk_idx}/{n_chunks} samples={payload['samples']}")
-            payload_chunks.append(payload)
+            for future in as_completed(future_map):
+                payload = future.result()
+                cache_key, chunk_idx, n_chunks = future_map[future]
+                print(f"[features] done cache={cache_key} chunk={chunk_idx}/{n_chunks} samples={payload['samples']}")
+                payload_chunks.append(payload)
 
     merged: dict[str, list[dict[str, Any]]] = {}
     for payload in payload_chunks:

@@ -23,12 +23,14 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_science_hybrid_round3.py`: current promoted science patch search and proxy evaluation.
 - `run_gpqa_deepsets_round1.py`: minimal full-group contextual GPQA DeepSets study.
 - `run_code_deepsets_round1.py`: minimal full-group contextual coding DeepSets study.
+- `run_code_rns_round1.py`: conservative coding shortlist calibration in the current `code_v2` feature space.
 - `run_math_deepsets_round1.py`: minimal full-group contextual math DeepSets study.
 - `run_bestofn_score_recovery_20260408.py`: conservative Best-of-N math-patch rollback / selective recovery search.
 - `run_math_bestofn_research_round2.py`: continue Best-of-N math research with LambdaSVM / DeepSets / SetTransformerLite.
 - `run_gpqa_bestofn_research_round2.py`: continue Best-of-N GPQA research with LambdaSVM / DeepSets / SetTransformerLite.
 - `run_code_bestofn_research_round2.py`: continue Best-of-N coding research with LambdaSVM / DeepSets / SetTransformerLite.
 - `patch_bestofn_submission_with_math_deepsets_round1.py`: export the promoted BestofN math patch on top of the current stack.
+- `patch_bestofn_submission_with_code_rns_round1.py`: export a DS-only coding BestofN patch from a saved `code_rns_round1` bundle.
 - `export_bestofn_from_earlystop_slot_with_bestofn_overrides.py`: build a Best-of-N submission from one EarlyStop slot, with selected cache overrides from an existing Best-of-N JSON.
 
 ## Note
@@ -61,12 +63,14 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_science_hybrid_round3.py`：当前 promoted science patch 搜索与 proxy 评估。
 - `run_gpqa_deepsets_round1.py`：最小 full-group contextual GPQA DeepSets 实验。
 - `run_code_deepsets_round1.py`：最小 full-group contextual coding DeepSets 实验。
+- `run_code_rns_round1.py`：在当前 `code_v2` 小特征空间里做保守的 coding shortlist 校准。
 - `run_math_deepsets_round1.py`：最小 full-group contextual math DeepSets 实验。
 - `run_bestofn_score_recovery_20260408.py`：保守的 Best-of-N math patch 回滚 / selective recovery 搜索。
 - `run_math_bestofn_research_round2.py`：继续 Best-of-N math 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `run_gpqa_bestofn_research_round2.py`：继续 Best-of-N GPQA 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `run_code_bestofn_research_round2.py`：继续 Best-of-N coding 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `patch_bestofn_submission_with_math_deepsets_round1.py`：在当前 stack 上导出 promoted BestofN 数学补丁。
+- `patch_bestofn_submission_with_code_rns_round1.py`：从保存好的 `code_rns_round1` bundle 导出 DS-only coding BestofN patch。
 - `export_bestofn_from_earlystop_slot_with_bestofn_overrides.py`：从某个 EarlyStop 槽位直接构造 Best-of-N 提交，并允许从已有 Best-of-N JSON 覆盖指定 cache。
 
 ## 说明

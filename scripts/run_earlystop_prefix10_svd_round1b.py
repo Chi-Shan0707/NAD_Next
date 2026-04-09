@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import pickle
 import sys
 from pathlib import Path
 from typing import Any, Optional
@@ -70,6 +71,107 @@ def _qualify_feature_store(feature_store: list[dict[str, Any]], source_name: str
         item["cache_key"] = f"{source_name}/{payload['cache_key']}"
         qualified.append(item)
     return qualified
+
+
+def _feature_cache_key(
+    *,
+    source_name: str,
+    cache_root: str,
+    positions: tuple[float, ...],
+    required_feature_names: set[str],
+    max_problems_per_cache: Optional[int],
+) -> str:
+    payload = {
+        "version": 1,
+        "source_name": str(source_name),
+        "cache_root": str(cache_root),
+        "positions": [float(p) for p in positions],
+        "required_feature_names": sorted(str(v) for v in required_feature_names),
+        "max_problems_per_cache": None if max_problems_per_cache is None else int(max_problems_per_cache),
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha1(encoded).hexdigest()[:16]
+
+
+def _feature_cache_path(
+    *,
+    cache_dir: Path,
+    source_name: str,
+    cache_root: str,
+    positions: tuple[float, ...],
+    required_feature_names: set[str],
+    max_problems_per_cache: Optional[int],
+) -> Path:
+    key = _feature_cache_key(
+        source_name=source_name,
+        cache_root=cache_root,
+        positions=positions,
+        required_feature_names=required_feature_names,
+        max_problems_per_cache=max_problems_per_cache,
+    )
+    suffix = "all" if max_problems_per_cache is None else f"cap{int(max_problems_per_cache)}"
+    return cache_dir / f"{source_name}_{suffix}_{key}.pkl"
+
+
+def _load_or_build_qualified_feature_store(
+    *,
+    source_name: str,
+    cache_root: str,
+    positions: tuple[float, ...],
+    required_feature_names: set[str],
+    max_problems_per_cache: Optional[int],
+    max_workers: int,
+    chunk_problems: int,
+    feature_cache_dir: Optional[Path],
+    refresh_feature_cache: bool,
+) -> tuple[list[dict[str, Any]], Optional[Path], str]:
+    cache_path: Optional[Path] = None
+    if feature_cache_dir is not None:
+        cache_path = _feature_cache_path(
+            cache_dir=feature_cache_dir,
+            source_name=source_name,
+            cache_root=cache_root,
+            positions=positions,
+            required_feature_names=required_feature_names,
+            max_problems_per_cache=max_problems_per_cache,
+        )
+        if cache_path.exists() and not refresh_feature_cache:
+            print(f"[round1b] loading feature cache source={source_name} path={cache_path}")
+            with cache_path.open("rb") as handle:
+                payload = pickle.load(handle)
+            return list(payload["feature_store"]), cache_path, "loaded"
+
+    print(f"[round1b] building feature store for source={source_name} root={cache_root}")
+    store = _qualify_feature_store(
+        build_feature_store(
+            cache_root=cache_root,
+            positions=positions,
+            required_feature_names=required_feature_names,
+            max_problems_per_cache=max_problems_per_cache,
+            max_workers=max_workers,
+            chunk_problems=chunk_problems,
+        ),
+        source_name=source_name,
+    )
+
+    if cache_path is not None:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        tmp_path = cache_path.with_suffix(cache_path.suffix + ".tmp")
+        with tmp_path.open("wb") as handle:
+            pickle.dump(
+                {
+                    "source_name": str(source_name),
+                    "cache_root": str(cache_root),
+                    "positions": [float(p) for p in positions],
+                    "max_problems_per_cache": None if max_problems_per_cache is None else int(max_problems_per_cache),
+                    "feature_store": store,
+                },
+                handle,
+                protocol=pickle.HIGHEST_PROTOCOL,
+            )
+        tmp_path.replace(cache_path)
+        print(f"[round1b] saved feature cache source={source_name} path={cache_path}")
+    return store, cache_path, "built"
 
 
 def _subset_payload_by_problem_ids(
@@ -576,6 +678,8 @@ def main() -> None:
     ap.add_argument("--random-state", type=int, default=42)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--feature-chunk-problems", type=int, default=DEFAULT_FEATURE_CHUNK_PROBLEMS)
+    ap.add_argument("--feature-cache-dir", default="results/cache/earlystop_prefix10_svd_round1b", help="Directory for root-level feature-store caches")
+    ap.add_argument("--refresh-feature-cache", action="store_true", help="Ignore existing cached feature stores and rebuild them")
     ap.add_argument("--max-problems-per-cache", type=int, default=0, help="0 means all problems")
     ap.add_argument("--export-if-holdout-win", action="store_true", help="Export only if holdout strictly beats v1")
     args = ap.parse_args()
@@ -586,6 +690,7 @@ def main() -> None:
     extra_cache_root = str(Path(args.extra_cache_root).resolve())
 
     max_problems_per_cache = None if int(args.max_problems_per_cache) <= 0 else int(args.max_problems_per_cache)
+    feature_cache_dir = None if str(args.feature_cache_dir).strip().lower() in {"", "none", "off"} else (REPO_ROOT / str(args.feature_cache_dir)).resolve()
 
     v1_bundle = load_earlystop_svd_bundle(REPO_ROOT / "models/ml_selectors/earlystop_svd_lowrank_lr_v1.pkl")
     bridge_bundle = load_earlystop_svm_bundle(REPO_ROOT / "models/ml_selectors/bestofn_svm_bridge_v1.pkl")
@@ -594,29 +699,27 @@ def main() -> None:
         bridge_bundle=bridge_bundle,
     )
 
-    print(f"[round1b] building feature store for main root={main_cache_root}")
-    main_store = _qualify_feature_store(
-        build_feature_store(
-            cache_root=main_cache_root,
-            positions=EXTRACTION_POSITIONS,
-            required_feature_names=required_features,
-            max_problems_per_cache=max_problems_per_cache,
-            max_workers=int(args.workers),
-            chunk_problems=int(args.feature_chunk_problems),
-        ),
+    main_store, main_cache_path, main_cache_status = _load_or_build_qualified_feature_store(
         source_name="cache",
+        cache_root=str(main_cache_root),
+        positions=EXTRACTION_POSITIONS,
+        required_feature_names=required_features,
+        max_problems_per_cache=max_problems_per_cache,
+        max_workers=int(args.workers),
+        chunk_problems=int(args.feature_chunk_problems),
+        feature_cache_dir=feature_cache_dir,
+        refresh_feature_cache=bool(args.refresh_feature_cache),
     )
-    print(f"[round1b] building feature store for extra root={extra_cache_root}")
-    extra_store = _qualify_feature_store(
-        build_feature_store(
-            cache_root=extra_cache_root,
-            positions=EXTRACTION_POSITIONS,
-            required_feature_names=required_features,
-            max_problems_per_cache=max_problems_per_cache,
-            max_workers=int(args.workers),
-            chunk_problems=int(args.feature_chunk_problems),
-        ),
+    extra_store, extra_cache_path, extra_cache_status = _load_or_build_qualified_feature_store(
         source_name="cache_train",
+        cache_root=str(extra_cache_root),
+        positions=EXTRACTION_POSITIONS,
+        required_feature_names=required_features,
+        max_problems_per_cache=max_problems_per_cache,
+        max_workers=int(args.workers),
+        chunk_problems=int(args.feature_chunk_problems),
+        feature_cache_dir=feature_cache_dir,
+        refresh_feature_cache=bool(args.refresh_feature_cache),
     )
 
     combined_store = main_store + extra_store
@@ -822,6 +925,15 @@ def main() -> None:
         "protocol": {
             "main_cache_root": str(main_cache_root),
             "extra_cache_root": str(extra_cache_root),
+            "feature_cache_dir": None if feature_cache_dir is None else str(feature_cache_dir),
+            "feature_cache_status": {
+                "cache": str(main_cache_status),
+                "cache_train": str(extra_cache_status),
+            },
+            "feature_cache_paths": {
+                "cache": None if main_cache_path is None else str(main_cache_path),
+                "cache_train": None if extra_cache_path is None else str(extra_cache_path),
+            },
             "holdout_split": float(args.holdout_split),
             "split_seed": int(args.split_seed),
             "train_store": _summarise_feature_store(train_store),

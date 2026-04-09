@@ -15,6 +15,7 @@ from sklearn.preprocessing import StandardScaler
 
 from nad.core.selectors.trajectory_impl import (
     DEFAULT_REFLECTION_THRESHOLD,
+    _compute_trajectory_arrays,
     _compute_trajectory_scores_for_prefix_counts,
     _compute_trajectory_scores,
     _extract_slice_keysets,
@@ -63,6 +64,14 @@ META_FEATURES = [
     "self_similarity",
 ]
 
+PREFIX_LOCAL_FEATURES = [
+    "tail_q10",
+    "head_tail_gap",
+    "tail_variance",
+    "last_event_tail_conf",
+    "event_pre_post_delta",
+]
+
 AVAILABILITY_FEATURES = [
     "has_tok_conf",
     "has_tok_gini",
@@ -72,9 +81,9 @@ AVAILABILITY_FEATURES = [
     "has_rows_bank",
 ]
 
-FULL_FEATURE_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES + AVAILABILITY_FEATURES
+FULL_FEATURE_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES + AVAILABILITY_FEATURES + PREFIX_LOCAL_FEATURES
 
-BASELINE_SIGNAL_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES
+BASELINE_SIGNAL_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES + PREFIX_LOCAL_FEATURES
 
 FEATURE_FAMILY_MAP = {
     "token_only": TOKEN_FEATURES + [
@@ -154,6 +163,30 @@ def _prefix_tail_mean(arr: Optional[np.ndarray], p: float, tail_frac: float = 0.
     return float(np.mean(arr[max(0, cut - tail_w):cut]))
 
 
+def _prefix_tail_variance(arr: Optional[np.ndarray], p: float, tail_frac: float = 0.1) -> float:
+    if arr is None:
+        return 0.0
+    t = int(arr.shape[0])
+    if t == 0:
+        return 0.0
+    cut = max(1, int(p * t))
+    tail_w = max(1, int(tail_frac * cut))
+    return float(np.var(arr[max(0, cut - tail_w):cut]))
+
+
+def _prefix_head_tail_gap(arr: Optional[np.ndarray], p: float, frac: float = 0.1) -> float:
+    if arr is None:
+        return 0.0
+    t = int(arr.shape[0])
+    if t == 0:
+        return 0.0
+    cut = max(1, int(p * t))
+    width = max(1, int(frac * cut))
+    head_mean = float(np.mean(arr[:width]))
+    tail_mean = float(np.mean(arr[max(0, cut - width):cut]))
+    return head_mean - tail_mean
+
+
 def _prefix_half_slope(arr: Optional[np.ndarray], p: float) -> float:
     if arr is None:
         return 0.0
@@ -185,10 +218,78 @@ def _empty_signal_map() -> dict[str, list[float]]:
     return {name: [0.0] * N_POSITIONS for name in FULL_FEATURE_NAMES}
 
 
-def extract_earlystop_signals_for_sample(
+def _empty_signal_map_for_positions(positions: tuple[float, ...]) -> dict[str, list[float]]:
+    return {name: [0.0] * len(positions) for name in FULL_FEATURE_NAMES}
+
+
+def _get_slice_token_boundaries(reader: CacheReader, run_id: int) -> Optional[np.ndarray]:
+    rows_srp = reader.rows_sample_row_ptr
+    rows_trp = reader.rows_token_row_ptr
+    if rows_srp is None or rows_trp is None:
+        return None
+    if run_id < 0 or run_id >= len(rows_srp) - 1:
+        return None
+    row_start = int(rows_srp[run_id])
+    row_end = int(rows_srp[run_id + 1])
+    if row_end <= row_start:
+        return None
+    offsets = np.asarray(rows_trp[row_start:row_end + 1], dtype=np.int64)
+    if offsets.size < 2:
+        return None
+    base = int(offsets[0])
+    return offsets - base
+
+
+def _prefix_event_features(
+    tok_conf_arr: Optional[np.ndarray],
+    slice_boundaries: Optional[np.ndarray],
+    refl_arr: Optional[np.ndarray],
+    prefix_token_end: int,
+    prefix_slice_count: int,
+    reflection_threshold: float,
+) -> tuple[float, float]:
+    if tok_conf_arr is None or slice_boundaries is None or refl_arr is None:
+        return 0.0, 0.0
+    if prefix_slice_count <= 1 or prefix_token_end <= 0:
+        return 0.0, 0.0
+
+    n_bounds = int(slice_boundaries.shape[0])
+    prefix_slice_count = min(int(prefix_slice_count), n_bounds - 1)
+    prefix_token_end = min(int(prefix_token_end), int(len(tok_conf_arr)))
+    if prefix_slice_count <= 1 or prefix_token_end <= 0:
+        return 0.0, 0.0
+
+    last_event_slice = -1
+    for s_idx in range(prefix_slice_count - 1, 0, -1):
+        if refl_arr.size >= s_idx and float(refl_arr[s_idx - 1]) > float(reflection_threshold):
+            last_event_slice = int(s_idx)
+            break
+
+    if last_event_slice < 0 or (last_event_slice + 1) >= n_bounds:
+        return 0.0, 0.0
+
+    post_start = min(int(slice_boundaries[last_event_slice + 1]), prefix_token_end)
+    if post_start >= prefix_token_end:
+        return 0.0, 0.0
+    last_event_tail_conf = float(np.mean(tok_conf_arr[post_start:prefix_token_end]))
+
+    pre_start_slice = max(0, last_event_slice - 2)
+    pre_lo = min(int(slice_boundaries[pre_start_slice]), prefix_token_end)
+    pre_hi = min(int(slice_boundaries[last_event_slice]), prefix_token_end)
+    if pre_hi <= pre_lo:
+        return last_event_tail_conf, 0.0
+
+    pre_mean = float(np.mean(tok_conf_arr[pre_lo:pre_hi]))
+    post_mean = float(np.mean(tok_conf_arr[post_start:prefix_token_end]))
+    return last_event_tail_conf, pre_mean - post_mean
+
+
+def extract_earlystop_signals_for_positions(
     reader: CacheReader,
     run_id: int,
+    positions: tuple[float, ...],
     required_features: Optional[set[str]] = None,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
 ) -> dict[str, list[float]]:
     """Extract domain-agnostic early-stop features for one run.
 
@@ -198,14 +299,24 @@ def extract_earlystop_signals_for_sample(
     req = set(FULL_FEATURE_NAMES) if required_features is None else set(required_features)
     tv = reader.get_token_view(int(run_id))
     if tv is None:
-        return _empty_signal_map()
+        return _empty_signal_map_for_positions(positions)
 
-    need_tok_conf = bool(req & {"tok_conf_prefix", "tok_conf_recency", "has_tok_conf"})
+    need_tok_conf = bool(req & {
+        "tok_conf_prefix",
+        "tok_conf_recency",
+        "has_tok_conf",
+        "tail_q10",
+        "head_tail_gap",
+        "tail_variance",
+        "last_event_tail_conf",
+        "event_pre_post_delta",
+    })
     need_tok_gini = bool(req & {"tok_gini_prefix", "tok_gini_tail", "tok_gini_slope", "has_tok_gini"})
     need_tok_neg_entropy = bool(req & {"tok_neg_entropy_prefix", "tok_neg_entropy_recency", "has_tok_neg_entropy"})
     need_tok_selfcert = bool(req & {"tok_selfcert_prefix", "tok_selfcert_recency", "has_tok_selfcert"})
     need_tok_logprob = bool(req & {"tok_logprob_prefix", "tok_logprob_recency", "has_tok_logprob"})
     need_traj = bool(req & set(TRAJ_FEATURES))
+    need_prefix_local = bool(req & set(PREFIX_LOCAL_FEATURES))
     need_self_similarity = "self_similarity" in req
     need_ncount = bool(req & {"nc_mean", "nc_slope"})
     need_has_rows = "has_rows_bank" in req
@@ -236,13 +347,14 @@ def extract_earlystop_signals_for_sample(
 
     slices: list[Any] = []
     n_slices = 0
-    if need_traj or need_self_similarity:
+    if need_traj or need_self_similarity or need_prefix_local:
         slices = _extract_slice_keysets(reader, int(run_id))
         n_slices = len(slices)
     elif row_start >= 0 and row_end >= 0:
         n_slices = max(0, row_end - row_start)
 
     has_rows_bank = 1.0 if n_slices > 0 else 0.0
+    slice_boundaries = _get_slice_token_boundaries(reader, int(run_id)) if need_prefix_local else None
 
     nc_all: Optional[np.ndarray] = None
     if need_ncount and rows_rp is not None and row_start >= 0 and row_end > row_start:
@@ -269,14 +381,22 @@ def extract_earlystop_signals_for_sample(
             self_similarity = 0.0
 
     traj_by_cut: dict[int, dict[str, float]] = {}
-    if need_traj and n_slices > 0:
-        traj_by_cut = _compute_trajectory_scores_for_prefix_counts(
-            slices,
-            [max(1, int(p * n_slices)) for p in EARLY_STOP_POSITIONS],
-            reflection_threshold=DEFAULT_REFLECTION_THRESHOLD,
-        )
+    refl_arr: Optional[np.ndarray] = None
+    if (need_traj or need_prefix_local) and n_slices > 0:
+        prefix_counts = [max(1, int(p * n_slices)) for p in positions]
+        if need_traj:
+            traj_by_cut = _compute_trajectory_scores_for_prefix_counts(
+                slices,
+                prefix_counts,
+                reflection_threshold=float(reflection_threshold),
+            )
+        if need_prefix_local:
+            try:
+                _, _, refl_arr = _compute_trajectory_arrays(slices)
+            except Exception:
+                refl_arr = None
 
-    signals = _empty_signal_map()
+    signals = _empty_signal_map_for_positions(positions)
 
     has_tok_conf = 1.0 if tok_conf_arr is not None and len(tok_conf_arr) > 0 else 0.0
     has_tok_gini = 1.0 if tok_gini_arr is not None and len(tok_gini_arr) > 0 else 0.0
@@ -284,11 +404,17 @@ def extract_earlystop_signals_for_sample(
     has_tok_selfcert = 1.0 if tok_selfcert_arr is not None and len(tok_selfcert_arr) > 0 else 0.0
     has_tok_logprob = 1.0 if tok_logprob_arr is not None and len(tok_logprob_arr) > 0 else 0.0
 
-    for pos_i, p in enumerate(EARLY_STOP_POSITIONS):
+    for pos_i, p in enumerate(positions):
         if "tok_conf_prefix" in req:
             signals["tok_conf_prefix"][pos_i] = _prefix_mean(tok_conf_arr, p)
         if "tok_conf_recency" in req:
             signals["tok_conf_recency"][pos_i] = _prefix_recency(tok_conf_arr, p)
+        if "tail_q10" in req:
+            signals["tail_q10"][pos_i] = _prefix_tail_mean(tok_conf_arr, p)
+        if "head_tail_gap" in req:
+            signals["head_tail_gap"][pos_i] = _prefix_head_tail_gap(tok_conf_arr, p)
+        if "tail_variance" in req:
+            signals["tail_variance"][pos_i] = _prefix_tail_variance(tok_conf_arr, p)
 
         if "tok_gini_prefix" in req:
             signals["tok_gini_prefix"][pos_i] = _prefix_mean(tok_gini_arr, p)
@@ -326,6 +452,25 @@ def extract_earlystop_signals_for_sample(
             if "traj_late_convergence" in req:
                 signals["traj_late_convergence"][pos_i] = float(traj["late_convergence"])
 
+        if need_prefix_local and tok_conf_arr is not None and n_slices > 0:
+            k = max(1, int(p * n_slices))
+            prefix_token_end = max(1, int(p * len(tok_conf_arr)))
+            if slice_boundaries is not None:
+                boundary_idx = min(int(k), int(slice_boundaries.shape[0] - 1))
+                prefix_token_end = min(prefix_token_end, int(slice_boundaries[boundary_idx]))
+            last_event_tail_conf, event_pre_post_delta = _prefix_event_features(
+                tok_conf_arr=tok_conf_arr,
+                slice_boundaries=slice_boundaries,
+                refl_arr=refl_arr,
+                prefix_token_end=prefix_token_end,
+                prefix_slice_count=k,
+                reflection_threshold=float(reflection_threshold),
+            )
+            if "last_event_tail_conf" in req:
+                signals["last_event_tail_conf"][pos_i] = last_event_tail_conf
+            if "event_pre_post_delta" in req:
+                signals["event_pre_post_delta"][pos_i] = event_pre_post_delta
+
         if need_ncount and nc_all is not None and len(nc_all) > 0:
             k = max(1, int(p * len(nc_all)))
             if "nc_mean" in req:
@@ -350,6 +495,21 @@ def extract_earlystop_signals_for_sample(
             signals["has_rows_bank"][pos_i] = has_rows_bank
 
     return signals
+
+
+def extract_earlystop_signals_for_sample(
+    reader: CacheReader,
+    run_id: int,
+    required_features: Optional[set[str]] = None,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
+) -> dict[str, list[float]]:
+    return extract_earlystop_signals_for_positions(
+        reader=reader,
+        run_id=run_id,
+        positions=tuple(float(p) for p in EARLY_STOP_POSITIONS),
+        required_features=required_features,
+        reflection_threshold=float(reflection_threshold),
+    )
 
 
 def _auroc(scores: np.ndarray, labels: np.ndarray) -> float:
@@ -894,6 +1054,7 @@ def _problem_tensor(
     reader: CacheReader,
     sample_ids: list[int],
     required_feature_names: Optional[set[str]] = None,
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
 ) -> np.ndarray:
     n_runs = len(sample_ids)
     tensor = np.zeros((n_runs, N_POSITIONS, len(FULL_FEATURE_NAMES)), dtype=np.float64)
@@ -902,6 +1063,7 @@ def _problem_tensor(
             reader,
             int(sample_id),
             required_features=required_feature_names,
+            reflection_threshold=float(reflection_threshold),
         )
         for f_i, f_name in enumerate(FULL_FEATURE_NAMES):
             tensor[row_i, :, f_i] = np.asarray(signal_map[f_name], dtype=np.float64)
@@ -926,6 +1088,10 @@ def score_cache_entry_earlystop_svd(
 
     reader = CacheReader(str(entry.cache_root))
     groups = _parse_meta_groups(entry)
+    route_thresholds = {
+        float(route.get("reflection_threshold", bundle.get("reflection_threshold", DEFAULT_REFLECTION_THRESHOLD)))
+        for route in domain_bundle["routes"]
+    }
 
     out: dict[str, dict[str, list[float]]] = {}
 
@@ -934,17 +1100,22 @@ def score_cache_entry_earlystop_svd(
             break
 
         sample_ids = [int(sid) for sid in sample_ids_raw]
-        tensor = _problem_tensor(
-            reader,
-            sample_ids,
-            required_feature_names=required_features,
-        )
+        tensor_by_threshold = {
+            float(threshold): _problem_tensor(
+                reader,
+                sample_ids,
+                required_feature_names=required_features,
+                reflection_threshold=float(threshold),
+            )
+            for threshold in sorted(route_thresholds)
+        }
 
         run_scores = {str(sid): [0.0] * N_POSITIONS for sid in sample_ids}
 
         for pos_i in range(N_POSITIONS):
             route = domain_bundle["routes"][pos_i]
-            x_raw = tensor[:, pos_i, :]
+            route_threshold = float(route.get("reflection_threshold", bundle.get("reflection_threshold", DEFAULT_REFLECTION_THRESHOLD)))
+            x_raw = tensor_by_threshold[route_threshold][:, pos_i, :]
             x_rank = _rank_transform_matrix(x_raw)
 
             if route["route_type"] == "baseline":
