@@ -1,0 +1,45 @@
+Submission #123
+Best-of-N Selection — extreme12_earlystop_prefix10_svd_round1b_cap8_slot100__svm_bridge_lcb
+
+Submission Info
+Task
+best_of_n
+Method
+extreme12_earlystop_prefix10_svd_round1b_cap8_slot100__svm_bridge_lcb
+File
+extreme12_earlystop_prefix10_svd_round1b_cap8_slot100__svm_bridge_lcb.json
+Submitted
+2026-04-09 10:20:19 UTC
+Status
+Not best
+Primary Score
+3.0000
+Average Rank (lower is better)
+All Metrics
+0.8403
+AUROC
+0.7406
+Hit@1
+0.8123
+Hit@3
+0.9263
+SelAcc@10%
+0.7252
+Pairwise Acc
+62080
+Samples
+970
+Problems
+Cache	AUROC	Hit@1	Hit@3	SelAcc@10%	Pairwise Acc	Samples
+DS-R1/aime24	0.9355	0.8667	0.9000	1.0000	0.8810	1920
+DS-R1/aime25	0.9361	0.7000	0.7333	0.9896	0.6483	1920
+DS-R1/brumo25	0.9479	0.9000	0.9000	0.9948	0.8670	1920
+DS-R1/gpqa	0.7570	0.6414	0.7828	0.9732	0.6097	12672
+DS-R1/hmmt25	0.9265	0.7333	0.8000	0.9896	0.8305	1920
+DS-R1/lcb_v5	0.5043	0.5988	0.7066	0.6067	0.5141	10688
+Qwen3-4B/aime24	0.9424	0.9000	0.9333	1.0000	0.8614	1920
+Qwen3-4B/aime25	0.9452	0.7667	0.8333	1.0000	0.8037	1920
+Qwen3-4B/brumo25	0.9440	0.8333	0.9667	1.0000	0.8294	1920
+Qwen3-4B/gpqa	0.8192	0.6818	0.7727	0.9550	0.5685	12672
+Qwen3-4B/hmmt25	0.9256	0.6667	0.7000	0.9948	0.7882	1920
+Qwen3-4B/lcb_v5	0.5001	0.5988	0.7186	0.6114	0.5000	10688

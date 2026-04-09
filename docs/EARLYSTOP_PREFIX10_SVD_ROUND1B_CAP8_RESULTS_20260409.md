@@ -159,3 +159,23 @@ python3 scripts/run_earlystop_prefix10_svd_round1b.py \
 - 导出文件：`submission/BestofN/extreme12/patches/extreme12_earlystop_prefix10_svd_round1b_cap8_slot100__svm_bridge_lcb.json`。
 - payload 校验：`cache_keys=12`、`problems=970`、`samples=62080`。
 - override 策略：`DS-R1/lcb_v5`、`Qwen3-4B/lcb_v5` 直接沿用 `extreme12_svm_bridge_bestofn_v1.json`，避免 coding 侧形态差异拖低本轮 non-coding 主线。
+
+## 12. Submission #123 线上评测结果（Best-of-N）
+
+- submission：`#123`
+- method：`extreme12_earlystop_prefix10_svd_round1b_cap8_slot100__svm_bridge_lcb`
+- status：`Not best`
+- primary score（Average Rank，越低越好）：`3.0000`
+- All Metrics：`0.8403`
+- AUROC：`0.7406`
+- Hit@1：`0.8123`
+- Hit@3：`0.9263`
+- SelAcc@10%：`0.7252`
+- Pairwise Acc：`0.7252`
+- 样本规模：`62080` samples，`970` problems
+
+### 为什么 Best-of-N 方法名里带 `earlystop`
+
+- 这个 Best-of-N 分数不是直接训练一个新的 Best-of-N 模型得到的，而是从 `earlystop_prefix10_svd_round1b_cap8` 模型的 `100%` slot 直接提取得分后导出。
+- 因此方法名保留了 `earlystop_prefix10_svd_round1b_cap8_slot100`，用于明确“分数来源模型”和“来源 checkpoint”。
+- 后缀 `__svm_bridge_lcb` 表示 `lcb_v5` 两个 cache 仍使用 `svm_bridge` override。
