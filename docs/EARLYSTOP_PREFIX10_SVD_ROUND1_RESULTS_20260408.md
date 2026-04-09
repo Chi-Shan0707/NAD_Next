@@ -14,7 +14,15 @@
 - 当前 repo 内可直接复跑的 Early-Stop 导出线至少包括：`tok_conf_prefix_mean_v1`、`earlystop_svd_lowrank_lr_v1`、`earlystop_from_bestofn_svm_bridge_v1`。
 - 从现有反馈文本看，repo 内已导出线里 `earlystop_svd_lowrank_lr_v1` 强于 `earlystop_from_bestofn_svm_bridge_v1`；`benchmark_early_stop_v1` 只在反馈文本中出现，不是当前仓库内可直接复跑的实现。
 
-## 2. prefix-10 特征定义
+## 2. 训练 / 自测 / 榜单口径
+
+- `训练 / 搜索`：使用 `MUI_HUB/cache` 的 `6` 个 labeled cache，分别是 `DS-R1/aime24`、`DS-R1/aime25`、`DS-R1/brumo25`、`DS-R1/gpqa`、`DS-R1/hmmt25`、`DS-R1/lcb_v5`。
+- `离线自测`：仍然在同一个 `MUI_HUB/cache` 上做 direct-eval；路由选择用 grouped CV，但表中的提升是同一批 labeled cache 上的训练侧 / 自测侧提升，不是 blind leaderboard 提升。
+- `盲榜 / leaderboard`：导出到 `/home/jovyan/public-ro/MUI_HUB/cache_test`，覆盖 `12` 个 test cache（`DS-R1` + `Qwen3-4B` 各 6 个 benchmark）。榜单回执见 `submission/resultofleaderboard/Early Stop — earlystop_prefix10_svd_round1.txt`。
+- `离线自测相对 v1 的提升`：`AUC of AUROC +4.23pt`、`AUC of SelAcc +0.12pt`、`AUROC@100% +1.97pt`、`Stop Acc@100% +3.89pt`。
+- `盲榜相对 v1 的结果`：`Avg Rank 4.0000 vs 2.5625`（更差），`AUC of SelAcc 0.8311 vs 0.8483`（更差），但 `AUROC@100% 0.8492 vs 0.8456`、`Stop Acc@100% 0.7504 vs 0.7351`（更好）。
+
+## 3. prefix-10 特征定义
 
 ### 保留特征
 
@@ -26,7 +34,7 @@
 
 - `self_similarity`：现有实现按全序列前半/后半计算，会把 50%/100% 后验信息泄露进前缀视角；本轮明确删除。
 
-## 3. 5/10/15/20 checkpoint 对照
+## 4. 5/10/15/20 checkpoint 对照
 
 ### 全域统一单 checkpoint
 
@@ -50,7 +58,7 @@
 - 离线 control 结果并不支持“10% 单点最优”：无论全域还是非 coding，`20%` 都优于 `10%`。
 - 因此本轮最终胜出并不是靠“纯 10% 单 checkpoint”，而是靠 prefix-safe 训练 + 非 coding 专用 anchor4 + coding 回退到 v1。
 
-## 4. 与 `earlystop_svd_lowrank_lr_v1` 的对比
+## 5. 与 `earlystop_svd_lowrank_lr_v1` 的对比（离线自测 on `MUI_HUB/cache`）
 
 ### 整体对比
 
@@ -80,16 +88,25 @@
 - `global_anchor4`：math/science/coding 全域统一训练。
 - `noncoding_anchor4_coding_v1`：math+science 统一训练，coding 直接复用 `earlystop_svd_lowrank_lr_v1` 原生十槽路由。
 
-## 5. 是否导出新 submission
+## 6. 是否导出新 submission
 
 - 结论：`YES`。
 - 判定理由：offline direct-eval strict dominance over earlystop_svd_lowrank_lr_v1。
 
-## 6. 如果没有胜出，失败原因是什么
+## 7. blind leaderboard 结果（2026-04-09）
+
+- 提交文件：`submission/EarlyStop/earlystop_prefix10_svd_round1.json`
+- leaderboard 方法名：`earlystop_prefix10_svd_round1`
+- 榜单记录文件：`submission/resultofleaderboard/Early Stop — earlystop_prefix10_svd_round1.txt`
+- 结果：`Rank 4`，`Avg Rank 4.0000`
+- 与盲榜上的 `early-stop v1` 相比：`AUC of SelAcc` 下降（`0.8311 < 0.8483`），但 `AUROC@100%` 与 `Stop Acc@100%` 上升（`0.8492 > 0.8456`，`0.7504 > 0.7351`）。
+- 结论：本轮方法在训练侧 / 离线自测上确实优于 `v1`，但 blind leaderboard 的综合排名没有超过 `v1`。
+
+## 8. 如果没有胜出，失败原因是什么
 
 - 不适用：本轮已严格胜出 `earlystop_svd_lowrank_lr_v1` 并完成导出。
 
-## 7. 改了哪些文件
+## 9. 改了哪些文件
 
 - `docs/EARLYSTOP_PREFIX10_SVD_ROUND1_PLAN_20260408.md`
 - `docs/EARLYSTOP_PREFIX10_SVD_ROUND1_RESULTS_20260408.md`
@@ -99,7 +116,7 @@
 - `nad/core/selectors/trajectory_impl.py`
 - `submission/EarlyStop/earlystop_prefix10_svd_round1.json`
 
-## 8. 如何复跑
+## 10. 如何复跑
 
 ```bash
 bash cookbook/00_setup/verify.sh
