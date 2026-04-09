@@ -67,7 +67,9 @@ def _extract_slice_keysets(cache, run_id: int) -> List[np.ndarray]:
         key_end = int(rows_rp[row_idx + 1])
         if key_end > key_start:
             keys = np.asarray(rows_keys_arr[key_start:key_end], dtype=np.uint32)
-            slices.append(np.sort(keys))
+            if keys.size > 1 and np.any(keys[1:] < keys[:-1]):
+                keys = np.sort(keys)
+            slices.append(keys)
         else:
             slices.append(np.empty(0, dtype=np.uint32))
     return slices
@@ -158,6 +160,66 @@ def _compute_trajectory_scores(
         "reflection_count": int((refl_arr > float(reflection_threshold)).sum()),
         "late_convergence": late_conv,
     }
+
+
+def _compute_trajectory_scores_for_prefix_counts(
+    slice_keysets: List[np.ndarray],
+    prefix_counts: List[int],
+    reflection_threshold: float = DEFAULT_REFLECTION_THRESHOLD,
+) -> dict[int, dict[str, float]]:
+    """Compute exact trajectory scores for multiple prefix lengths in one pass."""
+    if not prefix_counts:
+        return {}
+
+    total_slices = len(slice_keysets)
+    if total_slices <= 1:
+        default_scores = {
+            "mean_continuity": 0.0,
+            "mean_novelty": 1.0,
+            "max_reflection": 0.0,
+            "reflection_count": 0,
+            "late_convergence": 0.0,
+        }
+        return {
+            int(k): dict(default_scores)
+            for k in sorted({max(1, min(int(k), max(1, total_slices))) for k in prefix_counts})
+        }
+
+    cont_arr, nov_arr, refl_arr = _compute_trajectory_arrays(slice_keysets)
+    cont_csum = np.concatenate(([0.0], np.cumsum(cont_arr, dtype=np.float64)))
+    nov_csum = np.concatenate(([0.0], np.cumsum(nov_arr, dtype=np.float64)))
+    refl_count_csum = np.concatenate(([0], np.cumsum(refl_arr > float(reflection_threshold), dtype=np.int32)))
+    refl_prefix_max = np.maximum.accumulate(refl_arr) if refl_arr.size > 0 else np.zeros(0, dtype=np.float64)
+
+    out: dict[int, dict[str, float]] = {}
+    for prefix_count in sorted({max(1, min(int(k), total_slices)) for k in prefix_counts}):
+        if prefix_count <= 1:
+            out[int(prefix_count)] = {
+                "mean_continuity": 0.0,
+                "mean_novelty": 1.0,
+                "max_reflection": 0.0,
+                "reflection_count": 0,
+                "late_convergence": 0.0,
+            }
+            continue
+
+        n_steps = int(prefix_count - 1)
+        split = max(1, int(n_steps * 0.75))
+        early_sum = float(cont_csum[split] - cont_csum[0])
+        late_sum = float(cont_csum[n_steps] - cont_csum[split])
+        early_cont = early_sum / float(split)
+        late_count = n_steps - split
+        late_cont = late_sum / float(late_count) if late_count > 0 else 0.0
+
+        out[int(prefix_count)] = {
+            "mean_continuity": float(cont_csum[n_steps] / float(n_steps)),
+            "mean_novelty": float(nov_csum[n_steps] / float(n_steps)),
+            "max_reflection": float(refl_prefix_max[n_steps - 1]) if refl_prefix_max.size > 0 else 0.0,
+            "reflection_count": int(refl_count_csum[n_steps]),
+            "late_convergence": 1.0 if late_cont > early_cont else 0.0,
+        }
+
+    return out
 
 
 def _slice_metric_means(cache, run_id: int) -> dict[str, np.ndarray]:

@@ -15,6 +15,7 @@ from sklearn.preprocessing import StandardScaler
 
 from nad.core.selectors.trajectory_impl import (
     DEFAULT_REFLECTION_THRESHOLD,
+    _compute_trajectory_scores_for_prefix_counts,
     _compute_trajectory_scores,
     _extract_slice_keysets,
 )
@@ -166,6 +167,20 @@ def _prefix_half_slope(arr: Optional[np.ndarray], p: float) -> float:
     return float(np.mean(arr[half:cut]) - np.mean(arr[:half]))
 
 
+def _prefix_count_slope(arr: Optional[np.ndarray], k: int) -> float:
+    if arr is None:
+        return 0.0
+    if int(k) < 2:
+        return 0.0
+    cut = min(int(k), int(len(arr)))
+    if cut < 2:
+        return 0.0
+    half = cut // 2
+    if half <= 0 or half >= cut:
+        return 0.0
+    return float(np.mean(arr[half:cut]) - np.mean(arr[:half]))
+
+
 def _empty_signal_map() -> dict[str, list[float]]:
     return {name: [0.0] * N_POSITIONS for name in FULL_FEATURE_NAMES}
 
@@ -253,6 +268,14 @@ def extract_earlystop_signals_for_sample(
         except Exception:
             self_similarity = 0.0
 
+    traj_by_cut: dict[int, dict[str, float]] = {}
+    if need_traj and n_slices > 0:
+        traj_by_cut = _compute_trajectory_scores_for_prefix_counts(
+            slices,
+            [max(1, int(p * n_slices)) for p in EARLY_STOP_POSITIONS],
+            reflection_threshold=DEFAULT_REFLECTION_THRESHOLD,
+        )
+
     signals = _empty_signal_map()
 
     has_tok_conf = 1.0 if tok_conf_arr is not None and len(tok_conf_arr) > 0 else 0.0
@@ -291,9 +314,7 @@ def extract_earlystop_signals_for_sample(
 
         if need_traj and n_slices > 0:
             k = max(1, int(p * n_slices))
-            traj = _compute_trajectory_scores(
-                slices[:k], reflection_threshold=DEFAULT_REFLECTION_THRESHOLD
-            )
+            traj = traj_by_cut[k]
             if "traj_continuity" in req:
                 signals["traj_continuity"][pos_i] = float(traj["mean_continuity"])
             if "traj_reflection_count" in req:
@@ -309,9 +330,8 @@ def extract_earlystop_signals_for_sample(
             k = max(1, int(p * len(nc_all)))
             if "nc_mean" in req:
                 signals["nc_mean"][pos_i] = float(np.mean(nc_all[:k]))
-            half = max(1, k // 2)
             if "nc_slope" in req:
-                signals["nc_slope"][pos_i] = float(np.mean(nc_all[half:k]) - np.mean(nc_all[:half]))
+                signals["nc_slope"][pos_i] = _prefix_count_slope(nc_all, k)
 
         if "self_similarity" in req:
             signals["self_similarity"][pos_i] = self_similarity
