@@ -193,6 +193,15 @@ def _bundle_reflection_thresholds(bundle: dict[str, Any]) -> set[float]:
     return thresholds
 
 
+def _domain_route_thresholds(bundle: dict[str, Any], domain: str) -> set[float]:
+    default_threshold = float(bundle.get("reflection_threshold", DEFAULT_REFLECTION_THRESHOLD))
+    domain_bundle = bundle["domains"][str(domain)]
+    return {
+        float(route.get("reflection_threshold", default_threshold))
+        for route in domain_bundle["routes"]
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Export EarlyStop SVD submission")
     ap.add_argument("--cache-root", default="/home/jovyan/public-ro/MUI_HUB/cache_test")
@@ -225,32 +234,53 @@ def main() -> None:
         domain = get_domain(entry.dataset_name)
         print(f"  [{entry.cache_key}] domain={domain} queued")
 
-    all_scores: list[tuple[str, dict]] = []
-    if len(bundle_thresholds) == 1:
-        reflection_threshold = next(iter(bundle_thresholds))
-        feature_store, feature_cache_path, feature_cache_status = _load_or_build_feature_store(
-            cache_root=args.cache_root,
-            positions=positions,
-            required_feature_names=required_features,
-            max_problems=args.max_problems,
-            reflection_threshold=float(reflection_threshold),
-            workers=int(args.workers),
-            feature_chunk_problems=int(args.feature_chunk_problems),
-            feature_cache_dir=feature_cache_dir,
-            refresh_feature_cache=bool(args.refresh_feature_cache),
-        )
-        print(f"Feature cache status: {feature_cache_status} | path={feature_cache_path}\n")
+    threshold_groups: dict[float, set[str]] = {}
+    direct_entries: list[Any] = []
+    for entry in entries:
+        domain = get_domain(entry.dataset_name)
+        route_thresholds = _domain_route_thresholds(bundle, domain)
+        if len(route_thresholds) == 1:
+            threshold = next(iter(route_thresholds))
+            threshold_groups.setdefault(float(threshold), set()).add(str(entry.cache_key))
+        else:
+            direct_entries.append(entry)
 
-        for payload in feature_store:
-            ps = _problem_scores_from_payload(payload, score_fn)
-            all_scores.append((payload["cache_key"], ps))
-            print(f"  [{payload['cache_key']}] domain={payload['domain']}")
-            print(f"    problems : {len(ps)}")
-            print(f"    samples  : {sum(len(v) for v in ps.values())}\n")
-    else:
-        print(f"Mixed route thresholds detected: {sorted(bundle_thresholds)}")
-        print("Using direct per-entry scoring fallback.\n")
-        for entry in entries:
+    all_scores: list[tuple[str, dict]] = []
+    if len(bundle_thresholds) == 1 or threshold_groups:
+        if len(bundle_thresholds) == 1:
+            print(f"Single route threshold detected: {sorted(bundle_thresholds)}")
+        else:
+            print(f"Mixed route thresholds detected: {sorted(bundle_thresholds)}")
+            print("Grouping cache entries by per-domain threshold before export.\n")
+
+        for reflection_threshold, include_cache_keys in sorted(threshold_groups.items()):
+            feature_store, feature_cache_path, feature_cache_status = _load_or_build_feature_store(
+                cache_root=args.cache_root,
+                positions=positions,
+                required_feature_names=required_features,
+                max_problems=args.max_problems,
+                reflection_threshold=float(reflection_threshold),
+                workers=int(args.workers),
+                feature_chunk_problems=int(args.feature_chunk_problems),
+                feature_cache_dir=feature_cache_dir,
+                refresh_feature_cache=bool(args.refresh_feature_cache),
+                include_cache_keys=include_cache_keys,
+            )
+            print(
+                f"Feature cache status: {feature_cache_status} | threshold={reflection_threshold:.2f} "
+                f"| path={feature_cache_path} | caches={sorted(include_cache_keys)}\n"
+            )
+
+            for payload in feature_store:
+                ps = _problem_scores_from_payload(payload, score_fn)
+                all_scores.append((payload["cache_key"], ps))
+                print(f"  [{payload['cache_key']}] domain={payload['domain']}")
+                print(f"    problems : {len(ps)}")
+                print(f"    samples  : {sum(len(v) for v in ps.values())}\n")
+
+    if direct_entries:
+        print(f"Direct fallback still needed for {len(direct_entries)} cache entries.\n")
+        for entry in direct_entries:
             ps = score_cache_entry_earlystop_svd(entry, bundle, max_problems=args.max_problems)
             all_scores.append((entry.cache_key, ps))
             print(f"  [{entry.cache_key}] domain={get_domain(entry.dataset_name)}")

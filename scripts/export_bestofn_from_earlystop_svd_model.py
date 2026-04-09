@@ -62,6 +62,11 @@ def _collect_required_features_for_slot(bundle: dict[str, Any], slot_index: int)
     return required
 
 
+def _slot_threshold_for_domain(bundle: dict[str, Any], domain: str, slot_index: int) -> float:
+    route = bundle["domains"][str(domain)]["routes"][int(slot_index)]
+    return float(route.get("reflection_threshold", bundle.get("reflection_threshold", 0.30)))
+
+
 def _problem_scores_from_payload(
     payload: dict[str, Any],
     *,
@@ -146,30 +151,44 @@ def main() -> None:
     use_override = override_path_raw.lower() not in {"", "none", "off"} and bool(override_cache_keys)
 
     feature_cache_dir = None if str(args.feature_cache_dir).strip().lower() in {"", "none", "off"} else (REPO_ROOT / str(args.feature_cache_dir)).resolve()
-    feature_store, feature_cache_path, feature_cache_status = _load_or_build_feature_store(
-        cache_root=str(args.cache_root),
-        positions=(position_value,),
-        required_feature_names=required_features,
-        max_problems=None,
-        workers=int(args.workers),
-        feature_chunk_problems=int(args.feature_chunk_problems),
-        feature_cache_dir=feature_cache_dir,
-        refresh_feature_cache=bool(args.refresh_feature_cache),
-        exclude_cache_keys=set(override_cache_keys) if use_override else None,
-    )
+    entries = discover_cache_entries(args.cache_root)
+    threshold_groups: dict[float, set[str]] = {}
+    for entry in entries:
+        cache_key = str(entry.cache_key)
+        if use_override and cache_key in override_cache_keys:
+            continue
+        domain = get_domain(entry.dataset_name)
+        threshold = _slot_threshold_for_domain(bundle, domain, slot_index)
+        threshold_groups.setdefault(float(threshold), set()).add(cache_key)
 
     print(f"Loaded bundle      : {_display_path(model_path)}")
-    print(f"Feature cache      : {feature_cache_status} | {feature_cache_path}")
     if use_override:
         print(f"Skipped feature extraction for override caches: {list(override_cache_keys)}")
 
     scores: dict[str, dict[str, dict[str, float]]] = {}
-    for payload in feature_store:
-        cache_key = str(payload["cache_key"])
-        scores[cache_key] = _problem_scores_from_payload(payload, slot_index=slot_index, score_fn=score_fn)
-        n_problems = len(scores[cache_key])
-        n_samples = sum(len(v) for v in scores[cache_key].values())
-        print(f"  [{cache_key}] domain={get_domain(payload['dataset_name'])} problems={n_problems} samples={n_samples}")
+    for reflection_threshold, include_cache_keys in sorted(threshold_groups.items()):
+        feature_store, feature_cache_path, feature_cache_status = _load_or_build_feature_store(
+            cache_root=str(args.cache_root),
+            positions=(position_value,),
+            required_feature_names=required_features,
+            max_problems=None,
+            reflection_threshold=float(reflection_threshold),
+            workers=int(args.workers),
+            feature_chunk_problems=int(args.feature_chunk_problems),
+            feature_cache_dir=feature_cache_dir,
+            refresh_feature_cache=bool(args.refresh_feature_cache),
+            include_cache_keys=include_cache_keys,
+        )
+        print(
+            f"Feature cache      : {feature_cache_status} | threshold={reflection_threshold:.2f} "
+            f"| {feature_cache_path}"
+        )
+        for payload in feature_store:
+            cache_key = str(payload["cache_key"])
+            scores[cache_key] = _problem_scores_from_payload(payload, slot_index=slot_index, score_fn=score_fn)
+            n_problems = len(scores[cache_key])
+            n_samples = sum(len(v) for v in scores[cache_key].values())
+            print(f"  [{cache_key}] domain={get_domain(payload['dataset_name'])} problems={n_problems} samples={n_samples}")
 
     override_method_name: str | None = None
     if use_override:

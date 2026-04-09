@@ -140,6 +140,40 @@ def _display_path(path: Path) -> str:
         return str(path)
 
 
+def _mean_ignore_nan(values: list[float] | tuple[float, ...] | np.ndarray) -> float:
+    arr = np.asarray(values, dtype=np.float64)
+    finite = arr[np.isfinite(arr)]
+    if finite.size == 0:
+        return float("nan")
+    return float(np.mean(finite))
+
+
+def _metric_ge(lhs: float, rhs: float) -> bool:
+    lhs_finite = math.isfinite(float(lhs))
+    rhs_finite = math.isfinite(float(rhs))
+    if lhs_finite and rhs_finite:
+        return float(lhs) >= float(rhs)
+    if lhs_finite and not rhs_finite:
+        return True
+    if not lhs_finite and rhs_finite:
+        return False
+    return True
+
+
+def _metric_gt(lhs: float, rhs: float) -> bool:
+    lhs_finite = math.isfinite(float(lhs))
+    rhs_finite = math.isfinite(float(rhs))
+    if lhs_finite and rhs_finite:
+        return float(lhs) > float(rhs)
+    if lhs_finite and not rhs_finite:
+        return True
+    return False
+
+
+def _sort_metric(value: float) -> float:
+    return float(value) if math.isfinite(float(value)) else float("-inf")
+
+
 def _empty_signal_map(positions: tuple[float, ...]) -> dict[str, list[float]]:
     return {name: [0.0] * len(positions) for name in FULL_FEATURE_NAMES}
 
@@ -988,7 +1022,7 @@ def evaluate_problem_scores(
             }
             for idx, position in enumerate(EARLY_STOP_POSITIONS)
         ],
-        "auc_of_auroc": float(np.mean(per_position_auroc)) if per_position_auroc else float("nan"),
+        "auc_of_auroc": _mean_ignore_nan(per_position_auroc) if per_position_auroc else float("nan"),
         "auc_of_selacc": float(np.mean(per_position_selacc)) if per_position_selacc else float("nan"),
         "earliest_gt_0.6": None if earliest is None else float(earliest),
         "auroc@100%": float(per_position_auroc[-1]) if per_position_auroc else float("nan"),
@@ -1012,7 +1046,7 @@ def aggregate_cache_metrics(cache_metrics: list[dict[str, Any]]) -> dict[str, An
     for pos_idx, position in enumerate(EARLY_STOP_POSITIONS):
         by_position.append({
             "position": float(position),
-            "auroc": float(np.mean([cache["position_metrics"][pos_idx]["auroc"] for cache in cache_metrics])),
+            "auroc": _mean_ignore_nan([cache["position_metrics"][pos_idx]["auroc"] for cache in cache_metrics]),
             "selacc@10%": float(np.mean([cache["position_metrics"][pos_idx]["selacc@10%"] for cache in cache_metrics])),
             "stop_acc": float(np.mean([cache["position_metrics"][pos_idx]["stop_acc"] for cache in cache_metrics])),
         })
@@ -1026,10 +1060,10 @@ def aggregate_cache_metrics(cache_metrics: list[dict[str, Any]]) -> dict[str, An
     return {
         "num_caches": int(len(cache_metrics)),
         "samples": int(sum(int(cache["n_samples"]) for cache in cache_metrics)),
-        "auc_of_auroc": float(np.mean([cache["auc_of_auroc"] for cache in cache_metrics])),
+        "auc_of_auroc": _mean_ignore_nan([cache["auc_of_auroc"] for cache in cache_metrics]),
         "auc_of_selacc": float(np.mean([cache["auc_of_selacc"] for cache in cache_metrics])),
         "earliest_gt_0.6": None if aggregate_earliest is None else float(aggregate_earliest),
-        "auroc@100%": float(np.mean([cache["auroc@100%"] for cache in cache_metrics])),
+        "auroc@100%": _mean_ignore_nan([cache["auroc@100%"] for cache in cache_metrics]),
         "stop_acc@100%": float(np.mean([cache["stop_acc@100%"] for cache in cache_metrics])),
         "by_position": by_position,
     }
@@ -1083,7 +1117,7 @@ def _compute_cache_metrics_from_rows(
             }
             for idx, position in enumerate(position_values)
         ],
-        "auc_of_auroc": float(np.mean(per_position_auroc)) if per_position_auroc else float("nan"),
+        "auc_of_auroc": _mean_ignore_nan(per_position_auroc) if per_position_auroc else float("nan"),
         "auc_of_selacc": float(np.mean(per_position_selacc)) if per_position_selacc else float("nan"),
         "earliest_gt_0.6": None if earliest is None else float(earliest),
         "auroc@100%": float(per_position_auroc[-1]) if per_position_auroc else float("nan"),
@@ -1384,8 +1418,8 @@ def choose_best_candidate(new_methods: list[dict[str, Any]]) -> dict[str, Any]:
         new_methods,
         key=lambda item: (
             float(item["aggregate"]["auc_of_selacc"]),
-            float(item["aggregate"]["auc_of_auroc"]),
-            float(item["aggregate"]["auroc@100%"]),
+            _sort_metric(float(item["aggregate"]["auc_of_auroc"])),
+            _sort_metric(float(item["aggregate"]["auroc@100%"])),
             float(item["aggregate"]["stop_acc@100%"]),
             str(item["method_name"]),
         ),
@@ -1397,8 +1431,8 @@ def decide_export(best_new: dict[str, Any], baseline_v1: dict[str, Any]) -> dict
     base = baseline_v1["aggregate"]
     beats = (
         float(cand["auc_of_selacc"]) > float(base["auc_of_selacc"])
-        and float(cand["auc_of_auroc"]) >= float(base["auc_of_auroc"])
-        and float(cand["auroc@100%"]) >= float(base["auroc@100%"])
+        and _metric_ge(float(cand["auc_of_auroc"]), float(base["auc_of_auroc"]))
+        and _metric_ge(float(cand["auroc@100%"]), float(base["auroc@100%"]))
         and float(cand["stop_acc@100%"]) >= float(base["stop_acc@100%"])
     )
     if beats:
@@ -1407,9 +1441,9 @@ def decide_export(best_new: dict[str, Any], baseline_v1: dict[str, Any]) -> dict
         failures = []
         if float(cand["auc_of_selacc"]) <= float(base["auc_of_selacc"]):
             failures.append("AUC of SelAcc 未超过 v1")
-        if float(cand["auc_of_auroc"]) < float(base["auc_of_auroc"]):
+        if not _metric_ge(float(cand["auc_of_auroc"]), float(base["auc_of_auroc"])):
             failures.append("AUC of AUROC 低于 v1")
-        if float(cand["auroc@100%"]) < float(base["auroc@100%"]):
+        if not _metric_ge(float(cand["auroc@100%"]), float(base["auroc@100%"])):
             failures.append("AUROC@100% 低于 v1")
         if float(cand["stop_acc@100%"]) < float(base["stop_acc@100%"]):
             failures.append("Stop Acc@100% 低于 v1")

@@ -50,6 +50,7 @@ from scripts.run_earlystop_prefix10_svd_round1 import (
     choose_best_candidate,
     collect_required_features_for_eval,
     evaluate_method_from_feature_store,
+    _metric_ge,
     make_bridge_score_fn,
     make_svd_bundle_score_fn,
     make_tok_conf_score_fn,
@@ -534,7 +535,7 @@ def _decision(
 
     beats_v1 = (
         float(cand["auc_of_selacc"]) > float(v1["auc_of_selacc"])
-        and float(cand["auroc@100%"]) >= float(v1["auroc@100%"])
+        and _metric_ge(float(cand["auroc@100%"]), float(v1["auroc@100%"]))
         and float(cand["stop_acc@100%"]) >= float(v1["stop_acc@100%"])
     )
     beats_cap8 = float(cand["auc_of_selacc"]) > float(cap8["auc_of_selacc"])

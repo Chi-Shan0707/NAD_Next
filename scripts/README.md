@@ -18,6 +18,9 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - Use `rank_*` and `plot_*` for summaries.
 
 ## Current notable `run_*` entrypoints
+- `run_earlystop_prefix10_svd_round1.py`: prefix-10 / anchor4 EarlyStop SVD baseline search.
+- `run_earlystop_prefix10_svd_round1b.py`: `cache + cache_train` holdout-based EarlyStop round1b validation.
+- `run_earlystop_strongfeat_round1.py`: strong-feature-narrowed EarlyStop SVD search on `cache + cache_train`.
 - `run_gpqa_pairwise_round1.py`: frozen GPQA pairwise round-1 reference run.
 - `run_gpqa_pairwise_round2.py`: round-2 no-promote recency-family follow-up.
 - `run_science_hybrid_round3.py`: current promoted science patch search and proxy evaluation.
@@ -31,6 +34,7 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_code_bestofn_research_round2.py`: continue Best-of-N coding research with LambdaSVM / DeepSets / SetTransformerLite.
 - `patch_bestofn_submission_with_math_deepsets_round1.py`: export the promoted BestofN math patch on top of the current stack.
 - `patch_bestofn_submission_with_code_rns_round1.py`: export a DS-only coding BestofN patch from a saved `code_rns_round1` bundle.
+- `export_earlystop_svd_submission.py`: export a blind EarlyStop submission from a saved SVD bundle.
 - `export_bestofn_from_earlystop_slot_with_bestofn_overrides.py`: build a Best-of-N submission from one EarlyStop slot, with selected cache overrides from an existing Best-of-N JSON.
 
 ## Note
@@ -58,6 +62,9 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - 总结和汇总阶段再看 `rank_*` 与 `plot_*`。
 
 ## 当前值得关注的 `run_*` 入口
+- `run_earlystop_prefix10_svd_round1.py`：prefix-10 / anchor4 EarlyStop SVD 基线搜索。
+- `run_earlystop_prefix10_svd_round1b.py`：基于 `cache + cache_train` holdout 协议的 EarlyStop round1b 验证。
+- `run_earlystop_strongfeat_round1.py`：在 `cache + cache_train` 上做强特征收窄版 EarlyStop SVD 搜索。
 - `run_gpqa_pairwise_round1.py`：冻结的 GPQA pairwise round-1 参考运行。
 - `run_gpqa_pairwise_round2.py`：round-2、无 promote 的 recency 家族后续实验。
 - `run_science_hybrid_round3.py`：当前 promoted science patch 搜索与 proxy 评估。
@@ -71,6 +78,7 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_code_bestofn_research_round2.py`：继续 Best-of-N coding 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `patch_bestofn_submission_with_math_deepsets_round1.py`：在当前 stack 上导出 promoted BestofN 数学补丁。
 - `patch_bestofn_submission_with_code_rns_round1.py`：从保存好的 `code_rns_round1` bundle 导出 DS-only coding BestofN patch。
+- `export_earlystop_svd_submission.py`：从保存好的 SVD bundle 导出 blind EarlyStop 提交。
 - `export_bestofn_from_earlystop_slot_with_bestofn_overrides.py`：从某个 EarlyStop 槽位直接构造 Best-of-N 提交，并允许从已有 Best-of-N JSON 覆盖指定 cache。
 
 ## 说明
