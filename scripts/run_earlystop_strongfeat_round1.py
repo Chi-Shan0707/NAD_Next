@@ -38,6 +38,7 @@ from nad.ops.earlystop_svm import load_earlystop_svm_bundle
 from scripts.run_earlystop_prefix10_svd_round1 import (
     ANCHOR_POSITIONS,
     DEFAULT_FEATURE_CHUNK_PROBLEMS,
+    EXTRACTION_POSITIONS,
     OFFICIAL_SLOT_TO_ANCHOR,
     _display_path,
     _fmt_earliest,
@@ -743,7 +744,7 @@ def main() -> None:
         main_store, main_cache_path, main_cache_status = _load_or_build_qualified_feature_store(
             source_name="cache",
             cache_root=main_cache_root,
-            positions=ANCHOR_POSITIONS,
+            positions=EXTRACTION_POSITIONS,
             required_feature_names=required_features,
             max_problems_per_cache=max_problems_per_cache,
             reflection_threshold=float(reflection_threshold),
@@ -755,7 +756,7 @@ def main() -> None:
         extra_store, extra_cache_path, extra_cache_status = _load_or_build_qualified_feature_store(
             source_name="cache_train",
             cache_root=extra_cache_root,
-            positions=ANCHOR_POSITIONS,
+            positions=EXTRACTION_POSITIONS,
             required_feature_names=required_features,
             max_problems_per_cache=max_problems_per_cache,
             reflection_threshold=float(reflection_threshold),
