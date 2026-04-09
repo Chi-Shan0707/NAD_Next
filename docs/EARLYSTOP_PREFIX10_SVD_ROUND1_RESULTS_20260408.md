@@ -7,6 +7,13 @@
 - 目标是提高公开/综合 Early-Stop 分数，不是扩平台
 - 本轮核心假设：prefix 前 10% 已包含足够强的早停信号，值得单独训练一个 prefix-10 专用 low-rank 模型
 
+## 0. 协议更正
+
+- round1 **没有**把 `cache_train` 纳入训练 / 验证协议；这一点后来被确认是方法学缺口。
+- round1 表里的“离线自测提升”来自 `MUI_HUB/cache` 的训练侧 / 同源 direct-eval，不能视为独立 holdout 提升。
+- 因此，round1 的独立证据其实只有 blind leaderboard；而 blind leaderboard 的综合排名并没有超过 `earlystop_svd_lowrank_lr_v1`。
+- 后续 round1b 已改成：`MUI_HUB/cache` + `cache_train` 扩大训练池，并对 non-coding 做确定性 holdout split。
+
 ## 1. 我确认的当前 repo 状态
 
 - 已读 `docs/README.md`、`docs/WORK_SUMMARY_0408_06.md`、`nad/ops/earlystop_svd.py`、`scripts/export_earlystop_svd_submission.py`。
@@ -14,12 +21,12 @@
 - 当前 repo 内可直接复跑的 Early-Stop 导出线至少包括：`tok_conf_prefix_mean_v1`、`earlystop_svd_lowrank_lr_v1`、`earlystop_from_bestofn_svm_bridge_v1`。
 - 从现有反馈文本看，repo 内已导出线里 `earlystop_svd_lowrank_lr_v1` 强于 `earlystop_from_bestofn_svm_bridge_v1`；`benchmark_early_stop_v1` 只在反馈文本中出现，不是当前仓库内可直接复跑的实现。
 
-## 2. 训练 / 自测 / 榜单口径
+## 2. 训练 / 自测 / 榜单口径（round1 原始协议）
 
 - `训练 / 搜索`：使用 `MUI_HUB/cache` 的 `6` 个 labeled cache，分别是 `DS-R1/aime24`、`DS-R1/aime25`、`DS-R1/brumo25`、`DS-R1/gpqa`、`DS-R1/hmmt25`、`DS-R1/lcb_v5`。
 - `离线自测`：仍然在同一个 `MUI_HUB/cache` 上做 direct-eval；路由选择用 grouped CV，但表中的提升是同一批 labeled cache 上的训练侧 / 自测侧提升，不是 blind leaderboard 提升。
 - `盲榜 / leaderboard`：导出到 `/home/jovyan/public-ro/MUI_HUB/cache_test`，覆盖 `12` 个 test cache（`DS-R1` + `Qwen3-4B` 各 6 个 benchmark）。榜单回执见 `submission/resultofleaderboard/Early Stop — earlystop_prefix10_svd_round1.txt`。
-- `离线自测相对 v1 的提升`：`AUC of AUROC +4.23pt`、`AUC of SelAcc +0.12pt`、`AUROC@100% +1.97pt`、`Stop Acc@100% +3.89pt`。
+- `离线自测相对 v1 的提升`：`AUC of AUROC +4.23pt`、`AUC of SelAcc +0.12pt`、`AUROC@100% +1.97pt`、`Stop Acc@100% +3.89pt`；但这些提升属于 **train-side / in-sample** 指标。
 - `盲榜相对 v1 的结果`：`Avg Rank 4.0000 vs 2.5625`（更差），`AUC of SelAcc 0.8311 vs 0.8483`（更差），但 `AUROC@100% 0.8492 vs 0.8456`、`Stop Acc@100% 0.7504 vs 0.7351`（更好）。
 
 ## 3. prefix-10 特征定义
@@ -90,8 +97,9 @@
 
 ## 6. 是否导出新 submission
 
-- 结论：`YES`。
+- 结论：`YES`（这是 round1 当时基于 train-side direct-eval 作出的决定）。
 - 判定理由：offline direct-eval strict dominance over earlystop_svd_lowrank_lr_v1。
+- 事后复盘：这个导出决策的证据强度不够，因为它没有经过 `cache_train` 或其它独立 holdout 口径验证。
 
 ## 7. blind leaderboard 结果（2026-04-09）
 
@@ -104,7 +112,7 @@
 
 ## 8. 如果没有胜出，失败原因是什么
 
-- 不适用：本轮已严格胜出 `earlystop_svd_lowrank_lr_v1` 并完成导出。
+- 事后复盘口径下，真正的问题是：`cache_train` 没被纳入协议，导致 train-side direct-eval 过于乐观，而 blind leaderboard 综合排名没有超过 `v1`。
 
 ## 9. 改了哪些文件
 

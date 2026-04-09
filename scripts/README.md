@@ -29,6 +29,7 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_gpqa_bestofn_research_round2.py`: continue Best-of-N GPQA research with LambdaSVM / DeepSets / SetTransformerLite.
 - `run_code_bestofn_research_round2.py`: continue Best-of-N coding research with LambdaSVM / DeepSets / SetTransformerLite.
 - `patch_bestofn_submission_with_math_deepsets_round1.py`: export the promoted BestofN math patch on top of the current stack.
+- `export_bestofn_from_earlystop_slot_with_bestofn_overrides.py`: build a Best-of-N submission from one EarlyStop slot, with selected cache overrides from an existing Best-of-N JSON.
 
 ## Note
 - New local-only experiments should prefer subfolders conceptually, but stable user-facing entry scripts remain in `scripts/` for backwards compatibility.
@@ -66,6 +67,7 @@ This folder keeps executable entrypoints at the top level so existing commands c
 - `run_gpqa_bestofn_research_round2.py`：继续 Best-of-N GPQA 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `run_code_bestofn_research_round2.py`：继续 Best-of-N coding 侧的 LambdaSVM / DeepSets / SetTransformerLite 研究。
 - `patch_bestofn_submission_with_math_deepsets_round1.py`：在当前 stack 上导出 promoted BestofN 数学补丁。
+- `export_bestofn_from_earlystop_slot_with_bestofn_overrides.py`：从某个 EarlyStop 槽位直接构造 Best-of-N 提交，并允许从已有 Best-of-N JSON 覆盖指定 cache。
 
 ## 说明
 - 新的纯本地实验从概念上更适合放子目录，但稳定、面向用户的入口脚本仍保留在 `scripts/` 顶层，以兼容既有调用方式。

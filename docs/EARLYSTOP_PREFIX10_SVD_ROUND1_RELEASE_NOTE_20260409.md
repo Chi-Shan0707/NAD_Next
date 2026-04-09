@@ -8,6 +8,13 @@
   - non-coding（math + science）使用本轮 prefix-safe anchor4 模型；
   - coding 直接回退到 `earlystop_svd_lowrank_lr_v1`。
 
+## 重要更正
+
+- round1 **没有使用** `cache_train`；训练、搜索、离线 direct-eval 都发生在同一个 `MUI_HUB/cache` 上。
+- 因此文中的“离线自测提升”只代表训练侧 / 同源 direct-eval，不是独立 holdout 提升。
+- round1 真正独立的结果只有 blind leaderboard，而 blind leaderboard 的综合排名并没有超过 `earlystop_svd_lowrank_lr_v1`。
+- 后续 round1b 已把 `cache_train` 纳入协议，并给 non-coding 留出确定性 holdout。
+
 ## 训练 / 自测 / 榜单分别是什么
 
 - `训练 / 搜索`：
@@ -53,6 +60,7 @@
 
 - 这轮方法在训练侧 / 离线自测上，确实比 `earlystop_svd_lowrank_lr_v1` 更强。
 - 但 blind leaderboard 没有同步转化成更好的综合排名。
+- 结合后续复盘，更合理的解释是：round1 的离线口径过于乐观，因为没有把 `cache_train` 作为独立协议的一部分。
 - 现象上更像是：
   - 非 coding 的 prefix-safe 路由在训练侧收益明显；
   - `100%` 末端 stop 指标也确实提高；
