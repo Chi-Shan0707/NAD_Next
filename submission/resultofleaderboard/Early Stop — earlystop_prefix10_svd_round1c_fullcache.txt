@@ -1,0 +1,60 @@
+Early Stop Leaderboard
+Dataset: 12 test caches across 6 benchmarks (DS-R1 & Qwen3-4B) — ranked by average rank across 32 metrics (lower is better)
+
+我是drfit
+
+Submission #129
+Early Stop — earlystop_prefix10_svd_round1c_fullcache
+
+Submission Info
+Task	early_stop
+Method	earlystop_prefix10_svd_round1c_fullcache
+File	earlystop_prefix10_svd_round1c_fullcache.json
+Submitted	2026-04-10 01:48:04 UTC
+Status	Not best
+Primary Score	4.2812
+Average Rank (lower is better)
+All Metrics
+0.7367	AUC of AUROC
+0.8303	AUC of SelAcc
+10%	Earliest >0.6
+62080	Samples
+
+Metrics by Position
+Position	AUROC	Selective Acc @10%	Stop Acc (Hit@1)
+10%	0.7789	0.9004	0.6788
+20%	0.7927	0.9180	0.7102
+30%	0.7833	0.9142	0.7174
+40%	0.8191	0.9239	0.7050
+50%	0.8257	0.9252	0.7214
+60%	0.8278	0.9267	0.7247
+70%	0.8311	0.9265	0.7131
+80%	0.8357	0.9271	0.7214
+90%	0.8387	0.9273	0.7137
+100%	0.8477	0.9281	0.7519
+
+Per-Cache Breakdown — drfit
+Cache	AUC of AUROC	AUC of SelAcc	Earliest >0.6	Samples
+DS-R1/aime24	0.8149	0.9000	10%	1920
+DS-R1/aime25	0.8311	0.8878	10%	1920
+DS-R1/brumo25	0.8358	0.8953	10%	1920
+DS-R1/gpqa	0.6731	0.8341	10%	12672
+DS-R1/hmmt25	0.8117	0.8961	10%	1920
+DS-R1/lcb_v5	0.4708	0.5253	N/A	10688
+Qwen3-4B/aime24	0.8332	0.8995	10%	1920
+Qwen3-4B/aime25	0.8320	0.9000	10%	1920
+Qwen3-4B/brumo25	0.7848	0.9000	10%	1920
+Qwen3-4B/gpqa	0.7176	0.8585	10%	12672
+Qwen3-4B/hmmt25	0.7866	0.8938	10%	1920
+Qwen3-4B/lcb_v5	0.4489	0.5736	N/A	10688
+
+Method Mapping (具体方法名称)
+submission method_name	earlystop_prefix10_svd_round1c_fullcache
+winner method family	noncoding_anchor4_coding_v1
+bundle version	earlystop_prefix10_svd_round1b_noncoding_anchor4_coding_v1_fullfit
+model path	models/ml_selectors/earlystop_prefix10_svd_round1c_fullcache.pkl
+implementation note	non-coding uses anchor4 SVD routes; coding routes are inherited from earlystop_svd_lowrank_lr_v1
+
+Method mapping source
+- scripts/run_earlystop_prefix10_svd_round1b.py
+- results/scans/earlystop/earlystop_prefix10_svd_round1c_fullcache_summary.json
