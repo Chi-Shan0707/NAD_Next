@@ -1,0 +1,69 @@
+Early Stop Leaderboard
+Dataset: 12 test caches across 6 benchmarks (DS-R1 & Qwen3-4B) — ranked by average rank across 32 metrics (lower is better)
+
+我是drfit
+
+Current reference best in repo
+Method	earlystop_prefix10_svd_round1
+Status	CURRENT BEST (historical reference)
+Primary Score	4.0000
+Average Rank (lower is better)
+Submitted	2026-04-09 01:14:52 UTC
+
+Submission #115
+Early Stop — earlystop_strongfeat_round1_cap8_ref020_20260410
+
+Submission Info
+Task	early_stop
+Method	earlystop_strongfeat_round1_cap8_ref020_20260410
+File	earlystop_strongfeat_round1_cap8_ref020_20260410.json
+Submitted	2026-04-10 10:25:53 UTC
+Status	Not best
+Primary Score	4.1562
+Average Rank (lower is better)
+All Metrics
+0.7489	AUC of AUROC
+0.8250	AUC of SelAcc
+10%	Earliest >0.6
+62080	Samples
+
+Metrics by Position
+Position	AUROC	Selective Acc @10%	Stop Acc (Hit@1)
+10%	0.8007	0.8968	0.6940
+20%	0.8226	0.9043	0.7313
+30%	0.8254	0.9014	0.7131
+40%	0.8215	0.9178	0.6996
+50%	0.8320	0.9233	0.7039
+60%	0.8373	0.9238	0.7352
+70%	0.8347	0.9247	0.7121
+80%	0.8425	0.9262	0.7208
+90%	0.8477	0.9267	0.7141
+100%	0.8505	0.9063	0.7295
+
+Per-Cache Breakdown — drfit
+Cache	AUC of AUROC	AUC of SelAcc	Earliest >0.6	Samples
+DS-R1/aime24	0.8489	0.9000	10%	1920
+DS-R1/aime25	0.8354	0.8922	10%	1920
+DS-R1/brumo25	0.8535	0.8956	10%	1920
+DS-R1/gpqa	0.6469	0.7596	10%	12672
+DS-R1/hmmt25	0.8402	0.8990	10%	1920
+DS-R1/lcb_v5	0.4708	0.5253	N/A	10688
+Qwen3-4B/aime24	0.8381	0.8984	10%	1920
+Qwen3-4B/aime25	0.8559	0.8995	10%	1920
+Qwen3-4B/brumo25	0.8482	0.8990	10%	1920
+Qwen3-4B/gpqa	0.6830	0.8691	10%	12672
+Qwen3-4B/hmmt25	0.8173	0.8885	10%	1920
+Qwen3-4B/lcb_v5	0.4489	0.5736	N/A	10688
+
+Quick comparison vs current reference best
+Metric	earlystop_prefix10_svd_round1	strongfeat_round1_cap8_ref020_20260410	Delta
+Primary Score (Avg Rank, lower better)	4.0000	4.1562	+0.1562
+AUC of AUROC	0.7379	0.7489	+0.0110
+AUC of SelAcc	0.8311	0.8250	-0.0061
+AUROC@100%	0.8492	0.8505	+0.0013
+Stop Acc@100%	0.7504	0.7295	-0.0209
+
+Interpretation
+- strongfeat 本次线上结果为 Not best。
+- 相比当前参考 best，AUROC 维度略升，但 SelAcc 与 100% Stop Acc 回落。
+- 主要短板仍在 coding 两个 cache：`DS-R1/lcb_v5` 与 `Qwen3-4B/lcb_v5`。
