@@ -8,6 +8,11 @@
 
 一个轻量级 Web UI，用于浏览 NAD Next 缓存中已解码的推理链，检查逐 Token 指标，分析指标导数变化趋势，以及可视化神经元激活分布。
 
+> **2026-04-09 更新：Decision-First Dashboard**
+>
+> `cot_viewer` 已新增决策优先信息层级（Decision Summary / Method Lens / Group Context / Trajectory & Token / Advanced）。
+> 设计说明见 `cot_viewer/DESIGN_NOTES.md`。
+
 ### 快速启动
 
 ```bash
@@ -237,6 +242,13 @@
 | `GET /api/derivatives/<sample_id>?cache=&mode=` | `{num_slices, metrics, averages, d1, d2, d3}` |
 | `GET /api/slice/<sample_id>/<slice_idx>?cache=` | `{tokens: [{pos, token_id, text, conf, entropy, ...}]}` |
 | `GET /api/neuron_heatmap/<sample_id>?cache=&mode=` | `{num_slices, layers, heatmap, jaccard, token_metrics}` |
+| `GET /api/health_viewer` | viewer 依赖与关键 artifact 健康状态 |
+| `GET /api/method_catalog` | 决策方法目录（含主方法） |
+| `GET /api/method_scores/<problem_id>?cache=&method=` | Top1/2/3 + Why selected + Group context |
+| `GET /api/method_lens/<problem_id>?cache=&method=` | 方法透镜（code/science/slot/reflection） |
+| `GET /api/dashboard_bootstrap/<problem_id>?cache=&method=&mode=` | 单次请求返回 summary/lens/context/compare/token 关键数据 |
+| `GET /api/run_compare/<problem_id>?cache=&method=` | run 间特征差异与轨迹辅助信息 |
+| `GET /api/token_evidence/<sample_id>?cache=&compare_sample_id=&mode=` | 双 run token 证据与高亮索引 |
 
 ### 架构说明
 
@@ -491,6 +503,13 @@ All endpoints (except `/api/datasets`) require a `?cache=<path>` query parameter
 | `GET /api/derivatives/<sample_id>?cache=&mode=` | `{num_slices, metrics, averages, d1, d2, d3}` |
 | `GET /api/slice/<sample_id>/<slice_idx>?cache=` | `{tokens: [{pos, token_id, text, conf, entropy, ...}]}` |
 | `GET /api/neuron_heatmap/<sample_id>?cache=&mode=` | `{num_slices, layers, heatmap, jaccard, token_metrics}` |
+| `GET /api/health_viewer` | Viewer dependency and artifact health |
+| `GET /api/method_catalog` | Decision-method catalog and primary method |
+| `GET /api/method_scores/<problem_id>?cache=&method=` | Top1/2/3 summary + why-selected + group context |
+| `GET /api/method_lens/<problem_id>?cache=&method=` | Method-specific lens payload (slot/code/science/reflection) |
+| `GET /api/dashboard_bootstrap/<problem_id>?cache=&method=&mode=` | One-shot payload for Decision Summary + Lens + Group + Token |
+| `GET /api/run_compare/<problem_id>?cache=&method=` | Pairwise run diff with trajectory extras |
+| `GET /api/token_evidence/<sample_id>?cache=&compare_sample_id=&mode=` | Token evidence and highlight indices |
 
 ## Architecture Notes
 
