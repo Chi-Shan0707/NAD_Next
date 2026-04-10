@@ -556,6 +556,22 @@ def _rank_transform_matrix(x: np.ndarray) -> np.ndarray:
     return out
 
 
+def _center_transform_matrix(x: np.ndarray) -> np.ndarray:
+    if x.size == 0:
+        return np.zeros_like(x, dtype=np.float64)
+    mean = np.mean(x, axis=0, keepdims=True)
+    return x - mean
+
+
+def _zscore_transform_matrix(x: np.ndarray, eps: float = 1e-6) -> np.ndarray:
+    if x.size == 0:
+        return np.zeros_like(x, dtype=np.float64)
+    mean = np.mean(x, axis=0, keepdims=True)
+    std = np.std(x, axis=0, keepdims=True)
+    std = np.where(std < float(eps), 1.0, std)
+    return (x - mean) / std
+
+
 def _fit_svd_lr_model(
     x: np.ndarray,
     y: np.ndarray,
@@ -697,6 +713,18 @@ def _build_representation(
             x_raw[:, feature_indices],
             x_rank[:, feature_indices],
         ], axis=1)
+    if representation == "centered_raw":
+        x_centered = _center_transform_matrix(x_raw)
+        return x_centered[:, feature_indices]
+    if representation == "centered_raw+rank":
+        x_centered = _center_transform_matrix(x_raw)
+        return np.concatenate([
+            x_centered[:, feature_indices],
+            x_rank[:, feature_indices],
+        ], axis=1)
+    if representation == "zscore_within_problem_raw":
+        x_z = _zscore_transform_matrix(x_raw)
+        return x_z[:, feature_indices]
     raise ValueError(f"Unknown representation: {representation}")
 
 
