@@ -8,6 +8,7 @@ import json
 import pickle
 import sys
 from pathlib import Path
+from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -40,6 +41,15 @@ def _collect_required_features(bundle: dict) -> set[str]:
             else:
                 required.update(str(name) for name in route["feature_names"])
     return required
+
+
+def _parse_csv(raw: str) -> tuple[str, ...]:
+    values = [item.strip() for item in str(raw).split(",") if item.strip()]
+    return tuple(values)
+
+
+def _load_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _feature_cache_key(
@@ -214,6 +224,8 @@ def main() -> None:
     ap.add_argument("--feature-chunk-problems", type=int, default=8)
     ap.add_argument("--feature-cache-dir", default="results/cache/export_earlystop_svd_submission", help="Directory for cached blind feature stores; use 'none' to disable")
     ap.add_argument("--refresh-feature-cache", action="store_true", help="Ignore existing cached blind feature stores")
+    ap.add_argument("--override-earlystop-json", default="none", help="Optional earlystop JSON used for cache overrides; use 'none' to disable")
+    ap.add_argument("--override-cache-keys", default="DS-R1/lcb_v5,Qwen3-4B/lcb_v5", help="Comma-separated cache keys copied from --override-earlystop-json")
     args = ap.parse_args()
 
     model_path = Path(args.model_path)
@@ -225,8 +237,12 @@ def main() -> None:
     feature_cache_dir = None if str(args.feature_cache_dir).strip().lower() in {"", "none", "off"} else (REPO_ROOT / str(args.feature_cache_dir)).resolve()
     positions = tuple(float(p) for p in EARLY_STOP_POSITIONS)
     bundle_thresholds = _bundle_reflection_thresholds(bundle)
+    override_cache_keys = _parse_csv(args.override_cache_keys)
+    override_path_raw = str(args.override_earlystop_json).strip()
+    use_override = override_path_raw.lower() not in {"", "none", "off"} and bool(override_cache_keys)
 
     entries = discover_cache_entries(args.cache_root)
+    expected_cache_keys = [str(entry.cache_key) for entry in entries]
     print(f"Loaded bundle from {model_path}")
     print(f"Found {len(entries)} cache entries\n")
 
@@ -237,15 +253,21 @@ def main() -> None:
     threshold_groups: dict[float, set[str]] = {}
     direct_entries: list[Any] = []
     for entry in entries:
+        cache_key = str(entry.cache_key)
+        if use_override and cache_key in override_cache_keys:
+            continue
         domain = get_domain(entry.dataset_name)
         route_thresholds = _domain_route_thresholds(bundle, domain)
         if len(route_thresholds) == 1:
             threshold = next(iter(route_thresholds))
-            threshold_groups.setdefault(float(threshold), set()).add(str(entry.cache_key))
+            threshold_groups.setdefault(float(threshold), set()).add(cache_key)
         else:
             direct_entries.append(entry)
 
-    all_scores: list[tuple[str, dict]] = []
+    if use_override:
+        print(f"Skipping blind extraction for override caches: {list(override_cache_keys)}\n")
+
+    score_map: dict[str, dict] = {}
     if len(bundle_thresholds) == 1 or threshold_groups:
         if len(bundle_thresholds) == 1:
             print(f"Single route threshold detected: {sorted(bundle_thresholds)}")
@@ -273,7 +295,7 @@ def main() -> None:
 
             for payload in feature_store:
                 ps = _problem_scores_from_payload(payload, score_fn)
-                all_scores.append((payload["cache_key"], ps))
+                score_map[str(payload["cache_key"])] = ps
                 print(f"  [{payload['cache_key']}] domain={payload['domain']}")
                 print(f"    problems : {len(ps)}")
                 print(f"    samples  : {sum(len(v) for v in ps.values())}\n")
@@ -282,10 +304,30 @@ def main() -> None:
         print(f"Direct fallback still needed for {len(direct_entries)} cache entries.\n")
         for entry in direct_entries:
             ps = score_cache_entry_earlystop_svd(entry, bundle, max_problems=args.max_problems)
-            all_scores.append((entry.cache_key, ps))
+            score_map[str(entry.cache_key)] = ps
             print(f"  [{entry.cache_key}] domain={get_domain(entry.dataset_name)}")
             print(f"    problems : {len(ps)}")
             print(f"    samples  : {sum(len(v) for v in ps.values())}\n")
+
+    if use_override:
+        override_path = Path(override_path_raw)
+        if not override_path.is_absolute():
+            override_path = REPO_ROOT / override_path
+        override_payload = _load_json(override_path)
+        validate_earlystop_payload(override_payload)
+        override_scores = override_payload.get("scores")
+        if not isinstance(override_scores, dict) or not override_scores:
+            raise ValueError("override earlystop payload scores must be a non-empty mapping")
+        for cache_key in override_cache_keys:
+            if cache_key not in override_scores:
+                raise ValueError(f"Override payload missing cache key: {cache_key}")
+            score_map[str(cache_key)] = override_scores[cache_key]
+        print(f"Override caches from {override_path}: {list(override_cache_keys)}\n")
+
+    missing_cache_keys = [cache_key for cache_key in expected_cache_keys if cache_key not in score_map]
+    if missing_cache_keys:
+        raise ValueError(f"Missing scores for cache keys: {missing_cache_keys}")
+    all_scores: list[tuple[str, dict]] = [(cache_key, score_map[cache_key]) for cache_key in expected_cache_keys]
 
     payload = build_earlystop_payload(all_scores, method_name=args.method_name)
     stats = validate_earlystop_payload(payload)
