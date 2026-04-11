@@ -1,0 +1,68 @@
+Early Stop Leaderboard
+Dataset: 12 test caches across 6 benchmarks (DS-R1 & Qwen3-4B) — ranked by average rank across 32 metrics (lower is better)
+
+我是drfit
+
+Submission #147
+Early Stop — es_svd_ms_rr_r1__coding_rr_r1
+
+Submission Info
+Task	early_stop
+Method	es_svd_ms_rr_r1__coding_rr_r1
+File	es_svd_ms_rr_r1__coding_rr_r1.json
+Submitted	2026-04-11 02:55:07 UTC
+Status	Not best
+Primary Score	3.8125
+Average Rank (lower is better)
+All Metrics
+0.7427	AUC of AUROC
+0.8276	AUC of SelAcc
+10%	Earliest >0.6
+62080	Samples
+
+Metrics by Position
+Position	AUROC	Selective Acc @10%	Stop Acc (Hit@1)
+10%	0.7884	0.8985	0.7071
+20%	0.7990	0.9032	0.7017
+30%	0.7871	0.9025	0.7220
+40%	0.8319	0.9255	0.7154
+50%	0.8325	0.9264	0.7369
+60%	0.8295	0.9267	0.7375
+70%	0.8399	0.9249	0.7240
+80%	0.8437	0.9261	0.7414
+90%	0.8451	0.9270	0.7365
+100%	0.8475	0.9283	0.7279
+
+Per-Cache Breakdown — drfit
+Cache	AUC-AUROC	AUC-SelAcc	Earliest>0.6	Samples
+DS-R1/aime24	0.8302	0.9000	10%	1920
+DS-R1/aime25	0.8280	0.8935	10%	1920
+DS-R1/brumo25	0.8601	0.8953	10%	1920
+DS-R1/gpqa	0.6755	0.8384	10%	12672
+DS-R1/hmmt25	0.8281	0.8984	10%	1920
+DS-R1/lcb_v5	0.4597	0.4905	N/A	10688
+Qwen3-4B/aime24	0.8247	0.8995	10%	1920
+Qwen3-4B/aime25	0.8385	0.9000	10%	1920
+Qwen3-4B/brumo25	0.8133	0.9000	10%	1920
+Qwen3-4B/gpqa	0.7067	0.8606	10%	12672
+Qwen3-4B/hmmt25	0.7890	0.8961	10%	1920
+Qwen3-4B/lcb_v5	0.4583	0.5586	N/A	10688
+
+Method Mapping (具体方法名称)
+submission method_name	es_svd_ms_rr_r1__coding_rr_r1
+math/science model	models/ml_selectors/es_svd_ms_rr_r1.pkl
+coding model	models/ml_selectors/es_svd_coding_rr_r1.pkl
+base submission	submission/EarlyStop/es_svd_ms_rr_r1__coding_from_round1c.json
+implementation note	use `submission/EarlyStop/es_svd_ms_rr_r1__coding_from_round1c.json` as base, then replace only `DS-R1/lcb_v5` and `Qwen3-4B/lcb_v5` with new coding-domain `raw+rank` SVD scores
+
+Base submission reference
+base submission #144
+base method	es_svd_ms_rr_r1__coding_from_round1c
+base primary score	3.8125
+current primary score	3.8125
+primary score delta	0.0000
+auc_of_auroc delta	-0.0001
+auc_of_selacc delta	-0.0041
+
+Conclusion
+online result does not improve over base submission; keep as recorded coding-only replacement experiment

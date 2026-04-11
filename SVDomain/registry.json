@@ -1,6 +1,6 @@
 {
   "family": "es_svd",
-  "updated_at_utc": "2026-04-11T01:41:31.282911+00:00",
+  "updated_at_utc": "2026-04-11T02:54:08.215373+00:00",
   "methods": [
     {
       "method_id": "es_svd_math_rr_r1",
@@ -46,6 +46,24 @@
       "summary_path": "results/scans/earlystop/es_svd_ms_rr_r1_summary.json",
       "eval_path": "results/scans/earlystop/es_svd_ms_rr_r1_eval.json",
       "doc_path": "docs/ES_SVD_MS_RR_R1.md"
+    },
+    {
+      "method_id": "es_svd_coding_rr_r1",
+      "kind": "single_domain_bundle",
+      "domain": "coding",
+      "representation": "raw+rank",
+      "anchors": [
+        10,
+        40,
+        70,
+        100
+      ],
+      "model_path": "models/ml_selectors/es_svd_coding_rr_r1.pkl",
+      "summary_path": "results/scans/earlystop/es_svd_coding_rr_r1_summary.json",
+      "eval_path": "results/scans/earlystop/es_svd_coding_rr_r1_eval.json",
+      "doc_path": "docs/ES_SVD_CODING_RR_R1.md",
+      "submission_path": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rr_r1.json",
+      "blind_coding_scores_path": "results/scans/earlystop/es_svd_coding_rr_r1_blind_coding_scores.json"
     }
   ]
 }

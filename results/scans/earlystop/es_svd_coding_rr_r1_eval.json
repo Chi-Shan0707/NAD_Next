@@ -1,0 +1,713 @@
+{
+  "protocol": {
+    "main_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache",
+    "extra_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train",
+    "test_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_test",
+    "train_ratio": "85",
+    "holdout_ratio": "15",
+    "holdout_split": 0.15,
+    "split_seed": 42,
+    "n_splits": 3,
+    "random_state": 42,
+    "feature_workers": 8,
+    "fit_workers": 8,
+    "feature_chunk_problems": 24,
+    "max_problems_per_cache": null,
+    "anchor_positions": [
+      0.1,
+      0.4,
+      0.7,
+      1.0
+    ],
+    "anchor_positions_pct": [
+      10,
+      40,
+      70,
+      100
+    ],
+    "official_slot_to_anchor": {
+      "10": 10,
+      "20": 10,
+      "30": 10,
+      "40": 40,
+      "50": 40,
+      "60": 40,
+      "70": 70,
+      "80": 70,
+      "90": 70,
+      "100": 100
+    },
+    "coding_included": true,
+    "extra_cache_usage": "scanned but no coding caches found"
+  },
+  "feature_spec": {
+    "family_name": "token_plus_traj_fixed",
+    "representation": "raw+rank",
+    "feature_names": [
+      "tok_conf_prefix",
+      "tok_conf_recency",
+      "tok_gini_prefix",
+      "tok_gini_tail",
+      "tok_gini_slope",
+      "tok_neg_entropy_prefix",
+      "tok_neg_entropy_recency",
+      "tok_selfcert_prefix",
+      "tok_selfcert_recency",
+      "tok_logprob_prefix",
+      "tok_logprob_recency",
+      "traj_continuity",
+      "traj_reflection_count",
+      "traj_novelty",
+      "traj_max_reflection",
+      "traj_late_convergence",
+      "has_tok_conf",
+      "has_tok_gini",
+      "has_tok_neg_entropy",
+      "has_tok_selfcert",
+      "has_tok_logprob",
+      "has_rows_bank"
+    ],
+    "excluded_feature_names": [
+      "nc_mean",
+      "nc_slope",
+      "self_similarity",
+      "tail_q10",
+      "head_tail_gap",
+      "tail_variance",
+      "last_event_tail_conf",
+      "event_pre_post_delta"
+    ],
+    "uses_numeric_row_features": false,
+    "uses_has_rows_bank_flag": true,
+    "reflection_threshold": 0.3
+  },
+  "validate": {
+    "candidate": {
+      "method_name": "es_svd_coding_rr_r1",
+      "aggregate": {
+        "num_caches": 1,
+        "samples": 1600,
+        "auc_of_auroc": 0.43415473415473416,
+        "auc_of_selacc": 0.24000000000000005,
+        "earliest_gt_0.6": null,
+        "auroc@100%": 0.40683104063385755,
+        "stop_acc@100%": 0.52,
+        "by_position": [
+          {
+            "position": 0.1,
+            "auroc": 0.46558136698981767,
+            "selacc@10%": 0.33125,
+            "stop_acc": 0.56
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.4504853518938026,
+            "selacc@10%": 0.30625,
+            "stop_acc": 0.48
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.42806332947178016,
+            "selacc@10%": 0.25,
+            "stop_acc": 0.52
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.4170555579006283,
+            "selacc@10%": 0.175,
+            "stop_acc": 0.44
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.4214658580855764,
+            "selacc@10%": 0.18125,
+            "stop_acc": 0.52
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.4239219309641845,
+            "selacc@10%": 0.2,
+            "stop_acc": 0.56
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.4424261184824565,
+            "selacc@10%": 0.225,
+            "stop_acc": 0.48
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.44330786584307713,
+            "selacc@10%": 0.2375,
+            "stop_acc": 0.56
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.4424089212821607,
+            "selacc@10%": 0.29375,
+            "stop_acc": 0.56
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.40683104063385755,
+            "selacc@10%": 0.2,
+            "stop_acc": 0.52
+          }
+        ]
+      },
+      "by_cache": [
+        {
+          "cache_key": "cache/DS-R1/lcb_v5",
+          "dataset_name": "livecodebench_v5",
+          "domain": "coding",
+          "n_problems": 25,
+          "n_samples": 1600,
+          "position_metrics": [
+            {
+              "position": 0.1,
+              "auroc": 0.46558136698981767,
+              "selacc@10%": 0.33125,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.2,
+              "auroc": 0.4504853518938026,
+              "selacc@10%": 0.30625,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.3,
+              "auroc": 0.42806332947178016,
+              "selacc@10%": 0.25,
+              "stop_acc": 0.52
+            },
+            {
+              "position": 0.4,
+              "auroc": 0.4170555579006283,
+              "selacc@10%": 0.175,
+              "stop_acc": 0.44
+            },
+            {
+              "position": 0.5,
+              "auroc": 0.4214658580855764,
+              "selacc@10%": 0.18125,
+              "stop_acc": 0.52
+            },
+            {
+              "position": 0.6,
+              "auroc": 0.4239219309641845,
+              "selacc@10%": 0.2,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.7,
+              "auroc": 0.4424261184824565,
+              "selacc@10%": 0.225,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.8,
+              "auroc": 0.44330786584307713,
+              "selacc@10%": 0.2375,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.9,
+              "auroc": 0.4424089212821607,
+              "selacc@10%": 0.29375,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 1.0,
+              "auroc": 0.40683104063385755,
+              "selacc@10%": 0.2,
+              "stop_acc": 0.52
+            }
+          ],
+          "auc_of_auroc": 0.43415473415473416,
+          "auc_of_selacc": 0.24000000000000005,
+          "earliest_gt_0.6": null,
+          "auroc@100%": 0.40683104063385755,
+          "stop_acc@100%": 0.52
+        }
+      ]
+    },
+    "baselines": {
+      "tok_conf_prefix_mean_v1": {
+        "method_name": "tok_conf_prefix_mean_v1",
+        "aggregate": {
+          "num_caches": 1,
+          "samples": 1600,
+          "auc_of_auroc": 0.5062144428341612,
+          "auc_of_selacc": 0.45812500000000006,
+          "earliest_gt_0.6": null,
+          "auroc@100%": 0.4904031805440256,
+          "stop_acc@100%": 0.48,
+          "by_position": [
+            {
+              "position": 0.1,
+              "auroc": 0.5003197115873173,
+              "selacc@10%": 0.5125,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.2,
+              "auroc": 0.5134708796680628,
+              "selacc@10%": 0.5125,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.3,
+              "auroc": 0.508568114201917,
+              "selacc@10%": 0.49375,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.4,
+              "auroc": 0.5124030898678786,
+              "selacc@10%": 0.45,
+              "stop_acc": 0.44
+            },
+            {
+              "position": 0.5,
+              "auroc": 0.5175669401021513,
+              "selacc@10%": 0.475,
+              "stop_acc": 0.6
+            },
+            {
+              "position": 0.6,
+              "auroc": 0.5142744579364298,
+              "selacc@10%": 0.45,
+              "stop_acc": 0.64
+            },
+            {
+              "position": 0.7,
+              "auroc": 0.5090199315551428,
+              "selacc@10%": 0.45,
+              "stop_acc": 0.6
+            },
+            {
+              "position": 0.8,
+              "auroc": 0.5022973896213333,
+              "selacc@10%": 0.41875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.9,
+              "auroc": 0.493820733257353,
+              "selacc@10%": 0.41875,
+              "stop_acc": 0.52
+            },
+            {
+              "position": 1.0,
+              "auroc": 0.4904031805440256,
+              "selacc@10%": 0.4,
+              "stop_acc": 0.48
+            }
+          ]
+        },
+        "by_cache": [
+          {
+            "cache_key": "cache/DS-R1/lcb_v5",
+            "dataset_name": "livecodebench_v5",
+            "domain": "coding",
+            "n_problems": 25,
+            "n_samples": 1600,
+            "position_metrics": [
+              {
+                "position": 0.1,
+                "auroc": 0.5003197115873173,
+                "selacc@10%": 0.5125,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.2,
+                "auroc": 0.5134708796680628,
+                "selacc@10%": 0.5125,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.3,
+                "auroc": 0.508568114201917,
+                "selacc@10%": 0.49375,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.4,
+                "auroc": 0.5124030898678786,
+                "selacc@10%": 0.45,
+                "stop_acc": 0.44
+              },
+              {
+                "position": 0.5,
+                "auroc": 0.5175669401021513,
+                "selacc@10%": 0.475,
+                "stop_acc": 0.6
+              },
+              {
+                "position": 0.6,
+                "auroc": 0.5142744579364298,
+                "selacc@10%": 0.45,
+                "stop_acc": 0.64
+              },
+              {
+                "position": 0.7,
+                "auroc": 0.5090199315551428,
+                "selacc@10%": 0.45,
+                "stop_acc": 0.6
+              },
+              {
+                "position": 0.8,
+                "auroc": 0.5022973896213333,
+                "selacc@10%": 0.41875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.9,
+                "auroc": 0.493820733257353,
+                "selacc@10%": 0.41875,
+                "stop_acc": 0.52
+              },
+              {
+                "position": 1.0,
+                "auroc": 0.4904031805440256,
+                "selacc@10%": 0.4,
+                "stop_acc": 0.48
+              }
+            ],
+            "auc_of_auroc": 0.5062144428341612,
+            "auc_of_selacc": 0.45812500000000006,
+            "earliest_gt_0.6": null,
+            "auroc@100%": 0.4904031805440256,
+            "stop_acc@100%": 0.48
+          }
+        ]
+      },
+      "earlystop_svd_lowrank_lr_v1": {
+        "method_name": "earlystop_svd_lowrank_lr_v1",
+        "aggregate": {
+          "num_caches": 1,
+          "samples": 1600,
+          "auc_of_auroc": 0.47623737764582835,
+          "auc_of_selacc": 0.385625,
+          "earliest_gt_0.6": null,
+          "auroc@100%": 0.4732606986128113,
+          "stop_acc@100%": 0.56,
+          "by_position": [
+            {
+              "position": 0.1,
+              "auroc": 0.4744645026335167,
+              "selacc@10%": 0.43125,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.2,
+              "auroc": 0.4648950423598311,
+              "selacc@10%": 0.39375,
+              "stop_acc": 0.6
+            },
+            {
+              "position": 0.3,
+              "auroc": 0.5089058046804525,
+              "selacc@10%": 0.4875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.4,
+              "auroc": 0.4697008781515824,
+              "selacc@10%": 0.40625,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.5,
+              "auroc": 0.4646699153741407,
+              "selacc@10%": 0.36875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.6,
+              "auroc": 0.47221792292214826,
+              "selacc@10%": 0.3625,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.7,
+              "auroc": 0.47819316833401343,
+              "selacc@10%": 0.36875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.8,
+              "auroc": 0.4800786068391702,
+              "selacc@10%": 0.3375,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.9,
+              "auroc": 0.4759872365506168,
+              "selacc@10%": 0.35,
+              "stop_acc": 0.52
+            },
+            {
+              "position": 1.0,
+              "auroc": 0.4732606986128113,
+              "selacc@10%": 0.35,
+              "stop_acc": 0.56
+            }
+          ]
+        },
+        "by_cache": [
+          {
+            "cache_key": "cache/DS-R1/lcb_v5",
+            "dataset_name": "livecodebench_v5",
+            "domain": "coding",
+            "n_problems": 25,
+            "n_samples": 1600,
+            "position_metrics": [
+              {
+                "position": 0.1,
+                "auroc": 0.4744645026335167,
+                "selacc@10%": 0.43125,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.2,
+                "auroc": 0.4648950423598311,
+                "selacc@10%": 0.39375,
+                "stop_acc": 0.6
+              },
+              {
+                "position": 0.3,
+                "auroc": 0.5089058046804525,
+                "selacc@10%": 0.4875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.4,
+                "auroc": 0.4697008781515824,
+                "selacc@10%": 0.40625,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.5,
+                "auroc": 0.4646699153741407,
+                "selacc@10%": 0.36875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.6,
+                "auroc": 0.47221792292214826,
+                "selacc@10%": 0.3625,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.7,
+                "auroc": 0.47819316833401343,
+                "selacc@10%": 0.36875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.8,
+                "auroc": 0.4800786068391702,
+                "selacc@10%": 0.3375,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.9,
+                "auroc": 0.4759872365506168,
+                "selacc@10%": 0.35,
+                "stop_acc": 0.52
+              },
+              {
+                "position": 1.0,
+                "auroc": 0.4732606986128113,
+                "selacc@10%": 0.35,
+                "stop_acc": 0.56
+              }
+            ],
+            "auc_of_auroc": 0.47623737764582835,
+            "auc_of_selacc": 0.385625,
+            "earliest_gt_0.6": null,
+            "auroc@100%": 0.4732606986128113,
+            "stop_acc@100%": 0.56
+          }
+        ]
+      },
+      "earlystop_prefix10_svd_round1": {
+        "method_name": "earlystop_prefix10_svd_round1",
+        "aggregate": {
+          "num_caches": 1,
+          "samples": 1600,
+          "auc_of_auroc": 0.47623737764582835,
+          "auc_of_selacc": 0.385625,
+          "earliest_gt_0.6": null,
+          "auroc@100%": 0.4732606986128113,
+          "stop_acc@100%": 0.56,
+          "by_position": [
+            {
+              "position": 0.1,
+              "auroc": 0.4744645026335167,
+              "selacc@10%": 0.43125,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.2,
+              "auroc": 0.4648950423598311,
+              "selacc@10%": 0.39375,
+              "stop_acc": 0.6
+            },
+            {
+              "position": 0.3,
+              "auroc": 0.5089058046804525,
+              "selacc@10%": 0.4875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.4,
+              "auroc": 0.4697008781515824,
+              "selacc@10%": 0.40625,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.5,
+              "auroc": 0.4646699153741407,
+              "selacc@10%": 0.36875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.6,
+              "auroc": 0.47221792292214826,
+              "selacc@10%": 0.3625,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.7,
+              "auroc": 0.47819316833401343,
+              "selacc@10%": 0.36875,
+              "stop_acc": 0.56
+            },
+            {
+              "position": 0.8,
+              "auroc": 0.4800786068391702,
+              "selacc@10%": 0.3375,
+              "stop_acc": 0.48
+            },
+            {
+              "position": 0.9,
+              "auroc": 0.4759872365506168,
+              "selacc@10%": 0.35,
+              "stop_acc": 0.52
+            },
+            {
+              "position": 1.0,
+              "auroc": 0.4732606986128113,
+              "selacc@10%": 0.35,
+              "stop_acc": 0.56
+            }
+          ]
+        },
+        "by_cache": [
+          {
+            "cache_key": "cache/DS-R1/lcb_v5",
+            "dataset_name": "livecodebench_v5",
+            "domain": "coding",
+            "n_problems": 25,
+            "n_samples": 1600,
+            "position_metrics": [
+              {
+                "position": 0.1,
+                "auroc": 0.4744645026335167,
+                "selacc@10%": 0.43125,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.2,
+                "auroc": 0.4648950423598311,
+                "selacc@10%": 0.39375,
+                "stop_acc": 0.6
+              },
+              {
+                "position": 0.3,
+                "auroc": 0.5089058046804525,
+                "selacc@10%": 0.4875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.4,
+                "auroc": 0.4697008781515824,
+                "selacc@10%": 0.40625,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.5,
+                "auroc": 0.4646699153741407,
+                "selacc@10%": 0.36875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.6,
+                "auroc": 0.47221792292214826,
+                "selacc@10%": 0.3625,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.7,
+                "auroc": 0.47819316833401343,
+                "selacc@10%": 0.36875,
+                "stop_acc": 0.56
+              },
+              {
+                "position": 0.8,
+                "auroc": 0.4800786068391702,
+                "selacc@10%": 0.3375,
+                "stop_acc": 0.48
+              },
+              {
+                "position": 0.9,
+                "auroc": 0.4759872365506168,
+                "selacc@10%": 0.35,
+                "stop_acc": 0.52
+              },
+              {
+                "position": 1.0,
+                "auroc": 0.4732606986128113,
+                "selacc@10%": 0.35,
+                "stop_acc": 0.56
+              }
+            ],
+            "auc_of_auroc": 0.47623737764582835,
+            "auc_of_selacc": 0.385625,
+            "earliest_gt_0.6": null,
+            "auroc@100%": 0.4732606986128113,
+            "stop_acc@100%": 0.56
+          }
+        ]
+      }
+    }
+  },
+  "test_export": {
+    "base_submission": "submission/EarlyStop/es_svd_ms_rr_r1__coding_from_round1c.json",
+    "merged_method_name": "es_svd_ms_rr_r1__coding_rr_r1",
+    "coding_cache_keys": [
+      "DS-R1/lcb_v5",
+      "Qwen3-4B/lcb_v5"
+    ],
+    "feature_cache_status": "loaded_from_pickle",
+    "feature_cache_path": "results/cache/export_earlystop_svd_submission_strongfeat_20260410/feature_store_all_ref030_18a73b5e30f1a00d.pkl",
+    "blind_scores_path": "results/scans/earlystop/es_svd_coding_rr_r1_blind_coding_scores.json",
+    "submission_path": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rr_r1.json",
+    "validation_stats": {
+      "total_problems": 970,
+      "total_samples": 62080
+    }
+  },
+  "artifacts": {
+    "model": "models/ml_selectors/es_svd_coding_rr_r1.pkl",
+    "summary_json": "results/scans/earlystop/es_svd_coding_rr_r1_summary.json",
+    "eval_json": "results/scans/earlystop/es_svd_coding_rr_r1_eval.json",
+    "doc_md": "docs/ES_SVD_CODING_RR_R1.md",
+    "registry_json": "SVDomain/registry.json",
+    "blind_coding_scores_json": "results/scans/earlystop/es_svd_coding_rr_r1_blind_coding_scores.json",
+    "submission_json": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rr_r1.json"
+  }
+}

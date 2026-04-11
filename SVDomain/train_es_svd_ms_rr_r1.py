@@ -730,39 +730,61 @@ def _render_route_table(title: str, route_summary: dict[str, Any]) -> list[str]:
 
 
 def _write_registry(path: Path, summary: dict[str, Any]) -> None:
-    registry = {
-        "family": "es_svd",
-        "updated_at_utc": _now_utc(),
-        "methods": [
-            {
-                "method_id": METHOD_IDS["math"],
-                "kind": "single_domain_bundle",
-                "domain": "math",
-                "representation": FIXED_REPRESENTATION,
-                "anchors": [int(round(float(v) * 100.0)) for v in ANCHOR_POSITIONS],
-                "model_path": summary["artifacts"]["models"]["math"],
-            },
-            {
-                "method_id": METHOD_IDS["science"],
-                "kind": "single_domain_bundle",
-                "domain": "science",
-                "representation": FIXED_REPRESENTATION,
-                "anchors": [int(round(float(v) * 100.0)) for v in ANCHOR_POSITIONS],
-                "model_path": summary["artifacts"]["models"]["science"],
-            },
-            {
-                "method_id": METHOD_IDS["combined"],
-                "kind": "multi_domain_bundle",
-                "domains": ["math", "science"],
-                "representation": FIXED_REPRESENTATION,
-                "anchors": [int(round(float(v) * 100.0)) for v in ANCHOR_POSITIONS],
-                "model_path": summary["artifacts"]["models"]["combined"],
-                "summary_path": summary["artifacts"]["summary_json"],
-                "eval_path": summary["artifacts"]["eval_json"],
-                "doc_path": summary["artifacts"]["doc_md"],
-            },
-        ],
+    registry: dict[str, Any]
+    if path.exists():
+        registry = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        registry = {"family": "es_svd", "methods": []}
+
+    registry["family"] = "es_svd"
+    registry["updated_at_utc"] = _now_utc()
+    existing_methods = {
+        str(item.get("method_id")): dict(item)
+        for item in registry.get("methods", [])
+        if isinstance(item, dict) and item.get("method_id")
     }
+    upserts = [
+        {
+            "method_id": METHOD_IDS["math"],
+            "kind": "single_domain_bundle",
+            "domain": "math",
+            "representation": FIXED_REPRESENTATION,
+            "anchors": [int(round(float(v) * 100.0)) for v in ANCHOR_POSITIONS],
+            "model_path": summary["artifacts"]["models"]["math"],
+        },
+        {
+            "method_id": METHOD_IDS["science"],
+            "kind": "single_domain_bundle",
+            "domain": "science",
+            "representation": FIXED_REPRESENTATION,
+            "anchors": [int(round(float(v) * 100.0)) for v in ANCHOR_POSITIONS],
+            "model_path": summary["artifacts"]["models"]["science"],
+        },
+        {
+            "method_id": METHOD_IDS["combined"],
+            "kind": "multi_domain_bundle",
+            "domains": ["math", "science"],
+            "representation": FIXED_REPRESENTATION,
+            "anchors": [int(round(float(v) * 100.0)) for v in ANCHOR_POSITIONS],
+            "model_path": summary["artifacts"]["models"]["combined"],
+            "summary_path": summary["artifacts"]["summary_json"],
+            "eval_path": summary["artifacts"]["eval_json"],
+            "doc_path": summary["artifacts"]["doc_md"],
+        },
+    ]
+    for item in upserts:
+        existing_methods[str(item["method_id"])] = item
+
+    order = {
+        METHOD_IDS["math"]: 10,
+        METHOD_IDS["science"]: 20,
+        METHOD_IDS["combined"]: 30,
+        "es_svd_coding_rr_r1": 40,
+    }
+    registry["methods"] = sorted(
+        existing_methods.values(),
+        key=lambda item: (order.get(str(item.get("method_id")), 999), str(item.get("method_id"))),
+    )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
