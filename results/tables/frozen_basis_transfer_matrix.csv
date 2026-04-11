@@ -1,0 +1,16 @@
+task,domain,anchor_pct,condition,metric,mean,std,n_folds,n_samples,n_groups,source_bundle,source_route_auroc,rank
+earlystop,math,100,frozen_basis,auroc,0.965466,0.011391,5,7680,120,es_svd_ms_rr_r1,0.956656,16
+earlystop,math,100,task_specific,auroc,0.965784,0.010693,5,7680,120,es_svd_ms_rr_r1,0.956656,16
+earlystop,math,100,no_svd,auroc,0.966757,0.010619,5,7680,120,es_svd_ms_rr_r1,0.956656,16
+earlystop,science,100,frozen_basis,auroc,0.771083,0.057727,5,12672,198,es_svd_ms_rr_r1,0.956656,16
+earlystop,science,100,task_specific,auroc,0.773071,0.056135,5,12672,198,es_svd_ms_rr_r1,0.956656,16
+earlystop,science,100,no_svd,auroc,0.779804,0.058392,5,12672,198,es_svd_ms_rr_r1,0.956656,16
+earlystop,coding,100,frozen_basis,auroc,0.498238,0.087122,5,10688,167,es_svd_ms_rr_r1,0.956656,16
+earlystop,coding,100,task_specific,auroc,0.491518,0.076232,5,10688,167,es_svd_ms_rr_r1,0.956656,16
+earlystop,coding,100,no_svd,auroc,0.490982,0.081034,5,10688,167,es_svd_ms_rr_r1,0.956656,16
+bestofn,math,100,frozen_basis,hit_at_1,0.791667,0.026352,5,7680,120,es_svd_ms_rr_r1,0.956656,16
+bestofn,math,100,task_specific,hit_at_1,0.800000,0.031180,5,7680,120,es_svd_ms_rr_r1,0.956656,16
+bestofn,math,100,no_svd,hit_at_1,0.800000,0.031180,5,7680,120,es_svd_ms_rr_r1,0.956656,16
+rl_ranking,math,100,frozen_basis,spearman_rho,0.581818,0.000000,11,70400,11,es_svd_ms_rr_r1,0.956656,16
+rl_ranking,math,100,task_specific,spearman_rho,0.554545,0.000000,11,70400,11,es_svd_ms_rr_r1,0.956656,16
+rl_ranking,math,100,no_svd,spearman_rho,0.263636,0.000000,11,70400,11,es_svd_ms_rr_r1,0.956656,16

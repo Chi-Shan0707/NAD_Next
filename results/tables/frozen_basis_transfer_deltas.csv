@@ -1,0 +1,6 @@
+task,domain,anchor_pct,metric,frozen_basis,task_specific,no_svd,delta_fb_minus_ts,delta_fb_minus_nosvd,transfer_verdict
+bestofn,math,100,hit_at_1,0.7917,0.8000,0.8000,-0.0083,-0.0083,tie
+earlystop,coding,100,auroc,0.4982,0.4915,0.4910,0.0067,0.0073,win
+earlystop,math,100,auroc,0.9655,0.9658,0.9668,-0.0003,-0.0013,tie
+earlystop,science,100,auroc,0.7711,0.7731,0.7798,-0.0020,-0.0087,tie
+rl_ranking,math,100,spearman_rho,0.5818,0.5545,0.2636,0.0273,0.3182,win
