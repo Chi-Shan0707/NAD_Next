@@ -13,12 +13,19 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GroupKFold
 from sklearn.preprocessing import StandardScaler
 
+from nad.core.selectors.code_dynamic_impl import (
+    DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK,
+    extract_code_dynamic_raw_from_state,
+)
+from nad.core.selectors.code_v2_impl import _last_block_instability
 from nad.core.selectors.trajectory_impl import (
     DEFAULT_REFLECTION_THRESHOLD,
     _compute_trajectory_arrays,
     _compute_trajectory_scores_for_prefix_counts,
     _compute_trajectory_scores,
+    _discrete_derivatives,
     _extract_slice_keysets,
+    _slice_metric_means,
 )
 from nad.core.views.reader import CacheReader
 from nad.ops.accuracy import load_correctness_map
@@ -72,6 +79,29 @@ PREFIX_LOCAL_FEATURES = [
     "event_pre_post_delta",
 ]
 
+CODING_DYNAMIC_FEATURES = [
+    "prefix_best_window_quality",
+    "post_reflection_recovery",
+    "last_block_instability",
+    "reflection_density",
+    "reflection_count",
+]
+
+CODING_DERIVATIVE_FEATURES = [
+    "conf_d1_tail_mean",
+    "conf_abs_d1_tail_mean",
+    "conf_abs_d2_tail_mean",
+    "conf_abs_d1_full_minus_tail",
+    "gini_d1_tail_mean",
+    "gini_abs_d1_tail_mean",
+    "gini_abs_d2_tail_mean",
+    "gini_abs_d1_full_minus_tail",
+    "entropy_d1_tail_mean",
+    "entropy_abs_d1_tail_mean",
+    "entropy_abs_d2_tail_mean",
+    "entropy_abs_d1_full_minus_tail",
+]
+
 AVAILABILITY_FEATURES = [
     "has_tok_conf",
     "has_tok_gini",
@@ -81,7 +111,9 @@ AVAILABILITY_FEATURES = [
     "has_rows_bank",
 ]
 
-FULL_FEATURE_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES + AVAILABILITY_FEATURES + PREFIX_LOCAL_FEATURES
+LEGACY_FULL_FEATURE_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES + AVAILABILITY_FEATURES + PREFIX_LOCAL_FEATURES
+
+FULL_FEATURE_NAMES = LEGACY_FULL_FEATURE_NAMES + CODING_DYNAMIC_FEATURES + CODING_DERIVATIVE_FEATURES
 
 BASELINE_SIGNAL_NAMES = TOKEN_FEATURES + TRAJ_FEATURES + META_FEATURES + PREFIX_LOCAL_FEATURES
 
@@ -101,10 +133,12 @@ FEATURE_FAMILY_MAP = {
         "has_tok_logprob",
         "has_rows_bank",
     ],
-    "all": FULL_FEATURE_NAMES,
+    "all": LEGACY_FULL_FEATURE_NAMES,
 }
 
 REPRESENTATIONS = ("raw", "rank", "raw+rank")
+CODE_DYNAMIC_PREFIX_FRACTION = 0.30
+CODE_DYNAMIC_PREFIX_WINDOW_TOKENS = 128
 
 
 @dataclass(frozen=True)
@@ -214,6 +248,101 @@ def _prefix_count_slope(arr: Optional[np.ndarray], k: int) -> float:
     return float(np.mean(arr[half:cut]) - np.mean(arr[:half]))
 
 
+def _tail_mean(arr: np.ndarray, tail_fraction: float = 0.25) -> float:
+    vec = np.asarray(arr, dtype=np.float64)
+    vec = vec[np.isfinite(vec)]
+    if vec.size <= 0:
+        return 0.0
+    tail_len = max(1, int(np.ceil(float(tail_fraction) * float(vec.size))))
+    return float(np.mean(vec[-tail_len:]))
+
+
+def _derivative_feature_block(values: Optional[np.ndarray]) -> tuple[float, float, float, float]:
+    arr = np.asarray(values if values is not None else np.zeros(0, dtype=np.float64), dtype=np.float64)
+    arr = arr[np.isfinite(arr)]
+    if arr.size <= 1:
+        return 0.0, 0.0, 0.0, 0.0
+
+    deriv = _discrete_derivatives(arr)
+    d1 = np.asarray(deriv["d1"], dtype=np.float64)
+    d2 = np.asarray(deriv["d2"], dtype=np.float64)
+    d1 = d1[np.isfinite(d1)]
+    d2 = d2[np.isfinite(d2)]
+    if d1.size <= 0:
+        return 0.0, 0.0, 0.0, 0.0
+
+    d1_tail_mean = _tail_mean(d1)
+    abs_d1 = np.abs(d1)
+    abs_d2 = np.abs(d2)
+    abs_d1_tail_mean = _tail_mean(abs_d1)
+    abs_d2_tail_mean = _tail_mean(abs_d2)
+    abs_d1_full_minus_tail = float(np.mean(abs_d1) - abs_d1_tail_mean) if abs_d1.size > 0 else 0.0
+    return (
+        float(d1_tail_mean),
+        float(abs_d1_tail_mean),
+        float(abs_d2_tail_mean),
+        float(abs_d1_full_minus_tail),
+    )
+
+
+class SVDGroupTransformScorer:
+    def __init__(
+        self,
+        *,
+        scaler: StandardScaler,
+        svd: TruncatedSVD,
+        scorer: Any,
+        whiten: bool,
+    ) -> None:
+        self.scaler = scaler
+        self.svd = svd
+        self.scorer = scorer
+        self.whiten = bool(whiten)
+
+    def transform(self, x: np.ndarray) -> np.ndarray:
+        z = self.svd.transform(self.scaler.transform(np.asarray(x, dtype=np.float64)))
+        if self.whiten:
+            singular_values = np.asarray(self.svd.singular_values_, dtype=np.float64)
+            singular_values = np.where(np.abs(singular_values) < 1e-8, 1.0, singular_values)
+            z = z / singular_values
+        return np.asarray(z, dtype=np.float64)
+
+    def score_group(self, x: np.ndarray) -> np.ndarray:
+        return np.asarray(self.scorer.score_group(self.transform(x)), dtype=np.float64)
+
+
+def _fit_svd_transform(
+    x: np.ndarray,
+    *,
+    rank: int,
+    whiten: bool,
+    random_state: int,
+) -> Optional[dict[str, Any]]:
+    if x.shape[0] < 4 or x.shape[1] < 1:
+        return None
+
+    scaler = StandardScaler(with_mean=True, with_std=True)
+    x_scaled = scaler.fit_transform(x)
+    max_rank = min(int(rank), int(x_scaled.shape[1]), int(x_scaled.shape[0] - 1))
+    if max_rank < 1:
+        return None
+
+    svd = TruncatedSVD(n_components=max_rank, random_state=int(random_state))
+    z = svd.fit_transform(x_scaled)
+    if bool(whiten):
+        singular_values = np.asarray(svd.singular_values_, dtype=np.float64)
+        singular_values = np.where(np.abs(singular_values) < 1e-8, 1.0, singular_values)
+        z = z / singular_values
+
+    return {
+        "scaler": scaler,
+        "svd": svd,
+        "z": np.asarray(z, dtype=np.float64),
+        "rank": int(max_rank),
+        "whiten": bool(whiten),
+    }
+
+
 def _empty_signal_map() -> dict[str, list[float]]:
     return {name: [0.0] * N_POSITIONS for name in FULL_FEATURE_NAMES}
 
@@ -310,9 +439,31 @@ def extract_earlystop_signals_for_positions(
         "tail_variance",
         "last_event_tail_conf",
         "event_pre_post_delta",
+        "prefix_best_window_quality",
+        "post_reflection_recovery",
+        "last_block_instability",
+        "reflection_density",
+        "reflection_count",
     })
-    need_tok_gini = bool(req & {"tok_gini_prefix", "tok_gini_tail", "tok_gini_slope", "has_tok_gini"})
-    need_tok_neg_entropy = bool(req & {"tok_neg_entropy_prefix", "tok_neg_entropy_recency", "has_tok_neg_entropy"})
+    need_tok_gini = bool(req & {
+        "tok_gini_prefix",
+        "tok_gini_tail",
+        "tok_gini_slope",
+        "has_tok_gini",
+        "gini_d1_tail_mean",
+        "gini_abs_d1_tail_mean",
+        "gini_abs_d2_tail_mean",
+        "gini_abs_d1_full_minus_tail",
+    })
+    need_tok_neg_entropy = bool(req & {
+        "tok_neg_entropy_prefix",
+        "tok_neg_entropy_recency",
+        "has_tok_neg_entropy",
+        "entropy_d1_tail_mean",
+        "entropy_abs_d1_tail_mean",
+        "entropy_abs_d2_tail_mean",
+        "entropy_abs_d1_full_minus_tail",
+    })
     need_tok_selfcert = bool(req & {"tok_selfcert_prefix", "tok_selfcert_recency", "has_tok_selfcert"})
     need_tok_logprob = bool(req & {"tok_logprob_prefix", "tok_logprob_recency", "has_tok_logprob"})
     need_traj = bool(req & set(TRAJ_FEATURES))
@@ -320,6 +471,8 @@ def extract_earlystop_signals_for_positions(
     need_self_similarity = "self_similarity" in req
     need_ncount = bool(req & {"nc_mean", "nc_slope"})
     need_has_rows = "has_rows_bank" in req
+    need_code_dynamic = bool(req & set(CODING_DYNAMIC_FEATURES))
+    need_derivatives = bool(req & set(CODING_DERIVATIVE_FEATURES))
 
     tok_conf_arr = None
     tok_gini_arr = None
@@ -347,14 +500,14 @@ def extract_earlystop_signals_for_positions(
 
     slices: list[Any] = []
     n_slices = 0
-    if need_traj or need_self_similarity or need_prefix_local:
+    if need_traj or need_self_similarity or need_prefix_local or need_code_dynamic or need_derivatives:
         slices = _extract_slice_keysets(reader, int(run_id))
         n_slices = len(slices)
     elif row_start >= 0 and row_end >= 0:
         n_slices = max(0, row_end - row_start)
 
     has_rows_bank = 1.0 if n_slices > 0 else 0.0
-    slice_boundaries = _get_slice_token_boundaries(reader, int(run_id)) if need_prefix_local else None
+    slice_boundaries = _get_slice_token_boundaries(reader, int(run_id)) if (need_prefix_local or need_code_dynamic) else None
 
     nc_all: Optional[np.ndarray] = None
     if need_ncount and rows_rp is not None and row_start >= 0 and row_end > row_start:
@@ -395,6 +548,13 @@ def extract_earlystop_signals_for_positions(
                 _, _, refl_arr = _compute_trajectory_arrays(slices)
             except Exception:
                 refl_arr = None
+
+    slice_metric_means: dict[str, np.ndarray] | None = None
+    if need_derivatives:
+        try:
+            slice_metric_means = _slice_metric_means(reader, int(run_id))
+        except Exception:
+            slice_metric_means = None
 
     signals = _empty_signal_map_for_positions(positions)
 
@@ -471,12 +631,79 @@ def extract_earlystop_signals_for_positions(
             if "event_pre_post_delta" in req:
                 signals["event_pre_post_delta"][pos_i] = event_pre_post_delta
 
+        if need_code_dynamic and tok_conf_arr is not None and len(tok_conf_arr) > 0:
+            prefix_token_end = max(1, int(p * len(tok_conf_arr)))
+            prefix_slice_count = max(1, int(p * n_slices)) if n_slices > 0 else 0
+            if slice_boundaries is not None and prefix_slice_count > 0:
+                boundary_idx = min(int(prefix_slice_count), int(slice_boundaries.shape[0] - 1))
+                prefix_token_end = min(prefix_token_end, int(slice_boundaries[boundary_idx]))
+            prefix_arr = np.asarray(tok_conf_arr[:prefix_token_end], dtype=np.float64)
+            code_dyn_raw = extract_code_dynamic_raw_from_state(
+                {
+                    "tok_conf": prefix_arr,
+                    "slice_keysets": list(slices[:prefix_slice_count]) if prefix_slice_count > 0 else [],
+                    "boundaries": None if slice_boundaries is None or prefix_slice_count <= 0 else np.asarray(slice_boundaries[: prefix_slice_count + 1], dtype=np.int64),
+                },
+                reflection_threshold=float(reflection_threshold),
+                reflection_lookback_slices=int(DEFAULT_CODE_DYNAMIC_REFLECTION_LOOKBACK),
+                prefix_fraction=float(CODE_DYNAMIC_PREFIX_FRACTION),
+                prefix_window_tokens=int(CODE_DYNAMIC_PREFIX_WINDOW_TOKENS),
+            )
+            if "prefix_best_window_quality" in req:
+                signals["prefix_best_window_quality"][pos_i] = float(code_dyn_raw["prefix_best_window_quality"])
+            if "post_reflection_recovery" in req:
+                signals["post_reflection_recovery"][pos_i] = float(code_dyn_raw["post_reflection_recovery"])
+            if "last_block_instability" in req:
+                signals["last_block_instability"][pos_i] = float(_last_block_instability(prefix_arr))
+            if "reflection_density" in req:
+                signals["reflection_density"][pos_i] = float(code_dyn_raw["reflection_density"])
+            if "reflection_count" in req:
+                signals["reflection_count"][pos_i] = float(code_dyn_raw["reflection_count"])
+
         if need_ncount and nc_all is not None and len(nc_all) > 0:
             k = max(1, int(p * len(nc_all)))
             if "nc_mean" in req:
                 signals["nc_mean"][pos_i] = float(np.mean(nc_all[:k]))
             if "nc_slope" in req:
                 signals["nc_slope"][pos_i] = _prefix_count_slope(nc_all, k)
+
+        if need_derivatives and slice_metric_means is not None:
+            prefix_slice_count = max(1, int(p * n_slices)) if n_slices > 0 else 0
+            if prefix_slice_count > 0:
+                conf_block = _derivative_feature_block(np.asarray(slice_metric_means.get("conf", np.zeros(0, dtype=np.float64))[:prefix_slice_count], dtype=np.float64))
+                gini_block = _derivative_feature_block(np.asarray(slice_metric_means.get("gini", np.zeros(0, dtype=np.float64))[:prefix_slice_count], dtype=np.float64))
+                entropy_block = _derivative_feature_block(np.asarray(slice_metric_means.get("entropy", np.zeros(0, dtype=np.float64))[:prefix_slice_count], dtype=np.float64))
+            else:
+                conf_block = (0.0, 0.0, 0.0, 0.0)
+                gini_block = (0.0, 0.0, 0.0, 0.0)
+                entropy_block = (0.0, 0.0, 0.0, 0.0)
+
+            if "conf_d1_tail_mean" in req:
+                signals["conf_d1_tail_mean"][pos_i] = float(conf_block[0])
+            if "conf_abs_d1_tail_mean" in req:
+                signals["conf_abs_d1_tail_mean"][pos_i] = float(conf_block[1])
+            if "conf_abs_d2_tail_mean" in req:
+                signals["conf_abs_d2_tail_mean"][pos_i] = float(conf_block[2])
+            if "conf_abs_d1_full_minus_tail" in req:
+                signals["conf_abs_d1_full_minus_tail"][pos_i] = float(conf_block[3])
+
+            if "gini_d1_tail_mean" in req:
+                signals["gini_d1_tail_mean"][pos_i] = float(gini_block[0])
+            if "gini_abs_d1_tail_mean" in req:
+                signals["gini_abs_d1_tail_mean"][pos_i] = float(gini_block[1])
+            if "gini_abs_d2_tail_mean" in req:
+                signals["gini_abs_d2_tail_mean"][pos_i] = float(gini_block[2])
+            if "gini_abs_d1_full_minus_tail" in req:
+                signals["gini_abs_d1_full_minus_tail"][pos_i] = float(gini_block[3])
+
+            if "entropy_d1_tail_mean" in req:
+                signals["entropy_d1_tail_mean"][pos_i] = float(entropy_block[0])
+            if "entropy_abs_d1_tail_mean" in req:
+                signals["entropy_abs_d1_tail_mean"][pos_i] = float(entropy_block[1])
+            if "entropy_abs_d2_tail_mean" in req:
+                signals["entropy_abs_d2_tail_mean"][pos_i] = float(entropy_block[2])
+            if "entropy_abs_d1_full_minus_tail" in req:
+                signals["entropy_abs_d1_full_minus_tail"][pos_i] = float(entropy_block[3])
 
         if "self_similarity" in req:
             signals["self_similarity"][pos_i] = self_similarity

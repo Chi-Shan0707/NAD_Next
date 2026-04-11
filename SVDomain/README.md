@@ -8,12 +8,21 @@
 
 ## 1. 当前主题范围
 
-本目录聚焦 **EarlyStop SVD canonical family**，核心是以下四个方法：
+本目录聚焦 **EarlyStop / Best-of-N SVD family**，当前同时覆盖两条线：
+
+- `r1` canonical EarlyStop 主线（论文主叙事）
+- `r2` 10-anchor EarlyStop 扩展线
+- `slot100` coding-only Best-of-N bridge 线
+
+核心方法包括：
 
 - `es_svd_math_rr_r1`
 - `es_svd_science_rr_r1`
 - `es_svd_ms_rr_r1`
 - `es_svd_coding_rr_r1`
+- `es_svd_math_rr_r2`
+- `es_svd_science_rr_r2`
+- `es_svd_ms_rr_r2`
 
 命名含义：
 
@@ -21,6 +30,7 @@
 - `math / science / ms / coding`：适用域
 - `rr`：`raw+rank`
 - `r1`：第一版 canonical domain split bundle
+- `r2`：第二版 10-anchor + per-position family search bundle
 
 当前论文主线建议围绕：
 
@@ -31,8 +41,9 @@
 其中：
 
 - `es_svd_ms_rr_r1__coding_from_round1c` 是当前主要 blind leaderboard 提交
+- `es_svd_ms_rr_r2` 是当前 non-coding EarlyStop 扩展训练入口
 - `es_svd_coding_rr_r1` 更适合作为 **负结果 / ablation / boundary case**
-- `slot100` best-of-n 直抽版本适合作为 **桥接对照**
+- `slot100` best-of-n coding 线适合作为 **桥接对照 / 补充实验**
 
 ---
 
@@ -40,10 +51,11 @@
 
 如果你现在要马上开始写论文，先记住这几条：
 
-1. **方法层**：canonical SVD 使用 `StandardScaler -> TruncatedSVD -> LogisticRegression`，表示固定为 `raw+rank`，anchor 固定为 `10 / 40 / 70 / 100`。
-2. **训练层**：math / science 做分域训练，再组合成 `es_svd_ms_rr_r1`；coding 单独训练，但没有带来整体收益。
-3. **结果层**：`es_svd_ms_rr_r1__coding_from_round1c` 当前是 blind leaderboard 上的更优 EarlyStop 主提交，`primary score = 3.8125`。
-4. **解释层**：现在已经有完整的 SVD explain core、viewer API、dashboard 集成，可回答“为什么它是 top1”。
+1. **方法层**：SVD 主干统一使用 `StandardScaler -> TruncatedSVD -> LogisticRegression`，表示固定为 `raw+rank`。
+2. **训练层**：`r1` 使用 `10 / 40 / 70 / 100` 四锚点；`r2` 改为全部 `10` 个 early-stop positions，并在每个位置独立搜索 feature family。
+3. **结果层**：`es_svd_ms_rr_r1__coding_from_round1c` 仍是 blind leaderboard 上的主 EarlyStop 提交；`es_svd_ms_rr_r2` 是新的 non-coding 扩展报告线。
+4. **补充层**：`slot100` coding-only SVDomain 脚本与文档可作为 Best-of-N bridge 补充结果。
+5. **解释层**：现在已经有完整的 SVD explain core、viewer API、dashboard 集成，可回答“为什么它是 top1”。
 
 ---
 
@@ -57,18 +69,21 @@
 4. `SVDomain/docs/03_RESULTS_AND_COMPARISONS.md`
 5. `SVDomain/docs/04_INTERPRETABILITY_AND_VIEWER.md`
 6. `SVDomain/docs/06_PAPER_OUTLINE.md`
+7. `docs/ES_SVD_MS_RR_R2_REPORT.md`
 
 如果你是为了复现：
 
 1. `SVDomain/env/README.md`
 2. `SVDomain/docs/05_REPRODUCTION_CHECKLIST.md`
 3. `SVDomain/examples/reproduce_commands.sh`
+4. `SVDomain/SUBMISSION_GUIDE.md`
 
 如果你是为了查 artifact：
 
 1. `SVDomain/docs/07_ARTIFACT_INDEX.md`
 2. `SVDomain/results/README.md`
 3. `SVDomain/registry.json`
+4. `docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`
 
 ---
 
@@ -77,10 +92,12 @@
 ```text
 SVDomain/
 ├── README.md
+├── SUBMISSION_GUIDE.md
 ├── registry.json
 ├── train_es_svd_ms_rr_r1.py
 ├── train_es_svd_coding_rr_r1.py
 ├── train_es_svd_ms_rr_r2.py
+├── train_slot100_svd_domain_r1.py
 ├── docs/
 │   ├── 00_EXECUTIVE_SUMMARY.md
 │   ├── 01_METHOD_AND_MODELING.md
@@ -121,25 +138,32 @@ SVDomain/
 
 - `EARLY_STOP_POSITIONS = [0.1, 0.2, ..., 1.0]`
 - `EXTRACTION_POSITIONS = (0.05, 0.1, 0.15, 0.2, 0.3, ..., 1.0)`
-- `ANCHOR_POSITIONS = (0.1, 0.4, 0.7, 1.0)`
+- `ANCHOR_POSITIONS (r1) = (0.1, 0.4, 0.7, 1.0)`
+- `ANCHOR_POSITIONS (r2) = (0.1, 0.2, ..., 1.0)`
 
 含义：
 
 - `EARLY_STOP_POSITIONS`：真实在线评测和早停决策会看的 10 个停点
 - `EXTRACTION_POSITIONS`：离线提特征时额外看的控制点
-- `ANCHOR_POSITIONS`：SVD canonical route 实际训练的 4 个锚点
+- `ANCHOR_POSITIONS (r1)`：SVD canonical route 实际训练的 4 个锚点
+- `ANCHOR_POSITIONS (r2)`：10 个官方停点全部独立建模
 
-slot 映射：
+`r1` slot 映射：
 
 - `20 / 30 -> 10`
 - `50 / 60 -> 40`
 - `80 / 90 -> 70`
 - `100 -> 100`
 
+`r2` slot 映射：
+
+- identity（`10 -> 10`, `20 -> 20`, ..., `100 -> 100`）
+
 ### 特征和表示
 
 - 表示：`raw+rank`
-- 主特征组：`token_plus_traj_fixed`
+- `r1` 主特征组：`token_plus_traj_fixed`
+- `r2` 主特征组：per-position family search over `token_only / token_plus_traj / all / strong_core3 / strong_event7 / token_plus_traj_global@100%`
 - 核心 family：
   - `confidence`
   - `uncertainty`
@@ -173,6 +197,13 @@ slot 映射：
 - `avg rank = 3.6000`
 - `hit@1 = 0.7299`
 - `hit@3 = 0.8010`
+
+### EarlyStop `r2` 扩展线
+
+- 训练入口：`SVDomain/train_es_svd_ms_rr_r2.py`
+- registry id：`es_svd_math_rr_r2` / `es_svd_science_rr_r2` / `es_svd_ms_rr_r2`
+- 报告路径：`docs/ES_SVD_MS_RR_R2_REPORT.md`
+- 目标定位：作为 `r1` canonical 线的 10-anchor 扩展与 feature-family search 对照
 
 ### Coding 单域分支
 
@@ -211,9 +242,12 @@ viewer 侧目前还支持：
 这里的内容是对原始材料的 **专题整理与再打包**，主要来源包括：
 
 - `docs/ES_SVD_MS_RR_R1.md`
+- `docs/ES_SVD_MS_RR_R2_REPORT.md`
 - `docs/ES_SVD_CODING_RR_R1.md`
 - `docs/SVD_INTERPRETABILITY_R1_20260411.md`
 - `docs/BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`
+- `docs/SVD_PERF_PLAN_20260411.md`
+- `docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`
 - `docs/ES_SVD_MATH_RL_CHECKPOINT_RANKING.md`
 
 原则是：
@@ -233,6 +267,7 @@ viewer 侧目前还支持：
 - `SVDomain/docs/00_EXECUTIVE_SUMMARY.md`
 - `SVDomain/docs/06_PAPER_OUTLINE.md`
 - `SVDomain/results/comparison_tables.md`
+- `docs/ES_SVD_MS_RR_R2_REPORT.md`（作为扩展实验对照）
 
 ### 如果你要复现实验
 
@@ -241,6 +276,15 @@ viewer 侧目前还支持：
 - `SVDomain/env/README.md`
 - `SVDomain/docs/05_REPRODUCTION_CHECKLIST.md`
 - `SVDomain/examples/reproduce_commands.sh`
+- `SVDomain/SUBMISSION_GUIDE.md`
+
+### 如果你要看 slot100 / coding 补充线
+
+先看：
+
+- `docs/SVD_PERF_PLAN_20260411.md`
+- `docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`
+- `SVDomain/train_slot100_svd_domain_r1.py`
 
 ### 如果你要解释模型
 
@@ -253,6 +297,7 @@ viewer 侧目前还支持：
 
 ## 10. 备注
 
-- `r1` 是目前最适合整理成论文主线的 canonical family
-- `r2` 已在 `registry.json` 中登记，但不建议在主论文正文里抢走 `r1` 的叙事中心
-- `SVDomain/SUBMISSION_GUIDE.md` 可作为操作补充，但论文核心叙事建议优先以本目录新增文档为准
+- `r1` 仍是最适合整理成论文主线的 canonical family
+- `r2` 主要承担 10-anchor / feature-family-search 的扩展对照角色
+- `slot100` coding 线更适合作为 bridge、negative result 或补充实验
+- `SVDomain/SUBMISSION_GUIDE.md` 可作为操作补充，但论文核心叙事建议优先以本目录 curated 文档为准

@@ -182,8 +182,23 @@ def _evaluate_checkpoint_payload(
             f"for cache={payload['cache_key']}"
         )
 
-    x_raw = tensor[:, 0, :]
-    scores = np.asarray(score_fn(payload["domain"], int(slot_index), x_raw), dtype=np.float64)
+    score_parts: list[np.ndarray] = []
+    problem_offsets = [int(v) for v in payload["problem_offsets"]]
+    for problem_idx, _problem_id in enumerate(payload["problem_ids"]):
+        start = problem_offsets[problem_idx]
+        end = problem_offsets[problem_idx + 1]
+        if end <= start:
+            continue
+        x_raw = tensor[start:end, 0, :]
+        problem_scores = np.asarray(score_fn(payload["domain"], int(slot_index), x_raw), dtype=np.float64)
+        if problem_scores.shape[0] != max(0, end - start):
+            raise ValueError(
+                f"Per-problem score/width mismatch for cache={payload['cache_key']} "
+                f"problem_idx={problem_idx}: scores={problem_scores.shape[0]} width={max(0, end - start)}"
+            )
+        score_parts.append(problem_scores)
+
+    scores = np.concatenate(score_parts).astype(np.float64, copy=False) if score_parts else np.zeros((0,), dtype=np.float64)
     if scores.shape[0] != labels.shape[0]:
         raise ValueError(
             f"Score/label shape mismatch for cache={payload['cache_key']}: "
