@@ -9,6 +9,7 @@
   --color-incorrect: var(--red);
   --color-top1: var(--blue);
   --color-top2: var(--orange);
+  --color-top3: var(--purple);
   --bg: #f1f5f9;
   --card: #ffffff;
   --border: #e2e8f0;
@@ -201,9 +202,20 @@ body {
   background: #fffbeb;
 }
 
+.top-run-card.rank-3 {
+  border-color: #d8b4fe;
+  background: #faf5ff;
+}
+
 .top-run-card.clickable { cursor: pointer; }
 .top-run-card.active-run {
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+}
+
+.decision-hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 .rank-badge {

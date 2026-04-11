@@ -24,10 +24,12 @@ const STATE = {
   scores: null,
   featurePanel: null,
   runContributions: null,
+  runCompare: null,
   modelSummary: null,
   tokenEvidence: null,
   focusMetric: "conf",
   selectedExplainSampleId: null,
+  selectedCompareSampleId: null,
   neuronLoaded: null,
 };
 
@@ -87,6 +89,39 @@ function clearAlert() {
 function fmt(x, d = 4) {
   if (x === null || x === undefined || Number.isNaN(Number(x))) return "—";
   return Number(x).toFixed(d);
+}
+
+function getTopRuns() {
+  return (STATE.scores && STATE.scores.top_runs) || [];
+}
+
+function topRunIndex(sampleId) {
+  return getTopRuns().findIndex((row) => Number(row.sample_id) === Number(sampleId));
+}
+
+function topRunLabel(sampleId) {
+  const idx = topRunIndex(sampleId);
+  return idx >= 0 ? `Top${idx + 1}` : "Run";
+}
+
+function correctnessLabel(isCorrect) {
+  return isCorrect ? "Correct ✓" : "Incorrect ✗";
+}
+
+function pickCompareSampleId(sampleId) {
+  const selected = Number(sampleId);
+  const topRuns = getTopRuns();
+  for (const row of topRuns) {
+    const candidate = Number(row.sample_id);
+    if (candidate !== selected) return candidate;
+  }
+  return selected;
+}
+
+function runSummaryLabel(run) {
+  if (!run) return "Run";
+  const badge = topRunLabel(run.sample_id);
+  return `${badge} · Run ${run.run_index} · ${correctnessLabel(Boolean(run.is_correct))}`;
 }
 
 async function apiFetch(path, params = {}) {
@@ -231,7 +266,7 @@ async function loadProblems() {
   if (STATE.problemId) sel.value = STATE.problemId;
 }
 
-/* ---- 1. renderTrajectory — Hero chart (all N runs + Top1/2 highlighted) ---- */
+/* ---- 1. renderTrajectory — Hero chart (all N runs + Top1/2/3 highlighted) ---- */
 function renderTrajectory() {
   const traj = STATE.trajectory;
   if (!traj || !traj.success) {
@@ -250,15 +285,13 @@ function renderTrajectory() {
     return;
   }
 
-  const topRuns = (STATE.scores && STATE.scores.top_runs) || [];
-  const top1SampleId = topRuns[0] ? Number(topRuns[0].sample_id) : -1;
-  const top2SampleId = topRuns[1] ? Number(topRuns[1].sample_id) : -1;
+  const topRuns = getTopRuns();
 
   // Map sample_id → local index in run_infos
   const sampleToLocal = {};
   runInfos.forEach((r, i) => { sampleToLocal[Number(r.sample_id)] = i; });
-  const top1Idx = sampleToLocal[top1SampleId] ?? -1;
-  const top2Idx = sampleToLocal[top2SampleId] ?? -1;
+  const top1Row = topRuns[0] || null;
+  const top1Idx = top1Row ? (sampleToLocal[Number(top1Row.sample_id)] ?? -1) : -1;
 
   // Anchor zone backgrounds at 10/40/70/100
   const shapes = [
@@ -271,11 +304,17 @@ function renderTrajectory() {
   ];
 
   const traces = [];
+  const hoverTemplate =
+    "%{customdata[0]}<br>" +
+    "sample=%{customdata[1]}<br>" +
+    "slot=%{x}%<br>" +
+    "verifier=%{y:.4f}<br>" +
+    "status=%{customdata[2]}<extra></extra>";
 
   // Background runs: thin, low-opacity (green=correct, red=incorrect)
   slotScores.forEach((ys, i) => {
-    if (i === top1Idx || i === top2Idx) return;
     const ri = runInfos[i] || {};
+    if (topRunIndex(ri.sample_id) >= 0 && topRunIndex(ri.sample_id) < 3) return;
     traces.push({
       type: "scatter", mode: "lines",
       x: positions, y: ys,
@@ -283,30 +322,42 @@ function renderTrajectory() {
       showlegend: false,
       line: { color: ri.is_correct ? C.green : C.red, width: 1 },
       opacity: 0.28,
+      customdata: positions.map(() => [
+        `Run ${ri.run_index ?? i}`,
+        ri.sample_id ?? null,
+        correctnessLabel(Boolean(ri.is_correct)),
+      ]),
+      hovertemplate: hoverTemplate,
     });
   });
 
-  // Top2: orange dashed
-  if (top2Idx >= 0 && top2Idx < slotScores.length) {
-    const ri = runInfos[top2Idx] || {};
+  [
+    { rank: 1, color: C.blue, width: 3.2, dash: "solid" },
+    { rank: 2, color: C.orange, width: 2.4, dash: "dash" },
+    { rank: 3, color: C.purple, width: 2.2, dash: "dot" },
+  ].forEach((style) => {
+    const row = topRuns[style.rank - 1];
+    if (!row) return;
+    const localIdx = sampleToLocal[Number(row.sample_id)] ?? -1;
+    if (localIdx < 0 || localIdx >= slotScores.length) return;
+    const ri = runInfos[localIdx] || row;
+    const isActive = Number(STATE.selectedExplainSampleId) === Number(row.sample_id);
     traces.push({
-      type: "scatter", mode: "lines+markers",
-      x: positions, y: slotScores[top2Idx],
-      name: `Top2 Run ${ri.run_index ?? top2Idx} ${ri.is_correct ? "✓" : "✗"}`,
-      line: { color: C.orange, width: 2, dash: "dash" },
+      type: "scatter",
+      mode: "lines+markers",
+      x: positions,
+      y: slotScores[localIdx],
+      name: `${topRunLabel(row.sample_id)} Run ${ri.run_index ?? localIdx} ${ri.is_correct ? "✓" : "✗"}`,
+      line: { color: style.color, width: isActive ? style.width + 0.8 : style.width, dash: style.dash },
+      marker: { size: isActive ? 9 : 7, color: style.color },
+      customdata: positions.map(() => [
+        `${topRunLabel(row.sample_id)} · Run ${ri.run_index ?? localIdx}`,
+        row.sample_id,
+        correctnessLabel(Boolean(ri.is_correct)),
+      ]),
+      hovertemplate: hoverTemplate,
     });
-  }
-
-  // Top1: thick blue solid
-  if (top1Idx >= 0 && top1Idx < slotScores.length) {
-    const ri = runInfos[top1Idx] || {};
-    traces.push({
-      type: "scatter", mode: "lines+markers",
-      x: positions, y: slotScores[top1Idx],
-      name: `Top1 Run ${ri.run_index ?? top1Idx} ${ri.is_correct ? "✓" : "✗"}`,
-      line: { color: C.blue, width: 3 },
-    });
-  }
+  });
 
   safePlot("plot-trajectory", traces, {
     margin: { l: 50, r: 20, t: 20, b: 50 },
@@ -364,18 +415,52 @@ function renderFeatureRowsHtml(rows, emptyText = "No rows.") {
   }).join("");
 }
 
-async function loadCanonicalRunContributions(sampleId) {
-  if (!isCanonicalSvdMethod() || !STATE.problemId) return;
-  const data = await apiFetch("/api/svd/explain/run_contributions", {
-    method: STATE.methodId,
-    problem_id: STATE.problemId,
-    sample_id: sampleId,
-    anchor: STATE.anchor,
-  });
-  STATE.runContributions = data;
-  STATE.selectedExplainSampleId = Number(sampleId);
-  renderFeaturePanel();
-  renderDecision();
+async function inspectTopRun(sampleId, { renderAfter = true } = {}) {
+  if (!STATE.problemId) return;
+  const normalizedSampleId = Number(sampleId);
+  const compareSampleId = pickCompareSampleId(normalizedSampleId);
+  STATE.selectedExplainSampleId = normalizedSampleId;
+  STATE.selectedCompareSampleId = compareSampleId;
+
+  if (isCanonicalSvdMethod()) {
+    const [runContrib, tokenEvidence] = await loadAll([
+      apiFetch("/api/svd/explain/run_contributions", {
+        method: STATE.methodId,
+        problem_id: STATE.problemId,
+        sample_id: normalizedSampleId,
+        anchor: STATE.anchor,
+      }),
+      apiFetch(`/api/token_evidence/${normalizedSampleId}`, {
+        compare_sample_id: compareSampleId,
+        mode: STATE.mode,
+      }),
+    ]);
+    STATE.runContributions = runContrib;
+    STATE.runCompare = null;
+    if (tokenEvidence) STATE.tokenEvidence = tokenEvidence;
+  } else {
+    const [runCompare, tokenEvidence] = await loadAll([
+      apiFetch(`/api/run_compare/${encodeURIComponent(STATE.problemId)}`, {
+        method: STATE.methodId,
+        left_sample_id: normalizedSampleId,
+        right_sample_id: compareSampleId,
+      }),
+      apiFetch(`/api/token_evidence/${normalizedSampleId}`, {
+        compare_sample_id: compareSampleId,
+        mode: STATE.mode,
+      }),
+    ]);
+    STATE.runCompare = runCompare;
+    STATE.runContributions = null;
+    if (tokenEvidence) STATE.tokenEvidence = tokenEvidence;
+  }
+
+  if (renderAfter) {
+    renderTrajectory();
+    renderDecision();
+    renderFeaturePanel();
+    renderTokenEvidence();
+  }
 }
 
 function renderDecision() {
@@ -386,30 +471,31 @@ function renderDecision() {
   const cardsHtml = !topRuns.length
     ? "<div style='color:var(--text-muted);font-size:13px'>No runs available.</div>"
     : topRuns.slice(0, 3).map((r, i) => {
-        const rankCls = i === 0 ? "rank-1" : i === 1 ? "rank-2" : "";
+        const rankCls = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
         const dotCls = r.is_correct ? "dot-correct" : "dot-incorrect";
         const margin = r.margin_vs_next != null ? fmt(r.margin_vs_next, 4) : "—";
-        const clickableCls = isCanonicalSvdMethod() ? "clickable" : "";
+        const clickableCls = "clickable";
         const activeCls = Number(r.sample_id) === Number(STATE.selectedExplainSampleId) ? "active-run" : "";
         return `
           <div class="top-run-card ${rankCls} ${clickableCls} ${activeCls}" data-sample="${r.sample_id}">
             <div class="rank-badge">Top${i + 1}</div>
             <div class="run-info">
               <div class="run-label">Run ${r.run_index} · sample ${r.sample_id}</div>
-              <div class="run-score">score ${fmt(r.score, 4)} · margin ${margin}</div>
+              <div class="run-score">score ${fmt(r.score, 4)} · margin ${margin} · ${correctnessLabel(Boolean(r.is_correct))}</div>
             </div>
             <div class="correctness-dot ${dotCls}"></div>
           </div>`;
       }).join("");
-  cardsEl.innerHTML = `<div class="top-run-cards">${cardsHtml}</div>`;
+  const hint = topRuns.length
+    ? "<div class='decision-hint'>Click Top1 / Top2 / Top3 to inspect that run.</div>"
+    : "";
+  cardsEl.innerHTML = `<div class="top-run-cards">${cardsHtml}</div>${hint}`;
 
-  if (isCanonicalSvdMethod()) {
-    cardsEl.querySelectorAll(".top-run-card[data-sample]").forEach((el) => {
-      el.addEventListener("click", async () => {
-        await loadCanonicalRunContributions(Number(el.dataset.sample));
-      });
+  cardsEl.querySelectorAll(".top-run-card[data-sample]").forEach((el) => {
+    el.addEventListener("click", async () => {
+      await inspectTopRun(Number(el.dataset.sample));
     });
-  }
+  });
 
   $("why-text").textContent = scores.why_selected || "—";
 
@@ -461,8 +547,9 @@ function renderFeaturePanel() {
       advantage: row.signed_weight,
     }));
     const runMeta = runData.run || {};
+    const runBadge = runMeta.sample_id != null ? topRunLabel(runMeta.sample_id) : "Run";
     const metaNote = runData.success
-      ? `Selected run: Run ${runMeta.run_index} · score ${fmt(runData.score, 4)} · recon err ${fmt(runData.reconstruction_error, 6)}`
+      ? `Selected run: ${runBadge} · Run ${runMeta.run_index} · score ${fmt(runData.score, 4)} · recon err ${fmt(runData.reconstruction_error, 6)}`
       : "Select a top run to inspect per-run contributions.";
     panelEl.innerHTML = `
       <div class="feat-section">
@@ -488,6 +575,24 @@ function renderFeaturePanel() {
         <div class="feat-section-title">Model Anchor Priors</div>
         <div class="feat-meta-note">${STATE.modelSummary?.route_meta ? `anchor=${STATE.modelSummary.anchor_pct}% · domain=${STATE.modelSummary.domain}` : "—"}</div>
         ${renderFeatureRowsHtml(modelRows, "No model summary rows.")}
+      </div>`;
+    return;
+  }
+
+  const runCompare = STATE.runCompare || {};
+  if (runCompare.success) {
+    const left = runCompare.left || {};
+    const right = runCompare.right || {};
+    const rows = (runCompare.feature_diffs || []).slice(0, 12);
+    panelEl.innerHTML = `
+      <div class="feat-section">
+        <div class="feat-section-title">${topRunLabel(left.sample_id)} vs ${topRunLabel(right.sample_id)} Feature Deltas</div>
+        <div class="feat-meta-note">${runSummaryLabel(left)} ↔ ${runSummaryLabel(right)}</div>
+        ${renderFeatureRowsHtml(rows, "No feature rows.")}
+      </div>
+      <div class="feat-section">
+        <div class="feat-section-title">Top1 vs Group Median</div>
+        ${renderFeatureRowsHtml((fp.top1_vs_median || []).slice(0, 8), "No top1-vs-median rows.")}
       </div>`;
     return;
   }
@@ -559,11 +664,12 @@ function renderTokenEvidence() {
   function addRun(runObj, suffix, dash) {
     if (!runObj) return;
     const x = [...Array(runObj.num_slices || 0).keys()];
+    const badge = topRunLabel(runObj.run?.sample_id);
     metrics.forEach((m) => {
       const y = (runObj.metrics && runObj.metrics[m]) || [];
       traces.push({
         type: "scatter", mode: "lines", x, y,
-        name: `${METRIC_LABEL[m] || m} ${suffix}`,
+        name: `${METRIC_LABEL[m] || m} ${badge || suffix}`,
         line: { color: C[m], width: m === focus ? 2.7 : 1.2, dash },
         opacity: m === focus ? 1.0 : 0.2,
       });
@@ -590,7 +696,7 @@ function renderTokenEvidence() {
       $(boxId).innerHTML = "";
       return;
     }
-    $(titleId).textContent = `Run ${runObj.run.run_index} · ${runObj.run.is_correct ? "✓" : "✗"}`;
+    $(titleId).textContent = runSummaryLabel(runObj.run);
     const html = (runObj.slices || []).map((s) => {
       const cls = hlSet.has(Number(s.idx)) ? "slice highlight" : "slice";
       return `<span class="${cls}" data-sample="${runObj.run.sample_id}" data-idx="${s.idx}" data-start="${s.tok_start}" data-end="${s.tok_end}">[${s.idx}] ${s.text}</span>`;
@@ -689,30 +795,18 @@ async function loadCanonicalDashboard(pid, method, mode) {
     family_rows: problemSummary.top_family_deltas || [],
   };
   STATE.modelSummary = modelSummary || problemSummary.model_summary || null;
+  STATE.runCompare = null;
 
   const topRuns = problemSummary.top_runs || [];
   const top1 = topRuns[0];
-  const top2 = topRuns[1];
 
   if (top1) {
-    STATE.selectedExplainSampleId = Number(top1.sample_id);
-    const [runContrib, tokenEvidence] = await loadAll([
-      apiFetch("/api/svd/explain/run_contributions", {
-        method,
-        problem_id: STATE.problemId,
-        sample_id: top1.sample_id,
-        anchor: STATE.anchor,
-      }),
-      apiFetch(`/api/token_evidence/${top1.sample_id}`, {
-        compare_sample_id: top2 ? top2.sample_id : top1.sample_id,
-        mode,
-      }),
-    ]);
-    STATE.runContributions = runContrib;
-    STATE.tokenEvidence = tokenEvidence;
+    await inspectTopRun(Number(top1.sample_id), { renderAfter: false });
   } else {
     STATE.selectedExplainSampleId = null;
+    STATE.selectedCompareSampleId = null;
     STATE.runContributions = null;
+    STATE.runCompare = null;
     STATE.tokenEvidence = null;
   }
 }
@@ -723,7 +817,10 @@ async function loadDashboard() {
   clearAlert();
   STATE.neuronLoaded = null;
   STATE.runContributions = null;
+  STATE.runCompare = null;
   STATE.modelSummary = null;
+  STATE.selectedExplainSampleId = null;
+  STATE.selectedCompareSampleId = null;
 
   const pid = encodeURIComponent(STATE.problemId);
   const method = STATE.methodId;
@@ -745,8 +842,13 @@ async function loadDashboard() {
     STATE.scores = scores;
     STATE.featurePanel = featurePanel;
     STATE.tokenEvidence = bootstrap?.token_evidence ?? null;
-
+    STATE.runCompare = bootstrap?.run_compare ?? null;
     if (!STATE.scores && bootstrap?.scores) STATE.scores = bootstrap.scores;
+    const topRuns = (STATE.scores && STATE.scores.top_runs) || [];
+    STATE.selectedExplainSampleId = topRuns[0] ? Number(topRuns[0].sample_id) : null;
+    STATE.selectedCompareSampleId = topRuns[1]
+      ? Number(topRuns[1].sample_id)
+      : (topRuns[0] ? Number(topRuns[0].sample_id) : null);
   }
 
   renderAll();
