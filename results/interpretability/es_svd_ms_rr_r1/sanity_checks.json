@@ -1,0 +1,141 @@
+{
+  "generated_at_utc": "2026-04-11T05:03:35.472816+00:00",
+  "method_id": "es_svd_ms_rr_r1",
+  "overall": {
+    "run_count": 2304,
+    "max_abs_error": 3.6415315207705135e-14,
+    "mean_abs_error": 1.0553262546249739e-14
+  },
+  "by_anchor": {
+    "10": {
+      "run_count": 576,
+      "max_abs_error": 8.881784197001252e-15,
+      "mean_abs_error": 1.5717558427614304e-15
+    },
+    "40": {
+      "run_count": 576,
+      "max_abs_error": 3.6415315207705135e-14,
+      "mean_abs_error": 1.9776618614347148e-14
+    },
+    "70": {
+      "run_count": 576,
+      "max_abs_error": 2.1316282072803006e-14,
+      "mean_abs_error": 6.7370877395352596e-15
+    },
+    "100": {
+      "run_count": 576,
+      "max_abs_error": 3.197442310920451e-14,
+      "mean_abs_error": 1.4127587988355117e-14
+    }
+  },
+  "per_cache": [
+    {
+      "cache_key": "DS-R1/aime24",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime24/cache_neuron_output_1_act_no_rms_20251126_073502",
+      "dataset_name": "aime24",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.197442310920451e-14,
+      "mean_reconstruction_error": 1.2975731600306517e-14
+    },
+    {
+      "cache_key": "DS-R1/aime25",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime25/cache_neuron_output_1_act_no_rms_20251126_114548",
+      "dataset_name": "aime25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.6415315207705135e-14,
+      "mean_reconstruction_error": 1.2708584185006089e-14
+    },
+    {
+      "cache_key": "DS-R1/brumo25",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/brumo25/cache_neuron_output_1_act_no_rms_20251126_071142",
+      "dataset_name": "brumo25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.552713678800501e-14,
+      "mean_reconstruction_error": 1.267258867287957e-14
+    },
+    {
+      "cache_key": "DS-R1/gpqa",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/gpqa/cache_neuron_output_1_act_no_rms_20251126_111853",
+      "dataset_name": "gpqa",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "science",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 9.325873406851315e-15,
+      "mean_reconstruction_error": 2.3379735647477418e-15
+    },
+    {
+      "cache_key": "DS-R1/hmmt25",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/hmmt25/cache_neuron_output_1_act_no_rms_20251126_223151",
+      "dataset_name": "hmmt25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.197442310920451e-14,
+      "mean_reconstruction_error": 1.2863841936106013e-14
+    },
+    {
+      "cache_key": "DS-R1/aime25",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train/DeepSeek-R1-0528-Qwen3-8B/aime25/cache_neuron_output_1_act_no_rms_20251201_013209",
+      "dataset_name": "aime25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.197442310920451e-14,
+      "mean_reconstruction_error": 1.325675680341476e-14
+    },
+    {
+      "cache_key": "DS-R1/brumo25",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train/DeepSeek-R1-0528-Qwen3-8B/brumo25/cache_neuron_output_1_act_no_rms_20251201_120226",
+      "dataset_name": "brumo25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.2862601528904634e-14,
+      "mean_reconstruction_error": 1.3078080285389149e-14
+    },
+    {
+      "cache_key": "DS-R1/gpqa",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train/DeepSeek-R1-0528-Qwen3-8B/gpqa/cache_neuron_output_1_act_no_rms_20250901_003811",
+      "dataset_name": "gpqa",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "science",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 9.769962616701378e-15,
+      "mean_reconstruction_error": 2.179463207130361e-15
+    },
+    {
+      "cache_key": "DS-R1/hmmt25",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train/DeepSeek-R1-0528-Qwen3-8B/hmmt25/cache_neuron_output_1_act_no_rms_20251123_142339",
+      "dataset_name": "hmmt25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 3.197442310920451e-14,
+      "mean_reconstruction_error": 1.2906342661267445e-14
+    }
+  ]
+}

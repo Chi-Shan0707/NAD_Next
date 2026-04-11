@@ -71,6 +71,21 @@ try:
 except ImportError:
     _HAS_DECISION_METHODS = False
 
+try:
+    from nad.explain.svd_explain import (
+        EXPLAIN_ANCHORS,
+        aggregate_failure_modes as _aggregate_svd_failure_modes,
+        anchor_pct as _svd_anchor_pct,
+        explain_problem_from_reader as _explain_svd_problem_from_reader,
+        feature_family as _svd_feature_family,
+        model_summary_from_bundle as _svd_model_summary_from_bundle,
+        normalize_anchor as _svd_normalize_anchor,
+        summarize_wrong_top1_case as _summarize_svd_wrong_top1_case,
+    )
+    _HAS_SVD_EXPLAIN = True
+except ImportError:
+    _HAS_SVD_EXPLAIN = False
+
 # ---------------------------------------------------------------------------
 # Global state
 # ---------------------------------------------------------------------------
@@ -94,6 +109,8 @@ METHOD_RESULT_CACHE: dict = {}     # (cache_path, problem_id, method_id) -> deci
 METHOD_LENS_CACHE: dict = {}       # (cache_path, problem_id, method_id) -> method lens payload
 RUN_COMPARE_CACHE: dict = {}       # (cache_path, problem_id, method_id) -> run compare payload
 TOKEN_EVIDENCE_CACHE: dict = {}    # (cache_path, sample_id, compare_id, mode) -> token evidence payload
+SVD_EXPLAIN_PROBLEM_CACHE: dict = {}  # (cache, problem_id, method_id, anchor) -> explain payload
+SVD_MODEL_SUMMARY_CACHE: dict = {}    # (method_id, domain, anchor) -> model summary payload
 
 REPO_ROOT = Path("/home/jovyan/work/NAD_Next")
 EARLYSTOP_SVD_MODEL = REPO_ROOT / "models/ml_selectors/earlystop_prefix10_svd_round1.pkl"
@@ -101,6 +118,11 @@ BRIDGE_MODEL = REPO_ROOT / "models/ml_selectors/bestofn_svm_bridge_v1.pkl"
 GPQA_PAIRWISE_MODEL = REPO_ROOT / "models/ml_selectors/gpqa_pairwise_round1.pkl"
 CODE_V2_METRICS_PATH = REPO_ROOT / "result/code_v2_candidate_20260406_exhaustive/code_v2_metrics.json"
 SCIENCE_HYBRID_RESULT_GLOB = str(REPO_ROOT / "result/science_hybrid_round3_*/science_hybrid_round3.json")
+CANONICAL_SVD_MODEL_PATHS = {
+    "es_svd_math_rr_r1": REPO_ROOT / "models/ml_selectors/es_svd_math_rr_r1.pkl",
+    "es_svd_science_rr_r1": REPO_ROOT / "models/ml_selectors/es_svd_science_rr_r1.pkl",
+    "es_svd_ms_rr_r1": REPO_ROOT / "models/ml_selectors/es_svd_ms_rr_r1.pkl",
+}
 
 MODEL_ALIAS_MAP = {
     "DeepSeek-R1-0528-Qwen3-8B": "DS-R1",
@@ -147,6 +169,30 @@ METHOD_CATALOG = [
         "applies_to": ["math", "science", "coding"],
         "primary": False,
         "description": "earlystop_prefix10_svd_round1 slot trajectory",
+    },
+    {
+        "id": "es_svd_math_rr_r1",
+        "label": "ES SVD Math R1",
+        "family": "svd_explain",
+        "applies_to": ["math"],
+        "primary": False,
+        "description": "canonical math-only SVD anchor explainer",
+    },
+    {
+        "id": "es_svd_science_rr_r1",
+        "label": "ES SVD Science R1",
+        "family": "svd_explain",
+        "applies_to": ["science"],
+        "primary": False,
+        "description": "canonical science-only SVD anchor explainer",
+    },
+    {
+        "id": "es_svd_ms_rr_r1",
+        "label": "ES SVD MS R1",
+        "family": "svd_explain",
+        "applies_to": ["math", "science"],
+        "primary": False,
+        "description": "canonical multi-domain SVD anchor explainer",
     },
     {
         "id": "svm_bridge_lcb",
@@ -1397,6 +1443,50 @@ def _method_def(method_id: str) -> dict[str, Any]:
     return METHOD_CATALOG[0]
 
 
+def _is_canonical_svd_method(method_id: str) -> bool:
+    return str(method_id) in CANONICAL_SVD_MODEL_PATHS
+
+
+def _canonical_svd_bundle(method_id: str) -> Optional[dict[str, Any]]:
+    path = CANONICAL_SVD_MODEL_PATHS.get(str(method_id))
+    if path is None:
+        return None
+    return _load_bundle_cached(path, load_earlystop_svd_bundle)
+
+
+def _request_svd_anchor(default: float = 1.0) -> float:
+    if not _HAS_SVD_EXPLAIN:
+        return float(default)
+    raw = request.args.get("anchor", str(int(round(float(default) * 100.0))))
+    try:
+        return float(_svd_normalize_anchor(raw))
+    except Exception:
+        return float(default)
+
+
+def _request_svd_domain(default_domain: str) -> str:
+    raw = str(request.args.get("svd_domain", "")).strip().lower()
+    if raw in {"math", "science"}:
+        return raw
+    return str(default_domain)
+
+
+def _resolve_svd_method_domain(method_id: str, context_domain: str, requested_domain: str) -> tuple[Optional[str], bool, str]:
+    method_meta = _method_def(method_id)
+    applies_to = set(str(v) for v in method_meta.get("applies_to", []))
+    domain = str(requested_domain or context_domain)
+    if method_id == "es_svd_ms_rr_r1":
+        if domain not in {"math", "science"}:
+            domain = str(context_domain)
+        if domain in applies_to:
+            return domain, True, ""
+        return None, False, f"{domain} domain is not supported by {method_id}"
+
+    if context_domain in applies_to:
+        return str(context_domain), True, ""
+    return None, False, f"{method_id} only applies to {', '.join(sorted(applies_to))}"
+
+
 def _problem_run_infos(cache: str, problem_id: str) -> list[dict[str, Any]]:
     meta = _get_meta(cache)
     report = _get_eval_report(cache)
@@ -1492,6 +1582,159 @@ def _build_problem_context(cache: str, problem_id: str) -> dict[str, Any]:
 
     DECISION_CONTEXT_CACHE[key] = context
     return context
+
+
+def _empty_svd_explain_payload(
+    *,
+    context: dict[str, Any],
+    method_id: str,
+    anchor: float,
+    error: str,
+) -> dict[str, Any]:
+    return {
+        "success": True,
+        "applicable": False,
+        "problem_id": str(context["problem_id"]),
+        "method_id": str(method_id),
+        "domain": str(context["domain"]),
+        "anchor": float(anchor),
+        "anchor_pct": int(round(float(anchor) * 100.0)),
+        "cache_key": context["cache_key"],
+        "route_meta": {},
+        "top_runs": [],
+        "selected_sample_id": None,
+        "selected_run_index": None,
+        "why_selected": error,
+        "group_context": {"runs": [], "n_runs": int(context["n_runs"]), "head_count": 0},
+        "compare_bars": {"top1_vs_top2": [], "top1_vs_median": []},
+        "top_feature_deltas": [],
+        "top_family_deltas": [],
+        "score_stats": {"min": 0.0, "max": 0.0, "mean": 0.0, "median": 0.0, "std": 0.0},
+        "run_explanations": [],
+        "model_summary": {"family_strengths": [], "top_positive_features": [], "top_negative_features": []},
+        "anchor_scores": [],
+        "anchor_positions": [float(v) for v in ANCHOR_POSITIONS],
+        "sanity_check": {"max_abs_error": 0.0, "mean_abs_error": 0.0},
+    }
+
+
+def _build_svd_problem_payload(
+    cache: str,
+    problem_id: str,
+    method_id: str,
+    anchor: float,
+) -> dict[str, Any]:
+    key = (cache, str(problem_id), str(method_id), float(anchor))
+    if key in SVD_EXPLAIN_PROBLEM_CACHE:
+        return SVD_EXPLAIN_PROBLEM_CACHE[key]
+
+    context = _build_problem_context(cache, str(problem_id))
+    if int(context["n_runs"]) <= 0:
+        payload = _empty_svd_explain_payload(
+            context=context,
+            method_id=method_id,
+            anchor=anchor,
+            error="No runs available for this problem",
+        )
+        SVD_EXPLAIN_PROBLEM_CACHE[key] = payload
+        return payload
+
+    if not _HAS_SVD_EXPLAIN:
+        payload = _empty_svd_explain_payload(
+            context=context,
+            method_id=method_id,
+            anchor=anchor,
+            error="SVD explain helpers unavailable",
+        )
+        SVD_EXPLAIN_PROBLEM_CACHE[key] = payload
+        return payload
+
+    bundle = _canonical_svd_bundle(method_id)
+    if bundle is None:
+        payload = _empty_svd_explain_payload(
+            context=context,
+            method_id=method_id,
+            anchor=anchor,
+            error=f"missing bundle for {method_id}",
+        )
+        SVD_EXPLAIN_PROBLEM_CACHE[key] = payload
+        return payload
+
+    resolved_domain, applicable, error = _resolve_svd_method_domain(
+        method_id,
+        context_domain=str(context["domain"]),
+        requested_domain=str(context["domain"]),
+    )
+    if not applicable or resolved_domain is None:
+        payload = _empty_svd_explain_payload(
+            context=context,
+            method_id=method_id,
+            anchor=anchor,
+            error=error or f"{method_id} is not applicable for domain={context['domain']}",
+        )
+        SVD_EXPLAIN_PROBLEM_CACHE[key] = payload
+        return payload
+
+    payload = _explain_svd_problem_from_reader(
+        bundle,
+        method_id=str(method_id),
+        domain=str(resolved_domain),
+        anchor=float(anchor),
+        reader=context["reader"],
+        run_ids=context["run_ids"],
+        run_infos=context["run_infos"],
+        problem_id=str(problem_id),
+        cache_key=context["cache_key"],
+    )
+    payload["applicable"] = True
+    SVD_EXPLAIN_PROBLEM_CACHE[key] = payload
+    return payload
+
+
+def _build_svd_model_summary_payload(
+    *,
+    method_id: str,
+    domain: str,
+    anchor: float,
+) -> dict[str, Any]:
+    key = (str(method_id), str(domain), float(anchor))
+    if key in SVD_MODEL_SUMMARY_CACHE:
+        return SVD_MODEL_SUMMARY_CACHE[key]
+
+    if not _HAS_SVD_EXPLAIN:
+        payload = {
+            "success": False,
+            "error": "SVD explain helpers unavailable",
+            "method_id": str(method_id),
+            "domain": str(domain),
+            "anchor": float(anchor),
+            "anchor_pct": int(round(float(anchor) * 100.0)),
+        }
+        SVD_MODEL_SUMMARY_CACHE[key] = payload
+        return payload
+
+    bundle = _canonical_svd_bundle(method_id)
+    if bundle is None:
+        payload = {
+            "success": False,
+            "error": f"missing bundle for {method_id}",
+            "method_id": str(method_id),
+            "domain": str(domain),
+            "anchor": float(anchor),
+            "anchor_pct": int(round(float(anchor) * 100.0)),
+        }
+        SVD_MODEL_SUMMARY_CACHE[key] = payload
+        return payload
+
+    payload = _svd_model_summary_from_bundle(
+        bundle,
+        method_id=str(method_id),
+        domain=str(domain),
+        anchor=float(anchor),
+        top_k=8,
+    )
+    SVD_MODEL_SUMMARY_CACHE[key] = payload
+    return payload
 
 
 def _trajectory_shape(anchor_values: np.ndarray) -> str:
@@ -2368,15 +2611,15 @@ def _build_method_lens_payload(cache: str, problem_id: str, method_id: str) -> d
             })
         features.sort(key=lambda r: abs(float(r["top1_contribution"] - r["top2_contribution"])), reverse=True)
         blind = extras.get("blind_shapes", {})
-        cache_key = _cache_key_from_cache(cache)
-        return {
+        blind_cache_key = _cache_key_from_cache(cache)
+        payload = {
             "success": True,
             "lens_type": lens_type,
             "weights": _to_py(extras.get("weights", DEFAULT_CODE_V2_WEIGHTS)),
             "features": features,
             "push_up": [f for f in features if f["top1_contribution"] >= f["top2_contribution"]][:3],
             "push_down": [f for f in features if f["top1_contribution"] < f["top2_contribution"]][:3],
-            "cache_blind_shape": _to_py(blind.get(cache_key, {})),
+            "cache_blind_shape": _to_py(blind.get(blind_cache_key, {})),
             "explanation": "对比 5 个 coding 特征在 Top1/Top2 的贡献与组内分位。",
         }
         return _attach(payload)
@@ -2568,6 +2811,148 @@ def _build_run_compare_payload(
     return out, 200
 
 
+@app.route("/api/svd/explain/model_summary")
+def api_svd_explain_model_summary():
+    method_id = str(request.args.get("method", "es_svd_ms_rr_r1")).strip()
+    if not _is_canonical_svd_method(method_id):
+        return jsonify({"success": False, "error": "method is not a canonical SVD explainer"}), 400
+
+    cache = request.args.get("cache", "").strip()
+    context_domain = _domain_from_cache(cache) if cache else "math"
+    requested_domain = str(request.args.get("domain", request.args.get("svd_domain", context_domain))).strip().lower()
+    anchor = _request_svd_anchor(default=1.0)
+
+    resolved_domain, applicable, error = _resolve_svd_method_domain(
+        method_id,
+        context_domain=context_domain,
+        requested_domain=requested_domain,
+    )
+    if not applicable or resolved_domain is None:
+        return jsonify(
+            {
+                "success": True,
+                "applicable": False,
+                "method_id": method_id,
+                "domain": requested_domain or context_domain,
+                "anchor": float(anchor),
+                "anchor_pct": int(round(float(anchor) * 100.0)),
+                "error": error or "domain mismatch",
+                "route_meta": {},
+                "family_strengths": [],
+                "top_positive_features": [],
+                "top_negative_features": [],
+                "all_feature_weights": [],
+            }
+        )
+
+    payload = _build_svd_model_summary_payload(
+        method_id=method_id,
+        domain=resolved_domain,
+        anchor=float(anchor),
+    )
+    payload["applicable"] = True
+    return jsonify(_to_py(payload))
+
+
+@app.route("/api/svd/explain/problem_top1_vs_top2")
+def api_svd_explain_problem_top1_vs_top2():
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"success": False, "error": "invalid cache"}), 400
+
+    problem_id = str(request.args.get("problem_id", "")).strip()
+    if not problem_id:
+        return jsonify({"success": False, "error": "missing problem_id"}), 400
+
+    method_id = str(request.args.get("method", "es_svd_ms_rr_r1")).strip()
+    if not _is_canonical_svd_method(method_id):
+        return jsonify({"success": False, "error": "method is not a canonical SVD explainer"}), 400
+
+    anchor = _request_svd_anchor(default=1.0)
+    payload = _build_svd_problem_payload(cache, problem_id, method_id, anchor)
+    model_summary = _build_svd_model_summary_payload(
+        method_id=method_id,
+        domain=str(payload.get("domain", _domain_from_cache(cache))),
+        anchor=float(anchor),
+    ) if bool(payload.get("applicable", False)) else {
+        "success": True,
+        "applicable": False,
+        "route_meta": {},
+        "family_strengths": [],
+        "top_positive_features": [],
+        "top_negative_features": [],
+    }
+
+    top_runs = list(payload.get("top_runs", []))
+    top1 = top_runs[0] if top_runs else None
+    top2 = top_runs[1] if len(top_runs) > 1 else None
+
+    out = {
+        **payload,
+        "positions": [int(round(float(v) * 100.0)) for v in payload.get("anchor_positions", ANCHOR_POSITIONS)],
+        "slot_scores": _to_py(np.asarray(payload.get("anchor_scores", []), dtype=np.float64)),
+        "run_infos": _to_py(payload.get("group_context", {}).get("runs", [])),
+        "top1": _to_py(top1),
+        "top2": _to_py(top2),
+        "margin": None if top1 is None or top2 is None else float(float(top1["score"]) - float(top2["score"])),
+        "model_summary": _to_py(model_summary),
+    }
+    return jsonify(_to_py(out))
+
+
+@app.route("/api/svd/explain/run_contributions")
+def api_svd_explain_run_contributions():
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"success": False, "error": "invalid cache"}), 400
+
+    problem_id = str(request.args.get("problem_id", "")).strip()
+    if not problem_id:
+        return jsonify({"success": False, "error": "missing problem_id"}), 400
+
+    method_id = str(request.args.get("method", "es_svd_ms_rr_r1")).strip()
+    if not _is_canonical_svd_method(method_id):
+        return jsonify({"success": False, "error": "method is not a canonical SVD explainer"}), 400
+
+    sample_id_raw = request.args.get("sample_id", "")
+    if str(sample_id_raw).strip() == "":
+        return jsonify({"success": False, "error": "missing sample_id"}), 400
+
+    anchor = _request_svd_anchor(default=1.0)
+    payload = _build_svd_problem_payload(cache, problem_id, method_id, anchor)
+    if not bool(payload.get("applicable", False)):
+        return jsonify(_to_py(payload))
+
+    sample_id = int(sample_id_raw)
+    for row in payload.get("run_explanations", []):
+        run_info = row.get("run", {})
+        if int(run_info.get("sample_id", -1)) != sample_id:
+            continue
+        return jsonify(
+            _to_py(
+                {
+                    "success": True,
+                    "applicable": True,
+                    "problem_id": str(problem_id),
+                    "method_id": method_id,
+                    "domain": payload.get("domain"),
+                    "anchor": float(anchor),
+                    "anchor_pct": int(round(float(anchor) * 100.0)),
+                    "run": run_info,
+                    "score": row.get("score"),
+                    "anchor_scores": row.get("anchor_scores", {}),
+                    "intercept_effective": row.get("intercept_effective"),
+                    "feature_contributions": row.get("feature_contributions", []),
+                    "family_contributions": row.get("family_contributions", []),
+                    "score_reconstructed": row.get("score_reconstructed"),
+                    "reconstruction_error": row.get("reconstruction_error"),
+                    "route_meta": payload.get("route_meta", {}),
+                }
+            )
+        )
+    return jsonify({"success": False, "error": "sample not found in problem"}), 404
+
+
 @app.route("/api/method_catalog")
 def api_method_catalog():
     return jsonify({
@@ -2592,6 +2977,9 @@ def api_health_viewer():
             "gpqa_pairwise_model": bool(GPQA_PAIRWISE_MODEL.exists()),
             "code_v2_metrics": bool(CODE_V2_METRICS_PATH.exists()),
             "science_hybrid_result": bool(_latest_science_hybrid_path() is not None),
+            "es_svd_math_rr_r1": bool(CANONICAL_SVD_MODEL_PATHS["es_svd_math_rr_r1"].exists()),
+            "es_svd_science_rr_r1": bool(CANONICAL_SVD_MODEL_PATHS["es_svd_science_rr_r1"].exists()),
+            "es_svd_ms_rr_r1": bool(CANONICAL_SVD_MODEL_PATHS["es_svd_ms_rr_r1"].exists()),
         },
     }
     return jsonify(out)
@@ -2605,6 +2993,78 @@ def api_method_scores(problem_id: str):
     method_id = request.args.get("method", "svd_slot100").strip()
     payload = _build_method_payload(cache, str(problem_id), method_id)
     return jsonify(_to_py(payload))
+
+
+@app.route("/api/svd_trajectory/<problem_id>")
+def api_svd_trajectory(problem_id: str):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"success": False, "error": "invalid cache"}), 400
+    context = _build_problem_context(cache, str(problem_id))
+    es = _ensure_earlystop_payload(context)
+    positions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    if es is None:
+        return jsonify({
+            "success": True,
+            "problem_id": str(problem_id),
+            "n_runs": context["n_runs"],
+            "positions": positions,
+            "slot_scores": [],
+            "run_infos": _to_py(context["run_infos"]),
+            "trajectory_shapes": [],
+            "anchor_scores": [],
+            "fallback": "earlystop_payload_unavailable",
+        })
+    return jsonify({
+        "success": True,
+        "problem_id": str(problem_id),
+        "n_runs": context["n_runs"],
+        "positions": positions,
+        "slot_scores": _to_py(np.asarray(es["slot_scores"], dtype=np.float64)),
+        "run_infos": _to_py(context["run_infos"]),
+        "trajectory_shapes": es["trajectory_shapes"],
+        "anchor_scores": _to_py(np.asarray(es["anchor_scores"], dtype=np.float64)),
+        "route_anchor_positions": es["route_anchor_positions"],
+    })
+
+
+@app.route("/api/feature_panel/<problem_id>")
+def api_feature_panel(problem_id: str):
+    cache = _require_cache()
+    if not cache:
+        return jsonify({"success": False}), 400
+    method_id = request.args.get("method", "svd_slot100").strip()
+    payload = _build_method_payload(cache, str(problem_id), method_id)
+    feature_rows = payload.get("compare_bars", {}).get("top1_vs_top2", [])
+    FAMILIES = {
+        "token":        ["tok_conf", "tok_gini", "tok_neg_entropy", "tok_selfcert", "tok_logprob"],
+        "trajectory":   ["traj_continuity", "traj_reflection_count", "traj_novelty",
+                         "traj_max_reflection", "traj_late_convergence"],
+        "meta":         ["nc_mean", "nc_slope", "self_similarity"],
+        "prefix_local": ["tail_q10", "head_tail_gap", "tail_variance",
+                         "last_event_tail_conf", "event_pre_post_delta"],
+        "slot":         ["slot10", "slot40", "slot70", "slot100"],
+    }
+
+    def classify(key: str) -> str:
+        for fam, keys in FAMILIES.items():
+            if any(key.startswith(k) or key == k for k in keys):
+                return fam
+        return "other"
+
+    for row in feature_rows:
+        row["family"] = classify(str(row.get("key", "")))
+    top_runs = payload.get("top_runs", [])
+    return jsonify({
+        "success": True,
+        "problem_id": str(problem_id),
+        "method_id": method_id,
+        "top1": top_runs[0] if top_runs else None,
+        "top2": top_runs[1] if len(top_runs) > 1 else None,
+        "feature_rows": feature_rows,
+        "top1_vs_median": payload.get("compare_bars", {}).get("top1_vs_median", []),
+        "score_stats": payload.get("score_stats", {}),
+    })
 
 
 @app.route("/api/method_lens/<problem_id>")

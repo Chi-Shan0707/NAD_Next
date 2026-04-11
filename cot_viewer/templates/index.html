@@ -3,13 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoT Decision Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <title>SVD EarlyStop Dashboard</title>
   <script>
-    window.COT_VIEWER_CONFIG = {
-      scriptRoot: {{ script_root | tojson }},
-      plotlyVendorUrl: {{ plotly_vendor_url | tojson }}
-    };
+    (function () {
+      function detectScriptRoot() {
+        var pathname = (window.location.pathname || "").replace(/\/+$/, "");
+        var proxyMatch = pathname.match(/^(.*\/proxy\/\d+)(?:\/.*)?$/);
+        if (proxyMatch && proxyMatch[1]) return proxyMatch[1];
+        return {{ script_root | tojson }} || "";
+      }
+      var scriptRoot = detectScriptRoot();
+      window.COT_VIEWER_CONFIG = {
+        scriptRoot: scriptRoot,
+        plotlyVendorUrl: scriptRoot + "/vendor/plotly.min.js"
+      };
+      var css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = scriptRoot + "/static/styles.css";
+      document.head.appendChild(css);
+    })();
     window.__loadPlotlyFallback = function () {
       if (window.Plotly) return;
       var existing = document.querySelector('script[data-plotly-fallback="1"]');
@@ -42,6 +54,22 @@
       <select id="sel-method"></select>
     </div>
     <div class="ctrl">
+      <label>Anchor</label>
+      <select id="sel-anchor">
+        <option value="10">10%</option>
+        <option value="40">40%</option>
+        <option value="70">70%</option>
+        <option value="100" selected>100%</option>
+      </select>
+    </div>
+    <div class="ctrl">
+      <label>SVD Domain</label>
+      <select id="sel-svd-domain">
+        <option value="math">math</option>
+        <option value="science">science</option>
+      </select>
+    </div>
+    <div class="ctrl">
       <label>Slice</label>
       <select id="sel-mode">
         <option value="fixed">Fixed</option>
@@ -52,52 +80,46 @@
     <div id="status" class="status">Initializing...</div>
   </header>
 
-  <main class="container">
-    <section id="global-alert" class="panel panel-alert" style="display:none;"></section>
+  <main id="main-grid">
+    <section id="global-alert" class="card card-alert" style="display:none;"></section>
 
-    <section class="panel panel-summary">
-      <div class="panel-title">第1层 · Decision Summary（选择解释）</div>
-      <div class="summary-grid">
-        <div id="top-cards" class="top-cards"></div>
-        <div class="why-box">
-          <div class="why-title">Why selected?</div>
-          <div id="why-selected" class="why-text">—</div>
-          <div id="method-meta" class="meta-text"></div>
-          <div id="diagnostics-box" class="diag-box"></div>
-        </div>
-      </div>
+    <!-- CARD 1: SVD Score Trajectory (hero, full-width) -->
+    <section class="card card-hero">
+      <div class="card-title">SVD Score Trajectory</div>
+      <div id="trajectory-subtitle" class="card-subtitle">—</div>
+      <div id="plot-trajectory" class="plot plot-hero"></div>
     </section>
 
-    <section class="panel">
-      <div class="panel-title">第2层 · Method Lens（方法特征透镜）</div>
-      <div id="method-lens-note" class="subtle-note"></div>
-      <div id="method-lens-plot" class="plot"></div>
-      <div id="method-lens-table" class="mini-table"></div>
+    <!-- CARD 2 + CARD 3: Decision | Feature Panel (2-column) -->
+    <div class="card-row-2">
+      <!-- CARD 2: Decision -->
+      <section class="card">
+        <div class="card-title">Decision</div>
+        <div id="decision-top-runs"></div>
+        <div id="why-text" class="why-text">—</div>
+        <div id="decision-family-deltas" class="family-delta-list"></div>
+        <div id="diag-block" class="diag-box"></div>
+      </section>
+
+      <!-- CARD 3: Feature Panel -->
+      <section class="card">
+        <div class="card-title">Feature Panel</div>
+        <div id="plot-features" class="feat-panel"></div>
+      </section>
+    </div>
+
+    <!-- CARD 4: Group Context (full-width) -->
+    <section class="card">
+      <div class="card-title">Group Context</div>
+      <div id="group-subtitle" class="card-subtitle">—</div>
+      <div id="plot-group" class="plot"></div>
     </section>
 
-    <section class="panel">
-      <div class="panel-title">第3层 · Group Context（64条组内位置）</div>
-      <div id="group-context-plot" class="plot"></div>
-      <div class="split-2">
-        <div>
-          <div class="sub-title">Top1 vs Top2</div>
-          <div id="diff-top12" class="plot compact"></div>
-        </div>
-        <div>
-          <div class="sub-title">Top1 vs Group Median</div>
-          <div id="diff-median" class="plot compact"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">第4层 · Trajectory & Token Evidence（轨迹与Token证据）</div>
-      <div id="trajectory-note" class="subtle-note"></div>
-      <div id="trajectory-plot" class="plot compact"></div>
-
-      <div class="token-toolbar">
-        <span class="token-title">Token 指标对照（默认 Top1 vs Top2）</span>
-        <select id="token-metric-focus">
+    <!-- CARD 5: Token Evidence -->
+    <section class="card">
+      <div class="card-title">
+        Token Evidence
+        <select id="token-metric-focus" class="inline-select">
           <option value="conf">conf</option>
           <option value="entropy">entropy</option>
           <option value="gini">gini</option>
@@ -105,9 +127,8 @@
           <option value="logprob">logprob</option>
         </select>
       </div>
-      <div id="token-metric-plot" class="plot compact"></div>
-
-      <div class="split-2 text-panels">
+      <div id="plot-token-metric" class="plot"></div>
+      <div class="text-panel-row">
         <div>
           <div id="text-left-title" class="sub-title">Top1</div>
           <div id="text-left" class="text-box"></div>
@@ -117,27 +138,28 @@
           <div id="text-right" class="text-box"></div>
         </div>
       </div>
-
       <div id="token-detail" class="token-detail">
         <div class="sub-title">Token Detail</div>
-        <div id="token-detail-body" class="token-detail-body">点击文本片段查看 token-level 证据。</div>
+        <div id="token-detail-body" class="token-detail-body">Click a text slice to see token-level evidence.</div>
       </div>
-
-      <details id="derivative-fold" class="secondary-fold">
-        <summary>Derivative（二/三阶）Secondary Panel</summary>
-        <div id="derivative-plot" class="plot compact"></div>
-      </details>
     </section>
 
-    <section class="panel">
-      <div class="panel-title">第5层 · Advanced / Low-level Evidence</div>
-      <details id="neuron-fold" class="secondary-fold">
-        <summary>Neuron Activation + Jaccard（默认折叠）</summary>
-        <div id="neuron-plot" class="plot"></div>
+    <!-- CARD 6: Advanced (collapsed) -->
+    <section class="card">
+      <details id="advanced-fold">
+        <summary class="card-title">Advanced</summary>
+        <div id="plot-neuron" class="plot"></div>
       </details>
     </section>
   </main>
 
-  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script>
+    (function () {
+      var scriptRoot = (window.COT_VIEWER_CONFIG && window.COT_VIEWER_CONFIG.scriptRoot) || "";
+      var appScript = document.createElement("script");
+      appScript.src = scriptRoot + "/static/app.js";
+      document.body.appendChild(appScript);
+    })();
+  </script>
 </body>
 </html>

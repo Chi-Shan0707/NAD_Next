@@ -1,0 +1,57 @@
+{
+  "generated_at_utc": "2026-04-11T05:03:34.826435+00:00",
+  "method_id": "es_svd_science_rr_r1",
+  "overall": {
+    "run_count": 512,
+    "max_abs_error": 9.769962616701378e-15,
+    "mean_abs_error": 2.2587183859390514e-15
+  },
+  "by_anchor": {
+    "10": {
+      "run_count": 128,
+      "max_abs_error": 5.551115123125783e-17,
+      "mean_abs_error": 8.239936510889834e-18
+    },
+    "40": {
+      "run_count": 128,
+      "max_abs_error": 1.5543122344752192e-15,
+      "mean_abs_error": 1.07032438467769e-15
+    },
+    "70": {
+      "run_count": 128,
+      "max_abs_error": 1.942890293094024e-15,
+      "mean_abs_error": 1.5274240205975786e-15
+    },
+    "100": {
+      "run_count": 128,
+      "max_abs_error": 9.769962616701378e-15,
+      "mean_abs_error": 6.428885201970047e-15
+    }
+  },
+  "per_cache": [
+    {
+      "cache_key": "DS-R1/gpqa",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/gpqa/cache_neuron_output_1_act_no_rms_20251126_111853",
+      "dataset_name": "gpqa",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "science",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 9.325873406851315e-15,
+      "mean_reconstruction_error": 2.3379735647477418e-15
+    },
+    {
+      "cache_key": "DS-R1/gpqa",
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train/DeepSeek-R1-0528-Qwen3-8B/gpqa/cache_neuron_output_1_act_no_rms_20250901_003811",
+      "dataset_name": "gpqa",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "science",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 9.769962616701378e-15,
+      "mean_reconstruction_error": 2.179463207130361e-15
+    }
+  ]
+}

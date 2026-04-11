@@ -1,0 +1,3128 @@
+{
+  "generated_at_utc": "2026-04-11T05:03:34.829427+00:00",
+  "method_id": "es_svd_ms_rr_r1",
+  "anchors": [
+    10,
+    40,
+    70,
+    100
+  ],
+  "domains": {
+    "math": {
+      "10": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "math",
+        "anchor": 0.1,
+        "anchor_pct": 10,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": false,
+          "class_weight": "balanced",
+          "training_position": 0.1,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "traj_continuity",
+          "baseline_cv_auroc": 0.7618513787870667,
+          "cv_auroc": 0.8950104794446463
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 73.78438051365491,
+            "rank_weight_abs_sum": 4.729505561434894,
+            "strength": 78.5138860750898,
+            "signed_weight_sum": 7.7820722300921314
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 6.978842523194108,
+            "rank_weight_abs_sum": 2.076213654101938,
+            "strength": 9.055056177296047,
+            "signed_weight_sum": -4.902628869092171
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 1.7269054630259322,
+            "rank_weight_abs_sum": 4.029638943934968,
+            "strength": 5.7565444069609,
+            "signed_weight_sum": -3.583195211172777
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.41585479081919263,
+            "rank_weight_abs_sum": 0.3356726402154209,
+            "strength": 0.7515274310346136,
+            "signed_weight_sum": 0.7515274310346136
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 2.1810745725824246e-16,
+            "rank_weight_abs_sum": 0.22244793172129096,
+            "strength": 0.22244793172129118,
+            "signed_weight_sum": 0.22244793172129074
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 38.748145769316785,
+            "rank_weight": -1.7548133785722178,
+            "signed_weight": 36.99333239074457,
+            "strength": 40.502959147889
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 4.117342508356014,
+            "rank_weight": -0.7317079369667612,
+            "signed_weight": 3.385634571389253,
+            "strength": 4.849050445322775
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.20571069867233663,
+            "rank_weight": 0.17882600938798252,
+            "signed_weight": 0.38453670806031914,
+            "strength": 0.38453670806031914
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.210144092146856,
+            "rank_weight": 0.1568466308274384,
+            "signed_weight": 0.3669907229742944,
+            "strength": 0.3669907229742944
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.28341172460351804,
+            "rank_weight": 0.5353053219266936,
+            "signed_weight": 0.2518935973231755,
+            "strength": 0.8187170465302116
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -0.2834117246035266,
+            "rank_weight": 0.5353053219266936,
+            "signed_weight": 0.25189359732316696,
+            "strength": 0.8187170465302201
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -0.38093094277354406,
+            "rank_weight": 0.5513692759673678,
+            "signed_weight": 0.1704383331938238,
+            "strength": 0.932300218740912
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.3809309427735737,
+            "rank_weight": 0.5513692759673678,
+            "signed_weight": 0.17043833319379414,
+            "strength": 0.9323002187409415
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -30.636401361063943,
+            "rank_weight": -0.7301902351056618,
+            "signed_weight": -31.366591596169606,
+            "strength": 31.366591596169606
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": -3.743216820268781,
+            "rank_weight": 0.2205292191228869,
+            "signed_weight": -3.5226876011458943,
+            "strength": 3.963746039391668
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.616477454321084,
+            "rank_weight": -1.4392286900731808,
+            "signed_weight": -2.055706144394265,
+            "strength": 2.055706144394265
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.44608534132775624,
+            "rank_weight": -1.5037356559677257,
+            "signed_weight": -1.949820997295482,
+            "strength": 1.949820997295482
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.23939022622142905,
+            "rank_weight": -1.3407649412117475,
+            "signed_weight": -1.1013747149903184,
+            "strength": 1.5801551674331766
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -1.2983304128485869,
+            "rank_weight": 0.28489950437816786,
+            "signed_weight": -1.013430908470419,
+            "strength": 1.5832299172267548
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -1.2729526226996695,
+            "rank_weight": 0.48411033270682163,
+            "signed_weight": -0.7888422899928478,
+            "strength": 1.7570629554064912
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.04310064869674118,
+            "rank_weight": -0.1720290695785059,
+            "signed_weight": -0.1289284208817647,
+            "strength": 0.21512971827524707
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.210144092146856,
+            "rank_weight": 0.1568466308274384,
+            "signed_weight": 0.3669907229742944,
+            "strength": 0.3669907229742944
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.20571069867233663,
+            "rank_weight": 0.17882600938798252,
+            "signed_weight": 0.38453670806031914,
+            "strength": 0.38453670806031914
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -1.2729526226996695,
+            "rank_weight": 0.48411033270682163,
+            "signed_weight": -0.7888422899928478,
+            "strength": 1.7570629554064912
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -1.2983304128485869,
+            "rank_weight": 0.28489950437816786,
+            "signed_weight": -1.013430908470419,
+            "strength": 1.5832299172267548
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": -3.743216820268781,
+            "rank_weight": 0.2205292191228869,
+            "signed_weight": -3.5226876011458943,
+            "strength": 3.963746039391668
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -0.2834117246035266,
+            "rank_weight": 0.5353053219266936,
+            "signed_weight": 0.25189359732316696,
+            "strength": 0.8187170465302201
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -0.38093094277354406,
+            "rank_weight": 0.5513692759673678,
+            "signed_weight": 0.1704383331938238,
+            "strength": 0.932300218740912
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.28341172460351804,
+            "rank_weight": 0.5353053219266936,
+            "signed_weight": 0.2518935973231755,
+            "strength": 0.8187170465302116
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.3809309427735737,
+            "rank_weight": 0.5513692759673678,
+            "signed_weight": 0.17043833319379414,
+            "strength": 0.9323002187409415
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.44608534132775624,
+            "rank_weight": -1.5037356559677257,
+            "signed_weight": -1.949820997295482,
+            "strength": 1.949820997295482
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.616477454321084,
+            "rank_weight": -1.4392286900731808,
+            "signed_weight": -2.055706144394265,
+            "strength": 2.055706144394265
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 38.748145769316785,
+            "rank_weight": -1.7548133785722178,
+            "signed_weight": 36.99333239074457,
+            "strength": 40.502959147889
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.23939022622142905,
+            "rank_weight": -1.3407649412117475,
+            "signed_weight": -1.1013747149903184,
+            "strength": 1.5801551674331766
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -30.636401361063943,
+            "rank_weight": -0.7301902351056618,
+            "signed_weight": -31.366591596169606,
+            "strength": 31.366591596169606
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 4.117342508356014,
+            "rank_weight": -0.7317079369667612,
+            "signed_weight": 3.385634571389253,
+            "strength": 4.849050445322775
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.04310064869674118,
+            "rank_weight": -0.1720290695785059,
+            "signed_weight": -0.1289284208817647,
+            "strength": 0.21512971827524707
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -6.173783784172514e-17,
+            "rank_weight": 0.03707465528688184,
+            "signed_weight": 0.03707465528688178,
+            "strength": 0.037074655286881905
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -3.108490614358705e-17,
+            "rank_weight": 0.03707465528688184,
+            "signed_weight": 0.037074655286881815,
+            "strength": 0.03707465528688187
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": -6.213632108106155e-17,
+            "rank_weight": 0.03707465528688184,
+            "signed_weight": 0.03707465528688178,
+            "strength": 0.037074655286881905
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -6.217510103489782e-17,
+            "rank_weight": 0.037074655286881836,
+            "signed_weight": 0.03707465528688177,
+            "strength": 0.0370746552868819
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": 2.407108945845742e-21,
+            "rank_weight": 0.03707465528688181,
+            "signed_weight": 0.03707465528688181,
+            "strength": 0.03707465528688181
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -9.708840480250177e-19,
+            "rank_weight": 0.03707465528688178,
+            "signed_weight": 0.03707465528688178,
+            "strength": 0.03707465528688178
+          }
+        ]
+      },
+      "40": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "math",
+        "anchor": 0.4,
+        "anchor_pct": 40,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": false,
+          "class_weight": "none",
+          "training_position": 0.4,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "traj_continuity",
+          "baseline_cv_auroc": 0.7804476035914769,
+          "cv_auroc": 0.9353887064883227
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 102.05634981206971,
+            "rank_weight_abs_sum": 5.7006930218548435,
+            "strength": 107.75704283392454,
+            "signed_weight_sum": -5.7085479168328135
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 3.11288253354844,
+            "rank_weight_abs_sum": 0.28476822315564854,
+            "strength": 3.3976507567040883,
+            "signed_weight_sum": -2.9322394444431614
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 2.5315734380911152,
+            "rank_weight_abs_sum": 0.21841946764078102,
+            "strength": 2.749992905731896,
+            "signed_weight_sum": -2.749992905731896
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.29317869212521586,
+            "rank_weight_abs_sum": 0.3832935015516837,
+            "strength": 0.6764721936768996,
+            "signed_weight_sum": 0.6764721936768996
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 1.1169759214749665e-16,
+            "rank_weight_abs_sum": 0.017606131754680197,
+            "strength": 0.01760613175468031,
+            "signed_weight_sum": -0.01760613175468031
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 49.140744210270476,
+            "rank_weight": -1.5810496811319161,
+            "signed_weight": 47.55969452913856,
+            "strength": 50.72179389140239
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.15080354408310448,
+            "rank_weight": 0.19477138030906913,
+            "signed_weight": 0.34557492439217363,
+            "strength": 0.34557492439217363
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.14237514804211135,
+            "rank_weight": 0.18852212124261455,
+            "signed_weight": 0.3308972692847259,
+            "strength": 0.3308972692847259
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.10995644203329626,
+            "rank_weight": 0.06861927430652652,
+            "signed_weight": 0.17857571633982278,
+            "strength": 0.17857571633982278
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 0.08181509505955685,
+            "rank_weight": -0.08138558248074397,
+            "signed_weight": 0.0004295125788128795,
+            "strength": 0.16320067754030082
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -2.2581107599242973e-21,
+            "rank_weight": -0.0029343552924465813,
+            "signed_weight": -0.0029343552924465813,
+            "strength": 0.0029343552924465813
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -1.733076348526896e-22,
+            "rank_weight": -0.0029343552924465813,
+            "signed_weight": -0.0029343552924465813,
+            "strength": 0.0029343552924465813
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 4.448150056678418e-20,
+            "rank_weight": -0.002934355292446747,
+            "signed_weight": -0.002934355292446747,
+            "strength": 0.002934355292446747
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -45.82528330327998,
+            "rank_weight": -0.7405479238373103,
+            "signed_weight": -46.56583122711729,
+            "strength": 46.56583122711729
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": -6.907166945718565,
+            "rank_weight": 1.6317286211681779,
+            "signed_weight": -5.275438324550387,
+            "strength": 8.538895566886742
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0731989107673934,
+            "rank_weight": -1.6787475214109124,
+            "signed_weight": -1.605548610643519,
+            "strength": 1.7519464321783058
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -1.6690216803390483,
+            "rank_weight": 0.15089056107090681,
+            "signed_weight": -1.5181311192681415,
+            "strength": 1.8199122414099551
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.7283513717099414,
+            "rank_weight": -0.11092167144064057,
+            "signed_weight": -0.8392730431505819,
+            "strength": 0.8392730431505819
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.7333423044835689,
+            "rank_weight": -0.09293218689212494,
+            "signed_weight": -0.8262744913756938,
+            "strength": 0.8262744913756938
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.5356915866403504,
+            "rank_weight": -0.007025697983303018,
+            "signed_weight": -0.5427172846236534,
+            "strength": 0.5427172846236534
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -0.5356915866402909,
+            "rank_weight": -0.007025697983303018,
+            "signed_weight": -0.5427172846235939,
+            "strength": 0.5427172846235939
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.14237514804211135,
+            "rank_weight": 0.18852212124261455,
+            "signed_weight": 0.3308972692847259,
+            "strength": 0.3308972692847259
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.15080354408310448,
+            "rank_weight": 0.19477138030906913,
+            "signed_weight": 0.34557492439217363,
+            "strength": 0.34557492439217363
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -0.292165996252303,
+            "rank_weight": -0.03792647029598227,
+            "signed_weight": -0.3300924665482853,
+            "strength": 0.3300924665482853
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -1.6690216803390483,
+            "rank_weight": 0.15089056107090681,
+            "signed_weight": -1.5181311192681415,
+            "strength": 1.8199122414099551
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 0.08181509505955685,
+            "rank_weight": -0.08138558248074397,
+            "signed_weight": 0.0004295125788128795,
+            "strength": 0.16320067754030082
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -0.5341881752572408,
+            "rank_weight": -0.007539911324712483,
+            "signed_weight": -0.5417280865819533,
+            "strength": 0.5417280865819533
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -0.5356915866402909,
+            "rank_weight": -0.007025697983303018,
+            "signed_weight": -0.5427172846235939,
+            "strength": 0.5427172846235939
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.5341881752572543,
+            "rank_weight": -0.007539911324712483,
+            "signed_weight": -0.5417280865819667,
+            "strength": 0.5417280865819667
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.5356915866403504,
+            "rank_weight": -0.007025697983303018,
+            "signed_weight": -0.5427172846236534,
+            "strength": 0.5427172846236534
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.7283513717099414,
+            "rank_weight": -0.11092167144064057,
+            "signed_weight": -0.8392730431505819,
+            "strength": 0.8392730431505819
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.7333423044835689,
+            "rank_weight": -0.09293218689212494,
+            "signed_weight": -0.8262744913756938,
+            "strength": 0.8262744913756938
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 49.140744210270476,
+            "rank_weight": -1.5810496811319161,
+            "signed_weight": 47.55969452913856,
+            "strength": 50.72179389140239
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0731989107673934,
+            "rank_weight": -1.6787475214109124,
+            "signed_weight": -1.605548610643519,
+            "strength": 1.7519464321783058
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -45.82528330327998,
+            "rank_weight": -0.7405479238373103,
+            "signed_weight": -46.56583122711729,
+            "strength": 46.56583122711729
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": -6.907166945718565,
+            "rank_weight": 1.6317286211681779,
+            "signed_weight": -5.275438324550387,
+            "strength": 8.538895566886742
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.10995644203329626,
+            "rank_weight": 0.06861927430652652,
+            "signed_weight": 0.17857571633982278,
+            "strength": 0.17857571633982278
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -7.381328191051259e-17,
+            "rank_weight": -0.002934355292446747,
+            "signed_weight": -0.0029343552924468207,
+            "strength": 0.0029343552924468207
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -3.769426032607642e-17,
+            "rank_weight": -0.002934355292446747,
+            "signed_weight": -0.0029343552924467847,
+            "strength": 0.0029343552924467847
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 4.448150056678418e-20,
+            "rank_weight": -0.002934355292446747,
+            "signed_weight": -0.002934355292446747,
+            "strength": 0.002934355292446747
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -1.431369919460958e-19,
+            "rank_weight": -0.0029343552924467942,
+            "signed_weight": -0.0029343552924467942,
+            "strength": 0.0029343552924467942
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -1.733076348526896e-22,
+            "rank_weight": -0.0029343552924465813,
+            "signed_weight": -0.0029343552924465813,
+            "strength": 0.0029343552924465813
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -2.2581107599242973e-21,
+            "rank_weight": -0.0029343552924465813,
+            "signed_weight": -0.0029343552924465813,
+            "strength": 0.0029343552924465813
+          }
+        ]
+      },
+      "70": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "math",
+        "anchor": 0.7,
+        "anchor_pct": 70,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": false,
+          "class_weight": "none",
+          "training_position": 0.7,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "traj_reflection_count",
+          "baseline_cv_auroc": 0.7765933332117393,
+          "cv_auroc": 0.9450191859110765
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 106.53126184160784,
+            "rank_weight_abs_sum": 6.043122443419302,
+            "strength": 112.57438428502715,
+            "signed_weight_sum": -5.872123973630752
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 16.453192756840114,
+            "rank_weight_abs_sum": 1.0879446173936536,
+            "strength": 17.541137374233767,
+            "signed_weight_sum": -15.547033086063758
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 3.2520215618557367,
+            "rank_weight_abs_sum": 0.16623401464533727,
+            "strength": 3.418255576501074,
+            "signed_weight_sum": -3.181977329707943
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.665354314766284,
+            "rank_weight_abs_sum": 0.26118685951828224,
+            "strength": 0.9265411742845663,
+            "signed_weight_sum": 0.9265411742845663
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 8.39804720618995e-17,
+            "rank_weight_abs_sum": 0.1547288152356187,
+            "strength": 0.1547288152356188,
+            "signed_weight_sum": -0.1547288152356188
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 50.92772550968362,
+            "rank_weight": -1.5765227059762006,
+            "signed_weight": 49.351202803707416,
+            "strength": 52.50424821565982
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.33776147343135676,
+            "rank_weight": 0.1683114098468568,
+            "signed_weight": 0.5060728832782135,
+            "strength": 0.5060728832782135
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.3275928413349273,
+            "rank_weight": 0.09287544967142544,
+            "signed_weight": 0.42046829100635275,
+            "strength": 0.42046829100635275
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": -0.19039321940484383,
+            "rank_weight": 0.24448330463867038,
+            "signed_weight": 0.05409008523382655,
+            "strength": 0.4348765240435142
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.004601261265018332,
+            "rank_weight": 0.019436381888637253,
+            "signed_weight": 0.01483512062361892,
+            "strength": 0.024037643153655586
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.0992950984729325,
+            "rank_weight": 0.09085318548743902,
+            "signed_weight": -0.008441912985493474,
+            "strength": 0.19014828396037153
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -6.859923086416676e-23,
+            "rank_weight": -0.02578813587260285,
+            "signed_weight": -0.02578813587260285,
+            "strength": 0.02578813587260285
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -6.195804949255342e-22,
+            "rank_weight": -0.025788135872603087,
+            "signed_weight": -0.025788135872603087,
+            "strength": 0.025788135872603087
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -45.24591083284108,
+            "rank_weight": -0.4792868527828374,
+            "signed_weight": -45.72519768562392,
+            "strength": 45.72519768562392
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": -10.127860779882004,
+            "rank_weight": 2.139549841579608,
+            "signed_weight": -7.988310938302396,
+            "strength": 12.267410621461613
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": -6.163271758636016,
+            "rank_weight": 0.4545051646445995,
+            "signed_weight": -5.708766593991417,
+            "strength": 6.617776923280616
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -4.071394999847064,
+            "rank_weight": 0.5346974234199149,
+            "signed_weight": -3.5366975764271498,
+            "strength": 4.606092423266979
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -3.0704007962392095,
+            "rank_weight": -0.04279758205987817,
+            "signed_weight": -3.1131983782990877,
+            "strength": 3.1131983782990877
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -1.629426008423406,
+            "rank_weight": 0.00784955602048927,
+            "signed_weight": -1.6215764524029168,
+            "strength": 1.6372755644438952
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -1.6294260084233805,
+            "rank_weight": 0.00784955602048927,
+            "signed_weight": -1.6215764524028913,
+            "strength": 1.6372755644438697
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -1.518699193694416,
+            "rank_weight": -0.04809489124877172,
+            "signed_weight": -1.5667940849431878,
+            "strength": 1.5667940849431878
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.3275928413349273,
+            "rank_weight": 0.09287544967142544,
+            "signed_weight": 0.42046829100635275,
+            "strength": 0.42046829100635275
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.33776147343135676,
+            "rank_weight": 0.1683114098468568,
+            "signed_weight": 0.5060728832782135,
+            "strength": 0.5060728832782135
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -3.0704007962392095,
+            "rank_weight": -0.04279758205987817,
+            "signed_weight": -3.1131983782990877,
+            "strength": 3.1131983782990877
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -4.071394999847064,
+            "rank_weight": 0.5346974234199149,
+            "signed_weight": -3.5366975764271498,
+            "strength": 4.606092423266979
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": -6.163271758636016,
+            "rank_weight": 0.4545051646445995,
+            "signed_weight": -5.708766593991417,
+            "strength": 6.617776923280616
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -1.518699193694416,
+            "rank_weight": -0.04809489124877172,
+            "signed_weight": -1.5667940849431878,
+            "strength": 1.5667940849431878
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -1.629426008423406,
+            "rank_weight": 0.00784955602048927,
+            "signed_weight": -1.6215764524029168,
+            "strength": 1.6372755644438952
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -1.5186991936944054,
+            "rank_weight": -0.04809489124877172,
+            "signed_weight": -1.5667940849431772,
+            "strength": 1.5667940849431772
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -1.6294260084233805,
+            "rank_weight": 0.00784955602048927,
+            "signed_weight": -1.6215764524028913,
+            "strength": 1.6372755644438697
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.004601261265018332,
+            "rank_weight": 0.019436381888637253,
+            "signed_weight": 0.01483512062361892,
+            "strength": 0.024037643153655586
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.0992950984729325,
+            "rank_weight": 0.09085318548743902,
+            "signed_weight": -0.008441912985493474,
+            "strength": 0.19014828396037153
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 50.92772550968362,
+            "rank_weight": -1.5765227059762006,
+            "signed_weight": 49.351202803707416,
+            "strength": 52.50424821565982
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.03937149979630255,
+            "rank_weight": -1.603279738441985,
+            "signed_weight": -1.5639082386456824,
+            "strength": 1.6426512382382876
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -45.24591083284108,
+            "rank_weight": -0.4792868527828374,
+            "signed_weight": -45.72519768562392,
+            "strength": 45.72519768562392
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": -10.127860779882004,
+            "rank_weight": 2.139549841579608,
+            "signed_weight": -7.988310938302396,
+            "strength": 12.267410621461613
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": -0.19039321940484383,
+            "rank_weight": 0.24448330463867038,
+            "signed_weight": 0.05409008523382655,
+            "strength": 0.4348765240435142
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -8.143140611857426e-17,
+            "rank_weight": -0.02578813587260311,
+            "signed_weight": -0.02578813587260319,
+            "strength": 0.02578813587260319
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -2.385158082255061e-18,
+            "rank_weight": -0.02578813587260311,
+            "signed_weight": -0.025788135872603115,
+            "strength": 0.025788135872603115
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 1.6320038605342327e-19,
+            "rank_weight": -0.02578813587260311,
+            "signed_weight": -0.02578813587260311,
+            "strength": 0.02578813587260311
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -6.859923086416676e-23,
+            "rank_weight": -0.02578813587260285,
+            "signed_weight": -0.02578813587260285,
+            "strength": 0.02578813587260285
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -1.9295290964890033e-23,
+            "rank_weight": -0.02578813587260344,
+            "signed_weight": -0.02578813587260344,
+            "strength": 0.02578813587260344
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -6.195804949255342e-22,
+            "rank_weight": -0.025788135872603087,
+            "signed_weight": -0.025788135872603087,
+            "strength": 0.025788135872603087
+          }
+        ]
+      },
+      "100": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "math",
+        "anchor": 1.0,
+        "anchor_pct": 100,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": false,
+          "class_weight": "balanced",
+          "training_position": 1.0,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "traj_reflection_count",
+          "baseline_cv_auroc": 0.8133102619253353,
+          "cv_auroc": 0.9566557341164844
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 89.59659923777703,
+            "rank_weight_abs_sum": 5.343909584380512,
+            "strength": 94.94050882215753,
+            "signed_weight_sum": 6.228313611444509
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 40.03403131303615,
+            "rank_weight_abs_sum": 3.123353983614124,
+            "strength": 43.157385296650276,
+            "signed_weight_sum": -37.44982790906261
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 6.601741069331892,
+            "rank_weight_abs_sum": 0.28644131734512446,
+            "strength": 6.888182386677016,
+            "signed_weight_sum": -4.381353381397042
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 1.1285843585925037,
+            "rank_weight_abs_sum": 0.8406343993717544,
+            "strength": 1.9692187579642582,
+            "signed_weight_sum": 1.9692187579642582
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 6.226045108975417e-18,
+            "rank_weight_abs_sum": 1.2332182752556604,
+            "strength": 1.2332182752556604,
+            "signed_weight_sum": -1.2332182752556604
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 47.78210009511321,
+            "rank_weight": -1.4610611086259697,
+            "signed_weight": 46.32103898648724,
+            "strength": 49.24316120373918
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.5748878860845639,
+            "rank_weight": 0.4780392667235429,
+            "signed_weight": 1.0529271528081068,
+            "strength": 1.0529271528081068
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.5536964725079399,
+            "rank_weight": 0.3625951326482116,
+            "signed_weight": 0.9162916051561514,
+            "strength": 0.9162916051561514
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": -1.340197255158868,
+            "rank_weight": 2.215996716169658,
+            "signed_weight": 0.87579946101079,
+            "strength": 3.5561939713285255
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.7719584214374946,
+            "rank_weight": -0.016588729354082062,
+            "signed_weight": 0.7553696920834125,
+            "strength": 0.7885471507915767
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.34615327768384146,
+            "rank_weight": 0.12375703664094151,
+            "signed_weight": 0.469910314324783,
+            "strength": 0.469910314324783
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -2.501866602594213e-21,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -1.1814518140256859e-20,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -37.31784153170825,
+            "rank_weight": -0.025343296511678406,
+            "signed_weight": -37.343184828219925,
+            "strength": 37.343184828219925
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -14.538987471714675,
+            "rank_weight": 1.6621047402845492,
+            "signed_weight": -12.876882731430126,
+            "strength": 16.201092211999224
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": -13.799688553181287,
+            "rank_weight": 1.1801281866315751,
+            "signed_weight": -12.619560366549711,
+            "strength": 14.979816739812863
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -6.2117259179296695,
+            "rank_weight": -0.13502550534789887,
+            "signed_weight": -6.346751423277569,
+            "strength": 6.346751423277569
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.91377069462141,
+            "rank_weight": 0.011545766877709692,
+            "signed_weight": -2.9022249277437004,
+            "strength": 2.92531646149912
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -2.9137706946213884,
+            "rank_weight": 0.011545766877709692,
+            "signed_weight": -2.9022249277436787,
+            "strength": 2.925316461499098
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.5698586755891455,
+            "rank_weight": -0.13454978447239122,
+            "signed_weight": -2.704408460061537,
+            "strength": 2.704408460061537
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -2.5698586755891335,
+            "rank_weight": -0.13454978447239122,
+            "signed_weight": -2.704408460061525,
+            "strength": 2.704408460061525
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.5536964725079399,
+            "rank_weight": 0.3625951326482116,
+            "signed_weight": 0.9162916051561514,
+            "strength": 0.9162916051561514
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.5748878860845639,
+            "rank_weight": 0.4780392667235429,
+            "signed_weight": 1.0529271528081068,
+            "strength": 1.0529271528081068
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": -6.2117259179296695,
+            "rank_weight": -0.13502550534789887,
+            "signed_weight": -6.346751423277569,
+            "strength": 6.346751423277569
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": -14.538987471714675,
+            "rank_weight": 1.6621047402845492,
+            "signed_weight": -12.876882731430126,
+            "strength": 16.201092211999224
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": -13.799688553181287,
+            "rank_weight": 1.1801281866315751,
+            "signed_weight": -12.619560366549711,
+            "strength": 14.979816739812863
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": -2.5698586755891335,
+            "rank_weight": -0.13454978447239122,
+            "signed_weight": -2.704408460061525,
+            "strength": 2.704408460061525
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": -2.9137706946213884,
+            "rank_weight": 0.011545766877709692,
+            "signed_weight": -2.9022249277436787,
+            "strength": 2.925316461499098
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.5698586755891455,
+            "rank_weight": -0.13454978447239122,
+            "signed_weight": -2.704408460061537,
+            "strength": 2.704408460061537
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.91377069462141,
+            "rank_weight": 0.011545766877709692,
+            "signed_weight": -2.9022249277437004,
+            "strength": 2.92531646149912
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.7719584214374946,
+            "rank_weight": -0.016588729354082062,
+            "signed_weight": 0.7553696920834125,
+            "strength": 0.7885471507915767
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.34615327768384146,
+            "rank_weight": 0.12375703664094151,
+            "signed_weight": 0.469910314324783,
+            "strength": 0.469910314324783
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 47.78210009511321,
+            "rank_weight": -1.4610611086259697,
+            "signed_weight": 46.32103898648724,
+            "strength": 49.24316120373918
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.020938632025968948,
+            "rank_weight": -1.0761326895810197,
+            "signed_weight": -1.0551940575550507,
+            "strength": 1.0970713216069887
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -37.31784153170825,
+            "rank_weight": -0.025343296511678406,
+            "signed_weight": -37.343184828219925,
+            "strength": 37.343184828219925
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": -3.1355217237707307,
+            "rank_weight": 0.565375773492186,
+            "signed_weight": -2.570145950278545,
+            "strength": 3.7008974972629165
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": -1.340197255158868,
+            "rank_weight": 2.215996716169658,
+            "signed_weight": 0.87579946101079,
+            "strength": 3.5561939713285255
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": 2.675817372428296e-19,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": 5.281063155971682e-18,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 6.630613088775632e-19,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -1.1814518140256859e-20,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -2.501866602594213e-21,
+            "rank_weight": -0.2055363792092767,
+            "signed_weight": -0.2055363792092767,
+            "strength": 0.2055363792092767
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -2.2522140490676398e-23,
+            "rank_weight": -0.20553637920927673,
+            "signed_weight": -0.20553637920927673,
+            "strength": 0.20553637920927673
+          }
+        ]
+      }
+    },
+    "science": {
+      "10": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "science",
+        "anchor": 0.1,
+        "anchor_pct": 10,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": true,
+          "class_weight": "none",
+          "training_position": 0.1,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "tok_conf_recency",
+          "baseline_cv_auroc": 0.6391128307025169,
+          "cv_auroc": 0.7127825107406164
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 0.1329190630544569,
+            "rank_weight_abs_sum": 0.018659884068522703,
+            "strength": 0.1515789471229796,
+            "signed_weight_sum": 0.1138383146680122
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 0.09555463339165794,
+            "rank_weight_abs_sum": 0.016977825252810236,
+            "strength": 0.11253245864446818,
+            "signed_weight_sum": 0.078647481082881
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 0.032317242830879715,
+            "rank_weight_abs_sum": 0.004734706345352689,
+            "strength": 0.037051949176232404,
+            "signed_weight_sum": -0.017539832210441104
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.002306963952813313,
+            "rank_weight_abs_sum": 0.004992711514945767,
+            "strength": 0.00729967546775908,
+            "signed_weight_sum": -0.002685747562132454
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 4.829257686278298e-19,
+            "rank_weight_abs_sum": 0.0024158717131267517,
+            "strength": 0.002415871713126752,
+            "signed_weight_sum": 0.002415871713126752
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 0.108923207722603,
+            "rank_weight": -0.005957353280973048,
+            "signed_weight": 0.10296585444162995,
+            "strength": 0.11488056100357605
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 0.06743097756477148,
+            "rank_weight": -0.011668152960474376,
+            "signed_weight": 0.05576282460429711,
+            "strength": 0.07909913052524586
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 0.021283685568060057,
+            "rank_weight": -0.003713164903749978,
+            "signed_weight": 0.01757052066431008,
+            "strength": 0.024996850471810036
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 0.018744124000229033,
+            "rank_weight": -0.004513368457224761,
+            "signed_weight": 0.014230755543004271,
+            "strength": 0.023257492457453795
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.0035972123260200237,
+            "rank_weight": 3.533647201665013e-05,
+            "signed_weight": 0.003632548798036674,
+            "strength": 0.003632548798036674
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.00320661932782862,
+            "rank_weight": -0.0006199666153021784,
+            "signed_weight": 0.0025866527125264415,
+            "strength": 0.0038265859431307987
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.0032066193278286153,
+            "rank_weight": -0.0006199666153021784,
+            "signed_weight": 0.002586652712526437,
+            "strength": 0.0038265859431307935
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.0025757001728087883,
+            "rank_weight": -0.00014100074779227026,
+            "signed_weight": 0.002434699425016518,
+            "strength": 0.0027167009206010588
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.013765902951094902,
+            "rank_weight": 0.0021804485096264237,
+            "signed_weight": -0.011585454441468478,
+            "strength": 0.015946351460721327
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.012769020379147402,
+            "rank_weight": 0.0017932904726318166,
+            "signed_weight": -0.010975729906515585,
+            "strength": 0.014562310851779219
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0008726590297222776,
+            "rank_weight": -0.004867858645463127,
+            "signed_weight": -0.0039951996157408486,
+            "strength": 0.005740517675185405
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.00021043215896099224,
+            "rank_weight": -0.0019070658065093735,
+            "signed_weight": -0.002117497965470366,
+            "strength": 0.002117497965470366
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.0011934208230507243,
+            "rank_weight": -0.002668332508328601,
+            "signed_weight": -0.0014749116852778765,
+            "strength": 0.003861753331379325
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.0011135431297625885,
+            "rank_weight": -0.002324379006617166,
+            "signed_weight": -0.0012108358768545776,
+            "strength": 0.0034379221363797547
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.0016290785751105503,
+            "rank_weight": -0.0022144414318271753,
+            "signed_weight": -0.000585362856716625,
+            "strength": 0.0038435200069377256
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -1.2104906043264938e-19,
+            "rank_weight": 0.00040264528552112533,
+            "signed_weight": 0.0004026452855211252,
+            "strength": 0.00040264528552112544
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.0011135431297625885,
+            "rank_weight": -0.002324379006617166,
+            "signed_weight": -0.0012108358768545776,
+            "strength": 0.0034379221363797547
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.0011934208230507243,
+            "rank_weight": -0.002668332508328601,
+            "signed_weight": -0.0014749116852778765,
+            "strength": 0.003861753331379325
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.0035972123260200237,
+            "rank_weight": 3.533647201665013e-05,
+            "signed_weight": 0.003632548798036674,
+            "strength": 0.003632548798036674
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 0.018744124000229033,
+            "rank_weight": -0.004513368457224761,
+            "signed_weight": 0.014230755543004271,
+            "strength": 0.023257492457453795
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 0.06743097756477148,
+            "rank_weight": -0.011668152960474376,
+            "signed_weight": 0.05576282460429711,
+            "strength": 0.07909913052524586
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.0025757001728087797,
+            "rank_weight": -0.00014100074779227026,
+            "signed_weight": 0.002434699425016509,
+            "strength": 0.00271670092060105
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.0032066193278286153,
+            "rank_weight": -0.0006199666153021784,
+            "signed_weight": 0.002586652712526437,
+            "strength": 0.0038265859431307935
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.0025757001728087883,
+            "rank_weight": -0.00014100074779227026,
+            "signed_weight": 0.002434699425016518,
+            "strength": 0.0027167009206010588
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.00320661932782862,
+            "rank_weight": -0.0006199666153021784,
+            "signed_weight": 0.0025866527125264415,
+            "strength": 0.0038265859431307987
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.013765902951094902,
+            "rank_weight": 0.0021804485096264237,
+            "signed_weight": -0.011585454441468478,
+            "strength": 0.015946351460721327
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.012769020379147402,
+            "rank_weight": 0.0017932904726318166,
+            "signed_weight": -0.010975729906515585,
+            "strength": 0.014562310851779219
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 0.108923207722603,
+            "rank_weight": -0.005957353280973048,
+            "signed_weight": 0.10296585444162995,
+            "strength": 0.11488056100357605
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0008726590297222776,
+            "rank_weight": -0.004867858645463127,
+            "signed_weight": -0.0039951996157408486,
+            "strength": 0.005740517675185405
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.00021043215896099224,
+            "rank_weight": -0.0019070658065093735,
+            "signed_weight": -0.002117497965470366,
+            "strength": 0.002117497965470366
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 0.021283685568060057,
+            "rank_weight": -0.003713164903749978,
+            "signed_weight": 0.01757052066431008,
+            "strength": 0.024996850471810036
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.0016290785751105503,
+            "rank_weight": -0.0022144414318271753,
+            "signed_weight": -0.000585362856716625,
+            "strength": 0.0038435200069377256
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": 3.4722954262673126e-19,
+            "rank_weight": 0.00040264528552112533,
+            "signed_weight": 0.00040264528552112565,
+            "strength": 0.00040264528552112565
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -1.2104906043264938e-19,
+            "rank_weight": 0.00040264528552112533,
+            "signed_weight": 0.0004026452855211252,
+            "strength": 0.00040264528552112544
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 1.444347542476763e-20,
+            "rank_weight": 0.00040264528552112533,
+            "signed_weight": 0.00040264528552112533,
+            "strength": 0.00040264528552112533
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -1.7683521901099152e-22,
+            "rank_weight": 0.00040264528552112533,
+            "signed_weight": 0.00040264528552112533,
+            "strength": 0.00040264528552112533
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -2.676704329562117e-23,
+            "rank_weight": 0.00040264528552112544,
+            "signed_weight": 0.00040264528552112544,
+            "strength": 0.00040264528552112544
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": 8.788137496156889e-26,
+            "rank_weight": 0.0004026452855211252,
+            "signed_weight": 0.0004026452855211252,
+            "strength": 0.0004026452855211252
+          }
+        ]
+      },
+      "40": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "science",
+        "anchor": 0.4,
+        "anchor_pct": 40,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": true,
+          "class_weight": "none",
+          "training_position": 0.4,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "tok_conf_recency",
+          "baseline_cv_auroc": 0.6837505989534923,
+          "cv_auroc": 0.7659349146099167
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 2.4719457130192346,
+            "rank_weight_abs_sum": 0.32901260167544166,
+            "strength": 2.800958314694676,
+            "signed_weight_sum": 1.9960405786899889
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 1.9983432240329924,
+            "rank_weight_abs_sum": 0.23461349310631122,
+            "strength": 2.2329567171393037,
+            "signed_weight_sum": 1.7858224087931376
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 0.6335088116991516,
+            "rank_weight_abs_sum": 0.042513111362600026,
+            "strength": 0.6760219230617517,
+            "signed_weight_sum": -0.4805802837686607
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.09864959320327928,
+            "rank_weight_abs_sum": 0.1156023337821145,
+            "strength": 0.21425192698539378,
+            "signed_weight_sum": -0.016952740578835224
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 1.3125631557663596e-17,
+            "rank_weight_abs_sum": 0.06679750538441225,
+            "strength": 0.06679750538441226,
+            "signed_weight_sum": 0.06679750538441226
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 2.033652169494051,
+            "rank_weight": -0.06635983097124834,
+            "signed_weight": 1.9672923385228025,
+            "strength": 2.1000120004652993
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 1.5318732998145794,
+            "rank_weight": -0.162777030619212,
+            "signed_weight": 1.3690962691953674,
+            "strength": 1.6946503304337914
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 0.3625173323598687,
+            "rank_weight": -0.05923925333161303,
+            "signed_weight": 0.3032780790282557,
+            "strength": 0.4217565856914817
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 0.27888775214349604,
+            "rank_weight": -0.05460498510578397,
+            "signed_weight": 0.22428276703771208,
+            "strength": 0.33349273724928
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.04719401335234072,
+            "rank_weight": 0.0059701498019388895,
+            "signed_weight": 0.05316416315427961,
+            "strength": 0.05316416315427961
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.03412519271916596,
+            "rank_weight": -0.0015508702222580032,
+            "signed_weight": 0.032574322496907955,
+            "strength": 0.03567606294142397
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.03412519271916591,
+            "rank_weight": -0.0015508702222580032,
+            "signed_weight": 0.032574322496907906,
+            "strength": 0.03567606294142392
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.02263338578703762,
+            "rank_weight": 0.005076189131289289,
+            "signed_weight": 0.027709574918326912,
+            "strength": 0.027709574918326912
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.2939576122952075,
+            "rank_weight": 0.020730109124027833,
+            "signed_weight": -0.27322750317117966,
+            "strength": 0.31468772141923534
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.2827926208977407,
+            "rank_weight": 0.015155942885024901,
+            "signed_weight": -0.2676366780127158,
+            "strength": 0.29794856378276563
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0025758750535586714,
+            "rank_weight": -0.08184706657924383,
+            "signed_weight": -0.07927119152568515,
+            "strength": 0.0844229416328025
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.09600361637000603,
+            "rank_weight": 0.022557350043103955,
+            "signed_weight": -0.07344626632690207,
+            "strength": 0.11856096641310998
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.06082629995812296,
+            "rank_weight": -0.10364336897606159,
+            "signed_weight": -0.04281706901793863,
+            "strength": 0.16446966893418455
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.05048783061275255,
+            "rank_weight": -0.05981145182172483,
+            "signed_weight": -0.009323621208972281,
+            "strength": 0.11029928243447737
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.04816176259052673,
+            "rank_weight": -0.05579088196038967,
+            "signed_weight": -0.0076291193698629425,
+            "strength": 0.1039526445509164
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -7.901663732670106e-19,
+            "rank_weight": 0.011132917564068706,
+            "signed_weight": 0.011132917564068706,
+            "strength": 0.011132917564068706
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.04816176259052673,
+            "rank_weight": -0.05579088196038967,
+            "signed_weight": -0.0076291193698629425,
+            "strength": 0.1039526445509164
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.05048783061275255,
+            "rank_weight": -0.05981145182172483,
+            "signed_weight": -0.009323621208972281,
+            "strength": 0.11029928243447737
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.04719401335234072,
+            "rank_weight": 0.0059701498019388895,
+            "signed_weight": 0.05316416315427961,
+            "strength": 0.05316416315427961
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 0.3625173323598687,
+            "rank_weight": -0.05923925333161303,
+            "signed_weight": 0.3032780790282557,
+            "strength": 0.4217565856914817
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 1.5318732998145794,
+            "rank_weight": -0.162777030619212,
+            "signed_weight": 1.3690962691953674,
+            "strength": 1.6946503304337914
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.02263338578703762,
+            "rank_weight": 0.005076189131289289,
+            "signed_weight": 0.027709574918326912,
+            "strength": 0.027709574918326912
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.03412519271916596,
+            "rank_weight": -0.0015508702222580032,
+            "signed_weight": 0.032574322496907955,
+            "strength": 0.03567606294142397
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.022633385787037538,
+            "rank_weight": 0.005076189131289289,
+            "signed_weight": 0.02770957491832683,
+            "strength": 0.02770957491832683
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.03412519271916591,
+            "rank_weight": -0.0015508702222580032,
+            "signed_weight": 0.032574322496907906,
+            "strength": 0.03567606294142392
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.2939576122952075,
+            "rank_weight": 0.020730109124027833,
+            "signed_weight": -0.27322750317117966,
+            "strength": 0.31468772141923534
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.2827926208977407,
+            "rank_weight": 0.015155942885024901,
+            "signed_weight": -0.2676366780127158,
+            "strength": 0.29794856378276563
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 2.033652169494051,
+            "rank_weight": -0.06635983097124834,
+            "signed_weight": 1.9672923385228025,
+            "strength": 2.1000120004652993
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0025758750535586714,
+            "rank_weight": -0.08184706657924383,
+            "signed_weight": -0.07927119152568515,
+            "strength": 0.0844229416328025
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.09600361637000603,
+            "rank_weight": 0.022557350043103955,
+            "signed_weight": -0.07344626632690207,
+            "strength": 0.11856096641310998
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 0.27888775214349604,
+            "rank_weight": -0.05460498510578397,
+            "signed_weight": 0.22428276703771208,
+            "strength": 0.33349273724928
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.06082629995812296,
+            "rank_weight": -0.10364336897606159,
+            "signed_weight": -0.04281706901793863,
+            "strength": 0.16446966893418455
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": 1.2322151748497099e-17,
+            "rank_weight": 0.011132917564068706,
+            "signed_weight": 0.011132917564068718,
+            "strength": 0.011132917564068718
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": -7.901663732670106e-19,
+            "rank_weight": 0.011132917564068706,
+            "signed_weight": 0.011132917564068706,
+            "strength": 0.011132917564068706
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 1.3133045885121557e-20,
+            "rank_weight": 0.011132917564068706,
+            "signed_weight": 0.011132917564068706,
+            "strength": 0.011132917564068706
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -1.7977107285712485e-22,
+            "rank_weight": 0.011132917564068706,
+            "signed_weight": 0.011132917564068706,
+            "strength": 0.011132917564068706
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -4.535288970009602e-32,
+            "rank_weight": 0.011132917564068706,
+            "signed_weight": 0.011132917564068706,
+            "strength": 0.011132917564068706
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": -6.189414641355557e-25,
+            "rank_weight": 0.01113291756406871,
+            "signed_weight": 0.01113291756406871,
+            "strength": 0.01113291756406871
+          }
+        ]
+      },
+      "70": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "science",
+        "anchor": 0.7,
+        "anchor_pct": 70,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": true,
+          "class_weight": "none",
+          "training_position": 0.7,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "tok_conf_recency",
+          "baseline_cv_auroc": 0.6933207777750491,
+          "cv_auroc": 0.7640324607048115
+        },
+        "family_strengths": [
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 2.6184943904782325,
+            "rank_weight_abs_sum": 0.3106476094098791,
+            "strength": 2.929141999888112,
+            "signed_weight_sum": 1.900107390411195
+          },
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 1.3915801084197263,
+            "rank_weight_abs_sum": 0.12297264319016339,
+            "strength": 1.51455275160989,
+            "signed_weight_sum": 1.2690906343519421
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 0.6675778804736331,
+            "rank_weight_abs_sum": 0.019806936831163593,
+            "strength": 0.6873848173047967,
+            "signed_weight_sum": -0.5672199393960642
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.13374065449659372,
+            "rank_weight_abs_sum": 0.0838887667296268,
+            "strength": 0.21762942122622056,
+            "signed_weight_sum": 0.049851887766966925
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 1.878338496162101e-18,
+            "rank_weight_abs_sum": 0.05049308995149886,
+            "strength": 0.05049308995149886,
+            "signed_weight_sum": 0.05049308995149886
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 2.0563293660880175,
+            "rank_weight": -0.03643012955670961,
+            "signed_weight": 2.019899236531308,
+            "strength": 2.092759495644727
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 0.9806643827642176,
+            "rank_weight": -0.08916785639368527,
+            "signed_weight": 0.8914965263705323,
+            "strength": 1.069832239157903
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 0.3127499857692627,
+            "rank_weight": -0.030335517348335003,
+            "signed_weight": 0.2824144684209277,
+            "strength": 0.3430855031175977
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 0.26431868761721833,
+            "rank_weight": -0.05780914128391458,
+            "signed_weight": 0.20650954633330376,
+            "strength": 0.3221278289011329
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.05689071517793554,
+            "rank_weight": -0.0022281623018452308,
+            "signed_weight": 0.054662552876090315,
+            "strength": 0.05911887747978077
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.06803627998201112,
+            "rank_weight": -0.04220413920073357,
+            "signed_weight": 0.025832140781277546,
+            "strength": 0.11024041918274469
+          },
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.06570437451458262,
+            "rank_weight": -0.041684627528893244,
+            "signed_weight": 0.02401974698568938,
+            "strength": 0.10738900204347587
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.02410866819460779,
+            "rank_weight": -0.000999522585108343,
+            "signed_weight": 0.02310914560949945,
+            "strength": 0.025108190779716134
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.31232123841683784,
+            "rank_weight": 0.00817555194406982,
+            "signed_weight": -0.304145686472768,
+            "strength": 0.32049679036090767
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.3139816173484843,
+            "rank_weight": 0.01039027774079588,
+            "signed_weight": -0.3035913396076884,
+            "strength": 0.32437189508928016
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.2545640511987296,
+            "rank_weight": 0.05069435587015042,
+            "signed_weight": -0.20386969532857918,
+            "strength": 0.30525840706888
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0011112132451685628,
+            "rank_weight": -0.08787779687858778,
+            "signed_weight": -0.08676658363341921,
+            "strength": 0.08898901012375635
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.042171072329098405,
+            "rank_weight": -0.07783618582051673,
+            "signed_weight": -0.03566511349141832,
+            "strength": 0.12000725814961513
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -7.76302599138604e-19,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916475,
+            "strength": 0.008415514991916475
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 1.1058032911840767e-20,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916475,
+            "strength": 0.008415514991916475
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": 1.1698665026944276e-23,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916475,
+            "strength": 0.008415514991916475
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.06570437451458262,
+            "rank_weight": -0.041684627528893244,
+            "signed_weight": 0.02401974698568938,
+            "strength": 0.10738900204347587
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.06803627998201112,
+            "rank_weight": -0.04220413920073357,
+            "signed_weight": 0.025832140781277546,
+            "strength": 0.11024041918274469
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.05689071517793554,
+            "rank_weight": -0.0022281623018452308,
+            "signed_weight": 0.054662552876090315,
+            "strength": 0.05911887747978077
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 0.3127499857692627,
+            "rank_weight": -0.030335517348335003,
+            "signed_weight": 0.2824144684209277,
+            "strength": 0.3430855031175977
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 0.9806643827642176,
+            "rank_weight": -0.08916785639368527,
+            "signed_weight": 0.8914965263705323,
+            "strength": 1.069832239157903
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.017166356513702907,
+            "rank_weight": 0.00024158456118955098,
+            "signed_weight": 0.017407941074892457,
+            "strength": 0.017407941074892457
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.02410866819460777,
+            "rank_weight": -0.000999522585108343,
+            "signed_weight": 0.023109145609499428,
+            "strength": 0.025108190779716114
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.017166356513703178,
+            "rank_weight": 0.00024158456118955098,
+            "signed_weight": 0.017407941074892727,
+            "strength": 0.017407941074892727
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.02410866819460779,
+            "rank_weight": -0.000999522585108343,
+            "signed_weight": 0.02310914560949945,
+            "strength": 0.025108190779716134
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.3139816173484843,
+            "rank_weight": 0.01039027774079588,
+            "signed_weight": -0.3035913396076884,
+            "strength": 0.32437189508928016
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -0.31232123841683784,
+            "rank_weight": 0.00817555194406982,
+            "signed_weight": -0.304145686472768,
+            "strength": 0.32049679036090767
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 2.0563293660880175,
+            "rank_weight": -0.03643012955670961,
+            "signed_weight": 2.019899236531308,
+            "strength": 2.092759495644727
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.0011112132451685628,
+            "rank_weight": -0.08787779687858778,
+            "signed_weight": -0.08676658363341921,
+            "strength": 0.08898901012375635
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.2545640511987296,
+            "rank_weight": 0.05069435587015042,
+            "signed_weight": -0.20386969532857918,
+            "strength": 0.30525840706888
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 0.26431868761721833,
+            "rank_weight": -0.05780914128391458,
+            "signed_weight": 0.20650954633330376,
+            "strength": 0.3221278289011329
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.042171072329098405,
+            "rank_weight": -0.07783618582051673,
+            "signed_weight": -0.03566511349141832,
+            "strength": 0.12000725814961513
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -7.76302599138604e-19,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916475,
+            "strength": 0.008415514991916475
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": 1.0904421840964472e-18,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916477,
+            "strength": 0.008415514991916477
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 1.1058032911840767e-20,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916475,
+            "strength": 0.008415514991916475
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -1.0834835073615014e-22,
+            "rank_weight": 0.00841551499191648,
+            "signed_weight": 0.00841551499191648,
+            "strength": 0.00841551499191648
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": 4.156329994462849e-22,
+            "rank_weight": 0.00841551499191648,
+            "signed_weight": 0.00841551499191648,
+            "strength": 0.00841551499191648
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": 1.1698665026944276e-23,
+            "rank_weight": 0.008415514991916475,
+            "signed_weight": 0.008415514991916475,
+            "strength": 0.008415514991916475
+          }
+        ]
+      },
+      "100": {
+        "success": true,
+        "method_id": "es_svd_ms_rr_r1",
+        "domain": "science",
+        "anchor": 1.0,
+        "anchor_pct": 100,
+        "route_meta": {
+          "route_type": "svd",
+          "representation": "raw+rank",
+          "rank": 16,
+          "whiten": false,
+          "class_weight": "none",
+          "training_position": 1.0,
+          "feature_names": [
+            "tok_conf_prefix",
+            "tok_conf_recency",
+            "tok_gini_prefix",
+            "tok_gini_tail",
+            "tok_gini_slope",
+            "tok_neg_entropy_prefix",
+            "tok_neg_entropy_recency",
+            "tok_selfcert_prefix",
+            "tok_selfcert_recency",
+            "tok_logprob_prefix",
+            "tok_logprob_recency",
+            "traj_continuity",
+            "traj_reflection_count",
+            "traj_novelty",
+            "traj_max_reflection",
+            "traj_late_convergence",
+            "has_tok_conf",
+            "has_tok_gini",
+            "has_tok_neg_entropy",
+            "has_tok_selfcert",
+            "has_tok_logprob",
+            "has_rows_bank"
+          ],
+          "baseline_signal_name": "tok_conf_recency",
+          "baseline_cv_auroc": 0.7229173807394531,
+          "cv_auroc": 0.7780614795002686
+        },
+        "family_strengths": [
+          {
+            "family": "uncertainty",
+            "raw_weight_abs_sum": 15.714144451697162,
+            "rank_weight_abs_sum": 0.9856984119647139,
+            "strength": 16.699842863661882,
+            "signed_weight_sum": 14.728446039732448
+          },
+          {
+            "family": "trajectory",
+            "raw_weight_abs_sum": 13.311849328459683,
+            "rank_weight_abs_sum": 1.3563218583262353,
+            "strength": 14.66817118678592,
+            "signed_weight_sum": 12.20661905507674
+          },
+          {
+            "family": "self_cert_logprob",
+            "raw_weight_abs_sum": 4.837594578168079,
+            "rank_weight_abs_sum": 0.34592052860019024,
+            "strength": 5.183515106768269,
+            "signed_weight_sum": -3.0826726126904713
+          },
+          {
+            "family": "confidence",
+            "raw_weight_abs_sum": 0.7963561538335835,
+            "rank_weight_abs_sum": 0.2160514338354206,
+            "strength": 1.0124075876690042,
+            "signed_weight_sum": 0.5803047199981629
+          },
+          {
+            "family": "availability_meta",
+            "raw_weight_abs_sum": 1.4344003486635594e-17,
+            "rank_weight_abs_sum": 0.13319080283272186,
+            "strength": 0.1331908028327219,
+            "signed_weight_sum": 0.1331908028327219
+          }
+        ],
+        "top_positive_features": [
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 10.764201983574598,
+            "rank_weight": 0.024448070664087388,
+            "signed_weight": 10.788650054238685,
+            "strength": 10.788650054238685
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 8.061101880134366,
+            "rank_weight": -0.5856071765635632,
+            "signed_weight": 7.475494703570803,
+            "strength": 8.64670905669793
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 5.713939969759193,
+            "rank_weight": -0.262099055662031,
+            "signed_weight": 5.451840914097162,
+            "strength": 5.9760390254212234
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 2.3010113218861727,
+            "rank_weight": -0.5103335645118596,
+            "signed_weight": 1.7906777573743131,
+            "strength": 2.8113448863980324
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 1.1458223180837708,
+            "rank_weight": -0.049212614457993,
+            "signed_weight": 1.0966097036257778,
+            "strength": 1.1950349325417637
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.43563149253595074,
+            "rank_weight": -0.05296715855782704,
+            "signed_weight": 0.3826643339781237,
+            "strength": 0.48859865109377776
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.43563149253594924,
+            "rank_weight": -0.05296715855782704,
+            "signed_weight": 0.3826643339781222,
+            "strength": 0.48859865109377626
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.3576487911838849,
+            "rank_weight": -0.03581240672329972,
+            "signed_weight": 0.32183638446058516,
+            "strength": 0.3934611979071846
+          }
+        ],
+        "top_negative_features": [
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.021409142516619,
+            "rank_weight": 0.12062838634719476,
+            "signed_weight": -1.9007807561694243,
+            "strength": 2.142037528863814
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.0229051519316243,
+            "rank_weight": 0.13651257697186872,
+            "signed_weight": -1.8863925749597557,
+            "strength": 2.159417728903493
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.003562654106946825,
+            "rank_weight": -0.3975244603019134,
+            "signed_weight": -0.39396180619496657,
+            "strength": 0.40108711440886025
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.06593461375718569,
+            "rank_weight": -0.1457792859060362,
+            "signed_weight": -0.0798446721488505,
+            "strength": 0.2117138996632219
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -5.574101546982975e-19,
+            "rank_weight": 0.022198467138786922,
+            "signed_weight": 0.022198467138786922,
+            "strength": 0.022198467138786922
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -4.4463831665207135e-18,
+            "rank_weight": 0.02219846713878699,
+            "signed_weight": 0.022198467138786985,
+            "strength": 0.022198467138786992
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -2.2599137423631107e-20,
+            "rank_weight": 0.022198467138786992,
+            "signed_weight": 0.022198467138786992,
+            "strength": 0.022198467138786992
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": 3.4181652744290243e-19,
+            "rank_weight": 0.022198467138786992,
+            "signed_weight": 0.022198467138786992,
+            "strength": 0.022198467138786992
+          }
+        ],
+        "all_feature_weights": [
+          {
+            "feature": "tok_conf_prefix",
+            "family": "confidence",
+            "raw_weight": 0.3912817300543395,
+            "rank_weight": -0.10106731738892753,
+            "signed_weight": 0.290214412665412,
+            "strength": 0.4923490474432671
+          },
+          {
+            "feature": "tok_conf_recency",
+            "family": "confidence",
+            "raw_weight": 0.405074423779244,
+            "rank_weight": -0.11498411644649308,
+            "signed_weight": 0.29009030733275093,
+            "strength": 0.520058540225737
+          },
+          {
+            "feature": "tok_gini_prefix",
+            "family": "uncertainty",
+            "raw_weight": 1.1458223180837708,
+            "rank_weight": -0.049212614457993,
+            "signed_weight": 1.0966097036257778,
+            "strength": 1.1950349325417637
+          },
+          {
+            "feature": "tok_gini_tail",
+            "family": "uncertainty",
+            "raw_weight": 8.061101880134366,
+            "rank_weight": -0.5856071765635632,
+            "signed_weight": 7.475494703570803,
+            "strength": 8.64670905669793
+          },
+          {
+            "feature": "tok_gini_slope",
+            "family": "uncertainty",
+            "raw_weight": 5.713939969759193,
+            "rank_weight": -0.262099055662031,
+            "signed_weight": 5.451840914097162,
+            "strength": 5.9760390254212234
+          },
+          {
+            "feature": "tok_neg_entropy_prefix",
+            "family": "uncertainty",
+            "raw_weight": 0.3576487911838849,
+            "rank_weight": -0.03581240672329972,
+            "signed_weight": 0.32183638446058516,
+            "strength": 0.3934611979071846
+          },
+          {
+            "feature": "tok_neg_entropy_recency",
+            "family": "uncertainty",
+            "raw_weight": 0.43563149253594924,
+            "rank_weight": -0.05296715855782704,
+            "signed_weight": 0.3826643339781222,
+            "strength": 0.48859865109377626
+          },
+          {
+            "feature": "tok_selfcert_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.3576487911838847,
+            "rank_weight": -0.03581240672329972,
+            "signed_weight": 0.321836384460585,
+            "strength": 0.3934611979071844
+          },
+          {
+            "feature": "tok_selfcert_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": 0.43563149253595074,
+            "rank_weight": -0.05296715855782704,
+            "signed_weight": 0.3826643339781237,
+            "strength": 0.48859865109377776
+          },
+          {
+            "feature": "tok_logprob_prefix",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.0229051519316243,
+            "rank_weight": 0.13651257697186872,
+            "signed_weight": -1.8863925749597557,
+            "strength": 2.159417728903493
+          },
+          {
+            "feature": "tok_logprob_recency",
+            "family": "self_cert_logprob",
+            "raw_weight": -2.021409142516619,
+            "rank_weight": 0.12062838634719476,
+            "signed_weight": -1.9007807561694243,
+            "strength": 2.142037528863814
+          },
+          {
+            "feature": "traj_continuity",
+            "family": "trajectory",
+            "raw_weight": 10.764201983574598,
+            "rank_weight": 0.024448070664087388,
+            "signed_weight": 10.788650054238685,
+            "strength": 10.788650054238685
+          },
+          {
+            "feature": "traj_reflection_count",
+            "family": "trajectory",
+            "raw_weight": 0.003562654106946825,
+            "rank_weight": -0.3975244603019134,
+            "signed_weight": -0.39396180619496657,
+            "strength": 0.40108711440886025
+          },
+          {
+            "feature": "traj_novelty",
+            "family": "trajectory",
+            "raw_weight": -0.17713875513478156,
+            "rank_weight": 0.27823647694233855,
+            "signed_weight": 0.101097721807557,
+            "strength": 0.4553752320771201
+          },
+          {
+            "feature": "traj_max_reflection",
+            "family": "trajectory",
+            "raw_weight": 2.3010113218861727,
+            "rank_weight": -0.5103335645118596,
+            "signed_weight": 1.7906777573743131,
+            "strength": 2.8113448863980324
+          },
+          {
+            "feature": "traj_late_convergence",
+            "family": "trajectory",
+            "raw_weight": 0.06593461375718569,
+            "rank_weight": -0.1457792859060362,
+            "signed_weight": -0.0798446721488505,
+            "strength": 0.2117138996632219
+          },
+          {
+            "feature": "has_tok_conf",
+            "family": "availability_meta",
+            "raw_weight": -2.2599137423631107e-20,
+            "rank_weight": 0.022198467138786992,
+            "signed_weight": 0.022198467138786992,
+            "strength": 0.022198467138786992
+          },
+          {
+            "feature": "has_tok_gini",
+            "family": "availability_meta",
+            "raw_weight": 3.4181652744290243e-19,
+            "rank_weight": 0.022198467138786992,
+            "signed_weight": 0.022198467138786992,
+            "strength": 0.022198467138786992
+          },
+          {
+            "feature": "has_tok_neg_entropy",
+            "family": "availability_meta",
+            "raw_weight": 8.958391168889869e-18,
+            "rank_weight": 0.022198467138786992,
+            "signed_weight": 0.022198467138787002,
+            "strength": 0.022198467138787002
+          },
+          {
+            "feature": "has_tok_selfcert",
+            "family": "availability_meta",
+            "raw_weight": -4.4463831665207135e-18,
+            "rank_weight": 0.02219846713878699,
+            "signed_weight": 0.022198467138786985,
+            "strength": 0.022198467138786992
+          },
+          {
+            "feature": "has_tok_logprob",
+            "family": "availability_meta",
+            "raw_weight": -5.574101546982975e-19,
+            "rank_weight": 0.022198467138786922,
+            "signed_weight": 0.022198467138786922,
+            "strength": 0.022198467138786922
+          },
+          {
+            "feature": "has_rows_bank",
+            "family": "availability_meta",
+            "raw_weight": 1.7403331660180086e-20,
+            "rank_weight": 0.022198467138786992,
+            "signed_weight": 0.022198467138786992,
+            "strength": 0.022198467138786992
+          }
+        ]
+      }
+    }
+  }
+}

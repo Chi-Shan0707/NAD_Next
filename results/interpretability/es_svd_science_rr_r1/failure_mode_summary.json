@@ -1,0 +1,10 @@
+{
+  "generated_at_utc": "2026-04-11T05:03:34.826268+00:00",
+  "method_id": "es_svd_science_rr_r1",
+  "overall": {
+    "total_wrong_top1_cases": 0,
+    "families": [],
+    "features": []
+  },
+  "by_anchor": {}
+}
