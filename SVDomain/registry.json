@@ -1,7 +1,25 @@
 {
   "family": "es_svd",
-  "updated_at_utc": "2026-04-11T08:10:15.034564+00:00",
+  "updated_at_utc": "2026-04-11T08:23:05.339954+00:00",
   "methods": [
+    {
+      "method_id": "es_svd_coding_rr_r1",
+      "kind": "single_domain_bundle",
+      "domain": "coding",
+      "representation": "raw+rank",
+      "anchors": [
+        10,
+        40,
+        70,
+        100
+      ],
+      "model_path": "models/ml_selectors/es_svd_coding_rr_r1.pkl",
+      "summary_path": "results/scans/earlystop/es_svd_coding_rr_r1_summary.json",
+      "eval_path": "results/scans/earlystop/es_svd_coding_rr_r1_eval.json",
+      "doc_path": "docs/ES_SVD_CODING_RR_R1.md",
+      "submission_path": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rr_r1.json",
+      "blind_coding_scores_path": "results/scans/earlystop/es_svd_coding_rr_r1_blind_coding_scores.json"
+    },
     {
       "method_id": "es_svd_math_rr_r1",
       "kind": "single_domain_bundle",
@@ -34,56 +52,6 @@
       }
     },
     {
-      "method_id": "es_svd_science_rr_r1",
-      "kind": "single_domain_bundle",
-      "domain": "science",
-      "representation": "raw+rank",
-      "anchors": [
-        10,
-        40,
-        70,
-        100
-      ],
-      "model_path": "models/ml_selectors/es_svd_science_rr_r1.pkl"
-    },
-    {
-      "method_id": "es_svd_ms_rr_r1",
-      "kind": "multi_domain_bundle",
-      "domains": [
-        "math",
-        "science"
-      ],
-      "representation": "raw+rank",
-      "anchors": [
-        10,
-        40,
-        70,
-        100
-      ],
-      "model_path": "models/ml_selectors/es_svd_ms_rr_r1.pkl",
-      "summary_path": "results/scans/earlystop/es_svd_ms_rr_r1_summary.json",
-      "eval_path": "results/scans/earlystop/es_svd_ms_rr_r1_eval.json",
-      "doc_path": "docs/ES_SVD_MS_RR_R1.md"
-    },
-    {
-      "method_id": "es_svd_coding_rr_r1",
-      "kind": "single_domain_bundle",
-      "domain": "coding",
-      "representation": "raw+rank",
-      "anchors": [
-        10,
-        40,
-        70,
-        100
-      ],
-      "model_path": "models/ml_selectors/es_svd_coding_rr_r1.pkl",
-      "summary_path": "results/scans/earlystop/es_svd_coding_rr_r1_summary.json",
-      "eval_path": "results/scans/earlystop/es_svd_coding_rr_r1_eval.json",
-      "doc_path": "docs/ES_SVD_CODING_RR_R1.md",
-      "submission_path": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rr_r1.json",
-      "blind_coding_scores_path": "results/scans/earlystop/es_svd_coding_rr_r1_blind_coding_scores.json"
-    },
-    {
       "method_id": "es_svd_math_rr_r2",
       "kind": "single_domain_bundle",
       "domain": "math",
@@ -105,25 +73,23 @@
       "model_path": "models/ml_selectors/es_svd_math_rr_r2.pkl"
     },
     {
-      "method_id": "es_svd_science_rr_r2",
-      "kind": "single_domain_bundle",
-      "domain": "science",
+      "method_id": "es_svd_ms_rr_r1",
+      "kind": "multi_domain_bundle",
+      "domains": [
+        "math",
+        "science"
+      ],
       "representation": "raw+rank",
       "anchors": [
         10,
-        20,
-        30,
         40,
-        50,
-        60,
         70,
-        80,
-        90,
         100
       ],
-      "feature_family": "per_position_search",
-      "note": "10 anchors; per-position family search over token_plus_traj, strong_core3, strong_event7, token_plus_traj_global@100%",
-      "model_path": "models/ml_selectors/es_svd_science_rr_r2.pkl"
+      "model_path": "models/ml_selectors/es_svd_ms_rr_r1.pkl",
+      "summary_path": "results/scans/earlystop/es_svd_ms_rr_r1_summary.json",
+      "eval_path": "results/scans/earlystop/es_svd_ms_rr_r1_eval.json",
+      "doc_path": "docs/ES_SVD_MS_RR_R1.md"
     },
     {
       "method_id": "es_svd_ms_rr_r2",
@@ -153,16 +119,49 @@
       "doc_path": "docs/ES_SVD_MS_RR_R2_REPORT.md"
     },
     {
+      "method_id": "es_svd_science_rr_r1",
+      "kind": "single_domain_bundle",
+      "domain": "science",
+      "representation": "raw+rank",
+      "anchors": [
+        10,
+        40,
+        70,
+        100
+      ],
+      "model_path": "models/ml_selectors/es_svd_science_rr_r1.pkl"
+    },
+    {
+      "method_id": "es_svd_science_rr_r2",
+      "kind": "single_domain_bundle",
+      "domain": "science",
+      "representation": "raw+rank",
+      "anchors": [
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100
+      ],
+      "feature_family": "per_position_search",
+      "note": "10 anchors; per-position family search over token_plus_traj, strong_core3, strong_event7, token_plus_traj_global@100%",
+      "model_path": "models/ml_selectors/es_svd_science_rr_r2.pkl"
+    },
+    {
       "method_id": "slot100_svd_code_domain_r1__hit1",
       "kind": "single_domain_slot100_bundle",
       "domain": "coding",
       "representation": "raw+rank",
       "position": 100,
-      "model_path": "models/ml_selectors/slot100_svd_code_domain_r1_cap10__hit1.pkl",
-      "summary_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_cap10_summary.json",
-      "eval_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_cap10_eval.json",
-      "doc_path": "docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md",
-      "submission_path": "submission/BestofN/extreme12/patches/slot100_svd_code_domain_r1_cap10__hit1.json"
+      "model_path": "models/ml_selectors/slot100_svd_code_domain_r1_focus20__hit1.pkl",
+      "summary_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_focus20_summary.json",
+      "eval_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_focus20_eval.json",
+      "doc_path": "docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md"
     },
     {
       "method_id": "slot100_svd_code_domain_r1__pairwise",
@@ -170,11 +169,10 @@
       "domain": "coding",
       "representation": "raw+rank",
       "position": 100,
-      "model_path": "models/ml_selectors/slot100_svd_code_domain_r1_cap10__pairwise.pkl",
-      "summary_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_cap10_summary.json",
-      "eval_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_cap10_eval.json",
-      "doc_path": "docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md",
-      "submission_path": "submission/BestofN/extreme12/patches/slot100_svd_code_domain_r1_cap10__pairwise.json"
+      "model_path": "models/ml_selectors/slot100_svd_code_domain_r1_focus20__pairwise.pkl",
+      "summary_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_focus20_summary.json",
+      "eval_path": "results/scans/bestofn_bridge/slot100_svd_code_domain_r1_focus20_eval.json",
+      "doc_path": "docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md"
     }
   ]
 }

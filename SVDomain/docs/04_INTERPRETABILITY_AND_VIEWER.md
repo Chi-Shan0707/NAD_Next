@@ -177,6 +177,39 @@ SVDomain 当前的解释性分为三层：
 - `self_cert_logprob` 相关特征经常落在 top negative features 中
 - 它们更像“拉低分”的证据，而不只是简单的正向置信度信号
 
+### 7.4 `es_svd_ms_rr_r1` 个案：math / science 其实在学两套规则
+
+对 `es_svd_ms_rr_r1` 的长版 introspection 显示，`math` 与 `science` 的 route 并不是同一套“好推理”定义。
+
+训练集交叉验证上的 `CV-AUROC` 先给出一个总览：
+
+| Domain | @10% | @40% | @70% | @100% |
+|---|---:|---:|---:|---:|
+| `math` | `0.895` | `0.935` | `0.945` | `0.957` |
+| `science` | `0.713` | `0.766` | `0.764` | `0.778` |
+
+这张表说明：
+
+- `math` 在 `10%` 就已经高度可分
+- `science` 则直到 `100%` 才拿到真正有区分度的信号
+
+更关键的是，两个 domain 对 `uncertainty` family 的使用方向发生了反转：
+
+| Feature | `math` | `science` | 含义 |
+|---|---|---|---|
+| `tok_gini_slope::raw` | `-3.7` 到 `-13.8` | `+0.07` 到 `+5.71` | `math` 把高 entropy 当成风险；`science` 把它当成有效探索 |
+| `tok_gini_tail::raw` | `-1.3` 到 `-14.5` | `+0.02` 到 `+8.06` | 同样是反向证据 |
+| `traj_continuity::raw` | 始终为正 | 始终为正 | 这是跨域最稳定的共通信号 |
+
+可以把这个个案压缩成四个论文可用的 claim：
+
+- `math` 主要由 `trajectory` family 驱动，尤其是 `traj_continuity (+)` 对 `traj_novelty (-)` 的对立。
+- `science` 的有效信号更晚出现，并在 `100%` 由 `uncertainty + trajectory` 混合主导。
+- 跨 anchor 的整体符号稳定性是 `95.8%`，说明解释层不是随时间完全漂移的。
+- 但跨 domain 的符号一致率只有 `46.0%`，说明 `ms` bundle 编码的是 **domain-conditional decision boundary**，而不是一个统一的普适边界。
+
+还有一个对写作很有价值的细节：稳定性主要来自 `raw` channel，不稳定性主要来自 `rank` channel。也就是说，绝对 feature signal 在 reasoning timeline 上是稳的，而组内相对排序会随着不同 run 的发展而重排。这一点很适合在正文 discussion 里解释“为什么模型既稳定又会跨位置改变侧重点”。
+
 ---
 
 ## 8. Viewer 集成
