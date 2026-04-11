@@ -220,7 +220,9 @@ SVDomain/
 SVD explainability 现在已经接入：
 
 - `nad/explain/svd_explain.py`
+- `nad/explain/svd_introspection.py`
 - `scripts/export_svd_explanations.py`
+- `scripts/export_svd_introspection.py`
 - `cot_viewer/app.py`
 - `cot_viewer/static/app.js`
 
@@ -229,6 +231,7 @@ SVD explainability 现在已经接入：
 - **模型层**：domain × anchor 权重与 family strength
 - **样本层**：单条 run 的 feature contribution / family contribution
 - **决策层**：top1 vs top2 的 feature delta / family delta
+- **内省层**：route inventory、effective weights、component table、stability report、failure modes
 
 viewer 侧目前还支持：
 
@@ -245,6 +248,8 @@ viewer 侧目前还支持：
 - `docs/ES_SVD_MS_RR_R2_REPORT.md`
 - `docs/ES_SVD_CODING_RR_R1.md`
 - `docs/SVD_INTERPRETABILITY_R1_20260411.md`
+- `docs/SVD_INTROSPECTION_RESULTS_es_svd_ms_rr_r1.md`
+- `docs/SVD_FAILURE_MODES_es_svd_ms_rr_r1.md`
 - `docs/BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`
 - `docs/SVD_PERF_PLAN_20260411.md`
 - `docs/SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`
@@ -292,6 +297,8 @@ viewer 侧目前还支持：
 
 - `SVDomain/docs/04_INTERPRETABILITY_AND_VIEWER.md`
 - `SVDomain/python_docs/VIEWER_AND_EXPLAIN_APIS.md`
+- `docs/SVD_INTROSPECTION_RESULTS_es_svd_ms_rr_r1.md`
+- `results/interpretability_smoke/es_svd_ms_rr_r1/`
 
 ---
 

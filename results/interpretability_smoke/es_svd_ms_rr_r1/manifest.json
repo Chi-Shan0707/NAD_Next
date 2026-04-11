@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-04-11T08:20:27.886989+00:00",
+  "method_id": "es_svd_ms_rr_r1",
+  "model_path": "/home/jovyan/work/NAD_Next/models/ml_selectors/es_svd_ms_rr_r1.pkl",
+  "anchors": [
+    10,
+    40,
+    70,
+    100
+  ],
+  "max_problems_per_cache": 1,
+  "problem_count": 5,
+  "problem_anchor_count": 20,
+  "run_count": 1280,
+  "artifacts": {
+    "route_inventory": "route_inventory.json",
+    "effective_weights": "effective_weights.csv",
+    "component_table": "component_table.csv",
+    "family_summary": "family_summary.csv",
+    "failure_modes": "failure_modes.csv",
+    "stability_report": "stability_report.csv",
+    "problem_top1_vs_top2": "problem_top1_vs_top2.jsonl",
+    "run_contributions": "run_contributions/",
+    "sanity_checks": "sanity_checks.json"
+  }
+}

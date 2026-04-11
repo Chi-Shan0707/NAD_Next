@@ -1,0 +1,95 @@
+{
+  "generated_at_utc": "2026-04-11T08:20:27.886653+00:00",
+  "method_id": "es_svd_ms_rr_r1",
+  "problem_count": 5,
+  "problem_anchor_count": 20,
+  "overall": {
+    "run_count": 1280,
+    "max_abs_error": 8.526512829121202e-14,
+    "mean_abs_error": 9.541456166828332e-15
+  },
+  "by_anchor": {
+    "10": {
+      "run_count": 320,
+      "max_abs_error": 1.7763568394002505e-14,
+      "mean_abs_error": 3.628174150005492e-15
+    },
+    "40": {
+      "run_count": 320,
+      "max_abs_error": 2.842170943040401e-14,
+      "mean_abs_error": 5.744016373654403e-15
+    },
+    "70": {
+      "run_count": 320,
+      "max_abs_error": 3.552713678800501e-14,
+      "mean_abs_error": 8.820721930646869e-15
+    },
+    "100": {
+      "run_count": 320,
+      "max_abs_error": 8.526512829121202e-14,
+      "mean_abs_error": 1.9972912213006567e-14
+    }
+  },
+  "per_cache": [
+    {
+      "cache_key": "DS-R1/aime24",
+      "cache_root": "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime24/cache_neuron_output_1_act_no_rms_20251126_073502",
+      "dataset_name": "aime24",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 7.105427357601002e-14,
+      "mean_reconstruction_error": 1.1657341758564144e-14
+    },
+    {
+      "cache_key": "DS-R1/aime25",
+      "cache_root": "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/aime25/cache_neuron_output_1_act_no_rms_20251126_114548",
+      "dataset_name": "aime25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 8.526512829121202e-14,
+      "mean_reconstruction_error": 1.1157741397482823e-14
+    },
+    {
+      "cache_key": "DS-R1/brumo25",
+      "cache_root": "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/brumo25/cache_neuron_output_1_act_no_rms_20251126_071142",
+      "dataset_name": "brumo25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 5.684341886080802e-14,
+      "mean_reconstruction_error": 1.2073675392798577e-14
+    },
+    {
+      "cache_key": "DS-R1/gpqa",
+      "cache_root": "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/gpqa/cache_neuron_output_1_act_no_rms_20251126_111853",
+      "dataset_name": "gpqa",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "science",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 1.4210854715202004e-14,
+      "mean_reconstruction_error": 1.667719781717203e-15
+    },
+    {
+      "cache_key": "DS-R1/hmmt25",
+      "cache_root": "MUI_HUB/cache/DeepSeek-R1-0528-Qwen3-8B/hmmt25/cache_neuron_output_1_act_no_rms_20251126_223151",
+      "dataset_name": "hmmt25",
+      "model_name": "DeepSeek-R1-0528-Qwen3-8B",
+      "domain": "math",
+      "problem_count": 1,
+      "problem_anchor_count": 4,
+      "run_count": 256,
+      "max_reconstruction_error": 5.684341886080802e-14,
+      "mean_reconstruction_error": 1.1150802503578916e-14
+    }
+  ]
+}

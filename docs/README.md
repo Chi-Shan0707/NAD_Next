@@ -14,6 +14,8 @@
 - `SVD_PERF_PLAN_20260411.md`: coding `slot100` SVDomain plan.
 - `SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`: coding `slot100` SVDomain implementation and smoke results.
 - `SVD_INTERPRETABILITY_R1_20260411.md`: explainability/viewer integration notes.
+- `SVD_INTROSPECTION_RESULTS_es_svd_ms_rr_r1.md`: exact weight/back-projection introspection summary for `es_svd_ms_rr_r1`.
+- `SVD_FAILURE_MODES_es_svd_ms_rr_r1.md`: wrong-top1/failure-mode analysis summary for `es_svd_ms_rr_r1`.
 - `BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`: current slot100 bridge result snapshot.
 
 ## Coding line
@@ -76,6 +78,8 @@
 - `SVD_PERF_PLAN_20260411.md`：coding `slot100` SVDomain 实验计划。
 - `SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`：coding `slot100` SVDomain 实现与 smoke 结果。
 - `SVD_INTERPRETABILITY_R1_20260411.md`：解释性与 viewer 接入说明。
+- `SVD_INTROSPECTION_RESULTS_es_svd_ms_rr_r1.md`：`es_svd_ms_rr_r1` 的精确权重回投与稳定性内省摘要。
+- `SVD_FAILURE_MODES_es_svd_ms_rr_r1.md`：`es_svd_ms_rr_r1` 的 wrong-top1 / failure-mode 摘要。
 - `BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`：当前 slot100 bridge 结果快照。
 
 ## Coding 主线
