@@ -28,6 +28,8 @@
 - `tables/bestofn_summary.csv`
 - `tables/checkpoint_ranking_summary.csv`
 - `tables/interpretability_sanity.csv`
+- `tables/structured_ood_results.csv`
+- `tables/id_vs_ood_summary.csv`
 
 ---
 

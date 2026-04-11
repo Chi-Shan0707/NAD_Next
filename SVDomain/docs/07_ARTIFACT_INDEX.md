@@ -141,6 +141,7 @@ EarlyStop 与 Best-of-N 的在线结果当前主要整理在：
 - `SVDomain/results/comparison_tables.md`
 - `SVDomain/results/summary_metrics.json`
 - `SVDomain/results/tables/*.csv`
+- `SVDomain/docs/10_STRUCTURED_OOD.md`
 
 ### 环境与复现
 
