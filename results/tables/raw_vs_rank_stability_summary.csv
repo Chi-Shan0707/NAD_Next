@@ -1,0 +1,5 @@
+axis,channel,mean_feature_sign_consistency,median_feature_sign_consistency,mean_abs_weight_cv,median_abs_weight_cv,n_anchor_rows
+seed,raw,1.0,1.0,1.2165421044252e-13,2.260290679756592e-14,16
+seed,rank,1.0,1.0,3.970596347011164e-13,3.2818737364199964e-14,16
+split,raw,1.0,1.0,1.865705362634764e-17,1.822428753360236e-17,16
+split,rank,1.0,1.0,2.564237298431878e-17,2.1831998755211372e-17,16
