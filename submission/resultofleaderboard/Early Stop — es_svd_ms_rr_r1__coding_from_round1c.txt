@@ -1,0 +1,63 @@
+Early Stop Leaderboard
+Dataset: 12 test caches across 6 benchmarks (DS-R1 & Qwen3-4B) — ranked by average rank across 32 metrics (lower is better)
+
+我是drfit
+
+Submission #144
+Early Stop — es_svd_ms_rr_r1__coding_from_round1c
+
+Submission Info
+Task	early_stop
+Method	es_svd_ms_rr_r1__coding_from_round1c
+File	es_svd_ms_rr_r1__coding_from_round1c.json
+Submitted	2026-04-11 01:58:22 UTC
+Status	CURRENT BEST
+Primary Score	3.8125
+Average Rank (lower is better)
+All Metrics
+0.7428	AUC of AUROC
+0.8317	AUC of SelAcc
+10%	Earliest >0.6
+62080	Samples
+
+Metrics by Position
+Position	AUROC	Selective Acc @10%	Stop Acc (Hit@1)
+10%	0.7878	0.9028	0.7021
+20%	0.7988	0.9177	0.7027
+30%	0.7873	0.9149	0.7225
+40%	0.8333	0.9263	0.7134
+50%	0.8325	0.9277	0.7319
+60%	0.8294	0.9281	0.7350
+70%	0.8404	0.9275	0.7260
+80%	0.8439	0.9286	0.7394
+90%	0.8451	0.9295	0.7395
+100%	0.8468	0.9313	0.7299
+
+Per-Cache Breakdown — drfit
+Cache	AUC-AUROC	AUC-SelAcc	Earliest>0.6	AUROC@10%	AUROC@50%	AUROC@100%	Stop@100%	Samples
+DS-R1/aime24	0.8302	0.9000	10%	0.8758	0.9278	0.9639	0.8667	1920
+DS-R1/aime25	0.8280	0.8935	10%	0.9074	0.9242	0.9117	0.6333	1920
+DS-R1/brumo25	0.8601	0.8953	10%	0.9378	0.9634	0.9731	0.8667	1920
+DS-R1/gpqa	0.6755	0.8384	10%	0.7061	0.7689	0.7776	0.6465	12672
+DS-R1/hmmt25	0.8281	0.8984	10%	0.9188	0.9244	0.9572	0.7333	1920
+DS-R1/lcb_v5	0.4708	0.5253	N/A	0.5147	0.5219	0.5272	0.5988	10688
+Qwen3-4B/aime24	0.8247	0.8995	10%	0.8702	0.9236	0.9196	0.8667	1920
+Qwen3-4B/aime25	0.8385	0.9000	10%	0.8839	0.9383	0.9468	0.8000	1920
+Qwen3-4B/brumo25	0.8133	0.9000	10%	0.7787	0.9290	0.9367	0.8333	1920
+Qwen3-4B/gpqa	0.7067	0.8606	10%	0.7519	0.7821	0.8009	0.6818	12672
+Qwen3-4B/hmmt25	0.7890	0.8961	10%	0.8251	0.8913	0.9396	0.6333	1920
+Qwen3-4B/lcb_v5	0.4489	0.5736	N/A	0.4830	0.4953	0.5079	0.5988	10688
+
+Method Mapping (具体方法名称)
+submission method_name	es_svd_ms_rr_r1__coding_from_round1c
+math/science model	models/ml_selectors/es_svd_ms_rr_r1.pkl
+coding source	submission/EarlyStop/earlystop_prefix10_svd_round1c_fullcache.json
+implementation note	math + science use new split-domain `raw+rank` SVD routes; coding is copied from `earlystop_prefix10_svd_round1c_fullcache`, which is identical to `earlystop_prefix10_svd_round1` on both coding caches
+
+Previous best reference
+previous best submission #115
+previous best method	earlystop_prefix10_svd_round1
+previous best primary score	4.0000
+current primary score	3.8125
+primary score delta	-0.1875
+

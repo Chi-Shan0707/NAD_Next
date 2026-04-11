@@ -1,0 +1,104 @@
+{
+  "task": "checkpoint_ranking_model_comparison",
+  "rl_cache_root": "/home/jovyan/public-ro/NAD_RL/math5000RL_neuron_analysis/cache",
+  "slot_index": 9,
+  "position": 1.0,
+  "score_aggregation": "mean_confidence",
+  "official_checkpoints": [
+    "base",
+    "step-100",
+    "step-200",
+    "step-300",
+    "step-400",
+    "step-500",
+    "step-600",
+    "step-700",
+    "step-800",
+    "step-900",
+    "step-1000"
+  ],
+  "true_checkpoint_accuracy": {
+    "base": 0.28609375,
+    "step-100": 0.3034375,
+    "step-200": 0.3128125,
+    "step-300": 0.3184375,
+    "step-400": 0.33078125,
+    "step-500": 0.329375,
+    "step-600": 0.33203125,
+    "step-700": 0.32296875,
+    "step-800": 0.3225,
+    "step-900": 0.32640625,
+    "step-1000": 0.32
+  },
+  "models": [
+    {
+      "method_name": "es_svd_math_rr_r1__math5000rl_slot100_meanconf",
+      "model_path": "/home/jovyan/work/NAD_Next/models/ml_selectors/es_svd_math_rr_r1.pkl",
+      "submission_path": "/home/jovyan/work/NAD_Next/submission/CheckpointRanking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf.json",
+      "eval_path": "/home/jovyan/work/NAD_Next/results/scans/checkpoint_ranking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf_eval.json",
+      "predicted_scores": {
+        "base": 21.899924284645248,
+        "step-100": 23.58610001824554,
+        "step-200": 23.72032242958915,
+        "step-300": 23.99024068465277,
+        "step-400": 24.479606589778214,
+        "step-500": 24.774350917300726,
+        "step-600": 25.20152741050847,
+        "step-700": 25.797657584354248,
+        "step-800": 25.97095571515018,
+        "step-900": 26.391530302570708,
+        "step-1000": 26.286716497421665
+      },
+      "true_checkpoint_accuracy": {
+        "base": 0.28609375,
+        "step-100": 0.3034375,
+        "step-200": 0.3128125,
+        "step-300": 0.3184375,
+        "step-400": 0.33078125,
+        "step-500": 0.329375,
+        "step-600": 0.33203125,
+        "step-700": 0.32296875,
+        "step-800": 0.3225,
+        "step-900": 0.32640625,
+        "step-1000": 0.32
+      },
+      "metrics": {
+        "spearman_rho": 0.5727272727272729,
+        "pearson_r": 0.7633483323356292,
+        "kendall_tau": 0.41818181818181815,
+        "top1_hit": 0,
+        "top3_hit": 0,
+        "predicted_rank_order": [
+          "step-900",
+          "step-1000",
+          "step-800",
+          "step-700",
+          "step-600",
+          "step-500",
+          "step-400",
+          "step-300",
+          "step-200",
+          "step-100",
+          "base"
+        ],
+        "true_rank_order": [
+          "step-600",
+          "step-400",
+          "step-500",
+          "step-900",
+          "step-700",
+          "step-800",
+          "step-1000",
+          "step-300",
+          "step-200",
+          "step-100",
+          "base"
+        ]
+      },
+      "feature_cache": {
+        "status": "loaded",
+        "path": "/home/jovyan/work/NAD_Next/results/cache/export_rl_checkpoint_ranking_from_svd_models_es_svd_math_rr_r1/feature_store_all_ref030_c32bacc9e8b98c4a.pkl"
+      }
+    }
+  ]
+}

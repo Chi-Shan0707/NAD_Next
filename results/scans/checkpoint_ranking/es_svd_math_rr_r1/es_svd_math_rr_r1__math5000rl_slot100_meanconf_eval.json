@@ -1,0 +1,203 @@
+{
+  "task": "checkpoint_ranking_eval",
+  "method_name": "es_svd_math_rr_r1__math5000rl_slot100_meanconf",
+  "model_path": "/home/jovyan/work/NAD_Next/models/ml_selectors/es_svd_math_rr_r1.pkl",
+  "slot_index": 9,
+  "position": 1.0,
+  "score_aggregation": "mean_confidence",
+  "math_reflection_threshold": 0.3,
+  "required_features": [
+    "has_rows_bank",
+    "has_tok_conf",
+    "has_tok_gini",
+    "has_tok_logprob",
+    "has_tok_neg_entropy",
+    "has_tok_selfcert",
+    "tok_conf_prefix",
+    "tok_conf_recency",
+    "tok_gini_prefix",
+    "tok_gini_slope",
+    "tok_gini_tail",
+    "tok_logprob_prefix",
+    "tok_logprob_recency",
+    "tok_neg_entropy_prefix",
+    "tok_neg_entropy_recency",
+    "tok_selfcert_prefix",
+    "tok_selfcert_recency",
+    "traj_continuity",
+    "traj_late_convergence",
+    "traj_max_reflection",
+    "traj_novelty",
+    "traj_reflection_count"
+  ],
+  "feature_cache": {
+    "status": "loaded",
+    "path": "/home/jovyan/work/NAD_Next/results/cache/export_rl_checkpoint_ranking_from_svd_models_es_svd_math_rr_r1/feature_store_all_ref030_c32bacc9e8b98c4a.pkl"
+  },
+  "checkpoints": [
+    {
+      "checkpoint_name": "base",
+      "cache_key": "Qwen3-4B-Base_base/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 21.899924284645248,
+      "score_std": 1.9744293294544948,
+      "true_accuracy": 0.28609375
+    },
+    {
+      "checkpoint_name": "step-100",
+      "cache_key": "Qwen3-4B-Base_math7500-step-100/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 23.58610001824554,
+      "score_std": 1.787061391178764,
+      "true_accuracy": 0.3034375
+    },
+    {
+      "checkpoint_name": "step-200",
+      "cache_key": "Qwen3-4B-Base_math7500-step-200/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 23.72032242958915,
+      "score_std": 1.9323654527989034,
+      "true_accuracy": 0.3128125
+    },
+    {
+      "checkpoint_name": "step-300",
+      "cache_key": "Qwen3-4B-Base_math7500-step-300/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 23.99024068465277,
+      "score_std": 1.8519660171427537,
+      "true_accuracy": 0.3184375
+    },
+    {
+      "checkpoint_name": "step-400",
+      "cache_key": "Qwen3-4B-Base_math7500-step-400/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 24.479606589778214,
+      "score_std": 1.9943176992346514,
+      "true_accuracy": 0.33078125
+    },
+    {
+      "checkpoint_name": "step-500",
+      "cache_key": "Qwen3-4B-Base_math7500-step-500/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 24.774350917300726,
+      "score_std": 1.9216165319302796,
+      "true_accuracy": 0.329375
+    },
+    {
+      "checkpoint_name": "step-600",
+      "cache_key": "Qwen3-4B-Base_math7500-step-600/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 25.20152741050847,
+      "score_std": 2.000115431442521,
+      "true_accuracy": 0.33203125
+    },
+    {
+      "checkpoint_name": "step-700",
+      "cache_key": "Qwen3-4B-Base_math7500-step-700/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 25.797657584354248,
+      "score_std": 2.0266363679879493,
+      "true_accuracy": 0.32296875
+    },
+    {
+      "checkpoint_name": "step-800",
+      "cache_key": "Qwen3-4B-Base_math7500-step-800/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 25.97095571515018,
+      "score_std": 2.0005201775197867,
+      "true_accuracy": 0.3225
+    },
+    {
+      "checkpoint_name": "step-900",
+      "cache_key": "Qwen3-4B-Base_math7500-step-900/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 26.391530302570708,
+      "score_std": 2.1102931961507503,
+      "true_accuracy": 0.32640625
+    },
+    {
+      "checkpoint_name": "step-1000",
+      "cache_key": "Qwen3-4B-Base_math7500-step-1000/variable-reasoning-mini",
+      "n_problems": 100,
+      "n_samples": 6400,
+      "mean_confidence": 26.286716497421665,
+      "score_std": 2.0339405907983448,
+      "true_accuracy": 0.32
+    }
+  ],
+  "predicted_scores": {
+    "base": 21.899924284645248,
+    "step-100": 23.58610001824554,
+    "step-200": 23.72032242958915,
+    "step-300": 23.99024068465277,
+    "step-400": 24.479606589778214,
+    "step-500": 24.774350917300726,
+    "step-600": 25.20152741050847,
+    "step-700": 25.797657584354248,
+    "step-800": 25.97095571515018,
+    "step-900": 26.391530302570708,
+    "step-1000": 26.286716497421665
+  },
+  "true_checkpoint_accuracy": {
+    "base": 0.28609375,
+    "step-100": 0.3034375,
+    "step-200": 0.3128125,
+    "step-300": 0.3184375,
+    "step-400": 0.33078125,
+    "step-500": 0.329375,
+    "step-600": 0.33203125,
+    "step-700": 0.32296875,
+    "step-800": 0.3225,
+    "step-900": 0.32640625,
+    "step-1000": 0.32
+  },
+  "metrics": {
+    "spearman_rho": 0.5727272727272729,
+    "pearson_r": 0.7633483323356292,
+    "kendall_tau": 0.41818181818181815,
+    "top1_hit": 0,
+    "top3_hit": 0,
+    "predicted_rank_order": [
+      "step-900",
+      "step-1000",
+      "step-800",
+      "step-700",
+      "step-600",
+      "step-500",
+      "step-400",
+      "step-300",
+      "step-200",
+      "step-100",
+      "base"
+    ],
+    "true_rank_order": [
+      "step-600",
+      "step-400",
+      "step-500",
+      "step-900",
+      "step-700",
+      "step-800",
+      "step-1000",
+      "step-300",
+      "step-200",
+      "step-100",
+      "base"
+    ]
+  },
+  "submission_path": "/home/jovyan/work/NAD_Next/submission/CheckpointRanking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf.json",
+  "submission_validation": {
+    "num_checkpoints": 11,
+    "min_score": 21.899924284645248,
+    "max_score": 26.391530302570708
+  }
+}
