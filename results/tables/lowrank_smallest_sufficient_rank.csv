@@ -1,0 +1,4 @@
+domain,threshold_rule,best_rank,best_auc_of_auroc,smallest_sufficient_rank,smallest_sufficient_auc_of_auroc,smallest_sufficient_gap_pct,no_svd_auc_of_auroc,no_svd_gap_vs_best_pct,plateau_ranks
+math,within_0.5pct_of_best_auc_of_auroc,24,0.9594568749412576,16,0.9580822331333237,0.14327291239828346,0.9592546330044485,0.021078793856322085,"16,24,32"
+science,within_0.5pct_of_best_auc_of_auroc,24,0.8366875694371253,24,0.8366875694371253,0.0,0.8348068336329908,0.2247835240817254,"24,32"
+ms,within_0.5pct_of_best_auc_of_auroc,24,0.9321748070514505,24,0.9321748070514505,0.0,0.9315995664774578,0.06170951731813637,"24,32"
