@@ -60,3 +60,11 @@
 - 这版 `es_svd_coding_rr_r1` 在 coding holdout 上没有超过 `tok_conf_prefix_mean_v1`，也没有超过旧 `earlystop_prefix10_svd_round1`。
 - 因此该 merged submission 已生成，但从当前 holdout 证据看，不应默认替代 `es_svd_ms_rr_r1__coding_from_round1c` 作为更优主提交。
 - 线上提交 `#147 / es_svd_ms_rr_r1__coding_rr_r1` 已验证：`primary score` 仍为 `3.8125`，但 `auc_of_auroc` 从 `0.7428` 降到 `0.7427`，`auc_of_selacc` 从 `0.8317` 降到 `0.8276`，结论不变。
+
+## Current RL Checkpoint Ranking
+
+- `submission`：`submission/CheckpointRanking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf.json`
+- `local eval`：`results/scans/checkpoint_ranking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf_eval.json`
+- `doc`：`docs/ES_SVD_MATH_RL_CHECKPOINT_RANKING.md`
+- `leaderboard receipt`：`submission/resultofleaderboard/Checkpoint Ranking — es_svd_math_rr_r1__math5000rl_slot100_meanconf.txt`
+- 线上结果：`drfit / rank 3`，`Spearman ρ=0.7364`，`Pearson r=0.8398`，`Kendall τ=0.6000`，`Top-1=0`，`Top-3=0`。

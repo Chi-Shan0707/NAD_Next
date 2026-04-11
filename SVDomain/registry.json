@@ -13,7 +13,25 @@
         70,
         100
       ],
-      "model_path": "models/ml_selectors/es_svd_math_rr_r1.pkl"
+      "model_path": "models/ml_selectors/es_svd_math_rr_r1.pkl",
+      "checkpoint_ranking": {
+        "method_name": "es_svd_math_rr_r1__math5000rl_slot100_meanconf",
+        "submission_path": "submission/CheckpointRanking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf.json",
+        "eval_path": "results/scans/checkpoint_ranking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf_eval.json",
+        "comparison_path": "results/scans/checkpoint_ranking/es_svd_math_rr_r1/rl_checkpoint_ranking_svd_model_comparison.json",
+        "doc_path": "docs/ES_SVD_MATH_RL_CHECKPOINT_RANKING.md",
+        "leaderboard_receipt_path": "submission/resultofleaderboard/Checkpoint Ranking — es_svd_math_rr_r1__math5000rl_slot100_meanconf.txt",
+        "leaderboard_result": {
+          "user": "drfit",
+          "rank": 3,
+          "submitted": "2026-04-10 12:45",
+          "spearman_rho": 0.7364,
+          "pearson_r": 0.8398,
+          "kendall_tau": 0.6,
+          "top1_hit": 0,
+          "top3_hit": 0
+        }
+      }
     },
     {
       "method_id": "es_svd_science_rr_r1",

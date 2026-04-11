@@ -1,0 +1,37 @@
+Checkpoint Ranking Leaderboard
+Dataset: RL checkpoints (`base`, `step-100` ... `step-1000`) — ranked by correlation and top-k hit metrics
+
+我是drfit
+
+Submission
+Checkpoint Ranking — es_svd_math_rr_r1__math5000rl_slot100_meanconf
+
+Submission Info
+Task	checkpoint_ranking
+Method	es_svd_math_rr_r1__math5000rl_slot100_meanconf
+File	es_svd_math_rr_r1__math5000rl_slot100_meanconf.json
+Submitted	2026-04-10 12:45
+Rank	3
+
+Leaderboard Metrics
+Spearman ρ	0.7364
+Pearson r	0.8398
+Kendall τ	0.6000
+Top-1 Hit	0
+Top-3 Hit	0
+
+Leaderboard Comparison
+Rank	User	Method	Spearman ρ	Pearson r	Kendall τ	Top-1 Hit	Top-3 Hit	Submitted
+1	yyc	math_bon_checkpoint_v1	0.7818	0.8338	0.6000	1	2	2026-04-10 12:45
+2	mean_confidence_baseline	mean_confidence	0.7364	0.8577	0.6000	0	0	2026-03-31 03:40
+3	drfit	es_svd_math_rr_r1__math5000rl_slot100_meanconf	0.7364	0.8398	0.6000	0	0	2026-04-10 12:45
+
+Method Mapping
+submission method_name	es_svd_math_rr_r1__math5000rl_slot100_meanconf
+source model	models/ml_selectors/es_svd_math_rr_r1.pkl
+submission json	submission/CheckpointRanking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf.json
+local eval	results/scans/checkpoint_ranking/es_svd_math_rr_r1/es_svd_math_rr_r1__math5000rl_slot100_meanconf_eval.json
+score meaning	slot100 sample-level SVD scores aggregated to checkpoint-level `mean_confidence`
+
+Conclusion
+online checkpoint-ranking result is recorded; current method ranks third and does not beat the mean-confidence baseline on Pearson r or top-k hits
