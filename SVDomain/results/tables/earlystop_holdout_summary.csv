@@ -1,0 +1,17 @@
+domain,method,auc_of_auroc,auc_of_selacc,earliest_gt_0p6,auroc_at_100,stop_acc_at_100
+math,tok_conf_prefix_mean_v1,0.6852,0.9423,10%,0.6838,0.7500
+math,earlystop_svd_lowrank_lr_v1,0.7769,0.9560,10%,0.9047,0.7143
+math,earlystop_prefix10_svd_round1,0.9348,0.9995,10%,0.9630,0.7857
+math,es_svd_math_rr_r1,0.9581,0.9973,10%,0.9817,0.7500
+science,tok_conf_prefix_mean_v1,0.8089,0.9630,10%,0.8561,0.7000
+science,earlystop_svd_lowrank_lr_v1,0.7719,0.9659,10%,0.7937,0.7667
+science,earlystop_prefix10_svd_round1,0.7730,0.9797,10%,0.7984,0.7333
+science,es_svd_science_rr_r1,0.7985,0.9880,10%,0.8411,0.6500
+combined_noncoding,tok_conf_prefix_mean_v1,0.7127,0.9469,10%,0.7221,0.7389
+combined_noncoding,earlystop_svd_lowrank_lr_v1,0.7758,0.9582,10%,0.8801,0.7259
+combined_noncoding,earlystop_prefix10_svd_round1,0.8988,0.9951,10%,0.9264,0.7741
+combined_noncoding,es_svd_ms_rr_r1,0.9226,0.9952,10%,0.9505,0.7278
+coding,tok_conf_prefix_mean_v1,0.5062,0.4581,N/A,0.4904,0.4800
+coding,earlystop_svd_lowrank_lr_v1,0.4762,0.3856,N/A,0.4733,0.5600
+coding,earlystop_prefix10_svd_round1,0.4762,0.3856,N/A,0.4733,0.5600
+coding,es_svd_coding_rr_r1,0.4342,0.2400,N/A,0.4068,0.5200

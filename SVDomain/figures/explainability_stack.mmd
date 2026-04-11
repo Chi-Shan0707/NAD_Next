@@ -1,0 +1,22 @@
+flowchart TD
+    A[Canonical SVD model] --> B[Model-level explanation]
+    A --> C[Run-level explanation]
+    A --> D[Decision-level explanation]
+
+    B --> B1[Domain x Anchor top positive features]
+    B --> B2[Domain x Anchor top negative features]
+    B --> B3[Family strengths]
+
+    C --> C1[Feature contributions]
+    C --> C2[Family contributions]
+    C --> C3[Score reconstruction sanity]
+
+    D --> D1[Top1 score]
+    D --> D2[Top2 score]
+    D --> D3[Margin]
+    D --> D4[Top feature deltas]
+    D --> D5[Top family deltas]
+
+    D5 --> E[Viewer decision summary]
+    C2 --> E
+    B3 --> E

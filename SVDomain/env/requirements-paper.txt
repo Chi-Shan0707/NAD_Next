@@ -1,0 +1,18 @@
+# SVDomain paper-ready environment
+# Python >= 3.9
+
+numpy>=1.20.0
+pyroaring>=0.4.5
+
+Flask>=2.0.0
+plotly>=5.0.0
+hmmlearn
+
+transformers>=4.20.0
+tokenizers>=0.13.0
+
+psutil>=5.8.0
+tqdm>=4.50.0
+
+scikit-learn>=1.0.0
+joblib>=1.1.0

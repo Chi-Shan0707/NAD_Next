@@ -1,0 +1,2 @@
+task,method_name,user,rank,submitted,spearman_rho,pearson_r,kendall_tau,top1_hit,top3_hit
+checkpoint_ranking,es_svd_math_rr_r1__math5000rl_slot100_meanconf,drfit,3,2026-04-10 12:45,0.7364,0.8398,0.6000,0,0

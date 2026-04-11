@@ -1,0 +1,233 @@
+{
+  "family": "es_svd",
+  "paper_focus": [
+    "es_svd_math_rr_r1",
+    "es_svd_science_rr_r1",
+    "es_svd_ms_rr_r1",
+    "es_svd_ms_rr_r1__coding_from_round1c"
+  ],
+  "holdout": {
+    "math": [
+      {
+        "method": "tok_conf_prefix_mean_v1",
+        "auc_of_auroc": 0.6852,
+        "auc_of_selacc": 0.9423,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.6838,
+        "stop_acc_at_100": 0.7500
+      },
+      {
+        "method": "earlystop_svd_lowrank_lr_v1",
+        "auc_of_auroc": 0.7769,
+        "auc_of_selacc": 0.9560,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.9047,
+        "stop_acc_at_100": 0.7143
+      },
+      {
+        "method": "earlystop_prefix10_svd_round1",
+        "auc_of_auroc": 0.9348,
+        "auc_of_selacc": 0.9995,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.9630,
+        "stop_acc_at_100": 0.7857
+      },
+      {
+        "method": "es_svd_math_rr_r1",
+        "auc_of_auroc": 0.9581,
+        "auc_of_selacc": 0.9973,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.9817,
+        "stop_acc_at_100": 0.7500
+      }
+    ],
+    "science": [
+      {
+        "method": "tok_conf_prefix_mean_v1",
+        "auc_of_auroc": 0.8089,
+        "auc_of_selacc": 0.9630,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.8561,
+        "stop_acc_at_100": 0.7000
+      },
+      {
+        "method": "earlystop_svd_lowrank_lr_v1",
+        "auc_of_auroc": 0.7719,
+        "auc_of_selacc": 0.9659,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.7937,
+        "stop_acc_at_100": 0.7667
+      },
+      {
+        "method": "earlystop_prefix10_svd_round1",
+        "auc_of_auroc": 0.7730,
+        "auc_of_selacc": 0.9797,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.7984,
+        "stop_acc_at_100": 0.7333
+      },
+      {
+        "method": "es_svd_science_rr_r1",
+        "auc_of_auroc": 0.7985,
+        "auc_of_selacc": 0.9880,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.8411,
+        "stop_acc_at_100": 0.6500
+      }
+    ],
+    "combined_noncoding": [
+      {
+        "method": "tok_conf_prefix_mean_v1",
+        "auc_of_auroc": 0.7127,
+        "auc_of_selacc": 0.9469,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.7221,
+        "stop_acc_at_100": 0.7389
+      },
+      {
+        "method": "earlystop_svd_lowrank_lr_v1",
+        "auc_of_auroc": 0.7758,
+        "auc_of_selacc": 0.9582,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.8801,
+        "stop_acc_at_100": 0.7259
+      },
+      {
+        "method": "earlystop_prefix10_svd_round1",
+        "auc_of_auroc": 0.8988,
+        "auc_of_selacc": 0.9951,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.9264,
+        "stop_acc_at_100": 0.7741
+      },
+      {
+        "method": "es_svd_ms_rr_r1",
+        "auc_of_auroc": 0.9226,
+        "auc_of_selacc": 0.9952,
+        "earliest_gt_0p6": "10%",
+        "auroc_at_100": 0.9505,
+        "stop_acc_at_100": 0.7278
+      }
+    ],
+    "coding": [
+      {
+        "method": "tok_conf_prefix_mean_v1",
+        "auc_of_auroc": 0.5062,
+        "auc_of_selacc": 0.4581,
+        "earliest_gt_0p6": "N/A",
+        "auroc_at_100": 0.4904,
+        "stop_acc_at_100": 0.4800
+      },
+      {
+        "method": "earlystop_svd_lowrank_lr_v1",
+        "auc_of_auroc": 0.4762,
+        "auc_of_selacc": 0.3856,
+        "earliest_gt_0p6": "N/A",
+        "auroc_at_100": 0.4733,
+        "stop_acc_at_100": 0.5600
+      },
+      {
+        "method": "earlystop_prefix10_svd_round1",
+        "auc_of_auroc": 0.4762,
+        "auc_of_selacc": 0.3856,
+        "earliest_gt_0p6": "N/A",
+        "auroc_at_100": 0.4733,
+        "stop_acc_at_100": 0.5600
+      },
+      {
+        "method": "es_svd_coding_rr_r1",
+        "auc_of_auroc": 0.4342,
+        "auc_of_selacc": 0.2400,
+        "earliest_gt_0p6": "N/A",
+        "auroc_at_100": 0.4068,
+        "stop_acc_at_100": 0.5200
+      }
+    ]
+  },
+  "blind_leaderboard": {
+    "previous_best": {
+      "submission_id": 115,
+      "method_name": "earlystop_prefix10_svd_round1",
+      "primary_score": 4.0000,
+      "auc_of_auroc": 0.7379,
+      "auc_of_selacc": 0.8311,
+      "auroc_at_100": 0.8492,
+      "stop_acc_at_100": 0.7504
+    },
+    "canonical_main": {
+      "submission_id": 144,
+      "method_name": "es_svd_ms_rr_r1__coding_from_round1c",
+      "status": "CURRENT BEST",
+      "primary_score": 3.8125,
+      "auc_of_auroc": 0.7428,
+      "auc_of_selacc": 0.8317,
+      "auroc_at_100": 0.8468,
+      "stop_acc_at_100": 0.7299
+    },
+    "coding_merge": {
+      "submission_id": 147,
+      "method_name": "es_svd_ms_rr_r1__coding_rr_r1",
+      "status": "Not best",
+      "primary_score": 3.8125,
+      "auc_of_auroc": 0.7427,
+      "auc_of_selacc": 0.8276,
+      "auroc_at_100": 0.8475,
+      "stop_acc_at_100": 0.7279
+    }
+  },
+  "best_of_n": {
+    "current_slot100": {
+      "method_name": "es_svd_ms_rr_r1__coding_from_round1c__slot100",
+      "status": "Not best",
+      "avg_rank": 3.6000,
+      "auroc": 0.8468,
+      "hit_at_1": 0.7299,
+      "hit_at_3": 0.8010,
+      "selacc_at_10": 0.9313,
+      "pairwise_acc": 0.7396
+    },
+    "historical_best": {
+      "method_name": "extreme12_earlystop_prefix10_svd_round1_slot100__svm_bridge_lcb",
+      "avg_rank": 2.4000,
+      "hit_at_1": 0.7504,
+      "hit_at_3": 0.8049,
+      "selacc_at_10": 0.9286,
+      "pairwise_acc": 0.7510
+    }
+  },
+  "checkpoint_ranking": {
+    "method_name": "es_svd_math_rr_r1__math5000rl_slot100_meanconf",
+    "rank": 3,
+    "spearman_rho": 0.7364,
+    "pearson_r": 0.8398,
+    "kendall_tau": 0.6000,
+    "top1_hit": 0,
+    "top3_hit": 0
+  },
+  "interpretability_sanity": [
+    {
+      "method": "es_svd_math_rr_r1",
+      "problem_count": 7,
+      "problem_anchor_count": 28,
+      "run_count": 1792,
+      "max_abs_error": 3.6415315207705135e-14,
+      "mean_abs_error": 1.2923132306338506e-14
+    },
+    {
+      "method": "es_svd_science_rr_r1",
+      "problem_count": 2,
+      "problem_anchor_count": 8,
+      "run_count": 512,
+      "max_abs_error": 9.769962616701378e-15,
+      "mean_abs_error": 2.2587183859390514e-15
+    },
+    {
+      "method": "es_svd_ms_rr_r1",
+      "problem_count": 9,
+      "problem_anchor_count": 36,
+      "run_count": 2304,
+      "max_abs_error": 3.6415315207705135e-14,
+      "mean_abs_error": 1.0553262546249739e-14
+    }
+  ]
+}

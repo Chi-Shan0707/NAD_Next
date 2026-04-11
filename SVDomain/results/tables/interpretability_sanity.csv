@@ -1,0 +1,4 @@
+method,problem_count,problem_anchor_count,run_count,max_abs_error,mean_abs_error
+es_svd_math_rr_r1,7,28,1792,3.6415315207705135e-14,1.2923132306338506e-14
+es_svd_science_rr_r1,2,8,512,9.769962616701378e-15,2.2587183859390514e-15
+es_svd_ms_rr_r1,9,36,2304,3.6415315207705135e-14,1.0553262546249739e-14

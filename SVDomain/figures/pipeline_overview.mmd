@@ -1,0 +1,18 @@
+flowchart LR
+    A[Problem with N runs] --> B[Feature extraction at 5% / 10% / 15% / ... / 100%]
+    B --> C[Build raw+rank representation]
+    C --> D{Domain split}
+    D --> D1[Math route]
+    D --> D2[Science route]
+    D --> D3[Coding route]
+    D1 --> E1[Anchor 10 / 40 / 70 / 100]
+    D2 --> E2[Anchor 10 / 40 / 70 / 100]
+    D3 --> E3[Anchor 10 / 40 / 70 / 100]
+    E1 --> F1[StandardScaler -> TruncatedSVD -> LogisticRegression]
+    E2 --> F2[StandardScaler -> TruncatedSVD -> LogisticRegression]
+    E3 --> F3[StandardScaler -> TruncatedSVD -> LogisticRegression]
+    F1 --> G[Per-run scores]
+    F2 --> G
+    F3 --> G
+    G --> H[Group-local ranking]
+    H --> I[Selected Top1 run]

@@ -1,0 +1,4 @@
+task,submission_id,method_name,status,primary_score,auc_of_auroc,auc_of_selacc,auroc_at_100,stop_acc_at_100,note
+earlystop,115,earlystop_prefix10_svd_round1,previous_best,4.0000,0.7379,0.8311,0.8492,0.7504,old earlystop mainline
+earlystop,144,es_svd_ms_rr_r1__coding_from_round1c,CURRENT_BEST,3.8125,0.7428,0.8317,0.8468,0.7299,canonical r1 main submission
+earlystop,147,es_svd_ms_rr_r1__coding_rr_r1,Not_best,3.8125,0.7427,0.8276,0.8475,0.7279,coding merge does not improve mainline
