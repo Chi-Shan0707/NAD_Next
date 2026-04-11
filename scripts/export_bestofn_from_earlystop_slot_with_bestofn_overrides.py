@@ -17,7 +17,7 @@ from nad.ops.bestofn_extreme8 import (  # noqa: E402
     validate_submission_payload,
     write_submission_payload,
 )
-from nad.ops.earlystop import validate_earlystop_payload  # noqa: E402
+from nad.ops.earlystop import EARLY_STOP_POSITIONS, validate_earlystop_payload  # noqa: E402
 
 
 DEFAULT_EARLYSTOP_JSON = REPO_ROOT / "submission/EarlyStop/earlystop_prefix10_svd_round1.json"
@@ -39,9 +39,17 @@ def _display_path(path: Path) -> str:
         return str(path)
 
 
-def _parse_csv(raw: str) -> tuple[str, ...]:
+def _parse_csv(raw: str, *, allow_empty: bool = False) -> tuple[str, ...]:
+    text = str(raw).strip()
+    if text.lower() in {"", "none", "off"}:
+        if allow_empty:
+            return ()
+        raise ValueError("Expected at least one cache key")
+
     values = [item.strip() for item in str(raw).split(",") if item.strip()]
     if not values:
+        if allow_empty:
+            return ()
         raise ValueError("Expected at least one cache key")
     return tuple(values)
 
@@ -92,9 +100,13 @@ def _build_payload(
     earlystop_method_name: str,
     slot_index: int,
     position_value: float,
-    override_method_name: str,
+    override_method_name: str | None,
     override_cache_keys: tuple[str, ...],
 ) -> dict[str, Any]:
+    if override_method_name is None:
+        note = "direct best_of_n export from earlystop slot"
+    else:
+        note = "non-overridden caches from earlystop slot; selected caches copied from override bestofn"
     return {
         "task": "best_of_n",
         "method_name": str(method_name),
@@ -104,9 +116,9 @@ def _build_payload(
             "source_method_name": str(earlystop_method_name),
             "extracted_slot_index": int(slot_index),
             "extracted_position": float(position_value),
-            "override_bestofn_source": str(override_method_name),
+            "override_bestofn_source": None if override_method_name is None else str(override_method_name),
             "override_cache_keys": list(override_cache_keys),
-            "note": "non-lcb from earlystop slot100; lcb copied from svm bridge bestofn",
+            "note": note,
         },
     }
 
@@ -129,50 +141,62 @@ def main() -> None:
     args = ap.parse_args()
 
     earlystop_json = Path(args.earlystop_json)
-    override_bestofn_json = Path(args.override_bestofn_json)
     out_path = Path(args.out)
-    override_cache_keys = _parse_csv(args.override_cache_keys)
+    override_cache_keys = _parse_csv(args.override_cache_keys, allow_empty=True)
+    override_path_raw = str(args.override_bestofn_json).strip()
+    use_override = override_path_raw.lower() not in {"", "none", "off"} and bool(override_cache_keys)
 
     earlystop_payload = _load_json(earlystop_json)
     early_summary = validate_earlystop_payload(earlystop_payload)
     if earlystop_payload.get("task") != "early_stop":
         raise ValueError(f"Expected task='early_stop', got {earlystop_payload.get('task')!r}")
 
-    override_payload = _load_json(override_bestofn_json)
     expected_cache_keys = [entry.cache_key for entry in discover_cache_entries(args.cache_root)]
-    override_summary = validate_submission_payload(override_payload, expected_cache_keys=expected_cache_keys)
 
     output_scores = _extract_bestofn_scores_from_earlystop(
         earlystop_payload,
         slot_index=int(args.slot_index),
     )
 
-    override_scores = override_payload.get("scores")
-    if not isinstance(override_scores, dict) or not override_scores:
-        raise ValueError("override best_of_n payload scores must be a non-empty mapping")
+    override_summary: dict[str, int] | None = None
+    override_method_name: str | None = None
+    if use_override:
+        override_bestofn_json = Path(override_path_raw)
+        override_payload = _load_json(override_bestofn_json)
+        override_summary = validate_submission_payload(override_payload, expected_cache_keys=expected_cache_keys)
 
-    for cache_key in override_cache_keys:
-        if cache_key not in output_scores:
-            raise ValueError(f"Source earlystop payload missing override target cache key: {cache_key}")
-        if cache_key not in override_scores:
-            raise ValueError(f"Override best_of_n payload missing override target cache key: {cache_key}")
-        output_scores[cache_key] = override_scores[cache_key]
+        override_scores = override_payload.get("scores")
+        if not isinstance(override_scores, dict) or not override_scores:
+            raise ValueError("override best_of_n payload scores must be a non-empty mapping")
+
+        for cache_key in override_cache_keys:
+            if cache_key not in output_scores:
+                raise ValueError(f"Source earlystop payload missing override target cache key: {cache_key}")
+            if cache_key not in override_scores:
+                raise ValueError(f"Override best_of_n payload missing override target cache key: {cache_key}")
+            output_scores[cache_key] = override_scores[cache_key]
+
+        override_method_name = str(override_payload.get("method_name", ""))
 
     payload = _build_payload(
         output_scores,
         method_name=str(args.method_name),
         earlystop_method_name=str(earlystop_payload.get("method_name", "")),
         slot_index=int(args.slot_index),
-        position_value=1.0 if int(args.slot_index) == 9 else float(int(args.slot_index) + 1) / 10.0,
-        override_method_name=str(override_payload.get("method_name", "")),
+        position_value=float(EARLY_STOP_POSITIONS[int(args.slot_index)]),
+        override_method_name=override_method_name,
         override_cache_keys=override_cache_keys,
     )
     summary = validate_submission_payload(payload, expected_cache_keys=expected_cache_keys)
     written = write_submission_payload(payload, out_path)
 
     print(f"EarlyStop source : {_display_path(earlystop_json)} | {early_summary}")
-    print(f"Override source  : {_display_path(override_bestofn_json)} | {override_summary}")
-    print(f"Override caches  : {list(override_cache_keys)}")
+    if use_override:
+        print(f"Override source  : {_display_path(override_bestofn_json)} | {override_summary}")
+        print(f"Override caches  : {list(override_cache_keys)}")
+    else:
+        print("Override source  : disabled")
+        print("Override caches  : []")
     print(
         f"Written BestofN  : {_display_path(written)} "
         f"(cache_keys={summary['cache_keys']}, problems={summary['problems']}, samples={summary['samples']})"

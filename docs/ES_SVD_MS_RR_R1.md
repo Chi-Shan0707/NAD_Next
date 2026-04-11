@@ -167,3 +167,53 @@
 - `auroc@100%`：`0.8492 -> 0.8468`，下降 `-0.0024`。
 - `stop_acc@100%`：`0.7504 -> 0.7299`，下降 `-0.0205`。
 - `coding note`：两份 coding cache 直接沿用旧 submission 分数，因此本次提升来自 math/science 非 coding 部分。
+
+## Best-of-N Slot100 Export
+
+- `source early_stop`：`submission/EarlyStop/es_svd_ms_rr_r1__coding_from_round1c.json`
+- `derived best_of_n`：`submission/BestofN/extreme12/patches/es_svd_ms_rr_r1__coding_from_round1c__slot100.json`
+- `submitted at`：`2026-04-11 02:44:11 UTC`
+- `submission method_name`：`es_svd_ms_rr_r1__coding_from_round1c__slot100`
+- `status`：`Not best`
+- `primary score`：`3.6000`
+- `auroc`：`0.8468`
+- `hit@1`：`0.7299`
+- `hit@3`：`0.8010`
+- `selacc@10%`：`0.9313`
+- `pairwise acc`：`0.7396`
+- `samples`：`62080`
+- `problems`：`970`
+
+### Best-of-N Per-Cache Breakdown
+
+| Cache | AUROC | Hit@1 | Hit@3 | SelAcc@10% | Pairwise Acc | Samples |
+|---|---:|---:|---:|---:|---:|---:|
+| DS-R1/aime24 | 0.9639 | 0.8667 | 0.9000 | 1.0000 | 0.9157 | 1920 |
+| DS-R1/aime25 | 0.9117 | 0.6333 | 0.7667 | 0.9948 | 0.6642 | 1920 |
+| DS-R1/brumo25 | 0.9731 | 0.8667 | 0.9333 | 0.9948 | 0.8949 | 1920 |
+| DS-R1/gpqa | 0.7776 | 0.6465 | 0.7626 | 0.9953 | 0.6230 | 12672 |
+| DS-R1/hmmt25 | 0.9572 | 0.7333 | 0.7667 | 1.0000 | 0.8546 | 1920 |
+| DS-R1/lcb_v5 | 0.5272 | 0.5988 | 0.7066 | 0.5796 | 0.5141 | 10688 |
+| Qwen3-4B/aime24 | 0.9196 | 0.8667 | 0.9000 | 1.0000 | 0.8785 | 1920 |
+| Qwen3-4B/aime25 | 0.9468 | 0.8000 | 0.8667 | 1.0000 | 0.8249 | 1920 |
+| Qwen3-4B/brumo25 | 0.9367 | 0.8333 | 0.9000 | 1.0000 | 0.8387 | 1920 |
+| Qwen3-4B/gpqa | 0.8009 | 0.6818 | 0.7576 | 0.9653 | 0.5848 | 12672 |
+| Qwen3-4B/hmmt25 | 0.9396 | 0.6333 | 0.6333 | 1.0000 | 0.7822 | 1920 |
+| Qwen3-4B/lcb_v5 | 0.5079 | 0.5988 | 0.7186 | 0.6461 | 0.5000 | 10688 |
+
+### Comparison to Historical Best Best-of-N
+
+- `historical best reference`：`submission/resultofleaderboard/extreme12_earlystop_prefix10_svd_round1_slot100__svm_bridge_lcb.txt`
+- `historical best method_name`：`extreme12_earlystop_prefix10_svd_round1_slot100__svm_bridge_lcb`
+- `historical best submitted at`：`2026-04-09 02:43 UTC`
+- `historical best avg rank`：`2.4000`
+
+| Metric | Historical Best | Current | Delta |
+|---|---:|---:|---:|
+| Avg Rank | 2.4000 | 3.6000 | +1.2000 |
+| Hit@1 | 0.7504 | 0.7299 | -0.0205 |
+| Hit@3 | 0.8049 | 0.8010 | -0.0039 |
+| SelAcc@10% | 0.9286 | 0.9313 | +0.0027 |
+| Pairwise Acc | 0.7510 | 0.7396 | -0.0114 |
+
+- `note`：当前 `slot100` 直抽版本只在 `SelAcc@10%` 上略高于历史最佳；`Avg Rank / Hit@1 / Hit@3 / Pairwise Acc` 均更弱，因此榜单状态为 `Not best`。
