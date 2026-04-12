@@ -1,0 +1,6 @@
+condition,coding_auroc,math_auroc,science_auroc,coding_delta_vs_c0,interpretation
+canonical,0.4910,0.9679,0.7798,0.0000,within noise
+canonical_plus_nc,0.5062,0.9678,0.7757,0.0152,meaningful gain
+canonical_plus_nad_scalar,0.5051,0.9679,0.7824,0.0141,meaningful gain
+canonical_plus_nad_agree,0.4876,0.9688,0.7803,-0.0034,within noise
+canonical_plus_all_nad,0.5000,0.9711,0.7862,0.0090,marginal gain

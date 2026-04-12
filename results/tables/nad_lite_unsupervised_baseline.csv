@@ -1,0 +1,10 @@
+domain,selector,stop_acc_at_100,note
+math,MinAct,0.6833,unsupervised; no training
+math,Medoid,0.7167,unsupervised; no training
+math,kNN_agree,0.7500,unsupervised; no training
+science,MinAct,0.6212,unsupervised; no training
+science,Medoid,0.6515,unsupervised; no training
+science,kNN_agree,0.6515,unsupervised; no training
+coding,MinAct,0.5689,unsupervised; no training
+coding,Medoid,0.5808,unsupervised; no training
+coding,kNN_agree,0.6048,unsupervised; no training
