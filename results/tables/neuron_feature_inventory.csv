@@ -1,0 +1,10 @@
+domain,feature,feature_index,available,n_samples,n_nonzero,pct_nonzero,mean,std,min,max,note
+math,nc_mean,16,YES,7680,7680,100.0,331.9993,41.2627,159.1153,411.7979,
+math,nc_slope,17,YES,7680,7680,100.0,-18.3442,26.5988,-153.4745,83.3955,
+math,self_similarity,18,NO (all-zeros),7680,0,0.0,0.0000,0.0000,0.0000,0.0000,rows/bank not in cache → excluded from all conditions
+science,nc_mean,16,YES,12672,12672,100.0,367.6435,26.3389,57.2785,421.3423,
+science,nc_slope,17,YES,12672,12671,100.0,-3.5342,19.4380,-250.4304,121.9074,
+science,self_similarity,18,NO (all-zeros),12672,0,0.0,0.0000,0.0000,0.0000,0.0000,rows/bank not in cache → excluded from all conditions
+coding,nc_mean,16,YES,10688,10688,100.0,385.3982,23.6534,157.9643,440.5906,
+coding,nc_slope,17,YES,10688,10688,100.0,-20.2239,25.3523,-200.5084,93.8099,
+coding,self_similarity,18,NO (all-zeros),10688,0,0.0,0.0000,0.0000,0.0000,0.0000,rows/bank not in cache → excluded from all conditions

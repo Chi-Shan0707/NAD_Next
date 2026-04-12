@@ -1,0 +1,7 @@
+domain,modeling,nc_only_auroc,canonical_auroc,canonical_plus_nc_auroc,winner
+math,no_svd,0.7741,0.9679,0.9678,canonical
+math,svd_r12,0.7741,0.9640,0.9618,canonical
+science,no_svd,0.6961,0.7798,0.7757,canonical
+science,svd_r12,0.6961,0.7698,0.7606,canonical
+coding,no_svd,0.4427,0.4910,0.5062,canonical_plus_nc
+coding,svd_r12,0.4427,0.5012,0.5001,canonical
