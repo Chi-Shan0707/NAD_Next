@@ -26,12 +26,13 @@
 
 ## 2. 建议摘要结构
 
-摘要建议包含四句话：
+摘要建议包含五句话：
 
 1. **问题**：best-of-N / early-stop run selection 很重要，但最终 slot-only 或复杂黑盒 reranker 都不够理想。
 2. **方法**：我们提出 domain-aware four-anchor SVD routing，使用 `raw+rank` 表示和低秩线性头。
 3. **结果**：方法在 blind leaderboard 上优于 previous best early-stop SVD 主提交。
-4. **解释性**：我们进一步构建了 feature-level、family-level、decision-level 的统一解释接口与 viewer。
+4. **trajectory evidence**：dense-anchor timing 与 dense cross-anchor transfer 表明，该表示共享并不局限于 slot-100，而是沿 trajectory 持续存在，但可复用性依赖 domain 与 anchor maturity。
+5. **解释性**：我们进一步构建了 feature-level、family-level、decision-level 的统一解释接口与 viewer。
 
 ---
 
@@ -80,11 +81,12 @@
 
 ### 3.5 Main Results
 
-正文建议放三张主表：
+正文建议放三张主表 + 一张 trajectory-supporting table：
 
 1. math / science / combined holdout
 2. blind leaderboard 主表
-3. best-of-n or coding 作为附表之一（视篇幅）
+3. dense cross-anchor transfer summary
+4. best-of-n or coding 作为附表之一（视篇幅）
 
 ### 3.6 Interpretability
 
@@ -100,6 +102,7 @@
 
 - 为什么 coding 不 work
 - 为什么 final-slot-only 不够
+- 为什么 transfer 不是 slot-100-only，但也不是全域均匀
 - 为什么 simple linear routing 仍有竞争力
 
 ### 3.8 Limitations and Future Work
@@ -108,7 +111,7 @@
 
 - coding domain evidence still weak
 - current interpretability artifact checked in as smoke export
-- R2 / per-position search 还不是本论文主线
+- dense `r2` evidence is supporting evidence rather than the primary leaderboard result
 
 ---
 
@@ -167,6 +170,19 @@
 
 - `SVDomain/results/tables/interpretability_sanity.csv`
 
+### 表 4：Dense cross-anchor transfer summary
+
+用：
+
+- `SVDomain/results/tables/dense_cross_anchor_transfer_summary.csv`
+
+这张表最适合承接 dense timing 结果，展示：
+
+- diagonal mean gap
+- all off-diagonal mean gap
+- near-gap vs far-gap
+- best reusable source anchor
+
 ---
 
 ## 5. 最适合写进正文的 claim
@@ -183,9 +199,13 @@
 
 ### Claim C
 
-**SVDomain 的解释性不是事后补充，而是直接来自可回投影的线性结构。**
+**Dense trajectory evidence shows that transfer is not slot-100-only: the learned basis is shared across anchors, but its reusability is domain- and maturity-dependent.**
 
 ### Claim D
+
+**SVDomain 的解释性不是事后补充，而是直接来自可回投影的线性结构。**
+
+### Claim E
 
 **coding 负结果说明 domain-specific structure matters。**
 
@@ -197,8 +217,9 @@
 2. slot100 直抽 best-of-n 对照
 3. checkpoint ranking side task
 4. per-cache breakdown
-5. full route summary table
-6. viewer API / artifact index
+5. full dense cross-anchor matrix / gap-by-distance tables
+6. full route summary table
+7. viewer API / artifact index
 
 ---
 
@@ -231,6 +252,15 @@ best-of-n slot100 不是最优。
 - 说明 pure final-slot extraction 只是桥接 baseline
 - 它恰好支持“early-stop 路径信息很重要”这一论点
 
+### 弱点 4
+
+dense `r2` 线不是 leaderboard 主提交。
+
+应对：
+
+- 明确把 dense timing 和 dense transfer 定位为 **representation-level supporting evidence**
+- 强调它们回答的是 “where the signal appears” 与 “how far the basis transfers” 两个机制问题，而不是替代 `r1` blind result
+
 ---
 
 ## 8. 写作时的建议取舍
@@ -239,7 +269,8 @@ best-of-n slot100 不是最优。
 
 1. canonical `r1` 方法
 2. holdout + blind leaderboard 主结果
-3. interpretability
+3. dense timing + dense cross-anchor summary
+4. interpretability
 
 优先弱化：
 

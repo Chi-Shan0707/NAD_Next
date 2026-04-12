@@ -106,7 +106,9 @@ SVDomain 的核心问题不是“训练一个更大的模型”，而是：
 > 我们提出一个面向 early-stop selection 的 domain-aware low-rank linear routing family，
 > 使用固定的 raw+rank 表示和四个 canonical anchors（10/40/70/100），
 > 在保持模型简单、可解释、可复现的同时，
-> 在 blind leaderboard 上优于旧版 early-stop SVD 主提交。
+> 在 blind leaderboard 上优于旧版 early-stop SVD 主提交；
+> 而 dense-anchor timing 与 dense cross-anchor transfer 进一步表明，
+> 该表示共享并不局限于 slot-100，而是沿 trajectory 持续存在，只是其可复用性依赖 domain 与 anchor maturity。
 
 然后正文里依次讲：
 
@@ -218,12 +220,54 @@ science 的收益没有 math 那么强，但仍给出更好的 selective-accurac
 
 ---
 
-## 9. 最终建议
+## 9. Dense trajectory evidence
+
+The strongest `r2`-side supporting evidence now comes from reading dense timing and dense transfer together.
+
+### 9.1 Dense timing
+
+From `docs/16_DENSE_ANCHOR_EARLYSTOP.md`:
+
+- `math` reaches 95%-of-final AUROC at `10%` and plateaus around `50%`
+- `science` reaches 95%-of-final AUROC at `20%` and plateaus around `40%`
+
+This means the late anchors are not the only anchors carrying useful selection signal.
+
+### 9.2 Dense cross-anchor transfer
+
+From `docs/17_DENSE_CROSS_ANCHOR_TRANSFER.md`:
+
+- `math`: diagonal gap `-0.13 pts`, all off-diagonal gap `-0.34 pts`, best source anchor `30%`
+- `science`: diagonal gap `-0.09 pts`, all off-diagonal gap `-0.54 pts`, best source anchor `50%`
+
+The clean interpretation is:
+
+- the low-rank basis is genuinely shared across anchors
+- the ease of reuse depends on domain and anchor distance
+- `math` is broadly reusable across the trajectory
+- `science` is reusable, but much more maturity-dependent, especially for early-to-late transfer
+
+### 9.3 Why this matters for the paper
+
+These dense results upgrade the original sparse `10/40/70/100` story into a stronger representation-level claim:
+
+> transfer is not a slot-100-only phenomenon, but neither is it uniform across the trajectory.
+
+This gives the paper a much cleaner discussion section:
+
+- `math` behaves like an early-forming, broadly reusable decision geometry
+- `science` behaves like an early-available but later-maturing reusable basis
+- `coding` remains the boundary case showing that domain structure still matters
+
+---
+
+## 10. 最终建议
 
 如果你现在要发论文，最稳的组织方式是：
 
 - 正文主线：`es_svd_math_rr_r1` + `es_svd_science_rr_r1` + `es_svd_ms_rr_r1`
 - 在线主结果：`es_svd_ms_rr_r1__coding_from_round1c`
+- trajectory-level evidence：`docs/16_DENSE_ANCHOR_EARLYSTOP.md` + `docs/17_DENSE_CROSS_ANCHOR_TRANSFER.md`
 - 解释性章节：viewer + SVD explain core
 - appendix：
   - coding negative result
