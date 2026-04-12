@@ -243,3 +243,42 @@
 3. coding 和纯 slot100 抽取都说明：
    - domain mismatch 是真实问题
    - final-slot-only 不是完整答案
+
+---
+
+## 9. Dense trajectory transfer
+
+The `r2` line answers a more specific representation-level question: is shared low-rank transfer limited to sparse `10/40/70/100` anchors, or does it persist across the full dense `10/20/.../100` trajectory?
+
+### 9.1 Dense cross-anchor 主结论
+
+| Domain | Diagonal Δ(Frozen−Task) | Offdiag-all Δ | Near-gap Δ (`10/20`) | Far-gap Δ (`50–90`) | Best source anchor |
+|---|---:|---:|---:|---:|---:|
+| `math` | -0.13 pts | -0.34 pts | -0.16 pts | -0.62 pts | `30%` |
+| `science` | -0.09 pts | -0.54 pts | -0.23 pts | -0.97 pts | `50%` |
+
+Readout:
+
+- In `math`, basis reuse is not a slot-100-only phenomenon; it remains competitive across almost the entire trajectory.
+- In `science`, transfer is also real, but it depends much more strongly on anchor maturity, especially for **early-to-late** forward reuse.
+
+### 9.2 方向性很重要
+
+| Domain | Forward all Δ | Backward all Δ | Worst pair |
+|---|---:|---:|---|
+| `math` | -0.11 pts | -0.56 pts | `100→10` = -2.51 pts |
+| `science` | -0.98 pts | -0.10 pts | `10→50` = -4.17 pts |
+
+Interpretation:
+
+- In `math`, the main failure mode is **late-to-early backward** transfer, while forward reuse into later targets remains very stable.
+- In `science`, the main failure mode is **early-to-late forward** transfer, suggesting that early-anchor bases have not yet matured into late-stage reusable representations.
+
+### 9.3 与 dense timing 一起读
+
+This result should be read together with `docs/16_DENSE_ANCHOR_EARLYSTOP.md`:
+
+- `math`: reaches 95%-of-final at `10%` and plateaus around `50%`, so weak distance-decay under dense transfer is exactly what we would expect.
+- `science`: reaches 95%-of-final at `20%` and plateaus around `40%`, so the denser picture is better described as “early coarse signal + late refinement” than “only-at-completion onset”.
+
+Dense transfer is therefore a key representation-level result for the canonical SVD narrative: **the representation is genuinely shared, but the ease of reuse depends on domain, direction, and anchor distance.**

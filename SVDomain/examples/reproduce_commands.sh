@@ -25,6 +25,11 @@ python3 scripts/export_svd_explanations.py --max-problems 1
 echo "[6] Export interpretability artifacts (full)"
 # python3 scripts/export_svd_explanations.py
 
+echo "[6b] Optional dense cross-anchor transfer (multi-core)"
+# OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+#   python3 SVDomain/experiments/run_dense_cross_anchor_transfer.py \
+#   --suite-workers 12 --feature-workers 8
+
 echo "[7] Start viewer"
 # python3 cot_viewer/app.py
 

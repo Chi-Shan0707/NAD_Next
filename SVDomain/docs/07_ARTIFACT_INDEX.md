@@ -22,7 +22,10 @@
 ## 2. 原始结果文档
 
 - `docs/ES_SVD_MS_RR_R1.md`
+- `docs/11_CROSS_ANCHOR_TRANSFER.md`
 - `docs/ES_SVD_CODING_RR_R1.md`
+- `docs/16_DENSE_ANCHOR_EARLYSTOP.md`
+- `docs/17_DENSE_CROSS_ANCHOR_TRANSFER.md`
 - `docs/SVD_INTERPRETABILITY_R1_20260411.md`
 - `docs/BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`
 - `docs/ES_SVD_MATH_RL_CHECKPOINT_RANKING.md`
@@ -135,6 +138,7 @@ EarlyStop 与 Best-of-N 的在线结果当前主要整理在：
 
 - `SVDomain/docs/00_EXECUTIVE_SUMMARY.md`
 - `SVDomain/docs/06_PAPER_OUTLINE.md`
+- `SVDomain/docs/17_DENSE_CROSS_ANCHOR_TRANSFER.md`
 
 ### 结果整理
 
@@ -142,6 +146,9 @@ EarlyStop 与 Best-of-N 的在线结果当前主要整理在：
 - `SVDomain/results/summary_metrics.json`
 - `SVDomain/results/tables/*.csv`
 - `SVDomain/docs/10_STRUCTURED_OOD.md`
+- `SVDomain/results/tables/dense_cross_anchor_transfer_matrix.csv`
+- `SVDomain/results/tables/dense_cross_anchor_transfer_deltas.csv`
+- `SVDomain/results/tables/dense_cross_anchor_transfer_summary.csv`
 
 ### 环境与复现
 

@@ -30,6 +30,9 @@
 - `tables/interpretability_sanity.csv`
 - `tables/structured_ood_results.csv`
 - `tables/id_vs_ood_summary.csv`
+- `tables/dense_cross_anchor_transfer_matrix.csv`
+- `tables/dense_cross_anchor_transfer_deltas.csv`
+- `tables/dense_cross_anchor_transfer_summary.csv`
 
 ---
 

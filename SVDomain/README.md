@@ -69,7 +69,8 @@
 4. `SVDomain/docs/03_RESULTS_AND_COMPARISONS.md`
 5. `SVDomain/docs/04_INTERPRETABILITY_AND_VIEWER.md`
 6. `SVDomain/docs/06_PAPER_OUTLINE.md`
-7. `docs/ES_SVD_MS_RR_R2_REPORT.md`
+7. `SVDomain/docs/17_DENSE_CROSS_ANCHOR_TRANSFER.md`
+8. `docs/ES_SVD_MS_RR_R2_REPORT.md`
 
 如果你是为了复现：
 
@@ -98,6 +99,11 @@ SVDomain/
 ├── train_es_svd_coding_rr_r1.py
 ├── train_es_svd_ms_rr_r2.py
 ├── train_slot100_svd_domain_r1.py
+├── experiments/
+│   ├── run_cross_anchor_transfer.py
+│   ├── run_dense_anchor_earlystop.py
+│   ├── run_dense_cross_anchor_transfer.py
+│   └── ...
 ├── docs/
 │   ├── 00_EXECUTIVE_SUMMARY.md
 │   ├── 01_METHOD_AND_MODELING.md
@@ -106,7 +112,8 @@ SVDomain/
 │   ├── 04_INTERPRETABILITY_AND_VIEWER.md
 │   ├── 05_REPRODUCTION_CHECKLIST.md
 │   ├── 06_PAPER_OUTLINE.md
-│   └── 07_ARTIFACT_INDEX.md
+│   ├── 07_ARTIFACT_INDEX.md
+│   └── 17_DENSE_CROSS_ANCHOR_TRANSFER.md
 ├── env/
 │   ├── README.md
 │   ├── requirements-paper.txt
@@ -204,6 +211,13 @@ SVDomain/
 - registry id：`es_svd_math_rr_r2` / `es_svd_science_rr_r2` / `es_svd_ms_rr_r2`
 - 报告路径：`docs/ES_SVD_MS_RR_R2_REPORT.md`
 - 目标定位：作为 `r1` canonical 线的 10-anchor 扩展与 feature-family search 对照
+
+### Dense cross-anchor transfer
+
+- 实验入口：`SVDomain/experiments/run_dense_cross_anchor_transfer.py`
+- narrative note：`SVDomain/docs/17_DENSE_CROSS_ANCHOR_TRANSFER.md`
+- paper tables：`SVDomain/results/tables/dense_cross_anchor_transfer_*.csv`
+- role in the paper: answers whether transfer is confined to sparse anchors / slot100, or persists across the full dense trajectory
 
 ### Coding 单域分支
 

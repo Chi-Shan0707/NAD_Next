@@ -98,3 +98,26 @@
 
 - 解释性分数重构在数值上是闭合的
 - 可以放心把 contribution 分析写进 paper
+
+---
+
+## 6. Dense cross-anchor transfer
+
+### Dense all-to-all transfer summary
+
+| Domain | Diagonal Δ(Frozen−Task) | Offdiag-all Δ | Near-gap Δ (`10/20`) | Far-gap Δ (`50–90`) | Best source anchor |
+|---|---:|---:|---:|---:|---:|
+| `math` | -0.13 pts | -0.34 pts | -0.16 pts | -0.62 pts | `30%` |
+| `science` | -0.09 pts | -0.54 pts | -0.23 pts | -0.97 pts | `50%` |
+
+### Direction asymmetry
+
+| Domain | Forward all Δ | Backward all Δ | Best pair | Worst pair |
+|---|---:|---:|---|---|
+| `math` | -0.11 pts | -0.56 pts | `60→100` (+0.01) | `100→10` (-2.51) |
+| `science` | -0.98 pts | -0.10 pts | `100→90` (+0.26) | `10→50` (-4.17) |
+
+Takeaways:
+
+- Dense transfer in `math` shows that the shared basis remains stable across the full trajectory; slot-100 is not the only reusable position.
+- Dense transfer in `science` shows that representation sharing is real, but **early-to-late** reuse is substantially harder, so the cleanest wording is “shared but maturity-dependent reusable basis”.
