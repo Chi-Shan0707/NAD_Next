@@ -1,0 +1,7 @@
+bundle_line,bundle_label,domain,final_anchor_auroc,plateau_anchor_pct,plateau_tolerance_abs,plateau_length,plateau_mean_auroc,plateau_min_auroc,plateau_gap_to_final_abs
+canonical_legacy,B0 legacy canonical,math,0.9817264019528166,50,0.01,6,0.9769710188118749,0.9730838602658737,0.008642541686942895
+canonical_legacy,B0 legacy canonical,science,0.8411018630769418,40,0.01,7,0.8398071655227933,0.833774992763247,0.007326870313694833
+canonical_legacy,B0 legacy canonical,coding,0.40683104063385755,100,0.01,1,0.40683104063385755,0.40683104063385755,0.0
+canonical_plus_neuron_meta_min,B1 canonical + neuron_meta_min,math,0.9731068597220781,40,0.01,7,0.9736811462303578,0.971024802837917,0.0027603401456605114
+canonical_plus_neuron_meta_min,B1 canonical + neuron_meta_min,science,0.8559370101610655,80,0.01,3,0.8507363037555563,0.8473297156073669,0.008607294553698575
+canonical_plus_neuron_meta_min,B1 canonical + neuron_meta_min,coding,0.4323438689635873,100,0.01,1,0.4323438689635873,0.4323438689635873,0.0
