@@ -1,0 +1,6 @@
+archetype_id,label,n_cases,pct_of_wrong_cases,dominant_feature,feature_z,description
+high_conf_wrong,FP,17,0.3,tok_conf_prefix,1.7969,High tok_conf_prefix but label=0; model over-trusts confidence signal
+trajectory_noise,FP|FN,1563,25.0,traj_reflection_count,-1.2771,High |traj_reflection_count| uncorrelated with correctness in coding
+overreflection_trap,FN,1525,24.4,traj_reflection_count,-1.2509,High reflection count for correct solutions; SVD over-penalises reflective correct traces
+zero_traj_ambiguity,FP|FN,1412,22.6,traj_magnitude,-1.1192,Near-zero trajectory features; model has no discriminative signal
+boundary_ambiguity,FP|FN,563,9.0,decision_score,-0.0001,Scores near decision boundary; prediction is effectively random
