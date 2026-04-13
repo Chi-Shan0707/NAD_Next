@@ -1,0 +1,2364 @@
+{
+  "created_at_utc": "2026-04-13T14:38:10.064698+00:00",
+  "method_name": "math_svd_science_tree_hybrid_holdout_proxy",
+  "math_eval_json": "results/scans/earlystop/es_svd_ms_rr_r2_20260412_eval.json",
+  "tree_selection_csv": "results/tables/tree_baselines.csv",
+  "science_tree_selection": {
+    "model_family": "xgboost",
+    "feature_variant": "raw+rank",
+    "search_cv_auroc": 0.7613226040497623,
+    "search_positions_pct": [
+      100
+    ],
+    "search_config": {
+      "colsample": 0.7,
+      "learning_rate": 0.03,
+      "max_depth": 3,
+      "min_child_weight": 1,
+      "model_family": "xgboost",
+      "n_estimators": 300,
+      "subsample": 0.7
+    }
+  },
+  "science_holdout_problem_summary": {
+    "gpqa": {
+      "total_unique_problem_ids": 198,
+      "holdout_unique_problem_ids": 30,
+      "train_unique_problem_ids": 168,
+      "holdout_problem_ids": [
+        "gpqa-10",
+        "gpqa-103",
+        "gpqa-107",
+        "gpqa-118",
+        "gpqa-122",
+        "gpqa-130",
+        "gpqa-131",
+        "gpqa-163",
+        "gpqa-164",
+        "gpqa-170",
+        "gpqa-175",
+        "gpqa-176",
+        "gpqa-179",
+        "gpqa-184",
+        "gpqa-19",
+        "gpqa-193",
+        "gpqa-2",
+        "gpqa-23",
+        "gpqa-35",
+        "gpqa-44",
+        "gpqa-45",
+        "gpqa-51",
+        "gpqa-6",
+        "gpqa-62",
+        "gpqa-63",
+        "gpqa-67",
+        "gpqa-68",
+        "gpqa-8",
+        "gpqa-80",
+        "gpqa-97"
+      ]
+    }
+  },
+  "math_svd": {
+    "method_name": "es_svd_math_rr_r2",
+    "aggregate": {
+      "num_caches": 7,
+      "samples": 1792,
+      "auc_of_auroc": 0.9674463616921595,
+      "auc_of_selacc": 0.9983516483516484,
+      "earliest_gt_0.6": 0.1,
+      "auroc@100%": 0.9754993914189412,
+      "stop_acc@100%": 0.75,
+      "by_position": [
+        {
+          "position": 0.1,
+          "auroc": 0.9367179916595267,
+          "selacc@10%": 0.9835164835164836,
+          "stop_acc": 0.75
+        },
+        {
+          "position": 0.2,
+          "auroc": 0.9523591830587187,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.7142857142857143
+        },
+        {
+          "position": 0.3,
+          "auroc": 0.9600277698105353,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.75
+        },
+        {
+          "position": 0.4,
+          "auroc": 0.971024802837917,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.7142857142857143
+        },
+        {
+          "position": 0.5,
+          "auroc": 0.9732803906299791,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.75
+        },
+        {
+          "position": 0.6,
+          "auroc": 0.9750077013195054,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.7142857142857143
+        },
+        {
+          "position": 0.7,
+          "auroc": 0.9761380665575113,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.7142857142857143
+        },
+        {
+          "position": 0.8,
+          "auroc": 0.9781889918323555,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.75
+        },
+        {
+          "position": 0.9,
+          "auroc": 0.9762193277966037,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.75
+        },
+        {
+          "position": 1.0,
+          "auroc": 0.9754993914189412,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.75
+        }
+      ]
+    },
+    "by_cache": [
+      {
+        "cache_key": "cache/DS-R1/aime24",
+        "dataset_name": "aime24",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.963683241252302,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9656721915285451,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9913075506445672,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9865193370165746,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9899815837937385,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9914548802946593,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9933701657458563,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.996243093922652,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9969797421731124,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9980110497237569,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9873222836095765,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9980110497237569,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/aime25",
+        "dataset_name": "aime25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8527136580233925,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.8768488149019122,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8868123027415062,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9357633516925552,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.947521505043629,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.959898508571075,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9647255399467789,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9633640695587599,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.959650968500526,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.956680487653939,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          }
+        ],
+        "auc_of_auroc": 0.9303979206634073,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.956680487653939,
+        "stop_acc@100%": 0.5
+      },
+      {
+        "cache_key": "cache/DS-R1/brumo25",
+        "dataset_name": "brumo25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9813829787234043,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9878754693366708,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9852158948685857,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9870932415519399,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.992255944931164,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9911608260325406,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9913172715894869,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9924906132665833,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9870150187734669,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9894399249061326,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9885247183979976,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9894399249061326,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/hmmt25",
+        "dataset_name": "hmmt25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9241590640016715,
+            "selacc@10%": 0.9230769230769231,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9372518977644683,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9493697332683334,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9614179260394178,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9605822132460478,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9591197158576502,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9598857859182395,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.962601852496692,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9628804234278153,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9573786475381294,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9534647259558465,
+        "auc_of_selacc": 0.9923076923076923,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9573786475381294,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache_train/DS-R1/aime25",
+        "dataset_name": "aime25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8998917748917749,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9570481601731602,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9552218614718615,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9667884199134199,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9682088744588745,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.966314935064935,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9626623376623377,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9663825757575758,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9646915584415584,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9631358225108225,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9570346320346321,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9631358225108225,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache_train/DS-R1/brumo25",
+        "dataset_name": "brumo25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9770986338150517,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9793887704335466,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9808892047698018,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.982389639106057,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9796256811182185,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9816789070520414,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.98444286503988,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9891810787333175,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9876016741688384,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9894179894179894,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          }
+        ],
+        "auc_of_auroc": 0.9831714443654741,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9894179894179894,
+        "stop_acc@100%": 1.0
+      },
+      {
+        "cache_key": "cache_train/DS-R1/hmmt25",
+        "dataset_name": "hmmt25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9580965909090909,
+            "selacc@10%": 0.9615384615384616,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9624289772727272,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.971377840909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9772017045454545,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9747869318181818,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9754261363636364,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9765625,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9770596590909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9747159090909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9744318181818182,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9722088068181819,
+        "auc_of_selacc": 0.9961538461538462,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9744318181818182,
+        "stop_acc@100%": 0.75
+      }
+    ]
+  },
+  "science_tree": {
+    "method_name": "science_tree_splitfit_hybrid_proxy",
+    "aggregate": {
+      "num_caches": 2,
+      "samples": 3840,
+      "auc_of_auroc": 0.8435877638863643,
+      "auc_of_selacc": 0.978125,
+      "earliest_gt_0.6": 0.1,
+      "auroc@100%": 0.8747233658134476,
+      "stop_acc@100%": 0.7666666666666666,
+      "by_position": [
+        {
+          "position": 0.1,
+          "auroc": 0.7521637034233685,
+          "selacc@10%": 0.9010416666666667,
+          "stop_acc": 0.6666666666666666
+        },
+        {
+          "position": 0.2,
+          "auroc": 0.8206234031734831,
+          "selacc@10%": 0.9583333333333333,
+          "stop_acc": 0.6833333333333333
+        },
+        {
+          "position": 0.3,
+          "auroc": 0.8379236222935851,
+          "selacc@10%": 0.9869791666666666,
+          "stop_acc": 0.7166666666666666
+        },
+        {
+          "position": 0.4,
+          "auroc": 0.8400222287918283,
+          "selacc@10%": 0.984375,
+          "stop_acc": 0.7
+        },
+        {
+          "position": 0.5,
+          "auroc": 0.8480147826559652,
+          "selacc@10%": 0.984375,
+          "stop_acc": 0.7
+        },
+        {
+          "position": 0.6,
+          "auroc": 0.8561682935477481,
+          "selacc@10%": 0.9869791666666667,
+          "stop_acc": 0.7
+        },
+        {
+          "position": 0.7,
+          "auroc": 0.8638549417806604,
+          "selacc@10%": 0.9921875,
+          "stop_acc": 0.6833333333333333
+        },
+        {
+          "position": 0.8,
+          "auroc": 0.8705796527189278,
+          "selacc@10%": 0.9947916666666667,
+          "stop_acc": 0.75
+        },
+        {
+          "position": 0.9,
+          "auroc": 0.8718036446646275,
+          "selacc@10%": 0.9947916666666667,
+          "stop_acc": 0.7
+        },
+        {
+          "position": 1.0,
+          "auroc": 0.8747233658134476,
+          "selacc@10%": 0.9973958333333333,
+          "stop_acc": 0.7666666666666666
+        }
+      ]
+    },
+    "by_cache": [
+      {
+        "cache_key": "cache/DS-R1/gpqa",
+        "dataset_name": "gpqa",
+        "domain": "science",
+        "n_problems": 30,
+        "n_samples": 1920,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.712515775349053,
+            "selacc@10%": 0.8489583333333334,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.7988973467484075,
+            "selacc@10%": 0.9635416666666666,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.810546163784288,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.8151615445625552,
+            "selacc@10%": 0.96875,
+            "stop_acc": 0.7666666666666667
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.8214155663412663,
+            "selacc@10%": 0.96875,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.8313484244603958,
+            "selacc@10%": 0.9739583333333334,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.8368529612761946,
+            "selacc@10%": 0.984375,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.8398957954018287,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.8333333333333334
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.8467596310688329,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.8439475036289538,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.8
+          }
+        ],
+        "auc_of_auroc": 0.8157340712621777,
+        "auc_of_selacc": 0.9682291666666668,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.8439475036289538,
+        "stop_acc@100%": 0.8
+      },
+      {
+        "cache_key": "cache_train/DS-R1/gpqa",
+        "dataset_name": "gpqa",
+        "domain": "science",
+        "n_problems": 30,
+        "n_samples": 1920,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.791811631497684,
+            "selacc@10%": 0.953125,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.8423494595985589,
+            "selacc@10%": 0.953125,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8653010808028821,
+            "selacc@10%": 0.9791666666666666,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.8648829130211014,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.8746139989706639,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.8809881626351004,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.8908569222851261,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9012635100360268,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.896847658260422,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9054992279979414,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.7333333333333333
+          }
+        ],
+        "auc_of_auroc": 0.8714414565105508,
+        "auc_of_selacc": 0.9880208333333332,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9054992279979414,
+        "stop_acc@100%": 0.7333333333333333
+      }
+    ]
+  },
+  "svd_combined_noncoding": {
+    "method_name": "es_svd_ms_rr_r2",
+    "aggregate": {
+      "num_caches": 9,
+      "samples": 5632,
+      "auc_of_auroc": 0.9365844375203589,
+      "auc_of_selacc": 0.9950721153846153,
+      "earliest_gt_0.6": 0.1,
+      "auroc@100%": 0.9488134280475862,
+      "stop_acc@100%": 0.7425925925925926,
+      "by_position": [
+        {
+          "position": 0.1,
+          "auroc": 0.90966223819904,
+          "selacc@10%": 0.9698183760683761,
+          "stop_acc": 0.7462962962962963
+        },
+        {
+          "position": 0.2,
+          "auroc": 0.9187923061609372,
+          "selacc@10%": 0.9982638888888888,
+          "stop_acc": 0.6962962962962962
+        },
+        {
+          "position": 0.3,
+          "auroc": 0.9290136725043163,
+          "selacc@10%": 0.9965277777777778,
+          "stop_acc": 0.7462962962962963
+        },
+        {
+          "position": 0.4,
+          "auroc": 0.9386615501478298,
+          "selacc@10%": 0.9988425925925927,
+          "stop_acc": 0.7185185185185186
+        },
+        {
+          "position": 0.5,
+          "auroc": 0.9407285707792484,
+          "selacc@10%": 0.9971064814814815,
+          "stop_acc": 0.7277777777777776
+        },
+        {
+          "position": 0.6,
+          "auroc": 0.9423309024391773,
+          "selacc@10%": 0.995949074074074,
+          "stop_acc": 0.7074074074074075
+        },
+        {
+          "position": 0.7,
+          "auroc": 0.9443585687552079,
+          "selacc@10%": 0.9971064814814815,
+          "stop_acc": 0.7148148148148148
+        },
+        {
+          "position": 0.8,
+          "auroc": 0.9472328234730293,
+          "selacc@10%": 0.9976851851851853,
+          "stop_acc": 0.7388888888888889
+        },
+        {
+          "position": 0.9,
+          "auroc": 0.9462503146972162,
+          "selacc@10%": 1.0,
+          "stop_acc": 0.7425925925925925
+        },
+        {
+          "position": 1.0,
+          "auroc": 0.9488134280475862,
+          "selacc@10%": 0.9994212962962963,
+          "stop_acc": 0.7425925925925926
+        }
+      ]
+    },
+    "by_cache": [
+      {
+        "cache_key": "cache/DS-R1/aime24",
+        "dataset_name": "aime24",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.963683241252302,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9656721915285451,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9913075506445672,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9865193370165746,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9899815837937385,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9914548802946593,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9933701657458563,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.996243093922652,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9969797421731124,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9980110497237569,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9873222836095765,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9980110497237569,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/aime25",
+        "dataset_name": "aime25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8527136580233925,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.8768488149019122,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8868123027415062,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9357633516925552,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.947521505043629,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.959898508571075,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9647255399467789,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9633640695587599,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.959650968500526,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.956680487653939,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          }
+        ],
+        "auc_of_auroc": 0.9303979206634073,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.956680487653939,
+        "stop_acc@100%": 0.5
+      },
+      {
+        "cache_key": "cache/DS-R1/brumo25",
+        "dataset_name": "brumo25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9813829787234043,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9878754693366708,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9852158948685857,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9870932415519399,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.992255944931164,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9911608260325406,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9913172715894869,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9924906132665833,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9870150187734669,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9894399249061326,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9885247183979976,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9894399249061326,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/hmmt25",
+        "dataset_name": "hmmt25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9241590640016715,
+            "selacc@10%": 0.9230769230769231,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9372518977644683,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9493697332683334,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9614179260394178,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9605822132460478,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9591197158576502,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9598857859182395,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.962601852496692,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9628804234278153,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9573786475381294,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9534647259558465,
+        "auc_of_selacc": 0.9923076923076923,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9573786475381294,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache_train/DS-R1/aime25",
+        "dataset_name": "aime25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8998917748917749,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9570481601731602,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9552218614718615,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9667884199134199,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9682088744588745,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.966314935064935,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9626623376623377,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9663825757575758,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9646915584415584,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9631358225108225,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9570346320346321,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9631358225108225,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache_train/DS-R1/brumo25",
+        "dataset_name": "brumo25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9770986338150517,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9793887704335466,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9808892047698018,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.982389639106057,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9796256811182185,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9816789070520414,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.98444286503988,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9891810787333175,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9876016741688384,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9894179894179894,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          }
+        ],
+        "auc_of_auroc": 0.9831714443654741,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9894179894179894,
+        "stop_acc@100%": 1.0
+      },
+      {
+        "cache_key": "cache_train/DS-R1/hmmt25",
+        "dataset_name": "hmmt25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9580965909090909,
+            "selacc@10%": 0.9615384615384616,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9624289772727272,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.971377840909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9772017045454545,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9747869318181818,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9754261363636364,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9765625,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9770596590909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9747159090909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9744318181818182,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9722088068181819,
+        "auc_of_selacc": 0.9961538461538462,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9744318181818182,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/gpqa",
+        "dataset_name": "gpqa",
+        "domain": "science",
+        "n_problems": 30,
+        "n_samples": 1920,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.7673042484947947,
+            "selacc@10%": 0.8854166666666666,
+            "stop_acc": 0.7666666666666667
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.7774054601413671,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8161255243900614,
+            "selacc@10%": 0.9739583333333334,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.8211200123708666,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.7666666666666667
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.8222099455781634,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.8188179337659811,
+            "selacc@10%": 0.9791666666666666,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.8241865406966594,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.8315604251986571,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.8402175376987195,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.8381025185687705,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.7333333333333333
+          }
+        ],
+        "auc_of_auroc": 0.8157050146904041,
+        "auc_of_selacc": 0.978125,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.8381025185687705,
+        "stop_acc@100%": 0.7333333333333333
+      },
+      {
+        "cache_key": "cache_train/DS-R1/gpqa",
+        "dataset_name": "gpqa",
+        "domain": "science",
+        "n_problems": 30,
+        "n_samples": 1920,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8626299536798765,
+            "selacc@10%": 0.9583333333333334,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.825211013896037,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8248031394750386,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.8296603190941843,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.8313844570252187,
+            "selacc@10%": 0.984375,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.8371062789500772,
+            "selacc@10%": 0.984375,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.8420741121976325,
+            "selacc@10%": 0.984375,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.8462120432321153,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.8425,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.7666666666666667
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.8727225939269171,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.7
+          }
+        ],
+        "auc_of_auroc": 0.8414303911477099,
+        "auc_of_selacc": 0.9890625,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.8727225939269171,
+        "stop_acc@100%": 0.7
+      }
+    ]
+  },
+  "hybrid_noncoding": {
+    "method_name": "math_svd_science_tree_hybrid_holdout_proxy",
+    "aggregate": {
+      "num_caches": 9,
+      "samples": 5632,
+      "auc_of_auroc": 0.9399222288464273,
+      "auc_of_selacc": 0.9938568376068376,
+      "earliest_gt_0.6": 0.1,
+      "auroc@100%": 0.9531047190621648,
+      "stop_acc@100%": 0.7537037037037037,
+      "by_position": [
+        {
+          "position": 0.1,
+          "auroc": 0.8957059276070473,
+          "selacc@10%": 0.9651887464387465,
+          "stop_acc": 0.7314814814814815
+        },
+        {
+          "position": 0.2,
+          "auroc": 0.9230845653064441,
+          "selacc@10%": 0.9907407407407407,
+          "stop_acc": 0.7074074074074074
+        },
+        {
+          "position": 0.3,
+          "auroc": 0.9328935148067684,
+          "selacc@10%": 0.9971064814814814,
+          "stop_acc": 0.7425925925925926
+        },
+        {
+          "position": 0.4,
+          "auroc": 0.9419131197165639,
+          "selacc@10%": 0.9965277777777778,
+          "stop_acc": 0.7111111111111111
+        },
+        {
+          "position": 0.5,
+          "auroc": 0.9454435888579761,
+          "selacc@10%": 0.9965277777777778,
+          "stop_acc": 0.7388888888888889
+        },
+        {
+          "position": 0.6,
+          "auroc": 0.9485989440368926,
+          "selacc@10%": 0.9971064814814815,
+          "stop_acc": 0.7111111111111111
+        },
+        {
+          "position": 0.7,
+          "auroc": 0.9511862610515445,
+          "selacc@10%": 0.9982638888888888,
+          "stop_acc": 0.7074074074074075
+        },
+        {
+          "position": 0.8,
+          "auroc": 0.954275805362705,
+          "selacc@10%": 0.9988425925925927,
+          "stop_acc": 0.7500000000000001
+        },
+        {
+          "position": 0.9,
+          "auroc": 0.9530158426561646,
+          "selacc@10%": 0.9988425925925927,
+          "stop_acc": 0.7388888888888888
+        },
+        {
+          "position": 1.0,
+          "auroc": 0.9531047190621648,
+          "selacc@10%": 0.9994212962962963,
+          "stop_acc": 0.7537037037037037
+        }
+      ]
+    },
+    "by_cache": [
+      {
+        "cache_key": "cache/DS-R1/aime24",
+        "dataset_name": "aime24",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.963683241252302,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9656721915285451,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9913075506445672,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9865193370165746,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9899815837937385,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9914548802946593,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9933701657458563,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.996243093922652,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9969797421731124,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9980110497237569,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9873222836095765,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9980110497237569,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/aime25",
+        "dataset_name": "aime25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8527136580233925,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.8768488149019122,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8868123027415062,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9357633516925552,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.947521505043629,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.959898508571075,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9647255399467789,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9633640695587599,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.959650968500526,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.956680487653939,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.5
+          }
+        ],
+        "auc_of_auroc": 0.9303979206634073,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.956680487653939,
+        "stop_acc@100%": 0.5
+      },
+      {
+        "cache_key": "cache/DS-R1/brumo25",
+        "dataset_name": "brumo25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9813829787234043,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9878754693366708,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9852158948685857,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9870932415519399,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.992255944931164,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9911608260325406,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9913172715894869,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9924906132665833,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9870150187734669,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9894399249061326,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9885247183979976,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9894399249061326,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/hmmt25",
+        "dataset_name": "hmmt25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9241590640016715,
+            "selacc@10%": 0.9230769230769231,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9372518977644683,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9493697332683334,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9614179260394178,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9605822132460478,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9591197158576502,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9598857859182395,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.962601852496692,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9628804234278153,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9573786475381294,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9534647259558465,
+        "auc_of_selacc": 0.9923076923076923,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9573786475381294,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache_train/DS-R1/aime25",
+        "dataset_name": "aime25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.8998917748917749,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9570481601731602,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9552218614718615,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9667884199134199,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9682088744588745,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.966314935064935,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9626623376623377,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9663825757575758,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9646915584415584,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9631358225108225,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9570346320346321,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9631358225108225,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache_train/DS-R1/brumo25",
+        "dataset_name": "brumo25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9770986338150517,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9793887704335466,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.9808892047698018,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.982389639106057,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9796256811182185,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9816789070520414,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.98444286503988,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9891810787333175,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9876016741688384,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9894179894179894,
+            "selacc@10%": 1.0,
+            "stop_acc": 1.0
+          }
+        ],
+        "auc_of_auroc": 0.9831714443654741,
+        "auc_of_selacc": 1.0,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9894179894179894,
+        "stop_acc@100%": 1.0
+      },
+      {
+        "cache_key": "cache_train/DS-R1/hmmt25",
+        "dataset_name": "hmmt25",
+        "domain": "math",
+        "n_problems": 4,
+        "n_samples": 256,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.9580965909090909,
+            "selacc@10%": 0.9615384615384616,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.9624289772727272,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.971377840909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.9772017045454545,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.9747869318181818,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.9754261363636364,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.9765625,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9770596590909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.9747159090909091,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9744318181818182,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.75
+          }
+        ],
+        "auc_of_auroc": 0.9722088068181819,
+        "auc_of_selacc": 0.9961538461538462,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9744318181818182,
+        "stop_acc@100%": 0.75
+      },
+      {
+        "cache_key": "cache/DS-R1/gpqa",
+        "dataset_name": "gpqa",
+        "domain": "science",
+        "n_problems": 30,
+        "n_samples": 1920,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.712515775349053,
+            "selacc@10%": 0.8489583333333334,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.7988973467484075,
+            "selacc@10%": 0.9635416666666666,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.810546163784288,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.8151615445625552,
+            "selacc@10%": 0.96875,
+            "stop_acc": 0.7666666666666667
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.8214155663412663,
+            "selacc@10%": 0.96875,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.8313484244603958,
+            "selacc@10%": 0.9739583333333334,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.8368529612761946,
+            "selacc@10%": 0.984375,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.8398957954018287,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.8333333333333334
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.8467596310688329,
+            "selacc@10%": 0.9895833333333334,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.8439475036289538,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.8
+          }
+        ],
+        "auc_of_auroc": 0.8157340712621777,
+        "auc_of_selacc": 0.9682291666666668,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.8439475036289538,
+        "stop_acc@100%": 0.8
+      },
+      {
+        "cache_key": "cache_train/DS-R1/gpqa",
+        "dataset_name": "gpqa",
+        "domain": "science",
+        "n_problems": 30,
+        "n_samples": 1920,
+        "position_metrics": [
+          {
+            "position": 0.1,
+            "auroc": 0.791811631497684,
+            "selacc@10%": 0.953125,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.2,
+            "auroc": 0.8423494595985589,
+            "selacc@10%": 0.953125,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.3,
+            "auroc": 0.8653010808028821,
+            "selacc@10%": 0.9791666666666666,
+            "stop_acc": 0.7
+          },
+          {
+            "position": 0.4,
+            "auroc": 0.8648829130211014,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6333333333333333
+          },
+          {
+            "position": 0.5,
+            "auroc": 0.8746139989706639,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.6,
+            "auroc": 0.8809881626351004,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.7,
+            "auroc": 0.8908569222851261,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.8,
+            "auroc": 0.9012635100360268,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.6666666666666666
+          },
+          {
+            "position": 0.9,
+            "auroc": 0.896847658260422,
+            "selacc@10%": 1.0,
+            "stop_acc": 0.7333333333333333
+          },
+          {
+            "position": 1.0,
+            "auroc": 0.9054992279979414,
+            "selacc@10%": 0.9947916666666666,
+            "stop_acc": 0.7333333333333333
+          }
+        ],
+        "auc_of_auroc": 0.8714414565105508,
+        "auc_of_selacc": 0.9880208333333332,
+        "earliest_gt_0.6": 0.1,
+        "auroc@100%": 0.9054992279979414,
+        "stop_acc@100%": 0.7333333333333333
+      }
+    ]
+  }
+}

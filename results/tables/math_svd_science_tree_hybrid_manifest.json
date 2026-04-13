@@ -1,0 +1,64 @@
+{
+  "created_at_utc": "2026-04-13T14:38:32.763761+00:00",
+  "method_name": "earlystop_math_svd_science_tree_hybrid_fulltrain_v1",
+  "math_bundle": "models/ml_selectors/es_svd_math_rr_r2_20260412.pkl",
+  "tree_fulltrain_bundle": "results/models/tree_baselines_fulltrain_v1.pkl",
+  "selection_csv": "results/tables/tree_baselines.csv",
+  "science_selection_row": {
+    "model_family": "xgboost",
+    "feature_variant": "raw+rank",
+    "holdout_auc_of_auroc": 0.8435877638863643,
+    "delta_auc_of_auroc_vs_svd": 0.003761815147214742,
+    "search_cv_auroc": 0.7613226040497623,
+    "search_positions_pct": [
+      100
+    ],
+    "search_config": {
+      "colsample": 0.7,
+      "learning_rate": 0.03,
+      "max_depth": 3,
+      "min_child_weight": 1,
+      "model_family": "xgboost",
+      "n_estimators": 300,
+      "subsample": 0.7
+    }
+  },
+  "holdout_proxy_path": "results/scans/earlystop/math_svd_science_tree_hybrid_holdout_eval.json",
+  "holdout_proxy_delta_vs_svd": {
+    "auc_of_auroc": 0.0033377913260683734,
+    "auc_of_selacc": -0.0012152777777776347,
+    "auroc@100%": 0.004291291014578591,
+    "stop_acc@100%": 0.011111111111111072
+  },
+  "train_cache_state": {
+    "cache": {
+      "status": "loaded_prebuilt",
+      "paths": [
+        "results/cache/earlystop_prefix10_svd_round1c_fullcache/cache_all_49f2e9556242f50c.pkl"
+      ],
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache"
+    },
+    "cache_train": {
+      "status": "loaded_prebuilt",
+      "paths": [
+        "results/cache/earlystop_prefix10_svd_round1c_fullcache/cache_train_all_59ae9bc6f41a2ef4.pkl"
+      ],
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train"
+    }
+  },
+  "blind_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_test",
+  "blind_feature_cache_status": "loaded_prebuilt:results/cache/export_earlystop_svd_submission_round1c_override/feature_store_all_ref030_3849580f4da8ce1c.pkl,results/cache/export_earlystop_svd_submission_strongfeat_20260410/feature_store_all_ref030_18a73b5e30f1a00d.pkl",
+  "blind_feature_cache_path": null,
+  "bundle_path": "results/models/math_svd_science_tree_hybrid_fulltrain_v1.pkl",
+  "submission_path": "submission/EarlyStop/earlystop_math_svd_science_tree_hybrid_fulltrain_v1.json",
+  "validation": {
+    "total_problems": 970,
+    "total_samples": 62080
+  },
+  "include_coding": true,
+  "seed_values": [
+    42,
+    101,
+    202
+  ]
+}
