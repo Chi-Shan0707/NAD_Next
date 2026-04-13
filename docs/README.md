@@ -20,6 +20,7 @@
 - `12_CODING_DIAGNOSIS.md`: coding negative-result diagnosis separating feature mismatch, instability, and low-rank compactness.
 - `16_DENSE_ANCHOR_EARLYSTOP.md`: `10/20/.../100` dense-anchor EarlyStop timing note for `math / science / coding`, including onset/plateau tables and neuron-vs-legacy comparison.
 - `17_DENSE_CROSS_ANCHOR_TRANSFER.md`: all-to-all `10/20/.../100` dense cross-anchor transfer note for `math / science`, including gap-by-distance and source-anchor rankings.
+- `18_SVD_FEATURE_COMPLEXITY.md`: three-layer feature-count / noise-control protocol for showing when SVD becomes more valuable than no-SVD.
 - `BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`: current slot100 bridge result snapshot.
 
 ## Coding line
@@ -88,6 +89,7 @@
 - `12_CODING_DIAGNOSIS.md`：coding 负结果诊断，区分 feature mismatch、评估不稳定性与低秩紧致性。
 - `16_DENSE_ANCHOR_EARLYSTOP.md`：`math / science / coding` 的 `10/20/.../100` dense-anchor EarlyStop timing 结果，包含 onset / plateau 表与 neuron-vs-legacy 对照。
 - `17_DENSE_CROSS_ANCHOR_TRANSFER.md`：`math / science` 在全 `10/20/.../100` trajectory 上的 all-to-all dense cross-anchor transfer 结果，包含 distance-decay 与 source-anchor ranking。
+- `18_SVD_FEATURE_COMPLEXITY.md`：三层 feature-count / noise-control 实验协议，用来证明 SVD 在更宽、更脏的 feature bank 上何时开始明显优于 no-SVD。
 - `BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`：当前 slot100 bridge 结果快照。
 
 ## Coding 主线
