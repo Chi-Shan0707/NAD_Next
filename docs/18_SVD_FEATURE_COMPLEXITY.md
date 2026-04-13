@@ -168,11 +168,17 @@
 ### Full run
 
 ```bash
+OMP_NUM_THREADS=1 \
+MKL_NUM_THREADS=1 \
+OPENBLAS_NUM_THREADS=1 \
+NUMEXPR_NUM_THREADS=1 \
 python3 SVDomain/experiments/run_svd_feature_complexity_study.py \
   --domains math,science,coding \
   --layers canonical,expansion,noise \
   --seeds 42,43,44 \
-  --svd-ranks 4,8,12,16,24
+  --svd-ranks 4,8,12,16,24 \
+  --feature-workers 8 \
+  --fit-workers 12
 ```
 
 ### Smoke run
@@ -199,4 +205,3 @@ python3 SVDomain/experiments/run_svd_feature_complexity_study.py \
 如果看到这个模式，就可以用一句非常清楚的话总结：
 
 > `no-SVD` 之所以在 canonical 路线上已经接近 `SVD`，主要是因为当前 feature bank 足够干净；当特征语言变宽、冗余变多、噪声变强时，SVD 的低秩压缩与正则化才真正显示出必要性。
-

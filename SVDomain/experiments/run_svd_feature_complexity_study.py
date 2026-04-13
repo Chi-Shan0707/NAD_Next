@@ -30,13 +30,17 @@ Outputs:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import hashlib
+import io
 import json
 import math
+import multiprocessing as mp
 import pickle
 import sys
 import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
@@ -128,6 +132,8 @@ CONDITION_ORDER = [
     "random_med",
     "random_high",
 ]
+
+_PARALLEL_SPLIT_PACKS: dict[str, dict[str, Any]] = {}
 
 
 @dataclass(frozen=True)
@@ -832,7 +838,36 @@ def _train_routes_for_domain(
             route_with_pos = dict(route)
             route_with_pos["training_position"] = float(position)
             routes_by_model.setdefault(model_name, {})[float(position)] = route_with_pos
-    return routes_by_model
+    completed: dict[str, dict[float, dict[str, Any]]] = {}
+    for model_name, routes in routes_by_model.items():
+        filled = _complete_anchor_routes(routes)
+        if filled:
+            completed[str(model_name)] = filled
+    return completed
+
+
+def _complete_anchor_routes(routes: dict[float, dict[str, Any]]) -> dict[float, dict[str, Any]]:
+    available = sorted(float(position) for position in routes.keys())
+    if not available:
+        return {}
+
+    completed: dict[float, dict[str, Any]] = {}
+    for position in (float(v) for v in ANCHOR_POSITIONS):
+        if position in routes:
+            route = dict(routes[position])
+            route["route_anchor"] = float(position)
+            route["anchor_fallback"] = False
+        else:
+            nearest = min(
+                available,
+                key=lambda candidate: (abs(float(candidate) - float(position)), float(candidate)),
+            )
+            route = dict(routes[nearest])
+            route["route_anchor"] = float(nearest)
+            route["anchor_fallback"] = True
+            route["requested_anchor"] = float(position)
+        completed[float(position)] = route
+    return completed
 
 
 def _make_score_fn(routes: dict[float, dict[str, Any]]):
@@ -869,15 +904,25 @@ def _evaluate_routes(
     rows: list[dict[str, Any]] = []
     for model_name, routes in routes_by_model.items():
         start = time.perf_counter()
-        eval_result = evaluate_method_from_feature_store(
-            method_name=f"{condition_id}__{domain}__seed{int(seed)}__{model_name}",
-            feature_store=holdout_store,
-            position_values=tuple(float(v) for v in EARLY_STOP_POSITIONS),
-            score_fn=_make_score_fn(routes),
-        )
+        unique_route_anchors = sorted({float(route.get("route_anchor", route["training_position"])) for route in routes.values()})
+        route_cv = []
+        seen_route_anchors: set[float] = set()
+        for route in routes.values():
+            route_anchor = float(route.get("route_anchor", route["training_position"]))
+            if route_anchor in seen_route_anchors:
+                continue
+            seen_route_anchors.add(route_anchor)
+            if np.isfinite(float(route["cv_auroc"])):
+                route_cv.append(float(route["cv_auroc"]))
+        with contextlib.redirect_stdout(io.StringIO()):
+            eval_result = evaluate_method_from_feature_store(
+                method_name=f"{condition_id}__{domain}__seed{int(seed)}__{model_name}",
+                feature_store=holdout_store,
+                position_values=tuple(float(v) for v in EARLY_STOP_POSITIONS),
+                score_fn=_make_score_fn(routes),
+            )
         agg = eval_result["aggregate"]
         inference_time = float(time.perf_counter() - start)
-        route_cv = [float(route["cv_auroc"]) for route in routes.values() if np.isfinite(float(route["cv_auroc"]))]
         rows.append(
             {
                 "condition_id": str(condition_id),
@@ -896,10 +941,117 @@ def _evaluate_routes(
                 "num_caches": int(agg["num_caches"]),
                 "samples": int(agg["samples"]),
                 "mean_anchor_cv_auroc": float(np.mean(route_cv)) if route_cv else float("nan"),
+                "trained_anchor_count": int(len(unique_route_anchors)),
+                "fallback_anchor_count": int(sum(1 for route in routes.values() if bool(route.get("anchor_fallback", False)))),
                 "inference_time_sec": float(inference_time),
             }
         )
     return rows
+
+
+def _attach_condition_metadata(rows: list[dict[str, Any]], spec: ConditionSpec) -> list[dict[str, Any]]:
+    for row in rows:
+        row["layer"] = str(spec.layer)
+        row["condition_label"] = str(spec.label)
+        row["description"] = str(spec.description)
+        row["base_feature_count"] = int(spec.base_feature_count)
+        row["decoy_family"] = "" if spec.decoy_family is None else str(spec.decoy_family)
+        row["decoy_level"] = "" if spec.decoy_level is None else str(spec.decoy_level)
+    return rows
+
+
+def _run_condition_domain_job(
+    *,
+    spec: ConditionSpec,
+    domain: str,
+    split_pack: dict[str, Any],
+    seeds: list[int],
+    svd_ranks: list[int],
+    n_splits: int,
+    decoy_seed: int,
+) -> dict[str, Any]:
+    start = time.perf_counter()
+    train_store, feature_names = _transform_feature_store(
+        split_pack["train_store"],
+        spec=spec,
+        decoy_seed=int(decoy_seed),
+    )
+    holdout_store, _ = _transform_feature_store(
+        split_pack["holdout_store"],
+        spec=spec,
+        decoy_seed=int(decoy_seed),
+    )
+    train_tables = _build_training_tables(
+        train_store,
+        positions=tuple(float(v) for v in ANCHOR_POSITIONS),
+        n_features=int(len(feature_names)),
+    )
+
+    detail_rows: list[dict[str, Any]] = []
+    for seed in seeds:
+        routes_by_model = _train_routes_for_domain(
+            train_tables=train_tables,
+            feature_names=feature_names,
+            svd_ranks=svd_ranks,
+            n_splits=int(n_splits),
+            random_state=int(seed),
+        )
+        detail_rows.extend(
+            _attach_condition_metadata(
+                _evaluate_routes(
+                    condition_id=str(spec.condition_id),
+                    domain=str(domain),
+                    seed=int(seed),
+                    feature_names=feature_names,
+                    holdout_store=holdout_store,
+                    routes_by_model=routes_by_model,
+                ),
+                spec,
+            )
+        )
+
+    return {
+        "layer": str(spec.layer),
+        "condition_id": str(spec.condition_id),
+        "domain": str(domain),
+        "feature_count": int(len(feature_names)),
+        "n_rows": int(len(detail_rows)),
+        "n_seeds": int(len(seeds)),
+        "wall_time_sec": float(time.perf_counter() - start),
+        "rows": detail_rows,
+    }
+
+
+def _run_condition_domain_job_from_global(
+    spec: ConditionSpec,
+    domain: str,
+    seeds: list[int],
+    svd_ranks: list[int],
+    n_splits: int,
+    decoy_seed: int,
+) -> dict[str, Any]:
+    return _run_condition_domain_job(
+        spec=spec,
+        domain=domain,
+        split_pack=_PARALLEL_SPLIT_PACKS[str(domain)],
+        seeds=seeds,
+        svd_ranks=svd_ranks,
+        n_splits=int(n_splits),
+        decoy_seed=int(decoy_seed),
+    )
+
+
+def _detail_row_sort_key(row: dict[str, Any]) -> tuple[Any, ...]:
+    domain_idx = DOMAIN_ORDER.index(str(row["domain"])) if str(row["domain"]) in DOMAIN_ORDER else len(DOMAIN_ORDER)
+    is_no_svd = 0 if str(row["model_name"]) == "no_svd" else 1
+    rank = -1 if row.get("rank", "") == "" else int(row["rank"])
+    return (
+        _condition_index(str(row["condition_id"])),
+        domain_idx,
+        int(row["seed"]),
+        is_no_svd,
+        rank,
+    )
 
 
 def _mean_std_rows(rows: list[dict[str, Any]], keys: tuple[str, ...]) -> list[dict[str, Any]]:
@@ -1221,11 +1373,19 @@ def _build_results_doc(
     best_noise = max(macro_noise, key=lambda row: float(row["delta_auc_of_auroc_mean"])) if macro_noise else None
     headline_noise = ""
     if best_noise is not None:
-        headline_noise = (
-            f"- 在 decoy control 里，macro 最大 SVD 增益出现在 "
-            f"`{best_noise['decoy_family']} / {best_noise['decoy_level']}`，"
-            f"`Δ={float(best_noise['delta_auc_of_auroc_mean']) * 100.0:+.2f}` AUC-pts。"
-        )
+        best_noise_delta = float(best_noise["delta_auc_of_auroc_mean"])
+        if best_noise_delta > 0.0:
+            headline_noise = (
+                f"- 在 decoy control 里，macro 最大 SVD 增益出现在 "
+                f"`{best_noise['decoy_family']} / {best_noise['decoy_level']}`，"
+                f"`Δ={best_noise_delta * 100.0:+.2f}` AUC-pts。"
+            )
+        else:
+            headline_noise = (
+                f"- 在 decoy control 里，SVD 在 macro 上没有出现正增益；"
+                f"最接近打平的是 `{best_noise['decoy_family']} / {best_noise['decoy_level']}`，"
+                f"`Δ={best_noise_delta * 100.0:+.2f}` AUC-pts。"
+            )
 
     lines = [
         "# 18. SVD Feature Complexity Results",
@@ -1240,6 +1400,8 @@ def _build_results_doc(
         f"- `svd ranks`: `{', '.join(str(v) for v in protocol['svd_ranks'])}`",
         f"- `holdout split`: `{protocol['holdout_split']}` with `split_seed={protocol['split_seed']}`",
         f"- `n_splits`: `{protocol['n_splits']}`",
+        f"- `feature_workers`: `{protocol['feature_workers']}`",
+        f"- `fit_workers`: `{protocol['fit_workers']}`",
         f"- `mode`: `{'smoke' if protocol['smoke'] else 'full'}`",
         "",
         "## 2. Headline Answers",
@@ -1437,55 +1599,64 @@ def main() -> None:
     detail_rows: list[dict[str, Any]] = []
     condition_rows = _condition_catalog_rows(specs)
     start_all = time.perf_counter()
+    jobs = [(spec, domain) for spec in specs for domain in domains]
+    fit_workers = max(1, min(int(args.fit_workers), len(jobs)))
+    print(
+        f"[run] jobs={len(jobs)} fit_workers={fit_workers} domains={len(domains)} conditions={len(specs)} seeds={len(seeds)}",
+        flush=True,
+    )
 
-    for spec in specs:
-        print(f"[condition] start {spec.condition_id} layer={spec.layer}", flush=True)
-        for domain in domains:
-            train_store, feature_names = _transform_feature_store(
-                split_packs[domain]["train_store"],
+    if fit_workers == 1:
+        for job_idx, (spec, domain) in enumerate(jobs, start=1):
+            result = _run_condition_domain_job(
                 spec=spec,
+                domain=domain,
+                split_pack=split_packs[domain],
+                seeds=seeds,
+                svd_ranks=svd_ranks,
+                n_splits=int(args.n_splits),
                 decoy_seed=int(args.decoy_seed),
             )
-            holdout_store, _ = _transform_feature_store(
-                split_packs[domain]["holdout_store"],
-                spec=spec,
-                decoy_seed=int(args.decoy_seed),
+            detail_rows.extend(result["rows"])
+            print(
+                f"[done] {job_idx:02d}/{len(jobs)} {result['condition_id']} domain={result['domain']} "
+                f"feats={result['feature_count']} rows={result['n_rows']} wall={result['wall_time_sec']:.1f}s",
+                flush=True,
             )
-            train_tables = _build_training_tables(
-                train_store,
-                positions=tuple(float(v) for v in ANCHOR_POSITIONS),
-                n_features=int(len(feature_names)),
-            )
-            for seed in seeds:
+    else:
+        global _PARALLEL_SPLIT_PACKS
+        _PARALLEL_SPLIT_PACKS = split_packs
+        try:
+            mp_context = mp.get_context("fork")
+        except ValueError:
+            mp_context = None
+        executor_kwargs: dict[str, Any] = {"max_workers": fit_workers}
+        if mp_context is not None:
+            executor_kwargs["mp_context"] = mp_context
+        with ProcessPoolExecutor(**executor_kwargs) as ex:
+            future_to_job = {
+                ex.submit(
+                    _run_condition_domain_job_from_global,
+                    spec,
+                    domain,
+                    seeds,
+                    svd_ranks,
+                    int(args.n_splits),
+                    int(args.decoy_seed),
+                ): (spec, domain)
+                for spec, domain in jobs
+            }
+            for done_idx, future in enumerate(as_completed(future_to_job), start=1):
+                result = future.result()
+                detail_rows.extend(result["rows"])
                 print(
-                    f"[train] condition={spec.condition_id:<32s} domain={domain:<7s} seed={seed}",
+                    f"[done] {done_idx:02d}/{len(jobs)} {result['condition_id']} domain={result['domain']} "
+                    f"feats={result['feature_count']} rows={result['n_rows']} wall={result['wall_time_sec']:.1f}s",
                     flush=True,
                 )
-                routes_by_model = _train_routes_for_domain(
-                    train_tables=train_tables,
-                    feature_names=feature_names,
-                    svd_ranks=svd_ranks,
-                    n_splits=int(args.n_splits),
-                    random_state=int(seed),
-                )
-                rows = _evaluate_routes(
-                    condition_id=str(spec.condition_id),
-                    domain=str(domain),
-                    seed=int(seed),
-                    feature_names=feature_names,
-                    holdout_store=holdout_store,
-                    routes_by_model=routes_by_model,
-                )
-                for row in rows:
-                    row["layer"] = str(spec.layer)
-                    row["condition_label"] = str(spec.label)
-                    row["description"] = str(spec.description)
-                    row["base_feature_count"] = int(spec.base_feature_count)
-                    row["decoy_family"] = "" if spec.decoy_family is None else str(spec.decoy_family)
-                    row["decoy_level"] = "" if spec.decoy_level is None else str(spec.decoy_level)
-                detail_rows.extend(rows)
 
     total_wall_time = float(time.perf_counter() - start_all)
+    detail_rows = sorted(detail_rows, key=_detail_row_sort_key)
 
     aggregate_rows = _mean_std_rows(
         detail_rows,
@@ -1545,6 +1716,8 @@ def main() -> None:
         "holdout_split": float(args.holdout_split),
         "split_seed": int(args.split_seed),
         "n_splits": int(args.n_splits),
+        "feature_workers": int(args.feature_workers),
+        "fit_workers": int(args.fit_workers),
         "smoke": bool(args.smoke),
         "smoke_max_problems_per_payload": int(args.smoke_max_problems_per_payload),
         "decoy_seed": int(args.decoy_seed),
