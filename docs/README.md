@@ -21,6 +21,8 @@
 - `16_DENSE_ANCHOR_EARLYSTOP.md`: `10/20/.../100` dense-anchor EarlyStop timing note for `math / science / coding`, including onset/plateau tables and neuron-vs-legacy comparison.
 - `17_DENSE_CROSS_ANCHOR_TRANSFER.md`: all-to-all `10/20/.../100` dense cross-anchor transfer note for `math / science`, including gap-by-distance and source-anchor rankings.
 - `18_SVD_FEATURE_COMPLEXITY.md`: three-layer feature-count / noise-control protocol for showing when SVD becomes more valuable than no-SVD.
+- `19_SEMISUP_SVDOMAIN_CONCLUSIONS.md`: semi-supervised SSL basis pre-training experiment — null result; `no_svd_lr` dominates; r=8 collapse; recommendations.
+- `SEMISUP_SVDOMAIN.md`: full results table (102 rows) for the semi-supervised label-efficiency study.
 - `BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`: current slot100 bridge result snapshot.
 
 ## Coding line
@@ -90,6 +92,8 @@
 - `16_DENSE_ANCHOR_EARLYSTOP.md`：`math / science / coding` 的 `10/20/.../100` dense-anchor EarlyStop timing 结果，包含 onset / plateau 表与 neuron-vs-legacy 对照。
 - `17_DENSE_CROSS_ANCHOR_TRANSFER.md`：`math / science` 在全 `10/20/.../100` trajectory 上的 all-to-all dense cross-anchor transfer 结果，包含 distance-decay 与 source-anchor ranking。
 - `18_SVD_FEATURE_COMPLEXITY.md`：三层 feature-count / noise-control 实验协议，用来证明 SVD 在更宽、更脏的 feature bank 上何时开始明显优于 no-SVD。
+- `19_SEMISUP_SVDOMAIN_CONCLUSIONS.md`：半监督 SSL 基向量预训练实验——零结果；`no_svd_lr` 全面占优；r=8 塌缩；改进建议。
+- `SEMISUP_SVDOMAIN.md`：半监督标注效率研究完整结果表（102 行）。
 - `BESTOFN_ES_SVD_MS_RR_R1_SLOT100_20260411.md`：当前 slot100 bridge 结果快照。
 
 ## Coding 主线
