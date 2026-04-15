@@ -1426,8 +1426,7 @@ def _build_report(
     )
 
 
-def main() -> None:
-    args = parse_args()
+def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     torch.set_num_threads(int(args.torch_threads))
 
     truth_map = _load_truth_map(args.truth_json)
@@ -1504,10 +1503,29 @@ def main() -> None:
     )
     report_md.write_text(report_text, encoding="utf-8")
 
-    print(f"[weight_spectral] wrote {oof_csv}")
-    print(f"[weight_spectral] wrote {importance_csv}")
-    print(f"[weight_spectral] wrote {feature_frame_csv}")
-    print(f"[weight_spectral] wrote {report_md}")
+    return {
+        "feature_df": feature_df,
+        "oof_df": oof_df,
+        "fit_df": fit_df,
+        "oof_merged": oof_merged,
+        "feature_importance_df": feature_importance_df,
+        "ablation_df": ablation_df,
+        "fit_payload": fit_payload,
+        "output_paths": output_paths,
+        "report_text": report_text,
+        "tie_word_embeddings": tie_word_embeddings,
+        "selected_features": list(selected_cols),
+    }
+
+
+def main() -> None:
+    args = parse_args()
+    result = run_pipeline(args)
+
+    print(f"[weight_spectral] wrote {result['output_paths']['oof_csv']}")
+    print(f"[weight_spectral] wrote {result['output_paths']['importance_csv']}")
+    print(f"[weight_spectral] wrote {result['output_paths']['feature_frame_csv']}")
+    print(f"[weight_spectral] wrote {result['output_paths']['report_md']}")
 
 
 if __name__ == "__main__":
