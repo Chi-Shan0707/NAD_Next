@@ -1,0 +1,40 @@
+{
+  "created_at_utc": "2026-04-15T00:00:00Z",
+  "artifact_type": "detailed_bestofn_submission",
+  "artifact_path": "submission/BestofN/extreme12/patches/nogithub_detailed_qwen3_lcb_from_rotation_adapter_late70100.json",
+  "method_name": "nogithub",
+  "base_submission": "submission/BestofN/extreme12/patches/0415patch.json",
+  "base_method_name": "nogithub",
+  "intermediate_bestofn_export": "submission/BestofN/extreme12/patches/es_svd_ms_rr_r1__coding_rotation_adapter_late70100__slot100_bestofn.json",
+  "replacement_source_earlystop": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rotation_adapter_late70100.json",
+  "replacement_source_method_name": "es_svd_ms_rr_r1__coding_rotation_adapter_late70100",
+  "replacement_source_cache_key": "Qwen3-4B/lcb_v5",
+  "replacement_slot_index": 9,
+  "replacement_position": 1.0,
+  "source_doc": "docs/CODING_ROTATION_ADAPTER.md",
+  "source_manifest": "results/scans/earlystop/coding_rotation_adapter_submission_manifest.json",
+  "changed_cache_keys": [
+    "Qwen3-4B/lcb_v5"
+  ],
+  "validation": {
+    "cache_keys": 12,
+    "problems": 970,
+    "samples": 62080
+  },
+  "override_delta_vs_base": {
+    "problem_count": 167,
+    "sample_count": 10688,
+    "changed_sample_count": 10688,
+    "unchanged_sample_count": 0,
+    "mean_abs_delta": 50.86077984481762,
+    "score_corr": -0.23260376523941861,
+    "old_mean": 50.5,
+    "new_mean": -0.3607798448176198,
+    "old_std": 29.028926460146117,
+    "new_std": 0.06828060514722525
+  },
+  "repro_commands": [
+    "python3 scripts/export_bestofn_from_earlystop_slot_with_bestofn_overrides.py --earlystop-json submission/EarlyStop/es_svd_ms_rr_r1__coding_rotation_adapter_late70100.json --slot-index 9 --override-bestofn-json none --override-cache-keys none --out submission/BestofN/extreme12/patches/es_svd_ms_rr_r1__coding_rotation_adapter_late70100__slot100_bestofn.json --method-name es_svd_ms_rr_r1__coding_rotation_adapter_late70100__slot100_bestofn",
+    "Load submission/BestofN/extreme12/patches/0415patch.json as the base and replace only scores[\"Qwen3-4B/lcb_v5\"] with the same key from the slot100 export."
+  ]
+}
