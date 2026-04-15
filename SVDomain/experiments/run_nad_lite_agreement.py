@@ -45,7 +45,7 @@ from sklearn.preprocessing import StandardScaler
 # Suppress the "roaring backend not available" warning (expected in this environment)
 warnings.filterwarnings("ignore", message=".*[Rr]oaring.*", category=RuntimeWarning)
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from nad.core.distance.engine import DistanceEngine, DistanceSpec

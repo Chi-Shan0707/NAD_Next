@@ -1,5 +1,42 @@
 #!/usr/bin/env python3
-"""Train split-domain EarlyStop SVD models for math/science with raw+rank only."""
+"""Train split-domain EarlyStop SVD models for math/science with raw+rank only.
+
+Purpose
+-------
+Trains the canonical r1 EarlyStop SVD family: math, science, and combined (ms) domain models.
+Each model uses a StandardScaler → TruncatedSVD → LogisticRegression pipeline with raw+rank
+feature representation and four training anchors: 10 / 40 / 70 / 100 percent.
+
+Method
+------
+- Feature family: token_plus_traj_fixed (token uncertainty + trajectory shape + availability flags)
+- Representation: raw+rank (each feature appears as both its raw value and within-group rank)
+- Anchors: 10 / 40 / 70 / 100 percent of generation length
+- Slot routing: nearby official slots map to the nearest anchor (e.g. 20/30% → 10% anchor)
+- Search grid: rank ∈ {2,4,6,8,12,16}, C ∈ {0.05,0.1,0.2,0.5,1.0}, whiten ∈ {F,T}
+- Holdout: 85/15 split by dataset+problem_id, consistent across cache roots; seed=42
+
+Data Requirements
+-----------------
+- --main-cache-root: primary labeled NAD cache (default: MUI_HUB/cache)
+- --extra-cache-root: additional labeled NAD cache (default: MUI_HUB/cache_train)
+Both must contain meta.json, base/, token_data/ as per the NAD cache layout.
+
+CLI Outputs
+-----------
+- models/ml_selectors/es_svd_math_rr_r1.pkl
+- models/ml_selectors/es_svd_science_rr_r1.pkl
+- models/ml_selectors/es_svd_ms_rr_r1.pkl  (combined noncoding bundle)
+- results/scans/earlystop/es_svd_ms_rr_r1_summary.json
+- results/scans/earlystop/es_svd_ms_rr_r1_eval.json
+- docs/ES_SVD_MS_RR_R1.md  (auto-generated results document)
+
+Integration Note
+----------------
+To adapt to a new dataset: (1) build a NAD cache with nad.cli cache-build-fast,
+(2) pass --main-cache-root pointing to your cache, (3) the domain assignment in
+DEFAULT_DOMAIN_MAP must include your dataset names mapped to "math", "science", or "coding".
+"""
 from __future__ import annotations
 
 import argparse
@@ -795,11 +832,11 @@ def _write_results_doc(path: Path, summary: dict[str, Any]) -> None:
         "",
         "## Naming",
         "",
-        "- `es_svd`：EarlyStop SVD family。",
-        "- `math` / `science` / `ms`：模型覆盖域。",
-        "- `rr`：只用 `raw+rank` 表示。",
-        "- `r1`：当前分域重训第一版。",
-        "- 名称里故意去掉 `prefix` / `p10`，但训练协议仍是四个 anchors：`10/40/70/100`。",
+        "- `es_svd`: EarlyStop SVD family.",
+        "- `math` / `science` / `ms`: covered domain(s).",
+        "- `rr`: raw+rank representation only.",
+        "- `r1`: first version of the split-domain retraining.",
+        "- `prefix` / `p10` are intentionally dropped from the name; training protocol still uses four anchors: `10/40/70/100`.",
         "",
         "## Feature Spec",
         "",
@@ -807,7 +844,7 @@ def _write_results_doc(path: Path, summary: dict[str, Any]) -> None:
         f"- `feature family`：`{summary['feature_spec']['family_name']}`。",
         f"- `included features`：`{', '.join(summary['feature_spec']['feature_names'])}`。",
         f"- `excluded features`：`{', '.join(summary['feature_spec']['excluded_feature_names'])}`。",
-        "- `row feature`：不使用任何数值 row 特征；只保留 `has_rows_bank` 作为 availability flag。",
+        "- `row feature`: no numeric row features are used; only `has_rows_bank` is retained as an availability flag.",
         "",
         "## Protocol",
         "",

@@ -1419,6 +1419,7 @@ def _build_report(
             "",
             f"- OOF CSV: `{output_paths['oof_csv']}`",
             f"- Feature importance CSV: `{output_paths['importance_csv']}`",
+            f"- Feature frame CSV: `{output_paths['feature_frame_csv']}`",
             f"- Report: `{output_paths['report_md']}`",
             "",
         ]
@@ -1477,15 +1478,18 @@ def main() -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     oof_csv = output_dir / "weight_spectral_oof.csv"
     importance_csv = output_dir / "weight_spectral_feature_importance.csv"
+    feature_frame_csv = output_dir / "weight_spectral_feature_frame.csv"
     report_md = output_dir / "weight_spectral_report.md"
     output_paths = {
         "oof_csv": oof_csv,
         "importance_csv": importance_csv,
+        "feature_frame_csv": feature_frame_csv,
         "report_md": report_md,
     }
 
     oof_merged.to_csv(oof_csv, index=False)
     feature_importance_df.to_csv(importance_csv, index=False)
+    feature_df.to_csv(feature_frame_csv, index=False)
     report_text = _build_report(
         scenario_name=str(args.scenario_name),
         feature_df=feature_df,
@@ -1502,6 +1506,7 @@ def main() -> None:
 
     print(f"[weight_spectral] wrote {oof_csv}")
     print(f"[weight_spectral] wrote {importance_csv}")
+    print(f"[weight_spectral] wrote {feature_frame_csv}")
     print(f"[weight_spectral] wrote {report_md}")
 
 

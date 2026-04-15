@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "2026-04-11T14:58:28.624786+00:00",
+  "feature_cache_path": "/home/jovyan/work/NAD_Next/results/cache/interpretability_validation/feature_store_all.pkl",
+  "tables_dir": "/home/jovyan/work/NAD_Next/results/tables",
+  "case_dir": "/home/jovyan/work/NAD_Next/results/case_studies",
+  "out_doc": "/home/jovyan/work/NAD_Next/docs/09_INTERPRETABILITY_VALIDATION.md",
+  "cache_roots": [
+    "/home/jovyan/public-ro/MUI_HUB/cache",
+    "/home/jovyan/public-ro/MUI_HUB/cache_train"
+  ],
+  "canonical_models": {
+    "es_svd_math_rr_r1": "/home/jovyan/work/NAD_Next/models/ml_selectors/es_svd_math_rr_r1.pkl",
+    "es_svd_science_rr_r1": "/home/jovyan/work/NAD_Next/models/ml_selectors/es_svd_science_rr_r1.pkl",
+    "es_svd_ms_rr_r1": "/home/jovyan/work/NAD_Next/models/ml_selectors/es_svd_ms_rr_r1.pkl"
+  },
+  "n_problem_slices": 606,
+  "n_wrong_cases": 1172,
+  "n_case_studies": 4
+}

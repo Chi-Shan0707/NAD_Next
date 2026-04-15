@@ -1,0 +1,94 @@
+{
+  "created_at_utc": "2026-04-13T02:14:25.996846+00:00",
+  "method_name": "earlystop_tree_baselines_fulltrain_v1",
+  "selection_csv": "results/tables/tree_baselines.csv",
+  "selection_rows": {
+    "math": {
+      "model_family": "lightgbm",
+      "feature_variant": "raw+rank",
+      "holdout_auc_of_auroc": 0.9606888977953644,
+      "holdout_delta_auc_of_auroc_vs_svd": -0.007911778331082142,
+      "search_cv_auroc": 0.9549731162878116,
+      "search_positions_pct": [
+        100
+      ],
+      "search_config": {
+        "colsample": 0.7,
+        "learning_rate": 0.03,
+        "max_depth": 5,
+        "min_data_in_leaf": 10,
+        "model_family": "lightgbm",
+        "n_estimators": 800,
+        "subsample": 0.7
+      }
+    },
+    "science": {
+      "model_family": "xgboost",
+      "feature_variant": "raw+rank",
+      "holdout_auc_of_auroc": 0.8435877638863643,
+      "holdout_delta_auc_of_auroc_vs_svd": 0.003761815147214742,
+      "search_cv_auroc": 0.7613226040497623,
+      "search_positions_pct": [
+        100
+      ],
+      "search_config": {
+        "colsample": 0.7,
+        "learning_rate": 0.03,
+        "max_depth": 3,
+        "min_child_weight": 1,
+        "model_family": "xgboost",
+        "n_estimators": 300,
+        "subsample": 0.7
+      }
+    },
+    "coding": {
+      "model_family": "xgboost",
+      "feature_variant": "raw",
+      "holdout_auc_of_auroc": 0.5557737254920353,
+      "holdout_delta_auc_of_auroc_vs_svd": 0.0633903655030415,
+      "search_cv_auroc": 0.5536728954837347,
+      "search_positions_pct": [
+        100
+      ],
+      "search_config": {
+        "colsample": 1.0,
+        "learning_rate": 0.03,
+        "max_depth": 3,
+        "min_child_weight": 5,
+        "model_family": "xgboost",
+        "n_estimators": 300,
+        "subsample": 1.0
+      }
+    }
+  },
+  "train_cache_state": {
+    "cache": {
+      "status": "loaded_prebuilt",
+      "paths": [
+        "results/cache/earlystop_prefix10_svd_round1c_fullcache/cache_all_49f2e9556242f50c.pkl"
+      ],
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache"
+    },
+    "cache_train": {
+      "status": "loaded_prebuilt",
+      "paths": [
+        "results/cache/earlystop_prefix10_svd_round1c_fullcache/cache_train_all_59ae9bc6f41a2ef4.pkl"
+      ],
+      "cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_train"
+    }
+  },
+  "blind_cache_root": "/home/jovyan/public-ro/MUI_HUB/cache_test",
+  "blind_feature_cache_status": "loaded_prebuilt:results/cache/export_earlystop_svd_submission_round1c_override/feature_store_all_ref030_3849580f4da8ce1c.pkl,results/cache/export_earlystop_svd_submission_strongfeat_20260410/feature_store_all_ref030_18a73b5e30f1a00d.pkl",
+  "blind_feature_cache_path": null,
+  "bundle_path": "results/models/tree_baselines_fulltrain_v1.pkl",
+  "submission_path": "submission/EarlyStop/earlystop_tree_baselines_fulltrain_v1.json",
+  "validation": {
+    "total_problems": 970,
+    "total_samples": 62080
+  },
+  "seed_values": [
+    42,
+    101,
+    202
+  ]
+}

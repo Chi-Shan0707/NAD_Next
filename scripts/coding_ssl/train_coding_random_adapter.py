@@ -81,6 +81,14 @@ from SVDomain.train_es_svd_ms_rr_r1 import (
 
 DEFAULT_SOURCE_MAIN_ROOT = REPO_ROOT / "MUI_HUB" / "cache"
 DEFAULT_TARGET_TEST_ROOT = REPO_ROOT / "MUI_HUB" / "cache_test"
+DEFAULT_SOURCE_FEATURE_STORE = REPO_ROOT / "results" / "cache" / "es_svd_ms_rr_r1" / "cache_all_547b9060debe139e.pkl"
+DEFAULT_TARGET_FEATURE_STORE = (
+    REPO_ROOT
+    / "results"
+    / "cache"
+    / "export_earlystop_svd_submission_strongfeat_20260410"
+    / "feature_store_all_ref030_18a73b5e30f1a00d.pkl"
+)
 DEFAULT_FEATURE_CACHE_DIR = REPO_ROOT / "results" / "cache" / "coding_random_adapter"
 DEFAULT_OUT_CSV = REPO_ROOT / "results" / "tables" / "coding_random_adapter.csv"
 DEFAULT_OUT_DOC = REPO_ROOT / "docs" / "CODING_RANDOM_ADAPTER.md"
@@ -186,6 +194,28 @@ def _feature_cache_path(
     return cache_dir / f"{source_name}_{suffix}_{digest}.pkl"
 
 
+def _load_serialized_feature_store(store_path: str | Path) -> list[dict[str, Any]]:
+    path = Path(store_path)
+    with path.open("rb") as handle:
+        payload = pickle.load(handle)
+    if isinstance(payload, dict) and "feature_store" in payload:
+        store = payload["feature_store"]
+    else:
+        store = payload
+    return list(store)
+
+
+def _payload_cache_key_aliases(payload: dict[str, Any]) -> set[str]:
+    aliases: set[str] = set()
+    for key in (payload.get("cache_key"), payload.get("base_cache_key")):
+        if key is None:
+            continue
+        text = str(key)
+        aliases.add(text)
+        aliases.add(text.removeprefix("cache/"))
+    return aliases
+
+
 def _load_or_build_feature_store(
     *,
     source_name: str,
@@ -198,7 +228,28 @@ def _load_or_build_feature_store(
     max_problems_per_cache: Optional[int],
     feature_workers: int,
     chunk_problems: int,
+    existing_feature_store_path: Optional[str | Path] = None,
 ) -> tuple[list[dict[str, Any]], Path, str]:
+    if (
+        existing_feature_store_path is not None
+        and not refresh_feature_cache
+        and max_problems_per_cache is None
+        and Path(existing_feature_store_path).exists()
+    ):
+        include_keys = {str(v) for v in include_cache_keys}
+        raw_store = _load_serialized_feature_store(existing_feature_store_path)
+        filtered = [
+            dict(payload)
+            for payload in raw_store
+            if _payload_cache_key_aliases(payload) & include_keys
+        ]
+        if not filtered:
+            raise ValueError(
+                f"Existing feature store {existing_feature_store_path} does not contain "
+                f"include_cache_keys={sorted(include_keys)}"
+            )
+        return filtered, Path(existing_feature_store_path), "loaded_existing"
+
     feature_cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = _feature_cache_path(
         cache_dir=feature_cache_dir,
@@ -2088,6 +2139,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Train coding random low-rank adapter SSL experiment")
     ap.add_argument("--source-main-root", default=str(DEFAULT_SOURCE_MAIN_ROOT))
     ap.add_argument("--target-test-root", default=str(DEFAULT_TARGET_TEST_ROOT))
+    ap.add_argument("--source-feature-store", default=str(DEFAULT_SOURCE_FEATURE_STORE))
+    ap.add_argument("--target-feature-store", default=str(DEFAULT_TARGET_FEATURE_STORE))
     ap.add_argument("--feature-cache-dir", default=str(DEFAULT_FEATURE_CACHE_DIR))
     ap.add_argument("--out-csv", default=str(DEFAULT_OUT_CSV))
     ap.add_argument("--out-doc", default=str(DEFAULT_OUT_DOC))
@@ -2158,6 +2211,7 @@ def main() -> None:
         max_problems_per_cache=max_problems_per_cache,
         feature_workers=int(args.feature_workers),
         chunk_problems=int(args.feature_chunk_problems),
+        existing_feature_store_path=args.source_feature_store,
     )
     target_ds_store, target_ds_cache_path, target_ds_cache_status = _load_or_build_feature_store(
         source_name="target_ds_test",
@@ -2170,6 +2224,7 @@ def main() -> None:
         max_problems_per_cache=max_problems_per_cache,
         feature_workers=int(args.feature_workers),
         chunk_problems=int(args.feature_chunk_problems),
+        existing_feature_store_path=args.target_feature_store,
     )
     target_qwen_store, target_qwen_cache_path, target_qwen_cache_status = _load_or_build_feature_store(
         source_name="target_qwen_test",
@@ -2182,6 +2237,7 @@ def main() -> None:
         max_problems_per_cache=max_problems_per_cache,
         feature_workers=int(args.feature_workers),
         chunk_problems=int(args.feature_chunk_problems),
+        existing_feature_store_path=args.target_feature_store,
     )
 
     source_store = _select_single_coding_payload(source_store, split_name="source_main")

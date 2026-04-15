@@ -1,9 +1,7 @@
 # Coding Random Adapter
 
-**Date**: 2026-04-15T07:46:28Z  
+**Date**: 2026-04-15T08:20:35Z  
 **Status**: completed
-
-> This artifact is a smoke-sized validation run. Interpret answers as provisional.
 
 ## Summary
 
@@ -25,22 +23,22 @@
 
 | Protocol | Family | Condition | Objective | Adapter Rank | Alpha | Source Holdout AUROC | Source Holdout Rank | Source Holdout Hit@1 | Source Holdout Pairwise |
 |---|---|---|---|---:|---:|---:|---:|---:|---:|
-| source_only_inductive | canonical_22 | frozen_basis_pairwise | pairwise | 0 | 1.00 | 0.4755 | 1.5000 | 50.00% | 47.55% |
-| source_only_inductive | canonical_22 | frozen_basis_pointwise | pointwise | 0 | 1.00 | 0.5141 | 2.0000 | 50.00% | 51.41% |
-| source_only_inductive | canonical_22 | random_frozen_adapter_pairwise | pairwise | 2 | 0.30 | 0.4755 | 1.5000 | 50.00% | 47.55% |
-| source_only_inductive | canonical_22 | random_frozen_adapter_pointwise | pointwise | 2 | 0.30 | 0.5146 | 2.0000 | 50.00% | 51.46% |
-| source_only_inductive | canonical_22 | trained_adapter_pairwise | pairwise | 2 | 0.30 | 0.4766 | 1.5000 | 50.00% | 47.66% |
-| source_only_inductive | canonical_22 | trained_adapter_pointwise | pointwise | 2 | 0.30 | 0.5135 | 2.0000 | 50.00% | 51.35% |
-| source_only_inductive | token_only | frozen_basis_pairwise | pairwise | 0 | 1.00 | 0.4854 | 1.0000 | 100.00% | 48.54% |
-| source_only_inductive | token_only | frozen_basis_pointwise | pointwise | 0 | 1.00 | 0.5464 | 2.0000 | 0.00% | 54.64% |
-| source_only_inductive | token_only | random_frozen_adapter_pairwise | pairwise | 2 | 0.30 | 0.4854 | 1.0000 | 100.00% | 48.54% |
-| source_only_inductive | token_only | random_frozen_adapter_pointwise | pointwise | 2 | 0.30 | 0.5458 | 2.0000 | 0.00% | 54.58% |
-| source_only_inductive | token_only | trained_adapter_pairwise | pairwise | 2 | 0.30 | 0.4854 | 1.0000 | 100.00% | 48.54% |
-| source_only_inductive | token_only | trained_adapter_pointwise | pointwise | 2 | 0.30 | 0.5458 | 2.0000 | 0.00% | 54.58% |
-| transductive_target_unlabeled | canonical_22 | trained_adapter_pairwise | pairwise | 2 | 0.30 | 0.5188 | 2.0000 | 50.00% | 51.88% |
-| transductive_target_unlabeled | canonical_22 | trained_adapter_pointwise | pointwise | 2 | 0.30 | 0.4771 | 3.5000 | 0.00% | 47.71% |
-| transductive_target_unlabeled | token_only | trained_adapter_pairwise | pairwise | 2 | 0.30 | 0.5193 | 2.0000 | 0.00% | 51.93% |
-| transductive_target_unlabeled | token_only | trained_adapter_pointwise | pointwise | 2 | 0.30 | 0.4964 | 3.0000 | 0.00% | 49.64% |
+| source_only_inductive | canonical_22 | frozen_basis_pairwise | pairwise | 0 | 1.00 | 0.4904 | 16.9400 | 42.00% | 49.41% |
+| source_only_inductive | canonical_22 | frozen_basis_pointwise | pointwise | 0 | 1.00 | 0.4057 | 18.2000 | 48.00% | 46.29% |
+| source_only_inductive | canonical_22 | random_frozen_adapter_pairwise | pairwise | 2 | 1.00 | 0.4904 | 16.9400 | 42.00% | 49.42% |
+| source_only_inductive | canonical_22 | random_frozen_adapter_pointwise | pointwise | 8 | 1.00 | 0.4057 | 18.1800 | 48.00% | 46.23% |
+| source_only_inductive | canonical_22 | trained_adapter_pairwise | pairwise | 4 | 1.00 | 0.4904 | 16.9467 | 42.00% | 49.44% |
+| source_only_inductive | canonical_22 | trained_adapter_pointwise | pointwise | 4 | 0.30 | 0.4071 | 18.2400 | 48.00% | 46.50% |
+| source_only_inductive | token_only | frozen_basis_pairwise | pairwise | 0 | 1.00 | 0.4986 | 16.0400 | 54.00% | 49.27% |
+| source_only_inductive | token_only | frozen_basis_pointwise | pointwise | 0 | 1.00 | 0.4325 | 16.2800 | 56.00% | 49.56% |
+| source_only_inductive | token_only | random_frozen_adapter_pairwise | pairwise | 4 | 0.30 | 0.4986 | 16.0400 | 54.00% | 49.28% |
+| source_only_inductive | token_only | random_frozen_adapter_pointwise | pointwise | 8 | 0.10 | 0.4325 | 16.2800 | 56.00% | 49.56% |
+| source_only_inductive | token_only | trained_adapter_pairwise | pairwise | 4 | 0.30 | 0.4985 | 16.1000 | 52.00% | 49.34% |
+| source_only_inductive | token_only | trained_adapter_pointwise | pointwise | 2 | 1.00 | 0.4338 | 16.2800 | 58.00% | 49.57% |
+| transductive_target_unlabeled | canonical_22 | trained_adapter_pairwise | pairwise | 2 | 0.10 | 0.4809 | 17.5400 | 47.33% | 47.78% |
+| transductive_target_unlabeled | canonical_22 | trained_adapter_pointwise | pointwise | 2 | 0.10 | 0.4555 | 17.8733 | 42.67% | 46.20% |
+| transductive_target_unlabeled | token_only | trained_adapter_pairwise | pairwise | 2 | 0.30 | 0.4950 | 16.6600 | 48.00% | 48.21% |
+| transductive_target_unlabeled | token_only | trained_adapter_pointwise | pointwise | 4 | 0.30 | 0.4753 | 17.4467 | 48.00% | 47.06% |
 
 ## Target Results
 
@@ -147,36 +145,36 @@
 
 | Family | Objective | Adapter Rank | Alpha | ΔAUROC | ΔRank | ΔHit@1 | ΔPairwise |
 |---|---|---:|---:|---:|---:|---:|---:|
-| canonical_22 | pairwise | 2 | 0.30 | 0.0422 | -0.5000 | 0.00% | 4.22% |
-| canonical_22 | pointwise | 2 | 0.30 | -0.0365 | -1.5000 | -50.00% | -3.65% |
-| token_only | pairwise | 2 | 0.30 | 0.0339 | -1.0000 | -100.00% | 3.39% |
-| token_only | pointwise | 2 | 0.30 | -0.0495 | -1.0000 | 0.00% | -4.95% |
+| canonical_22 | pairwise | 2 | 0.10 | -0.0096 | -0.5800 | 5.33% | -1.60% |
+| canonical_22 | pointwise | 2 | 0.10 | 0.0497 | 0.3267 | -5.33% | -0.16% |
+| token_only | pairwise | 2 | 0.30 | -0.0034 | -0.5933 | -6.00% | -1.12% |
+| token_only | pointwise | 4 | 0.30 | 0.0415 | -1.1467 | -10.00% | -2.47% |
 
 ## Unlabeled Target Effect
 
 | Family | Objective | Dataset | Adapter Rank | Alpha | Proxy Ref | Score Corr | Top1 Agree | Top1 Flip | Mean Abs Score Δ | ΔAnchor Gap | ΔCov Gap | Adapter Residual |
 |---|---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|
-| canonical_22 | pairwise | target_ds_test | 2 | 0.30 | matched_source_only_trained_adapter_pairwise | 0.8467 | 37.50% | 62.50% | 0.3118 | 0.0176 | 0.0013 | 0.0470 |
-| canonical_22 | pairwise | target_qwen_test | 2 | 0.30 | matched_source_only_trained_adapter_pairwise | 0.7930 | 37.50% | 62.50% | 0.5545 | 0.0216 | -0.0000 | 0.0470 |
-| canonical_22 | pointwise | target_ds_test | 2 | 0.30 | matched_source_only_trained_adapter_pointwise | 0.8680 | 37.50% | 62.50% | 0.1498 | -0.0951 | 0.0018 | 0.0123 |
-| canonical_22 | pointwise | target_qwen_test | 2 | 0.30 | matched_source_only_trained_adapter_pointwise | 0.9090 | 75.00% | 25.00% | 0.3387 | -0.1031 | -0.0001 | 0.0123 |
-| token_only | pairwise | target_ds_test | 2 | 0.30 | matched_source_only_trained_adapter_pairwise | 0.9000 | 25.00% | 75.00% | 0.2163 | -0.0128 | 0.0014 | 0.0245 |
-| token_only | pairwise | target_qwen_test | 2 | 0.30 | matched_source_only_trained_adapter_pairwise | 0.8726 | 37.50% | 62.50% | 0.4030 | 0.0184 | -0.0003 | 0.0245 |
-| token_only | pointwise | target_ds_test | 2 | 0.30 | matched_source_only_trained_adapter_pointwise | 0.9163 | 37.50% | 62.50% | 0.0814 | -0.0369 | 0.0040 | 0.0273 |
-| token_only | pointwise | target_qwen_test | 2 | 0.30 | matched_source_only_trained_adapter_pointwise | 0.9170 | 37.50% | 62.50% | 0.1117 | -0.0607 | -0.0007 | 0.0273 |
+| canonical_22 | pairwise | target_ds_test | 2 | 0.10 | matched_source_only_trained_adapter_pairwise | 0.8639 | 22.65% | 77.35% | 8.4660 | -0.0221 | -0.6449 | 0.5228 |
+| canonical_22 | pairwise | target_qwen_test | 2 | 0.10 | matched_source_only_trained_adapter_pairwise | 0.8898 | 21.46% | 78.54% | 7.7771 | -0.0033 | -0.6457 | 0.5228 |
+| canonical_22 | pointwise | target_ds_test | 2 | 0.10 | matched_source_only_trained_adapter_pointwise | 0.3374 | 4.69% | 95.31% | 2.0380 | -0.1285 | -0.5676 | 0.5442 |
+| canonical_22 | pointwise | target_qwen_test | 2 | 0.10 | matched_source_only_trained_adapter_pointwise | 0.2186 | 6.79% | 93.21% | 1.6750 | -0.0975 | -0.5781 | 0.5442 |
+| token_only | pairwise | target_ds_test | 2 | 0.30 | matched_source_only_trained_adapter_pairwise | -0.1816 | 0.00% | 100.00% | 10.9688 | -0.0079 | -0.5518 | 1.0331 |
+| token_only | pairwise | target_qwen_test | 2 | 0.30 | matched_source_only_trained_adapter_pairwise | -0.0855 | 0.00% | 100.00% | 10.8140 | 0.0224 | -0.7984 | 1.0331 |
+| token_only | pointwise | target_ds_test | 4 | 0.30 | matched_source_only_trained_adapter_pointwise | 0.1904 | 1.30% | 98.70% | 33.1312 | -0.1502 | -0.7503 | 1.3765 |
+| token_only | pointwise | target_qwen_test | 4 | 0.30 | matched_source_only_trained_adapter_pointwise | 0.2278 | 0.00% | 100.00% | 34.6933 | -0.3253 | -1.0415 | 1.3765 |
 
 ## Questions
 
 1. **Does a tiny low-rank adapter help DS->Qwen transfer?** unresolved locally.
    - Local target correctness labels are unavailable, so this artifact cannot prove or disprove target transfer offline.
-   - Proxy readout: Qwen proxy: mean corr=0.8729, top1 flip=53.12%, Δcov=-0.0003; DS-test proxy: mean corr=0.8828, top1 flip=65.62%, Δcov=0.0021.
-2. **Is the gain larger for pairwise ranking than for pointwise correctness?** proxy-leaning no.
-   - Proxy stability on Qwen: pairwise corr `0.8328` / flip `62.50%` vs pointwise corr `0.9130` / flip `43.75%`.
+   - Proxy readout: Qwen proxy: mean corr=0.3127, top1 flip=92.94%, Δcov=-0.7659; DS-test proxy: mean corr=0.3025, top1 flip=92.84%, Δcov=-0.6286.
+2. **Is the gain larger for pairwise ranking than for pointwise correctness?** proxy-leaning yes.
+   - Proxy stability on Qwen: pairwise corr `0.4021` / flip `89.27%` vs pointwise corr `0.2232` / flip `96.61%`.
 3. **Does token_only benefit more than canonical_22?** proxy-leaning no.
-   - Proxy stability on Qwen: token corr `0.8948` / flip `62.50%` vs canonical corr `0.8510` / flip `43.75%`.
+   - Proxy stability on Qwen: token corr `0.0712` / flip `100.00%` vs canonical corr `0.5542` / flip `85.88%`.
 4. **Is the improvement mainly in Rank / Hit@1 / Pairwise Acc rather than AUROC?** source-holdout leaning no.
-   - Source-holdout deltas: ranking-focused `-0.2310` vs pointwise AUROC `-0.0430`.
-5. **Does this support weak reusable relative signal but unstable absolute correctness?** proxy-leaning no.
+   - Source-holdout deltas: ranking-focused `-0.0085` vs pointwise AUROC `0.0456`.
+5. **Does this support weak reusable relative signal but unstable absolute correctness?** mixed.
 
 ## Interpretability
 
@@ -188,10 +186,10 @@
 
 | Family | Condition | Top Back-Projected Features |
 |---|---|---|
-| canonical_22 | trained_adapter_pairwise | `raw::tok_gini_slope` (+3.7394), `raw::traj_novelty` (-1.6386), `raw::traj_continuity` (+0.9801), `rank::traj_reflection_count` (+0.6609), `rank::traj_novelty` (-0.4637) |
-| canonical_22 | trained_adapter_pointwise | `raw::traj_novelty` (-0.9525), `raw::traj_continuity` (+0.5120), `raw::tok_gini_slope` (+0.4956), `raw::tok_gini_tail` (-0.2782), `rank::traj_novelty` (-0.2456) |
-| token_only | trained_adapter_pairwise | `raw::tok_gini_prefix` (-1.7498), `raw::tok_gini_slope` (-1.6977), `raw::tok_gini_tail` (+1.0985), `rank::tok_gini_slope` (+0.7360), `rank::tok_gini_prefix` (-0.6572) |
-| token_only | trained_adapter_pointwise | `raw::tok_gini_tail` (-0.6203), `rank::tok_gini_prefix` (-0.3993), `raw::tok_gini_prefix` (-0.3253), `rank::tok_neg_entropy_recency` (+0.2639), `rank::tok_selfcert_recency` (+0.2639) |
+| canonical_22 | trained_adapter_pairwise | `raw::tok_gini_slope` (-2.5483), `raw::traj_novelty` (+2.3883), `raw::tok_gini_prefix` (+2.0525), `raw::traj_continuity` (-1.5365), `raw::tok_logprob_prefix` (+1.1849) |
+| canonical_22 | trained_adapter_pointwise | `raw::traj_novelty` (+5.5331), `raw::traj_continuity` (-4.7497), `raw::tok_gini_slope` (-2.6228), `raw::tok_gini_prefix` (+0.9967), `rank::traj_max_reflection` (-0.7932) |
+| token_only | trained_adapter_pairwise | `raw::tok_gini_slope` (+9.3641), `raw::tok_logprob_prefix` (+7.7367), `raw::tok_logprob_recency` (+7.7136), `raw::tok_gini_prefix` (+1.6793), `rank::tok_logprob_recency` (-1.6343) |
+| token_only | trained_adapter_pointwise | `raw::tok_gini_slope` (+6.6887), `raw::tok_gini_prefix` (+3.1950), `rank::tok_gini_prefix` (+1.0074), `rank::tok_gini_slope` (-0.9588), `rank::tok_logprob_recency` (-0.8637) |
 
 ## Notes
 
