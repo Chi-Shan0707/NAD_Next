@@ -1,0 +1,222 @@
+method_name,metric_scope,domain_scope,anchor_pct,label_fraction_pct,latent_dim,auc_of_auroc,auc_of_selacc,earliest_gt_0_6,auroc_at_100,stop_acc_at_100,auroc,selacc_at_10,stop_acc,pretrain_best_loss,pretrain_best_epoch,notes
+current_svdomain_math,aggregate,math,,100,,0.958606558070535,0.9972527472527473,0.1,0.9825792266137349,0.75,,,,,,existing r1 domain bundle
+current_svdomain_science,aggregate,science,,100,,0.8013337661484379,0.9882812499999999,0.1,0.8679838287318183,0.7333333333333334,,,,,,existing r1 domain bundle
+current_svdomain_coding,aggregate,coding,,100,,0.4923833599889938,0.405625,0.2,0.4281727662009352,0.52,,,,,,existing r1 domain bundle
+current_svdomain_ms,aggregate,ms,,100,,0.9236570487545133,0.9952590811965811,0.1,0.9571135826399756,0.7462962962962963,,,,,,existing r1 ms bundle
+current_coding_pairwise_slot100,anchor,coding,100,100,,,,,,,,,,,,slot100 pairwise baseline skipped: index 30 is out of bounds for axis 1 with size 30
+neural_semisup_freeze,aggregate,math,,1,8,0.8255593526887923,0.9752747252747254,0.1,0.8427177072786399,0.7142857142857143,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,1,8,0.5631125078329109,0.7763020833333334,0.4,0.49911073326715993,0.7,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,1,8,0.48030232678120005,0.4375,,0.4710797809389359,0.44,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,1,8,0.7672378316097076,0.9310585826210827,0.1,0.7663606019427555,0.7111111111111111,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,1,8,,,,,,0.47282138831434606,0.4375,0.52,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,1,8,,,,,,0.4710797809389359,0.41875,0.44,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,5,8,0.8412546862194166,0.9802197802197803,0.1,0.7895837621988564,0.75,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,5,8,0.5671952431918612,0.8067708333333333,0.4,0.544607353378753,0.6499999999999999,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,5,8,0.49951128683523055,0.4325,,0.5189442795076598,0.44,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,5,8,0.7803525877688487,0.9416755698005699,0.1,0.7351445602388336,0.7277777777777777,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,5,8,,,,,,0.4797674938520009,0.41875,0.52,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,5,8,,,,,,0.5189442795076598,0.41875,0.44,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,10,8,0.8424483337560844,0.9670329670329672,0.1,0.911320361037206,0.7142857142857143,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,10,8,0.6281019246903985,0.825,0.2,0.5504407452378368,0.6499999999999999,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,10,8,0.5426049693655327,0.46749999999999997,,0.5379237351068337,0.52,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,10,8,0.7948157984081543,0.9354700854700854,0.1,0.8311248908595684,0.7,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,10,8,,,,,,0.5862337975014031,0.5125,0.52,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,10,8,,,,,,0.5379237351068337,0.54375,0.52,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,20,8,0.8545058300183574,0.9818681318681319,0.1,0.8242106347990641,0.7857142857142857,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,20,8,0.7118814620984077,0.9114583333333333,0.1,0.7004561102145364,0.6333333333333333,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,20,8,0.5042384845201747,0.46375,0.1,0.48679645862744453,0.56,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,20,8,0.8228115260361464,0.96622150997151,0.1,0.7967096293358358,0.7518518518518519,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,20,8,,,,,,0.4200072228241242,0.375,0.44,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,20,8,,,,,,0.48679645862744453,0.475,0.56,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,50,8,0.8434319014206485,0.9703296703296704,0.1,0.9085068003740833,0.7142857142857143,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,50,8,0.6904086779215108,0.8903645833333333,0.1,0.680714725711839,0.6833333333333333,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,50,8,0.48990336736815615,0.45687500000000003,,0.44246520302858333,0.6,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,50,8,0.8094267406430623,0.9525596509971509,0.1,0.8578863393380289,0.7074074074074075,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,50,8,,,,,,0.4644604222069011,0.4125,0.44,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,50,8,,,,,,0.44246520302858333,0.3875,0.6,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,100,8,0.8226591296565798,0.9467032967032968,0.1,0.8996428736762506,0.75,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,100,8,0.7156927236862207,0.9067708333333334,0.1,0.6986008265094374,0.6666666666666666,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,100,8,0.49161355076848035,0.46875,,0.41375056868014615,0.6,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,100,8,0.7988888172187222,0.9378294159544159,0.1,0.8549668631947367,0.7314814814814814,,,,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,100,8,,,,,,0.5188567301243358,0.50625,0.56,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,100,8,,,,,,0.41375056868014615,0.29375,0.6,76.87196856752539,16,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,1,16,0.8545085394250943,0.9741758241758243,0.1,0.9256266466397547,0.75,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,1,16,0.5577141110817068,0.7997395833333334,0.6,0.6267359669348986,0.6666666666666666,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,1,16,0.4888743494377297,0.43999999999999995,0.2,0.4653812541136485,0.52,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,1,16,0.7885542220154527,0.9354122150997151,0.1,0.8592064955942311,0.7314814814814815,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,1,16,,,,,,0.45295393182717125,0.375,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,1,16,,,,,,0.4653812541136485,0.375,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,5,16,0.8542536194748013,0.9752747252747254,0.1,0.8166153394681742,0.75,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,5,16,0.5853591847141182,0.8182291666666666,0.4,0.5591499795259569,0.7166666666666666,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,5,16,0.5003270594819891,0.39375,,0.5273349498701612,0.52,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,5,16,0.7944993006390939,0.9403757122507123,0.1,0.7594008150365705,0.7425925925925926,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,5,16,,,,,,0.45767534499928864,0.3875,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,5,16,,,,,,0.5273349498701612,0.49375,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,10,16,0.8860702223608863,0.9697802197802199,0.1,0.9410091133322036,0.7857142857142857,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,10,16,0.592648655899338,0.8338541666666666,0.1,0.5546253913836826,0.75,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,10,16,0.5490892519061534,0.46312499999999995,,0.5576989520651493,0.6,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,10,16,0.8208654298138754,0.9395744301994302,0.1,0.8551460640103101,0.7777777777777778,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,10,16,,,,,,0.5579725438880369,0.50625,0.68,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,10,16,,,,,,0.5576989520651493,0.58125,0.6,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,20,16,0.8598160720302203,0.9780219780219781,0.1,0.8763109550210894,0.75,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,20,16,0.6693124643150917,0.9013020833333333,0.1,0.6537728749188096,0.75,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,20,16,0.5640858359168218,0.54375,0.2,0.5242347636713834,0.44,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,20,16,0.817481936982414,0.9609731125356125,0.1,0.8268580483316939,0.75,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,20,16,,,,,,0.4638866610697597,0.45625,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,20,16,,,,,,0.5242347636713834,0.5375,0.44,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,50,16,0.8935872844862341,0.9774725274725276,0.1,0.9440071242891348,0.7857142857142857,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,50,16,0.6558666040259287,0.8825520833333333,0.1,0.6525196075234587,0.7,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,50,16,0.47203844668633393,0.426875,,0.4092136345657472,0.52,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,50,16,0.8407604666061662,0.9563790954415955,0.1,0.879232120563429,0.7666666666666667,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,50,16,,,,,,0.4237968604165787,0.3125,0.6,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,50,16,,,,,,0.4092136345657472,0.275,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,100,16,0.8555861570625173,0.9565934065934067,0.1,0.9471214438652045,0.7857142857142857,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,100,16,0.6675143972852065,0.8997395833333334,0.1,0.6653185588135515,0.7,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,100,16,0.4933182623323469,0.44875,,0.39094864446977123,0.52,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,100,16,0.8137924326675594,0.9439592236467236,0.1,0.8844985805203928,0.7666666666666667,,,,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,100,16,,,,,,0.48800026264815,0.4,0.6,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,100,16,,,,,,0.39094864446977123,0.26875,0.52,74.76680682672702,14,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,1,24,0.8084719106242567,0.9587912087912089,0.1,0.8504390918843956,0.75,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,1,24,0.5486554665429152,0.7937500000000001,1.0,0.6430215891434139,0.6833333333333333,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,1,24,0.4937692979946501,0.45499999999999996,0.2,0.46901299013975073,0.44,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,1,24,0.7507349230506253,0.9221153846153847,0.1,0.8043463134975108,0.7351851851851853,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,1,24,,,,,,0.4665631707885229,0.375,0.48,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,1,24,,,,,,0.46901299013975073,0.425,0.44,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,5,24,0.8270788347734349,0.9692307692307693,0.1,0.7736639802031434,0.6785714285714286,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,5,24,0.5816908782294536,0.8471354166666667,0.2,0.5136190485604806,0.7333333333333334,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,5,24,0.47269772481040084,0.378125,,0.5412912596011188,0.6,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,5,24,0.7725481777636614,0.9420984686609687,0.1,0.7158762176158849,0.6907407407407408,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,5,24,,,,,,0.4656704797549868,0.34375,0.48,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,5,24,,,,,,0.5412912596011188,0.55625,0.6,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,10,24,0.7982311802900641,0.9027472527472528,0.1,0.9152073177157715,0.7142857142857143,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,10,24,0.598393537845882,0.8239583333333333,0.4,0.5033734065379223,0.7166666666666667,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,10,24,0.5425702622885721,0.53,,0.5034152076405598,0.56,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,10,24,0.7538228153024681,0.8852386039886041,0.1,0.8236886707873606,0.7148148148148148,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,10,24,,,,,,0.5986876972792465,0.6125,0.6,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,10,24,,,,,,0.5034152076405598,0.49375,0.56,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,20,24,0.7994175007655784,0.9230769230769231,0.1,0.8367543683989649,0.7857142857142857,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,20,24,0.64921162588314,0.88046875,0.1,0.6689243229421937,0.7,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,20,24,0.5560359827965462,0.544375,0.4,0.5379362421615943,0.48,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,20,24,0.7660384174583699,0.9136084401709402,0.1,0.7994588027419047,0.7666666666666667,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,20,24,,,,,,0.5006777260298387,0.46875,0.48,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,20,24,,,,,,0.5379362421615943,0.575,0.48,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,50,24,0.8078335849733106,0.9087912087912089,0.1,0.9056583760461391,0.75,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,50,24,0.616750165652413,0.8520833333333333,0.1,0.6698660546012185,0.6666666666666666,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,50,24,0.5339285128017522,0.5237499999999999,0.3,0.47888730987322536,0.56,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,50,24,0.765370602902,0.8961894586894587,0.1,0.8532600823917122,0.7314814814814814,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,50,24,,,,,,0.5393698633135253,0.525,0.52,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,50,24,,,,,,0.47888730987322536,0.44375,0.56,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,math,,100,24,0.7937097996997521,0.8934065934065936,0.1,0.8997933258492864,0.7857142857142857,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,science,,100,24,0.6311373202090804,0.87578125,0.1,0.6776992098045541,0.7333333333333333,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,coding,,100,24,0.5236622532397182,0.458125,0.3,0.4936456344907049,0.52,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,aggregate,ms,,100,24,0.7575825820351584,0.8894898504273504,0.1,0.8504390778393459,0.7740740740740741,,,,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,70,100,24,,,,,,0.5218271556299725,0.41875,0.52,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+neural_semisup_freeze,anchor,coding,100,100,24,,,,,,0.4936456344907049,0.39375,0.52,73.251276031021,15,self-supervised neural bottleneck + frozen linear heads
+no_svd_logreg,aggregate,math,,1,,0.75271756303063,0.9516483516483517,0.1,0.7246292733458903,0.7857142857142857,,,,,,no svd logreg
+no_svd_logreg,aggregate,science,,1,,0.450069176509033,0.7036458333333333,,0.291243809322997,0.6833333333333333,,,,,,no svd logreg
+no_svd_logreg,aggregate,coding,,1,,0.46622329157540426,0.29500000000000004,,0.5036481515354755,0.56,,,,,,no svd logreg
+no_svd_logreg,aggregate,ms,,1,,0.6854623660258308,0.8965366809116809,0.2,0.6283213924519141,0.7629629629629631,,,,,,no svd logreg
+no_svd_logreg,anchor,coding,70,1,,,,,,,0.4738907414963753,0.18125,0.48,,,no svd logreg
+no_svd_logreg,anchor,coding,100,1,,,,,,,0.5036481515354755,0.31875,0.56,,,no svd logreg
+no_svd_logreg,aggregate,math,,5,,0.9311066773736819,0.9972527472527473,0.1,0.9470190513692696,0.75,,,,,,no svd logreg
+no_svd_logreg,aggregate,science,,5,,0.7679724464547981,0.9778645833333333,0.1,0.7742176655287913,0.7166666666666666,,,,,,no svd logreg
+no_svd_logreg,aggregate,coding,,5,,0.4140990464934127,0.471875,,0.4936284372904091,0.64,,,,,,no svd logreg
+no_svd_logreg,aggregate,ms,,5,,0.8948546260583744,0.9929442663817665,0.1,0.9086187434047189,0.7425925925925926,,,,,,no svd logreg
+no_svd_logreg,anchor,coding,70,5,,,,,,,0.41125228449172113,0.4875,0.44,,,no svd logreg
+no_svd_logreg,anchor,coding,100,5,,,,,,,0.4936284372904091,0.475,0.64,,,no svd logreg
+no_svd_logreg,aggregate,math,,10,,0.9389958514363175,0.9972527472527473,0.1,0.9744183089292396,0.7857142857142857,,,,,,no svd logreg
+no_svd_logreg,aggregate,science,,10,,0.8035719535129998,0.9828124999999999,0.1,0.8252235615272714,0.7333333333333334,,,,,,no svd logreg
+no_svd_logreg,aggregate,coding,,10,,0.5805296425014734,0.5606249999999999,0.1,0.5346969149786052,0.56,,,,,,no svd logreg
+no_svd_logreg,aggregate,ms,,10,,0.9089016518978023,0.9940438034188035,0.1,0.9412639206176912,0.7740740740740741,,,,,,no svd logreg
+no_svd_logreg,anchor,coding,70,10,,,,,,,0.5345139993027317,0.48125,0.52,,,no svd logreg
+no_svd_logreg,anchor,coding,100,10,,,,,,,0.5346969149786052,0.50625,0.56,,,no svd logreg
+no_svd_logreg,aggregate,math,,20,,0.9556864367112136,0.9978021978021978,0.1,0.9786283194940193,0.75,,,,,,no svd logreg
+no_svd_logreg,aggregate,science,,20,,0.8056205570354923,0.98515625,0.1,0.8498642074779565,0.7166666666666667,,,,,,no svd logreg
+no_svd_logreg,aggregate,coding,,20,,0.6030933073186595,0.544375,0.2,0.6046097877083793,0.64,,,,,,no svd logreg
+no_svd_logreg,aggregate,ms,,20,,0.9223384634499422,0.994991987179487,0.1,0.9500140723793385,0.7425925925925926,,,,,,no svd logreg
+no_svd_logreg,anchor,coding,70,20,,,,,,,0.6464787169012521,0.5875,0.64,,,no svd logreg
+no_svd_logreg,anchor,coding,100,20,,,,,,,0.6046097877083793,0.60625,0.64,,,no svd logreg
+no_svd_logreg,aggregate,math,,50,,0.9583307329395883,0.9978021978021978,0.1,0.9833979212610616,0.7142857142857143,,,,,,no svd logreg
+no_svd_logreg,aggregate,science,,50,,0.8154611204121114,0.9755208333333334,0.1,0.8753018102674429,0.6833333333333333,,,,,,no svd logreg
+no_svd_logreg,aggregate,coding,,50,,0.473287119765993,0.4125,,0.5645387476373391,0.56,,,,,,no svd logreg
+no_svd_logreg,aggregate,ms,,50,,0.9265819301557046,0.9928507834757833,0.1,0.9593765632624797,0.7074074074074075,,,,,,no svd logreg
+no_svd_logreg,anchor,coding,70,50,,,,,,,0.5401624979089767,0.59375,0.6,,,no svd logreg
+no_svd_logreg,anchor,coding,100,50,,,,,,,0.5645387476373391,0.6,0.56,,,no svd logreg
+no_svd_logreg,aggregate,math,,100,,0.9592605454377112,0.9972527472527473,0.1,0.9837038438187558,0.75,,,,,,no svd logreg
+no_svd_logreg,aggregate,science,,100,,0.8339160866567108,0.984375,0.1,0.8772970115715883,0.7333333333333334,,,,,,no svd logreg
+no_svd_logreg,aggregate,coding,,100,,0.48251716984111354,0.4756250000000001,,0.538646017519257,0.6,,,,,,no svd logreg
+no_svd_logreg,aggregate,ms,,100,,0.9314062212641555,0.9943910256410255,0.1,0.9600578810971631,0.7462962962962963,,,,,,no svd logreg
+no_svd_logreg,anchor,coding,70,100,,,,,,,0.5270910623023299,0.6625,0.56,,,no svd logreg
+no_svd_logreg,anchor,coding,100,100,,,,,,,0.538646017519257,0.5875,0.6,,,no svd logreg
+frozen_svd_linear_head,aggregate,math,,1,,0.770457048105471,0.9434065934065934,0.1,0.7853213924983127,0.75,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,science,,1,,0.4576502039944387,0.6544270833333333,,0.3842101484977402,0.7,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,coding,,1,,0.46863230666047573,0.371875,,0.5040593209607294,0.48,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,ms,,1,,0.7009444160807972,0.8791889245014245,0.1,0.6961855604981854,0.7388888888888889,,,,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,70,1,,,,,,,0.4755682502161375,0.3125,0.48,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,100,1,,,,,,,0.5040593209607294,0.3375,0.48,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,math,,5,,0.8832181936693227,0.9862637362637363,0.1,0.8728202591686489,0.75,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,science,,5,,0.7248815192694826,0.9468750000000001,0.1,0.7803371120230848,0.6666666666666666,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,coding,,5,,0.45801600590332975,0.43374999999999997,,0.4681265526335949,0.56,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,ms,,5,,0.8480322660249138,0.9775106837606837,0.1,0.8522684486918569,0.7314814814814815,,,,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,70,5,,,,,,,0.4411472721331876,0.3,0.56,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,100,5,,,,,,,0.4681265526335949,0.55,0.56,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,math,,10,,0.9386020703958547,0.9978021978021978,0.1,0.9738253353672451,0.7142857142857143,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,science,,10,,0.725172683876627,0.9239583333333334,0.1,0.8173936122614721,0.7666666666666666,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,coding,,10,,0.5229626398640483,0.480625,,0.5243488905460737,0.52,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,ms,,10,,0.8911733178360264,0.9813924501424501,0.1,0.939062730232629,0.7259259259259259,,,,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,70,10,,,,,,,0.5294502055065435,0.51875,0.52,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,100,10,,,,,,,0.5243488905460737,0.60625,0.52,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,math,,20,,0.9548363251307901,0.9972527472527473,0.1,0.9764670710675404,0.7857142857142857,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,science,,20,,0.8021818345238421,0.9815104166666666,0.1,0.8554027627585004,0.7166666666666666,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,coding,,20,,0.5074312229241806,0.48,,0.5373046358961852,0.48,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,ms,,20,,0.9209131049959127,0.9937544515669516,0.1,0.9495638914433092,0.7703703703703704,,,,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,70,20,,,,,,,0.47218978204893697,0.3875,0.52,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,100,20,,,,,,,0.5373046358961852,0.58125,0.48,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,math,,50,,0.957986399528142,0.9967032967032967,0.1,0.9816965344850365,0.75,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,science,,50,,0.7741854848571194,0.9809895833333333,0.1,0.852216593557658,0.7666666666666666,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,coding,,50,,0.465283386410147,0.36,,0.46103505258434835,0.48,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,ms,,50,,0.9171417518234704,0.9932113603988605,0.1,0.9529232142789523,0.7537037037037037,,,,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,70,50,,,,,,,0.49517149517149517,0.2375,0.52,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,100,50,,,,,,,0.46103505258434835,0.39375,0.48,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,math,,100,,0.9581699445995856,0.9972527472527473,0.1,0.9818899408858349,0.75,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,science,,100,,0.7992067736598427,0.9874999999999999,0.1,0.8592835208069556,0.7333333333333334,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,coding,,100,,0.4663328846427438,0.3725,,0.47410179804546004,0.52,,,,,,frozen svd linear head
+frozen_svd_linear_head,aggregate,ms,,100,,0.922844795501865,0.9950854700854701,0.1,0.9546440697571951,0.7462962962962963,,,,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,70,100,,,,,,,0.4972726803712719,0.39375,0.56,,,frozen svd linear head
+frozen_svd_linear_head,anchor,coding,100,100,,,,,,,0.47410179804546004,0.40625,0.52,,,frozen svd linear head
+shallow_mlp_no_ssl,aggregate,math,,1,,0.7443730823550393,0.9351648351648352,0.1,0.7521752791632006,0.7142857142857143,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,science,,1,,0.5860429482444294,0.8091145833333334,0.1,0.4760105877671722,0.7333333333333334,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,coding,,1,,0.5232032443300049,0.561875,,0.5523428058639326,0.44,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,ms,,1,,0.709188608108237,0.9071536680911679,0.1,0.690805347741861,0.7185185185185186,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,70,1,,,,,,,0.5298441777315017,0.59375,0.48,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,100,1,,,,,,,0.5523428058639326,0.60625,0.44,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,math,,5,,0.8682740560440662,0.9906593406593407,0.1,0.8323101740854878,0.7857142857142857,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,science,,5,,0.7414239390800413,0.98515625,0.1,0.7598266219472339,0.75,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,coding,,5,,0.46142277128192627,0.395625,,0.4730136842812899,0.52,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,ms,,5,,0.8400851411631718,0.9894364316239316,0.1,0.8162027180547646,0.7777777777777778,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,70,5,,,,,,,0.4863977962569512,0.41875,0.52,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,100,5,,,,,,,0.4730136842812899,0.375,0.52,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,math,,10,,0.9375679441020869,0.9956043956043956,0.1,0.96494196188278,0.7142857142857143,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,science,,10,,0.7774523515979236,0.9638020833333333,0.1,0.8282746916395316,0.7333333333333334,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,coding,,10,,0.5562617351349746,0.4375,0.1,0.537582917864608,0.56,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,ms,,10,,0.901986701323384,0.9885372150997151,0.1,0.9345714573842804,0.7185185185185186,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,70,10,,,,,,,0.5481748298649707,0.3625,0.56,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,100,10,,,,,,,0.537582917864608,0.375,0.56,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,math,,20,,0.939879035693875,0.9972527472527473,0.1,0.9677192717681271,0.7857142857142857,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,science,,20,,0.8195129684351459,0.9848958333333333,0.1,0.8479491261826468,0.7333333333333334,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,coding,,20,,0.5967514488641249,0.6693749999999999,0.1,0.6011093757572631,0.6,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,ms,,20,,0.913131020747491,0.9945067663817664,0.1,0.9411036838602426,0.7740740740740741,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,70,20,,,,,,,0.5877643483277286,0.75625,0.56,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,100,20,,,,,,,0.6011093757572631,0.5,0.6,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,math,,50,,0.9556701412710289,0.9978021978021978,0.1,0.9756267901562513,0.75,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,science,,50,,0.7975154034228933,0.97734375,0.1,0.8490311598705635,0.6499999999999999,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,coding,,50,,0.5055224900295323,0.4756250000000001,,0.5139805421495562,0.6,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,ms,,50,,0.9205246439714432,0.9932558760683761,0.1,0.9474944278705428,0.7277777777777777,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,70,50,,,,,,,0.5254338775465536,0.46875,0.6,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,100,50,,,,,,,0.5139805421495562,0.51875,0.6,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,math,,100,,0.9590203993170349,0.9983516483516484,0.1,0.979251175201515,0.75,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,science,,100,,0.802617039991959,0.9684895833333333,0.1,0.8754124625961599,0.7,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,coding,,100,,0.5624991596822583,0.56125,0.8,0.5304992347245868,0.6,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,aggregate,ms,,100,,0.9242640972447957,0.9917156339031339,0.1,0.9561759057336582,0.7388888888888889,,,,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,70,100,,,,,,,0.5967412868821319,0.65625,0.64,,,shallow mlp no ssl
+shallow_mlp_no_ssl,anchor,coding,100,100,,,,,,,0.5304992347245868,0.54375,0.6,,,shallow mlp no ssl

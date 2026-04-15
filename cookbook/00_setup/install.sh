@@ -50,6 +50,7 @@ install_if_missing "transformers" "transformers"
 echo -e "${BLUE}[4/4] Utility packages${NC}"
 install_if_missing "psutil" "psutil>=5.8.0"
 install_if_missing "tqdm"   "tqdm>=4.50.0"
+install_if_missing "torch"  "torch>=2.5.0"
 echo ""
 
 echo -e "${GREEN}All packages installed. Run verify.sh to confirm.${NC}"

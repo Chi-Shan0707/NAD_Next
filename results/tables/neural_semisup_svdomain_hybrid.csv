@@ -1,0 +1,42 @@
+method_name,metric_scope,domain_scope,anchor_pct,label_fraction_pct,latent_dim,auc_of_auroc,auc_of_selacc,earliest_gt_0_6,auroc_at_100,stop_acc_at_100,auroc,selacc_at_10,stop_acc,pretrain_best_loss,pretrain_best_epoch,notes
+current_svdomain_math,aggregate,math,,100,,0.958606558070535,0.9972527472527473,0.1,0.9825792266137349,0.75,,,,,,existing r1 domain bundle
+current_svdomain_science,aggregate,science,,100,,0.8013337661484379,0.9882812499999999,0.1,0.8679838287318183,0.7333333333333334,,,,,,existing r1 domain bundle
+current_svdomain_coding,aggregate,coding,,100,,0.4923833599889938,0.405625,0.2,0.4281727662009352,0.52,,,,,,existing r1 domain bundle
+current_svdomain_ms,aggregate,ms,,100,,0.9236570487545133,0.9952590811965811,0.1,0.9571135826399756,0.7462962962962963,,,,,,existing r1 ms bundle
+current_coding_pairwise_slot100,anchor,coding,100,100,,,,,,,,,,,,slot100 pairwise baseline skipped: index 30 is out of bounds for axis 1 with size 30
+neural_semisup_coding_hybrid,aggregate,math,,1,24,0.8084719106242567,0.9587912087912089,0.1,0.8504390918843956,0.75,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,science,,1,24,0.5486554665429152,0.7937500000000001,1.0,0.6430215891434139,0.6833333333333333,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,coding,,1,24,0.4937692979946501,0.45499999999999996,0.2,0.46901299013975073,0.44,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,ms,,1,24,0.7507349230506253,0.9221153846153847,0.1,0.8043463134975108,0.7351851851851853,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,70,1,24,,,,,,0.4665631707885229,0.375,0.48,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,100,1,24,,,,,,0.46901299013975073,0.425,0.44,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,math,,5,24,0.8270788347734349,0.9692307692307693,0.1,0.7736639802031434,0.6785714285714286,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,science,,5,24,0.5816908782294536,0.8471354166666667,0.2,0.5136190485604806,0.7333333333333334,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,coding,,5,24,0.471887111323731,0.356875,,0.4896887150408277,0.64,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,ms,,5,24,0.7725481777636614,0.9420984686609687,0.1,0.7158762176158849,0.6907407407407408,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,70,5,24,,,,,,0.485047034342809,0.38125,0.52,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,100,5,24,,,,,,0.4896887150408277,0.36875,0.64,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,math,,10,24,0.7982311802900641,0.9027472527472528,0.1,0.9152073177157715,0.7142857142857143,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,science,,10,24,0.598393537845882,0.8239583333333333,0.4,0.5033734065379223,0.7166666666666667,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,coding,,10,24,0.5265621702241421,0.48250000000000004,,0.545681235822081,0.64,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,ms,,10,24,0.7538228153024681,0.8852386039886041,0.1,0.8236886707873606,0.7148148148148148,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,70,10,24,,,,,,0.5403203994753291,0.54375,0.52,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,100,10,24,,,,,,0.545681235822081,0.55625,0.64,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,math,,20,24,0.7994175007655784,0.9230769230769231,0.1,0.8367543683989649,0.7857142857142857,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,science,,20,24,0.64921162588314,0.88046875,0.1,0.6689243229421937,0.7,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,coding,,20,24,0.5931245593217425,0.60375,0.2,0.5902829564801396,0.6,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,ms,,20,24,0.7660384174583699,0.9136084401709402,0.1,0.7994588027419047,0.7666666666666667,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,70,20,24,,,,,,0.6022709684681515,0.65,0.56,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,100,20,24,,,,,,0.5902829564801396,0.58125,0.6,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,math,,50,24,0.8078335849733106,0.9087912087912089,0.1,0.9056583760461391,0.75,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,science,,50,24,0.616750165652413,0.8520833333333333,0.1,0.6698660546012185,0.6666666666666666,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,coding,,50,24,0.5411755693445834,0.53125,0.3,0.47888730987322536,0.56,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,ms,,50,24,0.765370602902,0.8961894586894587,0.1,0.8532600823917122,0.7314814814814814,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,70,50,24,,,,,,0.5393698633135253,0.525,0.52,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,100,50,24,,,,,,0.47888730987322536,0.44375,0.56,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,math,,100,24,0.7937097996997521,0.8934065934065936,0.1,0.8997933258492864,0.7857142857142857,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,science,,100,24,0.6311373202090804,0.87578125,0.1,0.6776992098045541,0.7333333333333333,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,coding,,100,24,0.4741719938903038,0.42750000000000005,,0.47796647796647795,0.52,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,aggregate,ms,,100,24,0.7575825820351584,0.8894898504273504,0.1,0.8504390778393459,0.7740740740740741,,,,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,70,100,24,,,,,,0.5284199368706411,0.4625,0.64,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter
+neural_semisup_coding_hybrid,anchor,coding,100,100,24,,,,,,0.47796647796647795,0.425,0.52,73.251276031021,15,self-supervised neural bottleneck + coding low-rank latent adapter

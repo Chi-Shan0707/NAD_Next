@@ -65,6 +65,7 @@ check_pkg "transformers" "transformers [token decoding]"
 # Utilities
 check_pkg "psutil"    "psutil    [profiling]"
 check_pkg "tqdm"      "tqdm      [progress bars]"
+check_pkg "torch"     "torch     [neural semisup]"
 
 echo ""
 
