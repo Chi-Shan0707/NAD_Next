@@ -11,6 +11,7 @@
 - `ES_SVD_MS_RR_R2_REPORT.md`: 10-anchor `r2` EarlyStop SVD training report.
 - `ES_SVD_CODING_RR_R1.md`: coding-only EarlyStop SVD report and negative-result context.
 - `ES_SVD_MATH_RL_CHECKPOINT_RANKING.md`: RL checkpoint ranking export based on SVD models.
+- `20_WEIGHT_SPECTRAL_CHECKPOINT_FALLBACK_20260415.md`: weight-only fallback / parallel branch for checkpoint ranking when only model weights are available.
 - `SVD_PERF_PLAN_20260411.md`: coding `slot100` SVDomain plan.
 - `SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`: coding `slot100` SVDomain implementation and smoke results.
 - `SVD_INTERPRETABILITY_R1_20260411.md`: explainability/viewer integration notes.
@@ -82,6 +83,7 @@
 - `ES_SVD_MS_RR_R2_REPORT.md`：10-anchor `r2` EarlyStop SVD 训练报告。
 - `ES_SVD_CODING_RR_R1.md`：coding-only EarlyStop SVD 结果与负结果语境。
 - `ES_SVD_MATH_RL_CHECKPOINT_RANKING.md`：基于 SVD 模型导出的 RL checkpoint ranking 结果。
+- `20_WEIGHT_SPECTRAL_CHECKPOINT_FALLBACK_20260415.md`：checkpoint-ranking 的权重侧 fallback / parallel branch，在只能访问模型权重时提供 ranking。
 - `SVD_PERF_PLAN_20260411.md`：coding `slot100` SVDomain 实验计划。
 - `SVD_SLOT100_DOMAIN_R1_RESULTS_20260411.md`：coding `slot100` SVDomain 实现与 smoke 结果。
 - `SVD_INTERPRETABILITY_R1_20260411.md`：解释性与 viewer 接入说明。
