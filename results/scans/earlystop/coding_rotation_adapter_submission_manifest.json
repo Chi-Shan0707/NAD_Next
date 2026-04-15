@@ -1,0 +1,118 @@
+{
+  "created_at_utc": "2026-04-15T07:12:35.172109+00:00",
+  "base_submission": "submission/EarlyStop/es_svd_ms_rr_r1__coding_from_round1c.json",
+  "results_csv": "results/tables/coding_rotation_adapter.csv",
+  "source_feature_store": "results/cache/earlystop_prefix10_svd_round1c_fullcache/cache_all_49f2e9556242f50c.pkl",
+  "blind_feature_store": "results/cache/export_earlystop_svd_submission_strongfeat_20260410/feature_store_all_ref030_18a73b5e30f1a00d.pkl",
+  "method_name": "es_svd_ms_rr_r1__coding_rotation_adapter_late70100",
+  "out_submission": "submission/EarlyStop/es_svd_ms_rr_r1__coding_rotation_adapter_late70100.json",
+  "patch_cache_keys": [
+    "DS-R1/lcb_v5",
+    "Qwen3-4B/lcb_v5"
+  ],
+  "train_target_pool": [
+    "Qwen3-4B/lcb_v5"
+  ],
+  "late_slot_policy": {
+    "6": 70,
+    "7": 70,
+    "8": 70,
+    "9": 100
+  },
+  "selected_rows": {
+    "70": {
+      "seed": 42,
+      "bundle": "canonical_22",
+      "anchor_pct": 70,
+      "target_pool": "Qwen3-4B/lcb_v5",
+      "method": "learned_rotation",
+      "head": "pointwise",
+      "rank": 16,
+      "c_value": 0.5,
+      "class_weight": "balanced",
+      "source_val_pairwise": 0.5323387502251685,
+      "source_val_hit1": 0.64,
+      "source_val_auroc": 0.5870547004624351,
+      "source_val_selacc10": 0.5942857142857143,
+      "rotation_norm": 2.5505546268970045,
+      "orth_error": 1.543548445237036e-15,
+      "alignment_gap": 305.1374937474317,
+      "target_label_status": "unlabeled_proxy_only",
+      "target_score_mean": -11.236452478341706,
+      "target_score_std": 0.2677768617302038,
+      "target_score_corr_vs_no_rotation": 0.9528303686248117,
+      "target_top1_agreement_vs_no_rotation": 0.3592814371257485,
+      "target_top1_flip_rate_vs_no_rotation": 0.6407185628742516,
+      "target_mean_abs_score_delta_vs_no_rotation": 1.0766936126610644,
+      "alignment_gap_before": 306.2981446460649,
+      "alignment_gap_after": 305.1374937474317,
+      "alignment_gap_delta": -1.1606508986332074,
+      "fit__matched_to_learned_norm": null,
+      "fit__align_weight": 0.1,
+      "fit__best_step": 20,
+      "fit__eval_every": 10,
+      "fit__identity_weight": 1.0,
+      "fit__lr": 0.05,
+      "fit__steps": 80
+    },
+    "100": {
+      "seed": 42,
+      "bundle": "canonical_22",
+      "anchor_pct": 100,
+      "target_pool": "Qwen3-4B/lcb_v5",
+      "method": "learned_rotation",
+      "head": "pointwise",
+      "rank": 4,
+      "c_value": 1.0,
+      "class_weight": "balanced",
+      "source_val_pairwise": 0.5381344651797152,
+      "source_val_hit1": 0.6,
+      "source_val_auroc": 0.46796334319717386,
+      "source_val_selacc10": 0.5942857142857143,
+      "rotation_norm": 0.0,
+      "orth_error": 0.0,
+      "alignment_gap": 874.9507727469874,
+      "target_label_status": "unlabeled_proxy_only",
+      "target_score_mean": -1.364244731808736,
+      "target_score_std": 0.02604809465917232,
+      "target_score_corr_vs_no_rotation": 1.0,
+      "target_top1_agreement_vs_no_rotation": 1.0,
+      "target_top1_flip_rate_vs_no_rotation": 0.0,
+      "target_mean_abs_score_delta_vs_no_rotation": 0.0,
+      "alignment_gap_before": 874.9507727469874,
+      "alignment_gap_after": 874.9507727469874,
+      "alignment_gap_delta": 0.0,
+      "fit__matched_to_learned_norm": null,
+      "fit__align_weight": 0.05,
+      "fit__best_step": 0,
+      "fit__eval_every": 10,
+      "fit__identity_weight": 0.1,
+      "fit__lr": 0.05,
+      "fit__steps": 80
+    }
+  },
+  "refit_rotation_norms": {
+    "70": 2.5473010898403863,
+    "100": 0.0
+  },
+  "late_delta_summary": {
+    "DS-R1/lcb_v5": {
+      "late_slot_count": 42752,
+      "mean_abs_delta": 7.210845684159744,
+      "score_corr": 0.18068159898884814,
+      "new_mean": -6.463556321382183,
+      "new_std": 3.5535460453111902
+    },
+    "Qwen3-4B/lcb_v5": {
+      "late_slot_count": 42752,
+      "mean_abs_delta": 7.317805712553782,
+      "score_corr": 0.17639556826213265,
+      "new_mean": -6.495457883213555,
+      "new_std": 3.5437785064575
+    }
+  },
+  "validation": {
+    "total_problems": 970,
+    "total_samples": 62080
+  }
+}
