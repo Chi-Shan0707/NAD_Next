@@ -1,0 +1,39 @@
+{
+  "generated_at_utc": "2026-04-16 05:48:58 UTC",
+  "method_name": "earlystop_ssl_round1_shared_ms_experimental",
+  "submission_path": "/home/jovyan/work/NAD_Next/submission/EarlyStop/earlystop_ssl_round1_shared_ms_experimental.json",
+  "model_path": "/home/jovyan/work/NAD_Next/models/ml_selectors/earlystop_ssl/earlystop_ssl_round1_shared_ms.pkl",
+  "base_submission": "/home/jovyan/work/NAD_Next/submission/EarlyStop/es_svd_ms_rr_r1__coding_from_round1c.json",
+  "feature_cache_status": "prebuilt",
+  "feature_cache_path": "/home/jovyan/work/NAD_Next/results/cache/export_earlystop_svd_submission_round1c_override/feature_store_all_ref030_3849580f4da8ce1c.pkl",
+  "target_domains": [
+    "math",
+    "science"
+  ],
+  "target_cache_keys": [
+    "DS-R1/aime24",
+    "DS-R1/aime25",
+    "DS-R1/brumo25",
+    "DS-R1/gpqa",
+    "DS-R1/hmmt25",
+    "Qwen3-4B/aime24",
+    "Qwen3-4B/aime25",
+    "Qwen3-4B/brumo25",
+    "Qwen3-4B/gpqa",
+    "Qwen3-4B/hmmt25"
+  ],
+  "validation": {
+    "total_problems": 970,
+    "total_samples": 62080
+  },
+  "domain_specs": {
+    "math": {
+      "config_name": "denoise_full",
+      "rank": 16
+    },
+    "science": {
+      "config_name": "tokenpair_rrr",
+      "rank": 16
+    }
+  }
+}
