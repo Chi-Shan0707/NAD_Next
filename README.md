@@ -15,6 +15,31 @@
 - 脚本入口索引见 `scripts/README.md`
 - 模型产物索引见 `models/README.md`
 
+### Code reasoning pilot / 代码推理 pilot
+
+- `research_summary.md`: hypothesis framing, established vs speculative claims, and next experiments
+- `literature_map.md`: literature clusters with direct-support vs near-neighbor distinctions
+- `hypotheses_and_rqs.md`: falsifiable RQs/Hs, IVs/DVs/confounds
+- `experiment_plan.md`: benchmark + evaluation + threats to validity
+- `prompt_ablations.md`: prompt templates for free-form vs structured/stateful reasoning
+- `failure_taxonomy.md`: trace error taxonomy
+- `pilot_benchmark.py`: runnable synthetic benchmark generator
+- `sample_tasks.jsonl`: generated sample tasks with gold outputs and traces
+
+Run from repo root:
+
+```bash
+python3 pilot_benchmark.py --num-per-family 3 --seed 0 --out sample_tasks.jsonl --pretty-sample 5
+```
+
+Each JSONL record contains:
+
+- `code`, `entry_call`, `gold_output`
+- `gold_trace` with per-step state / branch / loop / scope metadata
+- controllable attributes such as `branch_depth`, `loop_nesting`, `phase_switch_count`, `boundary_case_count`
+
+This pilot targets **code reasoning / execution**, not code generation.
+
 ### 当前研究主线（2026-04-08）
 
 - `code_v2` 已是当前 promoted coding default，详见 `docs/CODE_V2_EXHAUSTIVE_20260406.md`
@@ -264,6 +289,25 @@ python3 scripts/rank_selectors.py \
 - `gpqa_pairwise_round2` remains `NO-PROMOTE`; see `docs/GPQA_PAIRWISE_ROUND2_RESULTS_20260406.md`
 - `gpqa_deepsets_round1` completed the first minimal full-group contextual study, but also remains `NO-PROMOTE`; see `docs/GPQA_DEEPSETS_ROUND1_RESULTS_20260407.md`
 - The current science research priority is small contextual models / top-slot calibration, not graph-heavy expansion and not a new monotonic recency feature family
+
+### Code reasoning pilot
+
+- `research_summary.md`: hypothesis framing and interpretation guide
+- `literature_map.md`: primary literature map with support-strength labels
+- `hypotheses_and_rqs.md`: falsifiable research questions and hypotheses
+- `experiment_plan.md`: benchmark, evaluation, and validity threats
+- `prompt_ablations.md`: standard prompt templates for A/B/C/D/(E)
+- `failure_taxonomy.md`: reasoning-trace error taxonomy
+- `pilot_benchmark.py`: runnable synthetic benchmark generator
+- `sample_tasks.jsonl`: generated sample tasks with gold outputs and traces
+
+Run from the repo root:
+
+```bash
+python3 pilot_benchmark.py --num-per-family 3 --seed 0 --out sample_tasks.jsonl --pretty-sample 5
+```
+
+Each record includes executable code, an entry call, gold output, gold trace, and controllable semantic-load attributes. This pilot is for **code reasoning / execution**, not code generation.
 
 A framework for analyzing neural network activations via binary CSR caches, selector algorithms, and a cookbook of reproducible experiments. NAD Next processes raw NPZ activation shards into efficient memory-mapped caches (CSR format with Roaring Bitmap indexing), applies a broad selector suite (including ML-based, temporal discount, and trajectory-based selectors) to pick the most representative sample per problem, and evaluates selector accuracy across models and datasets.
 

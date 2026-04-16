@@ -5,6 +5,7 @@
 - `EXTREME12_TEST_ANALYSIS.md`: frozen generic/math-side proxy baseline.
 - `EXTREME12_V2_EXPERIMENT.md`: extreme12 follow-up experiment notes.
 - `EXTREME_SELACC_GRID_20260406.md`: exhaustive `SelAcc@k%` grid for the extreme line.
+- `CODE_REASONING_COT_PILOT_20260416.md`: code-reasoning pilot summary linking the literature map, hypotheses, benchmark generator, prompt ablations, and validation status.
 
 ## SVD line
 - `ES_SVD_MS_RR_R1.md`: canonical `r1` multi-domain EarlyStop SVD report.
@@ -77,6 +78,7 @@
 - `EXTREME12_TEST_ANALYSIS.md`：冻结的 generic/math 侧 proxy 基线。
 - `EXTREME12_V2_EXPERIMENT.md`：extreme12 后续实验记录。
 - `EXTREME_SELACC_GRID_20260406.md`：extreme 线的 `SelAcc@k%` 穷举表。
+- `CODE_REASONING_COT_PILOT_20260416.md`：代码推理 vs 自然语言 CoT pilot 总结，串联文献图谱、假说、benchmark 生成器、prompt ablation 与验证状态。
 
 ## SVD 主线
 - `ES_SVD_MS_RR_R1.md`：canonical `r1` 多域 EarlyStop SVD 报告。
