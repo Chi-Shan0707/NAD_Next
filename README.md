@@ -25,6 +25,7 @@
 - `failure_taxonomy.md`: trace error taxonomy
 - `pilot_benchmark.py`: runnable synthetic benchmark generator
 - `sample_tasks.jsonl`: generated sample tasks with gold outputs and traces
+- `docs/CODE_REASONING_COT_PILOT_20260416_CN.md`: 中文总结版
 
 Run from repo root:
 
@@ -300,6 +301,7 @@ python3 scripts/rank_selectors.py \
 - `failure_taxonomy.md`: reasoning-trace error taxonomy
 - `pilot_benchmark.py`: runnable synthetic benchmark generator
 - `sample_tasks.jsonl`: generated sample tasks with gold outputs and traces
+- `docs/CODE_REASONING_COT_PILOT_20260416_CN.md`: Chinese summary version
 
 Run from the repo root:
 
