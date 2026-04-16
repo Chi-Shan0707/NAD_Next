@@ -244,7 +244,7 @@ def _score_payload(
     # Apply domain_ssl model: scaler → B → LR
     X_rep = np.concatenate([x_raw_all, x_rank_all], axis=1)   # (N, 44)
     Z = bundle["scaler"].transform(X_rep) @ bundle["B"]         # (N, r)
-    scores = head.decision_function(Z)                           # (N,)
+    scores = head.predict_proba(Z)[:, 1]                         # (N,)  probability of correct class, in [0,1]
 
     # Build {problem_id_str: {sample_id_str: score}}
     result: dict[str, dict[str, float]] = {}
