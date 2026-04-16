@@ -20,3 +20,8 @@ rank_ndcg,xgb_rank,564,nan,nan,0.7174
 borda_cv2_t22,borda,2,nan,nan,0.6957
 majority_vote_3sig,vote,3,nan,nan,0.7754
 oracle_union_cv2_xgb,oracle,2,nan,nan,0.8478
+mlp_512_256,mlp,564,nan,nan,0.7174
+mlp_256_128_64,mlp,564,nan,nan,0.6812
+wp_rank_xgb,xgb,564,nan,nan,0.6739
+abs_plus_wp_rank,xgb,1128,nan,nan,0.7029
+abs_plus_pos_diffs,xgb,1974,nan,nan,0.6449
