@@ -252,7 +252,7 @@ def _score_payload(
         start = int(problem_offsets[i])
         end = int(problem_offsets[i + 1]) if i + 1 < len(problem_ids) else N
         pid_str = str(pid)
-        result[pid_str] = {str(j): float(scores[start + j]) for j in range(end - start)}
+        result[pid_str] = {str(start + j): float(scores[start + j]) for j in range(end - start)}
 
     cache_key = payload["cache_key"]
     n_probs = len(result)
