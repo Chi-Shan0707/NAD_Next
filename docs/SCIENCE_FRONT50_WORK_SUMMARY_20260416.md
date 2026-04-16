@@ -169,10 +169,11 @@
 
 如果继续提分，我建议按下面顺序推进：
 
-1. 先实际打分 `science_front50_holdout_search_20260416.json`，确认线上收益是否跟离线方向一致；
-2. 若线上有效，再把同样思路扩到 `60%~70%`，看看前中段能否继续吃收益；
-3. 若还要继续深挖 `30%`，优先围绕 `science_front11` 做更细粒度 family 搜索，而不是直接回到大而慢的全空间暴搜；
-4. 若想更进一步，可以在 blind `cache_test` 上做无监督结构特征补充，但前提是先确认本轮前半段 patch 在线上是否真的涨分。
+1. 既然 `Submission #297` 已经打过线上分数，下一步不要再重复同一思路的小改动，而应该直接针对 `gpqa` 失败模式重做；
+2. 优先分析为什么离线 `front50` gain 没有充分转化为线上 `gpqa` gain，尤其是 `DS-R1/gpqa` 与 `Qwen3-4B/gpqa` 这两条 cache；
+3. 若继续深挖 `30%`，优先围绕 `science_front11` 做更细粒度 family 搜索，而不是直接回到大而慢的全空间暴搜；
+4. 若继续扩槽位，建议先测 `30%~70%` 的连续 patch，而不是一下子重做 `10%~100%`；
+5. 若想更进一步，可以在 blind `cache_test` 上做无监督结构特征补充，但前提是先围绕 `gpqa` 把线上弱点定位清楚。
 
 ## 10. 提交记录
 
@@ -186,3 +187,55 @@
 - science front-half holdout 快速搜索脚本；
 - 前半段特征扫描文档；
 - front50 搜索文档。
+
+## 11. 线上榜单结果（Submission #297）
+
+本轮核心 submission 已经在线上实际打分：
+
+- `submission id`: `297`
+- `task`: `early_stop`
+- `method`: `es_svd_ms_rr_r1__coding_rotation_adapter_aggressive_tokenonly_late70100__science_front50_holdout_search_20260416`
+- `submitted`: `2026-04-16 10:28:46 UTC`
+- `status`: `Not best`
+- `primary score`: `4.5000`
+- `average rank`: `4.5000`
+- `AUC of AUROC`: `0.7410`
+- `AUC of SelAcc`: `0.8331`
+- `Earliest > 0.6`: `10%`
+- `samples`: `62080`
+
+### 按槽位
+
+| Position | AUROC | Selective Acc @10% | Stop Acc |
+|---|---:|---:|---:|
+| `10%` | `0.7872` | `0.9044` | `0.7009` |
+| `20%` | `0.8006` | `0.9226` | `0.7018` |
+| `30%` | `0.7769` | `0.9158` | `0.7204` |
+| `40%` | `0.8281` | `0.9254` | `0.7121` |
+| `50%` | `0.8286` | `0.9289` | `0.7298` |
+| `60%` | `0.8294` | `0.9281` | `0.7350` |
+| `70%` | `0.8385` | `0.9257` | `0.7275` |
+| `80%` | `0.8418` | `0.9272` | `0.7434` |
+| `90%` | `0.8431` | `0.9298` | `0.7400` |
+| `100%` | `0.8579` | `0.9495` | `0.7519` |
+
+### 按 cache
+
+最值得记住的是：
+
+- `DS-R1/gpqa`: `AUC of AUROC = 0.6832`
+- `Qwen3-4B/gpqa`: `AUC of AUROC = 0.6772`
+
+这说明本轮前半段 science patch 虽然离线方向正确，但**在线上真正拖后腿的仍然是 `gpqa`**，而且两个模型家族都弱。
+
+反过来看：
+
+- `aime24/aime25/brumo25/hmmt25` 这几条 cache 都明显更强；
+- `lcb_v5` 依旧很差，但它不是本轮 science patch 的主要目标；
+- 因此后续如果继续做 science，不应该泛泛地说“science 还不够好”，而应该直接说：**要优先针对 `gpqa` 做更强的域内特征与迁移策略。**
+
+### 线上记录文件
+
+原始线上记录已存入：
+
+- `results/validation/earlystop_submission_297_science_front50_holdout_search_20260416.json`

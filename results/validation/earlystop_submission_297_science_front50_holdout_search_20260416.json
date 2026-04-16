@@ -1,0 +1,147 @@
+{
+  "submission_id": 297,
+  "task": "early_stop",
+  "method": "es_svd_ms_rr_r1__coding_rotation_adapter_aggressive_tokenonly_late70100__science_front50_holdout_search_20260416",
+  "file": "es_svd_ms_rr_r1__coding_rotation_adapter_aggressive_tokenonly_late70100__science_front50_holdout_search_20260416.json",
+  "submitted_at_utc": "2026-04-16 10:28:46 UTC",
+  "status": "Not best",
+  "primary_score": 4.5,
+  "average_rank_lower_is_better": 4.5,
+  "overall_metrics": {
+    "auc_of_auroc": 0.741,
+    "auc_of_selacc": 0.8331,
+    "earliest_gt_0_6": "10%",
+    "samples": 62080
+  },
+  "metrics_by_position": {
+    "10%": {
+      "auroc": 0.7872,
+      "selective_acc_at_10": 0.9044,
+      "stop_acc_hit_at_1": 0.7009
+    },
+    "20%": {
+      "auroc": 0.8006,
+      "selective_acc_at_10": 0.9226,
+      "stop_acc_hit_at_1": 0.7018
+    },
+    "30%": {
+      "auroc": 0.7769,
+      "selective_acc_at_10": 0.9158,
+      "stop_acc_hit_at_1": 0.7204
+    },
+    "40%": {
+      "auroc": 0.8281,
+      "selective_acc_at_10": 0.9254,
+      "stop_acc_hit_at_1": 0.7121
+    },
+    "50%": {
+      "auroc": 0.8286,
+      "selective_acc_at_10": 0.9289,
+      "stop_acc_hit_at_1": 0.7298
+    },
+    "60%": {
+      "auroc": 0.8294,
+      "selective_acc_at_10": 0.9281,
+      "stop_acc_hit_at_1": 0.735
+    },
+    "70%": {
+      "auroc": 0.8385,
+      "selective_acc_at_10": 0.9257,
+      "stop_acc_hit_at_1": 0.7275
+    },
+    "80%": {
+      "auroc": 0.8418,
+      "selective_acc_at_10": 0.9272,
+      "stop_acc_hit_at_1": 0.7434
+    },
+    "90%": {
+      "auroc": 0.8431,
+      "selective_acc_at_10": 0.9298,
+      "stop_acc_hit_at_1": 0.74
+    },
+    "100%": {
+      "auroc": 0.8579,
+      "selective_acc_at_10": 0.9495,
+      "stop_acc_hit_at_1": 0.7519
+    }
+  },
+  "cache_metrics": {
+    "DS-R1/aime24": {
+      "auc_of_auroc": 0.8291,
+      "auc_of_selacc": 0.9,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "DS-R1/aime25": {
+      "auc_of_auroc": 0.8288,
+      "auc_of_selacc": 0.8932,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "DS-R1/brumo25": {
+      "auc_of_auroc": 0.8589,
+      "auc_of_selacc": 0.8953,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "DS-R1/gpqa": {
+      "auc_of_auroc": 0.6832,
+      "auc_of_selacc": 0.8615,
+      "earliest_gt_0_6": "10%",
+      "samples": 12672
+    },
+    "DS-R1/hmmt25": {
+      "auc_of_auroc": 0.8271,
+      "auc_of_selacc": 0.8977,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "DS-R1/lcb_v5": {
+      "auc_of_auroc": 0.4698,
+      "auc_of_selacc": 0.5405,
+      "earliest_gt_0_6": "100%",
+      "samples": 10688
+    },
+    "Qwen3-4B/aime24": {
+      "auc_of_auroc": 0.8271,
+      "auc_of_selacc": 0.8995,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "Qwen3-4B/aime25": {
+      "auc_of_auroc": 0.839,
+      "auc_of_selacc": 0.9,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "Qwen3-4B/brumo25": {
+      "auc_of_auroc": 0.8144,
+      "auc_of_selacc": 0.9,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "Qwen3-4B/gpqa": {
+      "auc_of_auroc": 0.6772,
+      "auc_of_selacc": 0.8455,
+      "earliest_gt_0_6": "10%",
+      "samples": 12672
+    },
+    "Qwen3-4B/hmmt25": {
+      "auc_of_auroc": 0.789,
+      "auc_of_selacc": 0.8961,
+      "earliest_gt_0_6": "10%",
+      "samples": 1920
+    },
+    "Qwen3-4B/lcb_v5": {
+      "auc_of_auroc": 0.448,
+      "auc_of_selacc": 0.5673,
+      "earliest_gt_0_6": "N/A",
+      "samples": 10688
+    }
+  },
+  "notes": [
+    "This file stores the user-provided public leaderboard result for Submission #297.",
+    "The run improves offline front-half science holdout, but the live leaderboard score is not best.",
+    "Science gpqa remains the weakest targeted cache family on the live board."
+  ]
+}
