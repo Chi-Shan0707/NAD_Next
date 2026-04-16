@@ -1,0 +1,15 @@
+{
+  "generated_at_utc": "2026-04-16 06:53:22 UTC",
+  "method_name": "es_svd_ms_rr_r1__coding_rotation_adapter_aggressive_tokenonly_late70100__ssl_gpqa_qwen_patch",
+  "submission_path": "/home/jovyan/work/NAD_Next/submission/EarlyStop/es_svd_ms_rr_r1__coding_rotation_adapter_aggressive_tokenonly_late70100__ssl_gpqa_qwen_patch.json",
+  "base_submission": "/home/jovyan/work/NAD_Next/submission/EarlyStop/es_svd_ms_rr_r1__coding_rotation_adapter_aggressive_tokenonly_late70100.json",
+  "override_submission": "/home/jovyan/work/NAD_Next/submission/EarlyStop/earlystop_ssl_round1_science_tokenpair16_patch.json",
+  "override_cache_keys": [
+    "Qwen3-4B/gpqa"
+  ],
+  "replaced_caches": 1,
+  "validation": {
+    "total_problems": 970,
+    "total_samples": 62080
+  }
+}
